@@ -10,11 +10,10 @@ struct MainTabView: View {
     let coordinator: AlarmCoordinator
     let auth: any AuthService
     let store: StoreService
+    @Binding var selection: TabID
     var notices: [String]
     var onDismissNotices: () -> Void
     var onReplayOnboarding: () -> Void
-
-    @State private var selection: TabID = .alarms
 
     var body: some View {
         TabView(selection: $selection) {

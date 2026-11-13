@@ -5,9 +5,14 @@ import SwiftUI
 import WidgetKit
 
 @main
-struct AlarmLiveActivityBundle: WidgetBundle {
+struct EarnItWidgetBundle: WidgetBundle {
     var body: some Widget {
         AlarmLiveActivity()
+        StreakWidget()
+        StreakRankWidget()
+        ServiceRecordWidget()
+        LockStreakWidget()
+        LockStreakRankWidget()
     }
 }
 

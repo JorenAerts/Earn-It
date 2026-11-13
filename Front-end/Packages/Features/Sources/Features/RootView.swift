@@ -6,6 +6,7 @@ import Purchases
 import SwiftData
 import SwiftUI
 import UserNotifications
+import WidgetShared
 
 /// Routes between onboarding, the forced mission screen, and home.
 public struct RootView: View {
@@ -19,6 +20,8 @@ public struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var modelContext
     @State private var showSuccess = false
+    @State private var tab: MainTabView.TabID = .alarms
+    @State private var showPaywallFromWidget = false
 
     public init(coordinator: AlarmCoordinator, auth: any AuthService, store: StoreService,
                 onboardingStore: OnboardingStore = OnboardingStore()) {
@@ -31,8 +34,18 @@ public struct RootView: View {
 
     public var body: some View {
         Group {
+            #if DEBUG
+            // Launch argument for screenshots: -widgetPreviews [-sample] [-free]
+            let previewWidgets = CommandLine.arguments.contains("-widgetPreviews")
+            #else
+            let previewWidgets = false
+            #endif
             // A ringing alarm's mission always wins, even mid-onboarding.
-            if coordinator.needsMission {
+            if previewWidgets {
+                #if DEBUG
+                NavigationStack { WidgetPreviewsView(coordinator: coordinator, store: store) }
+                #endif
+            } else if coordinator.needsMission {
                 let coachState = CoachModel.shared.state(coordinator: coordinator, logs: [])
                 MissionRunnerView(missions: coordinator.activePlan?.missions ?? [],
                                   reArmCount: coordinator.session?.reArmCount ?? 0,
@@ -47,6 +60,7 @@ public struct RootView: View {
                 }
             } else {
                 MainTabView(coordinator: coordinator, auth: auth, store: store,
+                         selection: $tab,
                          notices: noticeMessages,
                          onDismissNotices: {
                              notices.clear()
@@ -59,11 +73,15 @@ public struct RootView: View {
             }
         }
         .animation(.default, value: coordinator.needsMission)
+        .paywallSheet(isPresented: $showPaywallFromWidget)
         .environment(\.paywall, PaywallContext(store: store, accountToken: auth.user?.id,
                                                termsURL: auth.config.termsURL,
                                                privacyURL: auth.config.privacyURL))
         // Free tier: once StoreKit has answered, bring alarms within the free limits.
-        .onChange(of: store.entitlement) { enforceTier() }
+        .onChange(of: store.entitlement) {
+            enforceTier()
+            refreshCoachNotifications()
+        }
         .onChange(of: store.hasLoadedEntitlement) { enforceTier() }
         .onChange(of: onboarded) { enforceTier() }
         .onChange(of: coordinator.needsMission) { enforceTier() }
@@ -90,6 +108,8 @@ public struct RootView: View {
             switch url.host() {
             case "mission": coordinator.missionStarted(id: nil)
             case "auth-callback": Task { await auth.handle(url: url) }  // email confirmation links
+            case "progress": tab = .progress                                // widget tap
+            case "paywall": if onboarded { showPaywallFromWidget = true }  // locked Pro widget
             default: break
             }
         }
@@ -98,10 +118,12 @@ public struct RootView: View {
         }
     }
 
+    /// Coach notifications + widget snapshot: both derive from alarms, today's session and history.
     private func refreshCoachNotifications() {
         let logs = (try? modelContext.fetch(FetchDescriptor<DayLog>())) ?? []
         CoachNotifier.shared.completedDays = logs.compactMap(\.missionCompletedAt)
         Task { await CoachNotifier.shared.refresh(coordinator: coordinator) }
+        WidgetPublisher.shared.publish(coordinator: coordinator, logs: logs, isPro: store.entitlement.isPro)
     }
 
     private func enforceTier() {
@@ -125,6 +147,7 @@ public struct RootView: View {
             modelContext.insert(DayLog(session: session))
         }
         try? modelContext.save()
+        refreshCoachNotifications()
         showSuccess = true
     }
 }

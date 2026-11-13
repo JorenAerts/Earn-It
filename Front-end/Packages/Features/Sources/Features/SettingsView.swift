@@ -251,6 +251,7 @@ struct SettingsView: View {
     private var developerSection: some View {
         DebugSection(coordinator: coordinator)
         Section("Developer") {
+            NavigationLink("Widget previews") { WidgetPreviewsView(coordinator: coordinator, store: store) }
             Button("Show paywall") { showPaywall = true }
             Button("Replay onboarding", action: onReplayOnboarding)
             Button("Reset cached plan status") { store.debugResetCache() }

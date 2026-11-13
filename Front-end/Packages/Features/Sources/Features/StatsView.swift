@@ -2,6 +2,7 @@ import Coach
 import Core
 import SwiftData
 import SwiftUI
+import WidgetShared
 
 /// Progress tab: streaks and the last two weeks of mornings, from `DayLog`.
 struct StatsView: View {

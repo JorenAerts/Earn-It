@@ -2,12 +2,17 @@ import Coach
 import SwiftUI
 
 /// Rank insignia: chevrons for enlisted, bars/leaf/eagle/star for officers.
-struct RankInsignia: View {
+public struct RankInsignia: View {
     let rank: Rank
-    var size: CGFloat = 44
+    var size: CGFloat
+
+    public init(rank: Rank, size: CGFloat = 44) {
+        self.rank = rank
+        self.size = size
+    }
     private let gold = Color(red: 0.89, green: 0.70, blue: 0.24)
 
-    var body: some View {
+    public var body: some View {
         ZStack {
             Circle().fill(Color(red: 0.29, green: 0.35, blue: 0.18))
             Circle().strokeBorder(gold, lineWidth: size * 0.06)
@@ -48,10 +53,12 @@ struct RankInsignia: View {
 }
 
 /// Rank card: insignia, title, XP and progress to the next rank.
-struct RankCard: View {
+public struct RankCard: View {
     let progress: RankProgress
 
-    var body: some View {
+    public init(progress: RankProgress) { self.progress = progress }
+
+    public var body: some View {
         HStack(spacing: 14) {
             RankInsignia(rank: progress.rank, size: 56)
             VStack(alignment: .leading, spacing: 6) {
@@ -73,11 +80,16 @@ struct RankCard: View {
     }
 }
 
-struct MedalTile: View {
+public struct MedalTile: View {
     let medal: Medal
     let earned: Bool
 
-    var body: some View {
+    public init(medal: Medal, earned: Bool) {
+        self.medal = medal
+        self.earned = earned
+    }
+
+    public var body: some View {
         VStack(spacing: 6) {
             ZStack {
                 Circle().fill(earned ? AnyShapeStyle(LinearGradient(colors: [Color(red: 1, green: 0.85, blue: 0.4),
