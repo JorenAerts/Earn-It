@@ -13,7 +13,8 @@ Current milestone: **M1 (alarm + mission)**. Lock engine (M2) needs paid Apple t
   - `Missions` — `Mission` protocol + `MissionRegistry`, one folder per mission (`Math/`, `Shake/`, `QR/` (VisionKit scanner + printable code)). Optional `makeSetupView` for per-mission setup in the alarm editor.
   - `Features` — SwiftUI screens (`RootView`, Permission, Home, AlarmSetup, MissionRunner).
 - `Front-end/Extensions/AlarmLiveActivity/` — WidgetKit extension: Live Activity for `AlarmAttributes<EarnItAlarmMetadata>` (alarm title + re-ring countdown on Lock Screen / Dynamic Island).
-- `Front-end/Tests/` — Swift Testing unit tests (logic only).
+- `Purchases` package — `PricingCatalog` (reads `Config/Pricing.json`), `StoreService` (StoreKit 2), `EntitlementState`/`EntitlementResolver`, `FeatureGate` (free: 1 alarm, Math, Classic Beep), `DowngradePolicy`.
+- `Front-end/Tests/` — Swift Testing unit tests (logic only) + StoreKitTest flow tests.
 
 ## Commands (run from `Front-end/`)
 ```sh
@@ -24,6 +25,12 @@ xcodebuild -project EarnIt.xcodeproj -scheme EarnIt \
   -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build   # device-SDK compile check
 ```
 Signing: `Front-end/Config/Local.xcconfig` (git-ignored) holds `DEVELOPMENT_TEAM`. Copy from `Local.xcconfig.example`.
+
+## Pricing / purchases
+- **Change plans or prices only in `Front-end/Config/Pricing.json`** (week / month / 3 months / year / lifetime: `price`, `enabled`, `badge`, `title`, `trialDays`, `defaultSelection`), then run `python3 Front-end/scripts/generate_storekit.py` to regenerate `Config/EarnIt.storekit`. Test `storekitFileMatchesPricingJSON` fails if you forget.
+- App shows StoreKit's localized prices; Pricing.json decides which plans exist + order. Real prices must be mirrored in App Store Connect (same product IDs) once the paid program exists.
+- Local purchases only work when the app is **run from Xcode** (scheme uses `EarnIt.storekit`). `devicectl` installs have no StoreKit config.
+- StoreKitTest gotchas: `Product.purchase()` of a *subscription* times out in the unit-test host (use `SKTestSession.buyProduct`); `expireSubscription` doesn't update `currentEntitlements` there — test expiry via `EntitlementResolver` + Xcode Transaction Manager.
 
 ## Rules
 - iOS 26.1 minimum, Swift 6 strict concurrency. Keep logic pure + testable; UI/framework glue thin.

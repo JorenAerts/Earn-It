@@ -26,6 +26,8 @@ packages:
     path: Packages/Missions
   Features:
     path: Packages/Features
+  Purchases:
+    path: Packages/Purchases
 
 targets:
   EarnIt:
@@ -33,8 +35,11 @@ targets:
     platform: iOS
     sources:
       - path: App
+      - path: Config/Pricing.json
+        buildPhase: resources
     dependencies:
       - package: Core
+      - package: Purchases
       - package: AlarmEngine
       - package: Missions
       - package: Features
@@ -93,6 +98,8 @@ targets:
     platform: iOS
     sources:
       - path: Tests
+      - path: Config/EarnIt.storekit
+        buildPhase: resources
     dependencies:
       - target: EarnIt
     settings:
@@ -108,6 +115,7 @@ schemes:
         EarnItTests: [test]
     run:
       config: Debug
+      storeKitConfiguration: Config/EarnIt.storekit
     test:
       config: Debug
       targets:
