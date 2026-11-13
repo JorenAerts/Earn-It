@@ -27,6 +27,23 @@ public final class DayLog {
 }
 
 public enum StreakCalculator {
+    /// Longest run of consecutive completed days ever.
+    public static func bestStreak(completedDays: [Date], calendar: Calendar = .current) -> Int {
+        let days = Set(completedDays.map { calendar.startOfDay(for: $0) }).sorted()
+        var best = 0, run = 0
+        var previous: Date?
+        for day in days {
+            if let previous, calendar.date(byAdding: .day, value: 1, to: previous) == day {
+                run += 1
+            } else {
+                run = 1
+            }
+            best = max(best, run)
+            previous = day
+        }
+        return best
+    }
+
     /// Consecutive completed days ending today (or yesterday, if today isn't done yet).
     public static func currentStreak(completedDays: [Date], today: Date, calendar: Calendar = .current) -> Int {
         let days = Set(completedDays.map { calendar.startOfDay(for: $0) })

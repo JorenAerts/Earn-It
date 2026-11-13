@@ -132,7 +132,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     }
 
     @Test func failSafeStopsLoop() async {
-        let (c, fake) = makeCoordinator()
+        let (c, _) = makeCoordinator()
         for _ in 0..<3 { await c.alarmEnded(id: nil) }
         #expect(c.session?.reArmCount == 2)
         #expect(c.session?.failSafeTriggered == true)
@@ -299,6 +299,13 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     @Test func todayPendingKeepsYesterdayStreak() {
         let days = [date(2026, 11, 11, 7), date(2026, 11, 12, 7)]
         #expect(StreakCalculator.currentStreak(completedDays: days, today: date(2026, 11, 13, 6), calendar: calendar) == 2)
+    }
+
+    @Test func bestStreakFindsLongestRun() {
+        let days = [date(2026, 11, 1, 7), date(2026, 11, 2, 7), date(2026, 11, 3, 7),
+                    date(2026, 11, 5, 7), date(2026, 11, 6, 7), date(2026, 11, 6, 9)]
+        #expect(StreakCalculator.bestStreak(completedDays: days, calendar: calendar) == 3)
+        #expect(StreakCalculator.bestStreak(completedDays: [], calendar: calendar) == 0)
     }
 
     @Test func gapBreaksStreak() {

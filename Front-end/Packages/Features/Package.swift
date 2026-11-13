@@ -9,6 +9,8 @@ let package = Package(
         .package(path: "../Core"),
         .package(path: "../AlarmEngine"),
         .package(path: "../Missions"),
+        .package(path: "../Purchases"),
+        .package(path: "../Account"),
     ],
-    targets: [.target(name: "Features", dependencies: ["Core", "AlarmEngine", "Missions"])]
+    targets: [.target(name: "Features", dependencies: ["Core", "AlarmEngine", "Missions", "Purchases", "Account"])]
 )

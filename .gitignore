@@ -9,3 +9,5 @@ build/
 .swiftpm/
 # Local signing (personal team id)
 Front-end/Config/Local.xcconfig
+# Supabase client config (URL + publishable key)
+Front-end/Config/Supabase.xcconfig

@@ -13,7 +13,10 @@ Current milestone: **M1 (alarm + mission)**. Lock engine (M2) needs paid Apple t
   - `Missions` — `Mission` protocol + `MissionRegistry`, one folder per mission (`Math/`, `Shake/`, `QR/` (VisionKit scanner + printable code)). Optional `makeSetupView` for per-mission setup in the alarm editor.
   - `Features` — SwiftUI screens (`RootView`, Permission, Home, AlarmSetup, MissionRunner).
 - `Front-end/Extensions/AlarmLiveActivity/` — WidgetKit extension: Live Activity for `AlarmAttributes<EarnItAlarmMetadata>` (alarm title + re-ring countdown on Lock Screen / Dynamic Island).
-- `Front-end/Tests/` — Swift Testing unit tests (logic only).
+- `Purchases` package — `PricingCatalog` (reads `Config/Pricing.json`), `StoreService` (StoreKit 2), `EntitlementState`/`EntitlementResolver`, `FeatureGate` (free: 1 alarm, Math, Classic Beep), `DowngradePolicy`.
+- `Account` package — optional login via **Supabase Auth** (`supabase-swift`): `AuthService` protocol, `SupabaseAuthService` (email+password, OAuth Apple/Google/Facebook/Microsoft via `earnit://auth-callback`), `UnavailableAuthService` (no config), `FakeAuthService`. Shown providers + legal URLs: `Config/Auth.json`.
+- `Backend/supabase/` — Supabase CLI project: `profiles` migration (RLS own-row), `delete_own_account()` RPC for in-app deletion. Setup steps in `Backend/README.md`.
+- `Front-end/Tests/` — Swift Testing unit tests (logic only) + StoreKitTest flow tests.
 
 ## Commands (run from `Front-end/`)
 ```sh
@@ -25,11 +28,25 @@ xcodebuild -project EarnIt.xcodeproj -scheme EarnIt \
 ```
 Signing: `Front-end/Config/Local.xcconfig` (git-ignored) holds `DEVELOPMENT_TEAM`. Copy from `Local.xcconfig.example`.
 
+## Pricing / purchases
+- **Change plans or prices only in `Front-end/Config/Pricing.json`** (week / month / 3 months / year / lifetime: `price`, `enabled`, `badge`, `title`, `trialDays`, `defaultSelection`), then run `python3 Front-end/scripts/generate_storekit.py` to regenerate `Config/EarnIt.storekit`. Test `storekitFileMatchesPricingJSON` fails if you forget.
+- App shows StoreKit's localized prices; Pricing.json decides which plans exist + order. Real prices must be mirrored in App Store Connect (same product IDs) once the paid program exists.
+- Local purchases only work when the app is **run from Xcode** (scheme uses `EarnIt.storekit`). `devicectl` installs have no StoreKit config.
+- Paywall: `Features/Paywall/PaywallView` (modes `.onboarding` / `.sheet`, `PaywallSheet` wrapper). Trial text from the product's intro offer; auto-renew disclosure (Guideline 3.1.2), Restore, Terms/Privacy (URLs in `Config/Auth.json`). Per-period math in `Purchases/PlanPeriod`.
+- Free tier gating: `PaywallContext` injected via `.environment(\.paywall, …)` in `RootView`; any screen uses `.paywallSheet(isPresented:)`. Home gates add/enable alarm, editor gates Pro missions/sounds (sound preview stays free). `TierEnforcement.enforce` (DowngradePolicy + reschedule) runs only after `StoreService.hasLoadedEntitlement` (never on the cached value alone), never during a ringing mission, never before onboarding completes; changes become one-time Home notices (`DowngradeNotices`).
+- The app shows nothing and starts no services when launched as the unit-test host (`XCTestConfigurationFilePath`), otherwise its StoreKit loading races `SKTestSession`.
+- StoreKitTest gotchas: `Product.purchase()` of a *subscription* times out in the unit-test host (use `SKTestSession.buyProduct`); `expireSubscription` doesn't update `currentEntitlements` there — test expiry via `EntitlementResolver` + Xcode Transaction Manager.
+
+## Secrets
+- `Front-end/Config/Supabase.xcconfig` (git-ignored) holds `SUPABASE_URL` + `SUPABASE_PUBLISHABLE_KEY` → Info.plist. **Only publishable keys in the app**; `AuthServiceFactory` refuses `sb_secret_…`. Without the file, accounts are hidden and the app still builds.
+
 ## Rules
 - iOS 26.1 minimum, Swift 6 strict concurrency. Keep logic pure + testable; UI/framework glue thin.
 - New mission = new folder in `Missions/`, conform to `Mission`, add a case to `MissionKind` + `MissionRegistry`, add logic tests.
 - Wake loop rule: the alarm has **one control, the system X/Stop** (no secondary button — iOS can't hide X). `StopAlarmIntent` (`supportedModes = .foreground(.immediate)`) → `alarmEnded` → system alarm silenced, countdown follow-up at +reArmMinutes, app opens on mission. `AlarmCoordinator` drives `AlarmSoundPlayer` (AlarmEngine): sound plays whenever `needsMission` is true (set in `persist`/`reload`), from the X press until all missions succeed or fail-safe. `UIBackgroundModes: audio` keeps it going when the app is left or the phone locked; resumes after interruptions. Follow-up countdown remains a backup if the app is force-quit. Only `missionSucceeded()` cancels follow-ups. App also jumps to the mission when launched/active while any alarm is alerting or a follow-up countdown runs (`reload`, `observeSystemAlarms`), or via `earnit://mission` (Live Activity tap). Fail-safe after `maxReArms`.
-- App opens straight into `MissionRunnerView` while `coordinator.needsMission` is true.
+- App opens straight into `MissionRunnerView` while `coordinator.needsMission` is true (wins over onboarding too).
+- Main UI after onboarding: `MainTabView` — Alarms (`HomeView`), Progress (`StatsView`, from `DayLog`), Settings (`SettingsView`: account incl. sign in/out + delete, subscription status/upgrade/manage/restore, permissions, legal, version; DEBUG developer tools incl. `DebugSection`).
+- Onboarding: `Features/Onboarding/` — `OnboardingFlow` (pure step logic: account skipped when accounts unavailable or signed in, paywall skipped for Pro), `OnboardingStore` (`earnit.onboarding`, resumes mid-flow; legacy `earnit.onboarded` = completed). Steps: welcome, howItWorks, goals, account (`AccountStepView`), permissions, firstAlarm, paywall. Debug › Replay onboarding.
 - **Multiple alarms**: `KeyValueStore.loadPlans()` (`earnit.plans`, migrates legacy single `earnit.plan`). Main AlarmKit alarm id = `plan.id`. Follow-ups/test rings map to their plan via `earnit.alarmOwners`. Each ring cycle stores `SessionState.planID`; `coordinator.activePlan` drives missions, re-ring and sound. Old JSON decodes via tolerant `AlarmPlan.init(from:)` — keep new fields `decodeIfPresent`.
 - **Session = one ring cycle, not one day.** An alarm ringing/ending after a finished cycle (mission done or fail-safe) starts a fresh session the same day (`ReArmPolicy.currentSession(newRing:)`). Bug found on-device: per-day sessions ignored every alarm after the first completed mission.
 - State intents need lives in `KeyValueStore` (small JSON), not SwiftData — extensions in M2 will read it from an App Group.

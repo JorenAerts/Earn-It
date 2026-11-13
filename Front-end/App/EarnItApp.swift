@@ -1,5 +1,7 @@
+import Account
 import AlarmEngine
 import Core
+import Purchases
 import Features
 import SwiftData
 import SwiftUI
@@ -12,6 +14,14 @@ final class AppEnvironment {
     let store = KeyValueStore()
     let coordinator: AlarmCoordinator
     let modelContainer: ModelContainer
+    let auth: any AuthService = AuthServiceFactory.make()
+    let purchases: StoreService = {
+        do {
+            return StoreService(catalog: try PricingCatalog.load())
+        } catch {
+            fatalError("Config/Pricing.json missing from the app bundle: \(error)")
+        }
+    }()
 
     private init() {
         let scheduler = AlarmKitScheduler(intents: AlarmIntentFactory(
@@ -30,10 +40,18 @@ final class AppEnvironment {
 struct EarnItApp: App {
     private let env = AppEnvironment.shared
 
+    /// Launched as the unit-test host: start nothing (StoreKit, AlarmKit, UI) so tests own
+    /// their environment — e.g. SKTestSession product loading isn't raced by the app.
+    private static let isTestHost = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+
     var body: some Scene {
         WindowGroup {
-            RootView(coordinator: env.coordinator)
-                .tint(.orange)
+            if Self.isTestHost {
+                Color.clear
+            } else {
+                RootView(coordinator: env.coordinator, auth: env.auth, store: env.purchases)
+                    .tint(.orange)
+            }
         }
         .modelContainer(env.modelContainer)
     }

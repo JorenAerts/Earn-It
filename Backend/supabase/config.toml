@@ -1,0 +1,49 @@
+# Supabase CLI project config (local dev + `supabase link`).
+# Hosted project: ttguwgmjvdrrmnsbavns (EU). Dashboard settings win for the hosted project;
+# keep these in sync when you change them there.
+project_id = "earn-it"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public"]
+
+[db]
+port = 54322
+major_version = 15
+
+[auth]
+enabled = true
+site_url = "earnit://auth-callback"
+additional_redirect_urls = ["earnit://auth-callback", "earnit://**"]
+jwt_expiry = 3600
+enable_refresh_token_rotation = true
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+enable_confirmations = true
+double_confirm_changes = true
+
+# OAuth providers: enable here for local dev, and in Dashboard › Authentication › Providers
+# for the hosted project. Secrets come from env vars, never commit them.
+[auth.external.apple]
+enabled = false
+client_id = "env(SUPABASE_AUTH_APPLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_APPLE_SECRET)"
+
+[auth.external.google]
+enabled = false
+client_id = "env(SUPABASE_AUTH_GOOGLE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_GOOGLE_SECRET)"
+
+[auth.external.facebook]
+enabled = false
+client_id = "env(SUPABASE_AUTH_FACEBOOK_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_FACEBOOK_SECRET)"
+
+[auth.external.azure]
+enabled = false
+client_id = "env(SUPABASE_AUTH_AZURE_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_AZURE_SECRET)"
+url = "https://login.microsoftonline.com/common/v2.0"

@@ -1,0 +1,4 @@
+// Copy to Supabase.xcconfig (git-ignored). Supabase › Project Settings › API Keys.
+// Use the PUBLISHABLE key (sb_publishable_…). Never put a secret key (sb_secret_…) in the app.
+SUPABASE_URL = https:/$()/YOUR-PROJECT.supabase.co
+SUPABASE_PUBLISHABLE_KEY = sb_publishable_xxx

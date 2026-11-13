@@ -1,3 +1,4 @@
 // Shared build settings. Personal signing team lives in Local.xcconfig (git-ignored):
 //   DEVELOPMENT_TEAM = ABCDE12345
 #include? "Local.xcconfig"
+#include? "Supabase.xcconfig"
