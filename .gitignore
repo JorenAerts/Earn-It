@@ -1,0 +1,11 @@
+.DS_Store
+# Xcode
+*.xcodeproj/
+*.xcworkspace/
+xcuserdata/
+DerivedData/
+build/
+.build/
+.swiftpm/
+# Local signing (personal team id)
+Front-end/Config/Local.xcconfig

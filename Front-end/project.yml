@@ -1,0 +1,113 @@
+name: EarnIt
+options:
+  bundleIdPrefix: be.earnit
+  deploymentTarget:
+    iOS: "26.1"
+  createIntermediateGroups: true
+  generateEmptyDirectories: true
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    SWIFT_STRICT_CONCURRENCY: complete
+    CODE_SIGN_STYLE: Automatic
+    TARGETED_DEVICE_FAMILY: "1"
+
+configFiles:
+  Debug: Config/Shared.xcconfig
+  Release: Config/Shared.xcconfig
+
+packages:
+  Core:
+    path: Packages/Core
+  AlarmEngine:
+    path: Packages/AlarmEngine
+  Missions:
+    path: Packages/Missions
+  Features:
+    path: Packages/Features
+
+targets:
+  EarnIt:
+    type: application
+    platform: iOS
+    sources:
+      - path: App
+    dependencies:
+      - package: Core
+      - package: AlarmEngine
+      - package: Missions
+      - package: Features
+      - target: AlarmLiveActivity
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: be.earnit.app
+        PRODUCT_NAME: EarnIt
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        INFOPLIST_KEY_CFBundleDisplayName: Earn It
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Earn It
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        NSSupportsLiveActivities: true
+        CFBundleURLTypes:
+          - CFBundleURLName: be.earnit.app
+            CFBundleURLSchemes: [earnit]
+        NSAlarmKitUsageDescription: Earn It schedules your wake-up alarms so they ring through silent mode and Focus.
+        NSMotionUsageDescription: Earn It uses motion to verify wake-up missions like shaking your phone or walking.
+
+  AlarmLiveActivity:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: Extensions/AlarmLiveActivity
+    dependencies:
+      - package: AlarmEngine
+      - package: Core
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: be.earnit.app.AlarmLiveActivity
+        PRODUCT_NAME: AlarmLiveActivity
+        MARKETING_VERSION: "0.1.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SKIP_INSTALL: YES
+    info:
+      path: Extensions/AlarmLiveActivity/Info.plist
+      properties:
+        CFBundleDisplayName: Earn It Alarm
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+
+  EarnItTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: EarnIt
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: be.earnit.app.tests
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  EarnIt:
+    build:
+      targets:
+        EarnIt: all
+        EarnItTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - EarnItTests
