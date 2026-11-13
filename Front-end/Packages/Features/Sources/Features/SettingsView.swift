@@ -109,6 +109,16 @@ struct SettingsView: View {
                 ForEach(CoachIntensity.allCases) { Text($0.displayName).tag($0) }
             }
             .pickerStyle(.segmented)
+            Toggle("Coach reminders", isOn: Binding(
+                get: { coach.notifications.enabled },
+                set: { on in setReminders(on) }))
+            if coach.notifications.enabled {
+                DatePicker("Evening reminder", selection: eveningTime, displayedComponents: .hourAndMinute)
+            }
+            if remindersDenied {
+                Text("Notifications are off for Earn It. Turn them on in iPhone Settings.")
+                    .font(.footnote).foregroundStyle(.red)
+            }
             let sample = CoachState(mood: .angry, context: .reRing, anger: 0.6)
             CoachCard(state: sample,
                       line: coach.lines.line(for: .reRing, intensity: coach.intensity, day: .now,
@@ -124,13 +134,46 @@ struct SettingsView: View {
                 if previewMood == .angry {
                     Slider(value: $previewAnger, in: 0...1) { Text("Anger") }
                 }
+                Button("Send test reminder in 5 seconds") {
+                    Task { await CoachNotifier.shared.sendTest() }
+                }
             }
             .padding(.vertical, 4)
             #endif
         } header: {
             Text("Sergeant Rise")
         } footer: {
-            Text("How harsh your coach talks when you snooze or miss a morning.")
+            Text("How harsh your coach talks when you snooze or miss a morning. Reminders: the evening before each alarm, and a word from him after a missed morning.")
+        }
+    }
+
+    @State private var remindersDenied = false
+
+    private var eveningTime: Binding<Date> {
+        Binding(
+            get: {
+                Calendar.current.date(bySettingHour: coach.notifications.eveningHour,
+                                      minute: coach.notifications.eveningMinute, second: 0, of: .now) ?? .now
+            },
+            set: { date in
+                let c = Calendar.current.dateComponents([.hour, .minute], from: date)
+                coach.notifications.eveningHour = c.hour ?? 22
+                coach.notifications.eveningMinute = c.minute ?? 0
+                Task { await CoachNotifier.shared.refresh(coordinator: coordinator) }
+            })
+    }
+
+    private func setReminders(_ on: Bool) {
+        Task {
+            if on {
+                let allowed = await CoachNotifier.shared.requestAuthorization()
+                remindersDenied = !allowed
+                coach.notifications.enabled = allowed
+            } else {
+                coach.notifications.enabled = false
+                remindersDenied = false
+            }
+            await CoachNotifier.shared.refresh(coordinator: coordinator)
         }
     }
 

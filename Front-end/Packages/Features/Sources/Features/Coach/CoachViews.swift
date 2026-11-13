@@ -16,8 +16,17 @@ final class CoachModel {
         didSet { preferences.intensity = intensity }
     }
 
+    var notifications: CoachNotificationSettings {
+        didSet { preferences.notifications = notifications }
+    }
+
+    /// Keeps foreground banners working for the app's lifetime.
+    @ObservationIgnored let notificationDelegate = CoachNotificationDelegate()
+
     private init() {
-        intensity = CoachPreferences().intensity
+        let prefs = CoachPreferences()
+        intensity = prefs.intensity
+        notifications = prefs.notifications
     }
 
     func state(coordinator: AlarmCoordinator, logs: [DayLog], now: Date = .now) -> CoachState {

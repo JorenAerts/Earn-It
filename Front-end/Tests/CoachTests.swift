@@ -154,3 +154,53 @@ import UIKit
         #expect(first.newMedals == [.firstMission, .firstTry])
     }
 }
+
+@Suite struct NotificationPlannerTests {
+    let cal: Calendar = {
+        var c = Calendar(identifier: .gregorian)
+        c.timeZone = TimeZone(identifier: "Europe/Brussels")!
+        return c
+    }()
+    let lines = CoachLines(table: ["night": ["toughLove": ["Lights out. {time} sharp."]],
+                                   "failSafe": ["toughLove": ["Unacceptable."]]])
+
+    private func at(_ d: Int, _ h: Int, _ m: Int = 0) -> Date {
+        cal.date(from: DateComponents(year: 2026, month: 11, day: d, hour: h, minute: m))!
+    }
+
+    private func plan(now: Date, alarms: [Date], enabled: Bool = true, evening: Int = 22, streak: Int = 0,
+                      session: SessionState? = nil, roasted: Bool = false) -> [CoachNotification] {
+        NotificationPlanner.plan(now: now, upcomingAlarms: alarms,
+                                 settings: CoachNotificationSettings(enabled: enabled, eveningHour: evening),
+                                 streak: streak, session: session, alreadyRoastedToday: roasted,
+                                 intensity: .toughLove, lines: lines, calendar: cal)
+    }
+
+    @Test func eveningBeforeEachAlarmDay() {
+        let result = plan(now: at(13, 12), alarms: [at(14, 7), at(15, 7), at(15, 9)])
+        #expect(result.map(\.date) == [at(13, 22), at(14, 22)], "one per alarm day")
+        #expect(result[0].body == "Lights out. 07:00 sharp.")
+        #expect(result[0].id == "coach.evening.2026-11-14")
+    }
+
+    @Test func skipsPastOrTooCloseReminders() {
+        #expect(plan(now: at(13, 23), alarms: [at(14, 7)]).isEmpty, "evening already passed")
+        #expect(plan(now: at(13, 12), alarms: [at(13, 22, 15)], evening: 22).isEmpty, "alarm too soon after reminder")
+    }
+
+    @Test func streakOnTheLine() {
+        let body = plan(now: at(13, 12), alarms: [at(14, 7)], streak: 5).first?.body ?? ""
+        #expect(body.hasSuffix("Your 5-day streak is on the line."))
+    }
+
+    @Test func roastOnceAfterFailSafe() {
+        let failed = SessionState(day: at(13, 0), reArmCount: 15, failSafeTriggered: true)
+        let roast = plan(now: at(13, 8), alarms: [], session: failed)
+        #expect(roast.count == 1 && roast[0].id == "coach.roast.2026-11-13" && roast[0].body == "Unacceptable.")
+        #expect(plan(now: at(13, 8), alarms: [], session: failed, roasted: true).isEmpty)
+    }
+
+    @Test func disabledMeansNothing() {
+        #expect(plan(now: at(13, 12), alarms: [at(14, 7)], enabled: false).isEmpty)
+    }
+}

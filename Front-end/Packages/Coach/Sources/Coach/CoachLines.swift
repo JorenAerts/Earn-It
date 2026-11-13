@@ -51,4 +51,23 @@ public final class CoachPreferences: @unchecked Sendable {
         get { defaults.string(forKey: intensityKey).flatMap(CoachIntensity.init(rawValue:)) ?? .toughLove }
         set { defaults.set(newValue.rawValue, forKey: intensityKey) }
     }
+
+    public var notifications: CoachNotificationSettings {
+        get {
+            CoachNotificationSettings(enabled: defaults.bool(forKey: "earnit.coach.notify"),
+                                      eveningHour: defaults.object(forKey: "earnit.coach.eveningHour") as? Int ?? 22,
+                                      eveningMinute: defaults.object(forKey: "earnit.coach.eveningMinute") as? Int ?? 0)
+        }
+        set {
+            defaults.set(newValue.enabled, forKey: "earnit.coach.notify")
+            defaults.set(newValue.eveningHour, forKey: "earnit.coach.eveningHour")
+            defaults.set(newValue.eveningMinute, forKey: "earnit.coach.eveningMinute")
+        }
+    }
+
+    /// Day key of the last roast sent, so a fail-safe is roasted once.
+    public var lastRoastDay: String? {
+        get { defaults.string(forKey: "earnit.coach.lastRoast") }
+        set { defaults.set(newValue, forKey: "earnit.coach.lastRoast") }
+    }
 }

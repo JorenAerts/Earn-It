@@ -5,6 +5,7 @@ import Core
 import Purchases
 import SwiftData
 import SwiftUI
+import UserNotifications
 
 /// Routes between onboarding, the forced mission screen, and home.
 public struct RootView: View {
@@ -68,12 +69,19 @@ public struct RootView: View {
         .onChange(of: coordinator.needsMission) { enforceTier() }
         .onAppear { noticeMessages = notices.messages }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active { coordinator.reload() }
+            if phase == .active {
+                coordinator.reload()
+                refreshCoachNotifications()
+            }
         }
+        .onChange(of: coordinator.plans) { refreshCoachNotifications() }
+        .onChange(of: coordinator.session) { refreshCoachNotifications() }
         // Cold launch from the alarm's X: scenePhase never "changes", so sync on first appear too.
         .task {
+            UNUserNotificationCenter.current().delegate = CoachModel.shared.notificationDelegate
             store.start()
             coordinator.reload()
+            refreshCoachNotifications()
             await coordinator.refreshAlarms()
             await coordinator.observeSystemAlarms()
         }
@@ -88,6 +96,12 @@ public struct RootView: View {
         .fullScreenCover(isPresented: $showSuccess) {
             SuccessView(coordinator: coordinator) { showSuccess = false }
         }
+    }
+
+    private func refreshCoachNotifications() {
+        let logs = (try? modelContext.fetch(FetchDescriptor<DayLog>())) ?? []
+        CoachNotifier.shared.completedDays = logs.compactMap(\.missionCompletedAt)
+        Task { await CoachNotifier.shared.refresh(coordinator: coordinator) }
     }
 
     private func enforceTier() {
