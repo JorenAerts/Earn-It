@@ -7,6 +7,8 @@ import SwiftUI
 struct HomeView: View {
     let coordinator: AlarmCoordinator
     let auth: any AuthService
+    /// Debug: run onboarding again.
+    var onReplayOnboarding: () -> Void = {}
     @Query private var logs: [DayLog]
     @State private var editing: EditTarget?
 
@@ -80,6 +82,7 @@ struct HomeView: View {
                 #if DEBUG
                 DebugSection(coordinator: coordinator)
                 AccountDebugSection(auth: auth)
+                Section { Button("Replay onboarding", action: onReplayOnboarding) }
                 #endif
             }
             .navigationTitle("Earn It")

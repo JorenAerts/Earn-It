@@ -132,7 +132,7 @@ private struct MissionConfigRow: View {
     }
 }
 
-private struct WeekdayPicker: View {
+struct WeekdayPicker: View {
     @Binding var selection: Set<Int>
     private let symbols = Calendar.current.veryShortWeekdaySymbols
 

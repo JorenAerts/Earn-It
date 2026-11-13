@@ -1,6 +1,7 @@
 import Account
 import AlarmEngine
 import Core
+import Purchases
 import Features
 import SwiftData
 import SwiftUI
@@ -14,6 +15,13 @@ final class AppEnvironment {
     let coordinator: AlarmCoordinator
     let modelContainer: ModelContainer
     let auth: any AuthService = AuthServiceFactory.make()
+    let purchases: StoreService = {
+        do {
+            return StoreService(catalog: try PricingCatalog.load())
+        } catch {
+            fatalError("Config/Pricing.json missing from the app bundle: \(error)")
+        }
+    }()
 
     private init() {
         let scheduler = AlarmKitScheduler(intents: AlarmIntentFactory(
@@ -34,7 +42,7 @@ struct EarnItApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView(coordinator: env.coordinator, auth: env.auth)
+            RootView(coordinator: env.coordinator, auth: env.auth, store: env.purchases)
                 .tint(.orange)
         }
         .modelContainer(env.modelContainer)

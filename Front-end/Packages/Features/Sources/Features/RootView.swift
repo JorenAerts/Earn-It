@@ -1,6 +1,7 @@
 import Account
 import AlarmEngine
 import Core
+import Purchases
 import SwiftData
 import SwiftUI
 
@@ -8,27 +9,40 @@ import SwiftUI
 public struct RootView: View {
     @Bindable var coordinator: AlarmCoordinator
     let auth: any AuthService
-    @AppStorage("earnit.onboarded") private var onboarded = false
+    let store: StoreService
+    let onboardingStore: OnboardingStore
+    @State private var onboarded: Bool
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var modelContext
     @State private var showSuccess = false
 
-    public init(coordinator: AlarmCoordinator, auth: any AuthService) {
+    public init(coordinator: AlarmCoordinator, auth: any AuthService, store: StoreService,
+                onboardingStore: OnboardingStore = OnboardingStore()) {
         self.coordinator = coordinator
         self.auth = auth
+        self.store = store
+        self.onboardingStore = onboardingStore
+        _onboarded = State(initialValue: onboardingStore.load().completed)
     }
 
     public var body: some View {
         Group {
-            if !onboarded {
-                PermissionView(coordinator: coordinator) { onboarded = true }
-            } else if coordinator.needsMission {
+            // A ringing alarm's mission always wins, even mid-onboarding.
+            if coordinator.needsMission {
                 MissionRunnerView(missions: coordinator.activePlan?.missions ?? [],
                                   reArmCount: coordinator.session?.reArmCount ?? 0,
                                   reArmMinutes: coordinator.activePlan?.reArmMinutes ?? 2,
                                   onAllComplete: completeMission)
+            } else if !onboarded {
+                OnboardingView(coordinator: coordinator, auth: auth, store: store,
+                               onboardingStore: onboardingStore) {
+                    withAnimation { onboarded = true }
+                }
             } else {
-                HomeView(coordinator: coordinator, auth: auth)
+                HomeView(coordinator: coordinator, auth: auth) {
+                    onboardingStore.reset()
+                    onboarded = false
+                }
             }
         }
         .animation(.default, value: coordinator.needsMission)
@@ -37,6 +51,7 @@ public struct RootView: View {
         }
         // Cold launch from the alarm's X: scenePhase never "changes", so sync on first appear too.
         .task {
+            store.start()
             coordinator.reload()
             await coordinator.refreshAlarms()
             await coordinator.observeSystemAlarms()
