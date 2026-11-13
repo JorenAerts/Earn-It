@@ -28,6 +28,8 @@ packages:
     path: Packages/Features
   Purchases:
     path: Packages/Purchases
+  Account:
+    path: Packages/Account
 
 targets:
   EarnIt:
@@ -37,9 +39,12 @@ targets:
       - path: App
       - path: Config/Pricing.json
         buildPhase: resources
+      - path: Config/Auth.json
+        buildPhase: resources
     dependencies:
       - package: Core
       - package: Purchases
+      - package: Account
       - package: AlarmEngine
       - package: Missions
       - package: Features
@@ -64,6 +69,8 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
         NSSupportsLiveActivities: true
+        SUPABASE_URL: $(SUPABASE_URL)
+        SUPABASE_PUBLISHABLE_KEY: $(SUPABASE_PUBLISHABLE_KEY)
         UIBackgroundModes: [audio]
         CFBundleURLTypes:
           - CFBundleURLName: be.earnit.app

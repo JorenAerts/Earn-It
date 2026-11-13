@@ -14,6 +14,8 @@ Current milestone: **M1 (alarm + mission)**. Lock engine (M2) needs paid Apple t
   - `Features` — SwiftUI screens (`RootView`, Permission, Home, AlarmSetup, MissionRunner).
 - `Front-end/Extensions/AlarmLiveActivity/` — WidgetKit extension: Live Activity for `AlarmAttributes<EarnItAlarmMetadata>` (alarm title + re-ring countdown on Lock Screen / Dynamic Island).
 - `Purchases` package — `PricingCatalog` (reads `Config/Pricing.json`), `StoreService` (StoreKit 2), `EntitlementState`/`EntitlementResolver`, `FeatureGate` (free: 1 alarm, Math, Classic Beep), `DowngradePolicy`.
+- `Account` package — optional login via **Supabase Auth** (`supabase-swift`): `AuthService` protocol, `SupabaseAuthService` (email+password, OAuth Apple/Google/Facebook/Microsoft via `earnit://auth-callback`), `UnavailableAuthService` (no config), `FakeAuthService`. Shown providers + legal URLs: `Config/Auth.json`.
+- `Backend/supabase/` — Supabase CLI project: `profiles` migration (RLS own-row), `delete-account` edge function. Setup steps in `Backend/README.md`.
 - `Front-end/Tests/` — Swift Testing unit tests (logic only) + StoreKitTest flow tests.
 
 ## Commands (run from `Front-end/`)
@@ -31,6 +33,9 @@ Signing: `Front-end/Config/Local.xcconfig` (git-ignored) holds `DEVELOPMENT_TEAM
 - App shows StoreKit's localized prices; Pricing.json decides which plans exist + order. Real prices must be mirrored in App Store Connect (same product IDs) once the paid program exists.
 - Local purchases only work when the app is **run from Xcode** (scheme uses `EarnIt.storekit`). `devicectl` installs have no StoreKit config.
 - StoreKitTest gotchas: `Product.purchase()` of a *subscription* times out in the unit-test host (use `SKTestSession.buyProduct`); `expireSubscription` doesn't update `currentEntitlements` there — test expiry via `EntitlementResolver` + Xcode Transaction Manager.
+
+## Secrets
+- `Front-end/Config/Supabase.xcconfig` (git-ignored) holds `SUPABASE_URL` + `SUPABASE_PUBLISHABLE_KEY` → Info.plist. **Only publishable keys in the app**; `AuthServiceFactory` refuses `sb_secret_…`. Without the file, accounts are hidden and the app still builds.
 
 ## Rules
 - iOS 26.1 minimum, Swift 6 strict concurrency. Keep logic pure + testable; UI/framework glue thin.

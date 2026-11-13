@@ -37,6 +37,10 @@
 	<string>Earn It uses the camera to scan the wake-up code you registered, so you have to get out of bed to stop the alarm.</string>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
+	<key>SUPABASE_PUBLISHABLE_KEY</key>
+	<string>$(SUPABASE_PUBLISHABLE_KEY)</string>
+	<key>SUPABASE_URL</key>
+	<string>$(SUPABASE_URL)</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
