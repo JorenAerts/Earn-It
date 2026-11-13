@@ -49,7 +49,7 @@ public final class AlarmKitScheduler: AlarmScheduling {
             schedule: schedule,
             attributes: attributes(title: plan.alarmTitle, attempt: 0, countdown: false),
             stopIntent: intents.stop(plan.id),
-            sound: .default
+            sound: Self.sound
         )
         _ = try await AlarmManager.shared.schedule(id: plan.id, configuration: config)
     }
@@ -59,7 +59,7 @@ public final class AlarmKitScheduler: AlarmScheduling {
             schedule: .fixed(date),
             attributes: attributes(title: title, attempt: 0, countdown: false),
             stopIntent: intents.stop(id),
-            sound: .default
+            sound: Self.sound
         )
         _ = try await AlarmManager.shared.schedule(id: id, configuration: config)
     }
@@ -69,7 +69,7 @@ public final class AlarmKitScheduler: AlarmScheduling {
             duration: duration,
             attributes: attributes(title: title, attempt: attempt, countdown: true),
             stopIntent: intents.stop(id),
-            sound: .default
+            sound: Self.sound
         )
         _ = try await AlarmManager.shared.schedule(id: id, configuration: config)
         log.info("follow-up \(id, privacy: .public) in \(duration)s")
@@ -110,6 +110,11 @@ public final class AlarmKitScheduler: AlarmScheduling {
     }
 
     // MARK: Private
+
+    /// Same file the app plays during the mission (App/Sounds/EarnItAlarm.caf, main bundle),
+    /// so the alarm sounds identical before and after X.
+    public static let soundFileName = "EarnItAlarm.caf"
+    private static let sound: AlertConfiguration.AlertSound = .named(soundFileName)
 
     private static func describe(_ alarm: Alarm) -> ScheduledAlarm {
         ScheduledAlarm(id: alarm.id, state: String(describing: alarm.state),

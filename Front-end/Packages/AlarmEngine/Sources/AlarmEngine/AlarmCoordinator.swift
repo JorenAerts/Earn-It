@@ -16,11 +16,14 @@ public final class AlarmCoordinator {
 
     private let store: KeyValueStore
     private let scheduler: any AlarmScheduling
+    private let sound: any AlarmSounding
     private let now: @Sendable () -> Date
 
-    public init(store: KeyValueStore, scheduler: any AlarmScheduling, now: @escaping @Sendable () -> Date = { Date() }) {
+    public init(store: KeyValueStore, scheduler: any AlarmScheduling, sound: any AlarmSounding,
+                now: @escaping @Sendable () -> Date = { Date() }) {
         self.store = store
         self.scheduler = scheduler
+        self.sound = sound
         self.now = now
         self.plan = store.loadPlan()
         self.session = store.loadSession()
@@ -37,6 +40,7 @@ public final class AlarmCoordinator {
         plan = store.loadPlan()
         session = store.loadSession()
         sync(with: scheduler.scheduledAlarms())
+        updateSound()
     }
 
     /// Keeps the UI in step with AlarmKit while the app runs (ringing / countdown → mission).
@@ -210,5 +214,12 @@ public final class AlarmCoordinator {
     private func persist(_ s: SessionState?) {
         store.saveSession(s)
         session = s
+        updateSound()
+    }
+
+    /// The alarm keeps sounding for exactly as long as a mission is due: starts the moment X
+    /// is pressed, stops only on mission success or fail-safe.
+    private func updateSound() {
+        if needsMission { sound.start() } else { sound.stop() }
     }
 }

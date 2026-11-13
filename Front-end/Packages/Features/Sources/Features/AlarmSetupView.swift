@@ -1,4 +1,5 @@
 import Core
+import Missions
 import SwiftUI
 
 struct AlarmSetupView: View {
@@ -61,7 +62,7 @@ struct AlarmSetupView: View {
                         onSave(plan)
                         dismiss()
                     }
-                    .disabled(plan.missions.isEmpty)
+                    .disabled(!plan.isReady)
                 }
             }
         }
@@ -74,13 +75,19 @@ private struct MissionConfigRow: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(mission.kind.displayName).font(.headline)
-            Picker("Difficulty", selection: $mission.difficulty) {
-                ForEach(MissionDifficulty.allCases) { Text($0.rawValue.capitalized).tag($0) }
+            if mission.kind.usesDifficulty {
+                Picker("Difficulty", selection: $mission.difficulty) {
+                    ForEach(MissionDifficulty.allCases) { Text($0.rawValue.capitalized).tag($0) }
+                }
+                .pickerStyle(.segmented)
             }
-            .pickerStyle(.segmented)
-            Stepper("\(mission.target) \(mission.kind.targetLabel)", value: $mission.target,
-                    in: 1...(mission.kind == .shake ? 200 : 20),
-                    step: mission.kind == .shake ? 5 : 1)
+            if let range = mission.kind.targetRange {
+                Stepper("\(mission.target) \(mission.kind.targetLabel)", value: $mission.target,
+                        in: range, step: mission.kind.targetStep)
+            }
+            if let setup = MissionRegistry.setupView(for: $mission) {
+                setup
+            }
         }
         .padding(.vertical, 4)
     }

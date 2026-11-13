@@ -5,6 +5,8 @@ import Foundation
 public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
     case math
     case shake
+    case qr
+    case steps
 
     public var id: String { rawValue }
 
@@ -12,6 +14,8 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         switch self {
         case .math: "Math problems"
         case .shake: "Shake the phone"
+        case .qr: "Scan a code"
+        case .steps: "Walk steps"
         }
     }
 
@@ -20,6 +24,8 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         switch self {
         case .math: "Math Problem"
         case .shake: "Shake It"
+        case .qr: "Scan Code"
+        case .steps: "Walk Steps"
         }
     }
 
@@ -28,6 +34,8 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         switch self {
         case .math: "problems"
         case .shake: "shakes"
+        case .qr: "code"
+        case .steps: "steps"
         }
     }
 
@@ -35,8 +43,39 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         switch self {
         case .math: 3
         case .shake: 30
+        case .qr: 1
+        case .steps: 50
         }
     }
+
+    /// Allowed `target` values in setup; nil = target not configurable.
+    public var targetRange: ClosedRange<Int>? {
+        switch self {
+        case .math: 1...20
+        case .shake: 5...200
+        case .qr: nil
+        case .steps: 10...500
+        }
+    }
+
+    public var targetStep: Int {
+        switch self {
+        case .math: 1
+        case .shake: 5
+        case .qr: 1
+        case .steps: 10
+        }
+    }
+
+    public var usesDifficulty: Bool {
+        switch self {
+        case .math, .shake: true
+        case .qr, .steps: false
+        }
+    }
+
+    /// Needs something registered at setup (e.g. the QR code to scan).
+    public var needsPayload: Bool { self == .qr }
 }
 
 public enum MissionDifficulty: String, Codable, CaseIterable, Sendable, Identifiable {
@@ -48,14 +87,32 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
     public var id: UUID
     public var kind: MissionKind
     public var difficulty: MissionDifficulty
-    /// Math: problems correct in a row. Shake: number of shakes.
+    /// Math: problems correct in a row. Shake: shakes. Steps: steps. QR: unused (1).
     public var target: Int
+    /// Mission-specific registered value. QR: the code's payload string.
+    public var payload: String?
 
-    public init(id: UUID = UUID(), kind: MissionKind, difficulty: MissionDifficulty = .medium, target: Int? = nil) {
+    public init(id: UUID = UUID(), kind: MissionKind, difficulty: MissionDifficulty = .medium,
+                target: Int? = nil, payload: String? = nil) {
         self.id = id
         self.kind = kind
         self.difficulty = difficulty
         self.target = target ?? kind.defaultTarget
+        self.payload = payload
+    }
+
+    /// Fully configured and playable.
+    public var isReady: Bool {
+        !kind.needsPayload || !(payload?.isEmpty ?? true)
+    }
+
+    /// One-line description for lists: "3 problems · medium", "Code registered".
+    public var summary: String {
+        switch kind {
+        case .qr: isReady ? "Code registered" : "No code registered"
+        case .steps: "\(target) steps"
+        case .math, .shake: "\(target) \(kind.targetLabel) · \(difficulty.rawValue)"
+        }
     }
 }
 
@@ -93,6 +150,9 @@ public struct AlarmPlan: Codable, Hashable, Sendable {
         self.maxReArms = maxReArms
         self.isEnabled = isEnabled
     }
+
+    /// Every mission is configured (e.g. a QR code is registered).
+    public var isReady: Bool { !missions.isEmpty && missions.allSatisfy(\.isReady) }
 
     /// Alarm title: app name + the mission(s) to solve, e.g. "Earn It - Math Problem + Shake It".
     public var alarmTitle: String {

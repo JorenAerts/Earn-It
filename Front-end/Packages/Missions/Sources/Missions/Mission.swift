@@ -11,10 +11,13 @@ public protocol Mission: Identifiable, Sendable {
     var config: MissionConfig { get }
     /// The UI the user interacts with; calls `onComplete` once verified.
     @MainActor func makeView(onComplete: @escaping @MainActor (MissionResult) -> Void) -> AnyView
+    /// Optional extra setup UI shown in the alarm editor (e.g. register a QR code).
+    @MainActor static func makeSetupView(config: Binding<MissionConfig>) -> AnyView?
 }
 
 extension Mission {
     public var id: UUID { config.id }
+    @MainActor public static func makeSetupView(config: Binding<MissionConfig>) -> AnyView? { nil }
 }
 
 @MainActor
@@ -23,6 +26,17 @@ public enum MissionRegistry {
         switch config.kind {
         case .math: MathMission(config: config)
         case .shake: ShakeMission(config: config)
+        case .qr: QRMission(config: config)
+        case .steps: StepsMission(config: config)
+        }
+    }
+
+    public static func setupView(for config: Binding<MissionConfig>) -> AnyView? {
+        switch config.wrappedValue.kind {
+        case .math: MathMission.makeSetupView(config: config)
+        case .shake: ShakeMission.makeSetupView(config: config)
+        case .qr: QRMission.makeSetupView(config: config)
+        case .steps: StepsMission.makeSetupView(config: config)
         }
     }
 }

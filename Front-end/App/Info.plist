@@ -33,10 +33,16 @@
 	<string>1</string>
 	<key>NSAlarmKitUsageDescription</key>
 	<string>Earn It schedules your wake-up alarms so they ring through silent mode and Focus.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Earn It uses the camera to scan the wake-up code you registered, so you have to get out of bed to stop the alarm.</string>
 	<key>NSMotionUsageDescription</key>
 	<string>Earn It uses motion to verify wake-up missions like shaking your phone or walking.</string>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UISupportedInterfaceOrientations</key>

@@ -40,8 +40,7 @@ struct HomeView: View {
 
                 Section("Mission") {
                     ForEach(coordinator.plan.missions) { mission in
-                        LabeledContent(mission.kind.displayName,
-                                       value: "\(mission.target) \(mission.kind.targetLabel) · \(mission.difficulty.rawValue)")
+                        LabeledContent(mission.kind.displayName, value: mission.summary)
                     }
                 }
 

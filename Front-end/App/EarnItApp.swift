@@ -17,7 +17,7 @@ final class AppEnvironment {
         let scheduler = AlarmKitScheduler(intents: AlarmIntentFactory(
             stop: { StopAlarmIntent(alarmID: $0) }
         ))
-        coordinator = AlarmCoordinator(store: store, scheduler: scheduler)
+        coordinator = AlarmCoordinator(store: store, scheduler: scheduler, sound: AlarmSoundPlayer())
         do {
             modelContainer = try ModelContainer(for: DayLog.self)
         } catch {
