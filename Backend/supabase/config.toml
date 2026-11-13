@@ -47,6 +47,3 @@ enabled = false
 client_id = "env(SUPABASE_AUTH_AZURE_CLIENT_ID)"
 secret = "env(SUPABASE_AUTH_AZURE_SECRET)"
 url = "https://login.microsoftonline.com/common/v2.0"
-
-[functions.delete-account]
-verify_jwt = true

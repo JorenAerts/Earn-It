@@ -15,7 +15,7 @@ Current milestone: **M1 (alarm + mission)**. Lock engine (M2) needs paid Apple t
 - `Front-end/Extensions/AlarmLiveActivity/` — WidgetKit extension: Live Activity for `AlarmAttributes<EarnItAlarmMetadata>` (alarm title + re-ring countdown on Lock Screen / Dynamic Island).
 - `Purchases` package — `PricingCatalog` (reads `Config/Pricing.json`), `StoreService` (StoreKit 2), `EntitlementState`/`EntitlementResolver`, `FeatureGate` (free: 1 alarm, Math, Classic Beep), `DowngradePolicy`.
 - `Account` package — optional login via **Supabase Auth** (`supabase-swift`): `AuthService` protocol, `SupabaseAuthService` (email+password, OAuth Apple/Google/Facebook/Microsoft via `earnit://auth-callback`), `UnavailableAuthService` (no config), `FakeAuthService`. Shown providers + legal URLs: `Config/Auth.json`.
-- `Backend/supabase/` — Supabase CLI project: `profiles` migration (RLS own-row), `delete-account` edge function. Setup steps in `Backend/README.md`.
+- `Backend/supabase/` — Supabase CLI project: `profiles` migration (RLS own-row), `delete_own_account()` RPC for in-app deletion. Setup steps in `Backend/README.md`.
 - `Front-end/Tests/` — Swift Testing unit tests (logic only) + StoreKitTest flow tests.
 
 ## Commands (run from `Front-end/`)

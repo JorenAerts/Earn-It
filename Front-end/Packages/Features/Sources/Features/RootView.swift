@@ -1,3 +1,4 @@
+import Account
 import AlarmEngine
 import Core
 import SwiftData
@@ -6,13 +7,15 @@ import SwiftUI
 /// Routes between onboarding, the forced mission screen, and home.
 public struct RootView: View {
     @Bindable var coordinator: AlarmCoordinator
+    let auth: any AuthService
     @AppStorage("earnit.onboarded") private var onboarded = false
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var modelContext
     @State private var showSuccess = false
 
-    public init(coordinator: AlarmCoordinator) {
+    public init(coordinator: AlarmCoordinator, auth: any AuthService) {
         self.coordinator = coordinator
+        self.auth = auth
     }
 
     public var body: some View {
@@ -25,7 +28,7 @@ public struct RootView: View {
                                   reArmMinutes: coordinator.activePlan?.reArmMinutes ?? 2,
                                   onAllComplete: completeMission)
             } else {
-                HomeView(coordinator: coordinator)
+                HomeView(coordinator: coordinator, auth: auth)
             }
         }
         .animation(.default, value: coordinator.needsMission)
@@ -40,7 +43,11 @@ public struct RootView: View {
         }
         // Tap on the Live Activity (earnit://mission).
         .onOpenURL { url in
-            if url.host() == "mission" { coordinator.missionStarted(id: nil) }
+            switch url.host() {
+            case "mission": coordinator.missionStarted(id: nil)
+            case "auth-callback": Task { await auth.handle(url: url) }  // email confirmation links
+            default: break
+            }
         }
         .fullScreenCover(isPresented: $showSuccess) {
             SuccessView { showSuccess = false }

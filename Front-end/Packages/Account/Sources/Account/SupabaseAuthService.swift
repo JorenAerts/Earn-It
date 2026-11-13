@@ -13,6 +13,7 @@ private let log = Logger(subsystem: "be.earnit.app", category: "account")
 public final class SupabaseAuthService: AuthService {
     public let config: AuthConfig
     public private(set) var user: AccountUser?
+    public private(set) var availableProviders: [AuthProvider] = []
     public var isAvailable: Bool { true }
 
     @ObservationIgnored private let client: SupabaseClient
@@ -27,6 +28,25 @@ public final class SupabaseAuthService: AuthService {
                 self?.user = change.session.map { Self.map($0.user) }
             }
         }
+        Task { [weak self] in
+            await self?.loadEnabledProviders(url: url, key: publishableKey)
+        }
+    }
+
+    /// GET /auth/v1/settings → which OAuth providers are switched on in the dashboard.
+    private func loadEnabledProviders(url: URL, key: String) async {
+        struct Settings: Decodable { let external: [String: Bool] }
+        var request = URLRequest(url: url.appending(path: "auth/v1/settings"))
+        request.setValue(key, forHTTPHeaderField: "apikey")
+        guard let (data, _) = try? await URLSession.shared.data(for: request),
+              let settings = try? JSONDecoder().decode(Settings.self, from: data)
+        else { return }
+        availableProviders = Self.filter(config.providers, enabled: settings.external)
+    }
+
+    /// Keeps Auth.json order; Microsoft is called "azure" by Supabase.
+    public nonisolated static func filter(_ providers: [AuthProvider], enabled: [String: Bool]) -> [AuthProvider] {
+        providers.filter { enabled[$0 == .microsoft ? "azure" : $0.rawValue] == true }
     }
 
     public func signUp(email: String, password: String) async throws {
@@ -72,7 +92,8 @@ public final class SupabaseAuthService: AuthService {
 
     public func deleteAccount() async throws {
         do {
-            try await client.functions.invoke("delete-account")
+            // Postgres RPC; deletes only the caller's own user (see Backend migrations).
+            try await client.rpc("delete_own_account").execute()
             await signOut()
         } catch {
             throw AuthError.message("Couldn't delete the account: \(error.localizedDescription)")
@@ -124,6 +145,7 @@ public final class UnavailableAuthService: AuthService {
     public let config: AuthConfig
     public var isAvailable: Bool { false }
     public var user: AccountUser? { nil }
+    public var availableProviders: [AuthProvider] { [] }
 
     public init(config: AuthConfig = .fallback) { self.config = config }
 
@@ -146,6 +168,7 @@ public final class FakeAuthService: AuthService {
     public private(set) var user: AccountUser?
     public private(set) var profile: ProfileUpdate?
     public var failNext: AuthError?
+    public var availableProviders: [AuthProvider] { config.providers }
 
     public init(config: AuthConfig = .fallback) { self.config = config }
 

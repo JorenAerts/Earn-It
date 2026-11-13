@@ -1,3 +1,4 @@
+import Account
 import AlarmEngine
 import Core
 import SwiftData
@@ -5,6 +6,7 @@ import SwiftUI
 
 struct HomeView: View {
     let coordinator: AlarmCoordinator
+    let auth: any AuthService
     @Query private var logs: [DayLog]
     @State private var editing: EditTarget?
 
@@ -77,6 +79,7 @@ struct HomeView: View {
 
                 #if DEBUG
                 DebugSection(coordinator: coordinator)
+                AccountDebugSection(auth: auth)
                 #endif
             }
             .navigationTitle("Earn It")

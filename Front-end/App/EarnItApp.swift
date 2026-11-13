@@ -1,3 +1,4 @@
+import Account
 import AlarmEngine
 import Core
 import Features
@@ -12,6 +13,7 @@ final class AppEnvironment {
     let store = KeyValueStore()
     let coordinator: AlarmCoordinator
     let modelContainer: ModelContainer
+    let auth: any AuthService = AuthServiceFactory.make()
 
     private init() {
         let scheduler = AlarmKitScheduler(intents: AlarmIntentFactory(
@@ -32,7 +34,7 @@ struct EarnItApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView(coordinator: env.coordinator)
+            RootView(coordinator: env.coordinator, auth: env.auth)
                 .tint(.orange)
         }
         .modelContainer(env.modelContainer)

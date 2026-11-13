@@ -15,6 +15,12 @@ import Testing
         #expect(config.providers == [.google, .apple])
     }
 
+    @Test func onlyServerEnabledProvidersAreShown() {
+        let shown = SupabaseAuthService.filter([.apple, .google, .microsoft],
+                                               enabled: ["google": true, "azure": true, "apple": false, "email": true])
+        #expect(shown == [.google, .microsoft])
+    }
+
     @Test func secretKeysAreNeverAccepted() {
         #expect(AuthServiceFactory.isUsableClientKey("sb_publishable_abc"))
         #expect(!AuthServiceFactory.isUsableClientKey("sb_secret_abc"))

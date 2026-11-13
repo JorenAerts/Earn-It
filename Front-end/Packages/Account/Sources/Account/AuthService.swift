@@ -130,6 +130,8 @@ public protocol AuthService: AnyObject {
     var isAvailable: Bool { get }
     var user: AccountUser? { get }
     var config: AuthConfig { get }
+    /// Providers from Auth.json that are actually enabled on the server (others are hidden).
+    var availableProviders: [AuthProvider] { get }
 
     func signUp(email: String, password: String) async throws
     func signIn(email: String, password: String) async throws
