@@ -1,5 +1,6 @@
 import Account
 import AlarmEngine
+import Coach
 import Core
 import Purchases
 import SwiftData
@@ -31,9 +32,12 @@ public struct RootView: View {
         Group {
             // A ringing alarm's mission always wins, even mid-onboarding.
             if coordinator.needsMission {
+                let coachState = CoachModel.shared.state(coordinator: coordinator, logs: [])
                 MissionRunnerView(missions: coordinator.activePlan?.missions ?? [],
                                   reArmCount: coordinator.session?.reArmCount ?? 0,
                                   reArmMinutes: coordinator.activePlan?.reArmMinutes ?? 2,
+                                  coachState: coachState,
+                                  coachLine: CoachModel.shared.line(for: coachState, coordinator: coordinator, logs: []),
                                   onAllComplete: completeMission)
             } else if !onboarded {
                 OnboardingView(coordinator: coordinator, auth: auth, store: store,
@@ -82,7 +86,7 @@ public struct RootView: View {
             }
         }
         .fullScreenCover(isPresented: $showSuccess) {
-            SuccessView { showSuccess = false }
+            SuccessView(coordinator: coordinator) { showSuccess = false }
         }
     }
 
@@ -112,17 +116,20 @@ public struct RootView: View {
 }
 
 struct SuccessView: View {
+    let coordinator: AlarmCoordinator
     let dismiss: () -> Void
     @Query private var logs: [DayLog]
 
     var body: some View {
         let streak = StreakCalculator.currentStreak(completedDays: logs.compactMap(\.missionCompletedAt), today: .now)
+        let coach = CoachModel.shared
+        let state = coach.state(coordinator: coordinator, logs: logs)
         VStack(spacing: 20) {
             Spacer()
-            Image(systemName: "sun.max.fill")
-                .font(.system(size: 90))
-                .foregroundStyle(.orange)
-                .symbolEffect(.bounce, options: .nonRepeating)
+            CoachAvatarView(state: state, size: 170)
+            Text(coach.line(for: state, coordinator: coordinator, logs: logs))
+                .font(.title3.weight(.semibold))
+                .multilineTextAlignment(.center)
             Text("You earned it.").font(.largeTitle.bold())
             Text("Follow-up alarms cancelled.").foregroundStyle(.secondary)
             Text("Streak: \(streak) day\(streak == 1 ? "" : "s")")

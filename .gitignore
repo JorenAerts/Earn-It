@@ -11,3 +11,5 @@ build/
 Front-end/Config/Local.xcconfig
 # Supabase client config (URL + publishable key)
 Front-end/Config/Supabase.xcconfig
+# SwiftPM lock files inside local packages (generated)
+Front-end/Packages/*/Package.resolved

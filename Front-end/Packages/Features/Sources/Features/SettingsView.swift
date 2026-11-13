@@ -1,5 +1,6 @@
 import Account
 import AlarmEngine
+import Coach
 import Purchases
 import StoreKit
 import SwiftUI
@@ -24,6 +25,7 @@ struct SettingsView: View {
         NavigationStack {
             List {
                 accountSection
+                coachSection
                 subscriptionSection
                 permissionsSection
                 aboutSection
@@ -90,6 +92,45 @@ struct SettingsView: View {
                 message = error.localizedDescription
             }
             busy = false
+        }
+    }
+
+    // MARK: Coach
+
+    @State private var coach = CoachModel.shared
+    #if DEBUG
+    @State private var previewMood: CoachMood = .angry
+    @State private var previewAnger = 0.6
+    #endif
+
+    private var coachSection: some View {
+        Section {
+            Picker("Tone", selection: $coach.intensity) {
+                ForEach(CoachIntensity.allCases) { Text($0.displayName).tag($0) }
+            }
+            .pickerStyle(.segmented)
+            let sample = CoachState(mood: .angry, context: .reRing, anger: 0.6)
+            CoachCard(state: sample,
+                      line: coach.lines.line(for: .reRing, intensity: coach.intensity, day: .now,
+                                             values: ["rings": "3"]),
+                      avatarSize: 56)
+            #if DEBUG
+            VStack(spacing: 10) {
+                CoachAvatarView(state: CoachState(mood: previewMood, context: .idle, anger: previewAnger), size: 120)
+                Picker("Mood", selection: $previewMood) {
+                    ForEach(CoachMood.allCases) { Text($0.displayName).tag($0) }
+                }
+                .pickerStyle(.segmented)
+                if previewMood == .angry {
+                    Slider(value: $previewAnger, in: 0...1) { Text("Anger") }
+                }
+            }
+            .padding(.vertical, 4)
+            #endif
+        } header: {
+            Text("Sergeant Rise")
+        } footer: {
+            Text("How harsh your coach talks when you snooze or miss a morning.")
         }
     }
 

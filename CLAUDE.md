@@ -16,6 +16,8 @@ Current milestone: **M1 (alarm + mission)**. Lock engine (M2) needs paid Apple t
 - `Purchases` package — `PricingCatalog` (reads `Config/Pricing.json`), `StoreService` (StoreKit 2), `EntitlementState`/`EntitlementResolver`, `FeatureGate` (free: 1 alarm, Math, Classic Beep), `DowngradePolicy`.
 - `Account` package — optional login via **Supabase Auth** (`supabase-swift`): `AuthService` protocol, `SupabaseAuthService` (email+password, OAuth Apple/Google/Facebook/Microsoft via `earnit://auth-callback`), `UnavailableAuthService` (no config), `FakeAuthService`. Shown providers + legal URLs: `Config/Auth.json`.
 - `Backend/supabase/` — Supabase CLI project: `profiles` migration (RLS own-row), `delete_own_account()` RPC for in-app deletion. Setup steps in `Backend/README.md`.
+- `Coach` package — Sergeant Rise, the wake-up coach: `CoachMood` (proud, calm, suspicious, angry, disappointed), `CoachIntensity` (gentle / toughLove / savage), `MoodEngine` (pure rules: mission due → suspicious, re-rings → angry with `anger` 0…1; done → proud; fail-safe / broken streak → disappointed; else calm), `CoachLines` (reads `Config/CoachLines.json`, per context × tone, `{streak}` `{time}` `{rings}` placeholders), `CoachPreferences`. UI in `Features/Coach/CoachViews.swift` (`CoachAvatarView`, `CoachCard`, `CoachModel`).
+- **Coach art = 5 images**: `App/Assets.xcassets/Coach/coach_<mood>.imageset/coach_<mood>.png` (placeholders are smileys). Replace the PNG with the same filename (square, transparent background, ≥512 px) to change the character — no code changes. Anger effects (red glow, shake, steam) are drawn on top in code.
 - `Front-end/Tests/` — Swift Testing unit tests (logic only) + StoreKitTest flow tests.
 
 ## Commands (run from `Front-end/`)

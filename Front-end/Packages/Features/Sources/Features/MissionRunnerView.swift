@@ -1,3 +1,4 @@
+import Coach
 import Core
 import Missions
 import SwiftUI
@@ -7,12 +8,17 @@ struct MissionRunnerView: View {
     let missions: [MissionConfig]
     let reArmCount: Int
     let reArmMinutes: Int
+    var coachState = CoachState(mood: .suspicious, context: .ringing)
+    var coachLine = ""
     let onAllComplete: () -> Void
     @State private var index = 0
 
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 6) {
+                CoachCard(state: coachState, line: coachLine, avatarSize: 96)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 6)
                 Text("Morning mission").font(.caption.weight(.semibold)).textCase(.uppercase)
                     .foregroundStyle(.secondary)
                 if missions.count > 1 {
@@ -26,7 +32,7 @@ struct MissionRunnerView: View {
                     Text("Re-rung \(reArmCount)×").font(.footnote).foregroundStyle(.secondary)
                 }
             }
-            .padding(.top, 24)
+            .padding(.top, 16)
 
             Spacer()
             if index < missions.count {

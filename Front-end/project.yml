@@ -30,6 +30,8 @@ packages:
     path: Packages/Purchases
   Account:
     path: Packages/Account
+  Coach:
+    path: Packages/Coach
 
 targets:
   EarnIt:
@@ -41,8 +43,11 @@ targets:
         buildPhase: resources
       - path: Config/Auth.json
         buildPhase: resources
+      - path: Config/CoachLines.json
+        buildPhase: resources
     dependencies:
       - package: Core
+      - package: Coach
       - package: Purchases
       - package: Account
       - package: AlarmEngine
