@@ -20,9 +20,9 @@ public struct RootView: View {
             if !onboarded {
                 PermissionView(coordinator: coordinator) { onboarded = true }
             } else if coordinator.needsMission {
-                MissionRunnerView(missions: coordinator.plan.missions,
+                MissionRunnerView(missions: coordinator.activePlan?.missions ?? [],
                                   reArmCount: coordinator.session?.reArmCount ?? 0,
-                                  reArmMinutes: coordinator.plan.reArmMinutes,
+                                  reArmMinutes: coordinator.activePlan?.reArmMinutes ?? 2,
                                   onAllComplete: completeMission)
             } else {
                 HomeView(coordinator: coordinator)
@@ -35,7 +35,7 @@ public struct RootView: View {
         // Cold launch from the alarm's X: scenePhase never "changes", so sync on first appear too.
         .task {
             coordinator.reload()
-            await coordinator.refreshMainAlarm()
+            await coordinator.refreshAlarms()
             await coordinator.observeSystemAlarms()
         }
         // Tap on the Live Activity (earnit://mission).

@@ -49,27 +49,28 @@ public final class AlarmKitScheduler: AlarmScheduling {
             schedule: schedule,
             attributes: attributes(title: plan.alarmTitle, attempt: 0, countdown: false),
             stopIntent: intents.stop(plan.id),
-            sound: Self.sound
+            sound: .named(plan.sound.fileName)
         )
         _ = try await AlarmManager.shared.schedule(id: plan.id, configuration: config)
     }
 
-    public func scheduleOneOff(id: UUID, at date: Date, title: String) async throws {
+    public func scheduleOneOff(id: UUID, at date: Date, title: String, sound: AlarmSound) async throws {
         let config = AlarmManager.AlarmConfiguration<EarnItAlarmMetadata>.alarm(
             schedule: .fixed(date),
             attributes: attributes(title: title, attempt: 0, countdown: false),
             stopIntent: intents.stop(id),
-            sound: Self.sound
+            sound: .named(sound.fileName)
         )
         _ = try await AlarmManager.shared.schedule(id: id, configuration: config)
     }
 
-    public func scheduleFollowUp(id: UUID, after duration: TimeInterval, title: String, attempt: Int) async throws {
+    public func scheduleFollowUp(id: UUID, after duration: TimeInterval, title: String, attempt: Int,
+                                 sound: AlarmSound) async throws {
         let config = AlarmManager.AlarmConfiguration<EarnItAlarmMetadata>.timer(
             duration: duration,
             attributes: attributes(title: title, attempt: attempt, countdown: true),
             stopIntent: intents.stop(id),
-            sound: Self.sound
+            sound: .named(sound.fileName)
         )
         _ = try await AlarmManager.shared.schedule(id: id, configuration: config)
         log.info("follow-up \(id, privacy: .public) in \(duration)s")
@@ -111,10 +112,6 @@ public final class AlarmKitScheduler: AlarmScheduling {
 
     // MARK: Private
 
-    /// Same file the app plays during the mission (App/Sounds/EarnItAlarm.caf, main bundle),
-    /// so the alarm sounds identical before and after X.
-    public static let soundFileName = "EarnItAlarm.caf"
-    private static let sound: AlertConfiguration.AlertSound = .named(soundFileName)
 
     private static func describe(_ alarm: Alarm) -> ScheduledAlarm {
         ScheduledAlarm(id: alarm.id, state: String(describing: alarm.state),

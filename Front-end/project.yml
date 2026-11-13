@@ -64,7 +64,6 @@ targets:
           - CFBundleURLName: be.earnit.app
             CFBundleURLSchemes: [earnit]
         NSAlarmKitUsageDescription: Earn It schedules your wake-up alarms so they ring through silent mode and Focus.
-        NSMotionUsageDescription: Earn It uses motion to verify wake-up missions like shaking your phone or walking.
         NSCameraUsageDescription: Earn It uses the camera to scan the wake-up code you registered, so you have to get out of bed to stop the alarm.
 
   AlarmLiveActivity:

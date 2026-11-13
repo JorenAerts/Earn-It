@@ -1,11 +1,16 @@
+import AlarmEngine
 import Core
 import Missions
 import SwiftUI
 
 struct AlarmSetupView: View {
     @State var plan: AlarmPlan
+    let isNew: Bool
     let onSave: (AlarmPlan) -> Void
+    let onDelete: () -> Void
     @Environment(\.dismiss) private var dismiss
+    @State private var preview = SoundPreview()
+    @State private var confirmDelete = false
 
     private var time: Binding<Date> {
         Binding(
@@ -27,8 +32,28 @@ struct AlarmSetupView: View {
                         .frame(maxWidth: .infinity)
                 }
 
+                Section {
+                    TextField("Label (e.g. Work days)", text: $plan.label)
+                        .textInputAutocapitalization(.sentences)
+                }
+
                 Section("Repeat") {
                     WeekdayPicker(selection: $plan.weekdays)
+                }
+
+                Section {
+                    ForEach(AlarmSound.allCases) { sound in
+                        SoundRow(sound: sound,
+                                 isSelected: plan.sound == sound,
+                                 isPlaying: preview.playing == sound) {
+                            plan.sound = sound
+                            preview.toggle(sound)
+                        }
+                    }
+                } header: {
+                    Text("Sound")
+                } footer: {
+                    Text("The same sound keeps playing in the app until your mission is done. Tap to preview.")
                 }
 
                 Section("Missions") {
@@ -51,8 +76,22 @@ struct AlarmSetupView: View {
                 } footer: {
                     Text("Fail-safe so you never get stuck: after the limit, the alarm stops for good and the day doesn't count toward your streak.")
                 }
+
+                if !isNew {
+                    Section {
+                        Button("Delete alarm", role: .destructive) { confirmDelete = true }
+                            .frame(maxWidth: .infinity)
+                    }
+                }
             }
-            .navigationTitle("Alarm")
+            .navigationTitle(isNew ? "New alarm" : "Edit alarm")
+            .onDisappear { preview.stop() }
+            .confirmationDialog("Delete this alarm?", isPresented: $confirmDelete, titleVisibility: .visible) {
+                Button("Delete", role: .destructive) {
+                    onDelete()
+                    dismiss()
+                }
+            }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
@@ -114,5 +153,58 @@ private struct WeekdayPicker: View {
                 .frame(maxWidth: .infinity)
             }
         }
+    }
+}
+
+private struct SoundRow: View {
+    let sound: AlarmSound
+    let isSelected: Bool
+    let isPlaying: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Image(systemName: isPlaying ? "speaker.wave.2.fill" : "speaker.fill")
+                    .foregroundStyle(.tint)
+                    .frame(width: 24)
+                Text(sound.displayName).foregroundStyle(.primary)
+                Spacer()
+                if isSelected {
+                    Image(systemName: "checkmark").foregroundStyle(.tint).fontWeight(.semibold)
+                }
+            }
+        }
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
+/// Plays a few seconds of a tone in the editor. Tapping the playing tone stops it.
+@MainActor
+@Observable
+final class SoundPreview {
+    private(set) var playing: AlarmSound?
+    @ObservationIgnored private let player = AlarmSoundPlayer()
+    @ObservationIgnored private var stopTask: Task<Void, Never>?
+
+    func toggle(_ sound: AlarmSound) {
+        if playing == sound {
+            stop()
+            return
+        }
+        playing = sound
+        player.start(sound)
+        stopTask?.cancel()
+        stopTask = Task { [weak self] in
+            try? await Task.sleep(for: .seconds(4))
+            guard !Task.isCancelled else { return }
+            self?.stop()
+        }
+    }
+
+    func stop() {
+        stopTask?.cancel()
+        player.stop()
+        playing = nil
     }
 }

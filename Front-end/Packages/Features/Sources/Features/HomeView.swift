@@ -6,7 +6,14 @@ import SwiftUI
 struct HomeView: View {
     let coordinator: AlarmCoordinator
     @Query private var logs: [DayLog]
-    @State private var editing = false
+    @State private var editing: EditTarget?
+
+    /// Sheet target: an existing alarm or a fresh one.
+    struct EditTarget: Identifiable {
+        let plan: AlarmPlan
+        let isNew: Bool
+        var id: UUID { plan.id }
+    }
 
     private var streak: Int {
         StreakCalculator.currentStreak(completedDays: logs.compactMap(\.missionCompletedAt), today: .now)
@@ -16,40 +23,50 @@ struct HomeView: View {
         NavigationStack {
             List {
                 Section {
-                    VStack(alignment: .leading, spacing: 6) {
-                        Text(String(format: "%02d:%02d", coordinator.plan.hour, coordinator.plan.minute))
-                            .font(.system(size: 64, weight: .bold, design: .rounded))
-                            .monospacedDigit()
-                            .foregroundStyle(coordinator.plan.isEnabled ? .primary : .secondary)
-                        if let next = coordinator.nextFireDate {
-                            Text("Rings \(next.formatted(.relative(presentation: .named)))")
+                    if let next = coordinator.nextAlarm {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text("Next alarm").font(.caption.weight(.semibold)).textCase(.uppercase)
                                 .foregroundStyle(.secondary)
-                        } else {
-                            Text("Alarm off").foregroundStyle(.secondary)
+                            Text(next.date.formatted(.relative(presentation: .named)))
+                                .font(.title2.weight(.semibold))
                         }
+                    } else {
+                        Text(coordinator.plans.isEmpty ? "No alarms yet — tap + to add one." : "All alarms are off.")
+                            .foregroundStyle(.secondary)
                     }
-                    Toggle("Alarm on", isOn: Binding(
-                        get: { coordinator.plan.isEnabled },
-                        set: { on in
-                            var plan = coordinator.plan
-                            plan.isEnabled = on
-                            Task { await coordinator.apply(plan) }
-                        }))
-                    Button("Edit alarm") { editing = true }
-                }
-
-                Section("Mission") {
-                    ForEach(coordinator.plan.missions) { mission in
-                        LabeledContent(mission.kind.displayName, value: mission.summary)
-                    }
-                }
-
-                Section("Streak") {
-                    Label("\(streak) day\(streak == 1 ? "" : "s")", systemImage: "flame.fill")
+                    Label("\(streak) day streak", systemImage: "flame.fill")
                         .foregroundStyle(.orange)
-                        .font(.title3.weight(.semibold))
-                    if coordinator.session?.failSafeTriggered == true {
-                        Text("Today's alarm hit the fail-safe after \(coordinator.plan.maxReArms) re-arms.")
+                        .font(.headline)
+                }
+
+                Section("Alarms") {
+                    ForEach(coordinator.plans) { plan in
+                        AlarmRow(plan: plan,
+                                 isOn: Binding(get: { plan.isEnabled },
+                                               set: { on in Task { await coordinator.setEnabled(on, for: plan.id) } }))
+                            .contentShape(.rect)
+                            .onTapGesture { editing = EditTarget(plan: plan, isNew: false) }
+                            #if DEBUG
+                            .contextMenu {
+                                Button("Test: ring in 10 seconds") {
+                                    Task { await coordinator.debugRing(inSeconds: 10, planID: plan.id) }
+                                }
+                            }
+                            #endif
+                    }
+                    .onDelete { offsets in
+                        offsets.map { coordinator.plans[$0].id }.forEach(coordinator.delete(id:))
+                    }
+                    Button {
+                        editing = EditTarget(plan: AlarmPlan(), isNew: true)
+                    } label: {
+                        Label("Add alarm", systemImage: "plus.circle.fill")
+                    }
+                }
+
+                if coordinator.session?.failSafeTriggered == true {
+                    Section {
+                        Text("Today's alarm hit the fail-safe limit and stopped.")
                             .font(.footnote).foregroundStyle(.secondary)
                     }
                 }
@@ -63,12 +80,47 @@ struct HomeView: View {
                 #endif
             }
             .navigationTitle("Earn It")
-            .sheet(isPresented: $editing) {
-                AlarmSetupView(plan: coordinator.plan) { plan in
-                    Task { await coordinator.apply(plan) }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button { editing = EditTarget(plan: AlarmPlan(), isNew: true) } label: {
+                        Image(systemName: "plus")
+                    }
+                    .accessibilityLabel("Add alarm")
                 }
             }
+            .sheet(item: $editing) { target in
+                AlarmSetupView(plan: target.plan, isNew: target.isNew,
+                               onSave: { plan in Task { await coordinator.save(plan) } },
+                               onDelete: { coordinator.delete(id: target.plan.id) })
+            }
         }
+    }
+}
+
+private struct AlarmRow: View {
+    let plan: AlarmPlan
+    @Binding var isOn: Bool
+
+    var body: some View {
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(plan.timeText)
+                    .font(.system(size: 44, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+                Text([plan.label.isEmpty ? nil : plan.label, plan.repeatText]
+                        .compactMap { $0 }.joined(separator: " · "))
+                    .font(.subheadline)
+                Text(plan.missions.map(\.kind.alarmTitle).joined(separator: " + ") + " · " + plan.sound.displayName)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                    .lineLimit(1)
+            }
+            .foregroundStyle(plan.isEnabled ? .primary : .secondary)
+            Spacer()
+            Toggle("Alarm on", isOn: $isOn).labelsHidden()
+        }
+        .padding(.vertical, 2)
+        .accessibilityElement(children: .combine)
     }
 }
 
@@ -79,8 +131,8 @@ struct DebugSection: View {
 
     var body: some View {
         Section("Debug") {
-            Button("Ring in 1 minute") { Task { await coordinator.debugRing(inSeconds: 60); refresh() } }
-            Button("Ring in 10 seconds") { Task { await coordinator.debugRing(inSeconds: 10); refresh() } }
+            Button("Ring in 1 minute (first alarm)") { Task { await coordinator.debugRing(inSeconds: 60); refresh() } }
+            Button("Ring in 10 seconds (first alarm)") { Task { await coordinator.debugRing(inSeconds: 10); refresh() } }
             Button("Stop all alarms", role: .destructive) { coordinator.debugStopAll(); refresh() }
             Button("Reset today's session", role: .destructive) { coordinator.debugResetSession(); refresh() }
             if let s = coordinator.session {
@@ -91,7 +143,7 @@ struct DebugSection: View {
         }
         Section("AlarmKit alarms (\(alarms.count))") {
             ForEach(alarms) { alarm in
-                LabeledContent(alarm.id == coordinator.plan.id ? "Main" : String(alarm.id.uuidString.prefix(8)),
+                LabeledContent(coordinator.plan(id: alarm.id).map { "Main " + $0.timeText } ?? String(alarm.id.uuidString.prefix(8)),
                                value: alarm.state)
             }
             Button("Refresh", action: refresh)
