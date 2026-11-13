@@ -97,3 +97,60 @@ import UIKit
         #expect(prefs.intensity == .savage)
     }
 }
+
+@Suite struct ProgressionTests {
+    let cal: Calendar = {
+        var c = Calendar(identifier: .gregorian)
+        c.timeZone = TimeZone(identifier: "Europe/Brussels")!
+        return c
+    }()
+
+    private func day(_ d: Int, reArms: Int = 0, done: Bool = true, hour: Int = 7) -> DaySummary {
+        let date = cal.date(from: DateComponents(year: 2026, month: 11, day: d, hour: hour))!
+        return DaySummary(day: date, completed: done, reArms: reArms, failSafe: !done, completedAt: done ? date : nil)
+    }
+
+    @Test func xpPerMorning() {
+        #expect(XPRules.xp(for: day(1), streak: 1) == 50 + 25 + 5)
+        #expect(XPRules.xp(for: day(1, reArms: 2), streak: 3) == 40 + 15)
+        #expect(XPRules.xp(for: day(1, reArms: 20), streak: 1) == 10 + 5, "minimum when done")
+        #expect(XPRules.xp(for: day(1, done: false), streak: 0) == 0)
+    }
+
+    @Test func streakBonusResetsAfterAGap() {
+        let continuous = XPRules.totalXP([day(1), day(2), day(3)], calendar: cal)
+        let gapped = XPRules.totalXP([day(1), day(2), day(5)], calendar: cal)
+        #expect(continuous == 80 + 85 + 90)
+        #expect(gapped == 80 + 85 + 80)
+    }
+
+    @Test func ranksFollowThresholds() {
+        #expect(Rank.forXP(0) == .recruit)
+        #expect(Rank.forXP(99) == .recruit && Rank.forXP(100) == .privateSoldier)
+        #expect(Rank.forXP(10_000) == .general && RankProgress(xp: 20_000).fraction == 1)
+        let p = RankProgress(xp: 200)
+        #expect(p.next == .privateFirstClass && p.xpToNext == 100 && p.fraction == 0.5)
+        #expect(Rank.allCases.map(\.threshold) == Rank.allCases.map(\.threshold).sorted())
+    }
+
+    @Test func medals() {
+        #expect(MedalRules.earned([], calendar: cal).isEmpty)
+        let week = (1...7).map { day($0) }
+        let earned = MedalRules.earned(week, calendar: cal)
+        #expect(earned.isSuperset(of: [.firstMission, .firstTry, .streak3, .streak7, .hatTrick, .perfectWeek]))
+        #expect(!earned.contains(.streak30) && !earned.contains(.comeback))
+        #expect(MedalRules.earned([day(1), day(5)], calendar: cal).contains(.comeback))
+        #expect(MedalRules.earned([day(1, reArms: 6)], calendar: cal).contains(.ironWill))
+        #expect(MedalRules.earned([day(1, hour: 5)], calendar: cal).contains(.earlyBird))
+    }
+
+    @Test func morningReportDetectsPromotionAndNewMedals() {
+        let history = [day(1), day(2)]
+        let report = MorningReport.make(history: history, day: day(2).day, calendar: cal)
+        #expect(report.xpGained == 85)
+        #expect(report.before.rank == .recruit && report.after.rank == .privateSoldier && report.promoted)
+        #expect(report.newMedals.isEmpty, "first mission / first try were earned on day 1")
+        let first = MorningReport.make(history: [day(1)], day: day(1).day, calendar: cal)
+        #expect(first.newMedals == [.firstMission, .firstTry])
+    }
+}

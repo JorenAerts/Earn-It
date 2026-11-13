@@ -7,12 +7,15 @@ public struct DaySummary: Equatable, Sendable {
     public var completed: Bool
     public var reArms: Int
     public var failSafe: Bool
+    /// When the mission was finished (for time-based medals like Early Bird).
+    public var completedAt: Date?
 
-    public init(day: Date, completed: Bool, reArms: Int, failSafe: Bool) {
+    public init(day: Date, completed: Bool, reArms: Int, failSafe: Bool, completedAt: Date? = nil) {
         self.day = day
         self.completed = completed
         self.reArms = reArms
         self.failSafe = failSafe
+        self.completedAt = completedAt
     }
 }
 

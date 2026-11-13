@@ -124,21 +124,55 @@ struct SuccessView: View {
         let streak = StreakCalculator.currentStreak(completedDays: logs.compactMap(\.missionCompletedAt), today: .now)
         let coach = CoachModel.shared
         let state = coach.state(coordinator: coordinator, logs: logs)
-        VStack(spacing: 20) {
-            Spacer()
+        VStack(spacing: 0) {
+          ScrollView {
+           VStack(spacing: 20) {
             CoachAvatarView(state: state, size: 170)
+                .padding(.top, 32)
             Text(coach.line(for: state, coordinator: coordinator, logs: logs))
                 .font(.title3.weight(.semibold))
                 .multilineTextAlignment(.center)
-            Text("You earned it.").font(.largeTitle.bold())
+            let report = MorningReport.make(history: logs.map(DaySummary.init(log:)),
+                                            day: coordinator.session?.day ?? .now)
+            if report.promoted {
+                VStack(spacing: 6) {
+                    RankInsignia(rank: report.after.rank, size: 64)
+                    Text("Promoted to \(report.after.rank.title)!").font(.title2.bold())
+                }
+                .transition(.scale.combined(with: .opacity))
+            } else {
+                Text("You earned it.").font(.largeTitle.bold())
+            }
+            if report.xpGained > 0 {
+                VStack(spacing: 6) {
+                    Text("+\(report.xpGained) XP").font(.headline).foregroundStyle(.orange).monospacedDigit()
+                    ProgressView(value: report.after.fraction).tint(.orange).frame(maxWidth: 240)
+                    if let next = report.after.next, let toGo = report.after.xpToNext {
+                        Text("\(toGo) XP to \(next.title)").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+            }
+            if !report.newMedals.isEmpty {
+                VStack(spacing: 8) {
+                    Text(report.newMedals.count == 1 ? "New medal" : "New medals")
+                        .font(.caption.weight(.heavy)).textCase(.uppercase).foregroundStyle(.secondary)
+                    HStack(spacing: 12) {
+                        ForEach(report.newMedals.prefix(3)) { MedalTile(medal: $0, earned: true).frame(width: 96) }
+                    }
+                }
+            }
             Text("Follow-up alarms cancelled.").foregroundStyle(.secondary)
             Text("Streak: \(streak) day\(streak == 1 ? "" : "s")")
                 .font(.title2.weight(.semibold))
-            Spacer()
+           }
+           .frame(maxWidth: .infinity)
+           .padding(24)
+          }
+          .scrollBounceBehavior(.basedOnSize)
             Button("Done", action: dismiss)
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
+                .padding(.bottom, 24)
         }
-        .padding(24)
     }
 }

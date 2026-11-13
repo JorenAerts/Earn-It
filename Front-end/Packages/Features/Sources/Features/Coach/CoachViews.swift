@@ -41,7 +41,8 @@ final class CoachModel {
 extension DaySummary {
     init(log: DayLog) {
         self.init(day: log.day, completed: log.missionCompletedAt != nil,
-                  reArms: log.reArmCount, failSafe: log.failSafeTriggered)
+                  reArms: log.reArmCount, failSafe: log.failSafeTriggered,
+                  completedAt: log.missionCompletedAt)
     }
 }
 
