@@ -9,7 +9,6 @@ struct MissionRunnerView: View {
     let reArmMinutes: Int
     let onAllComplete: () -> Void
     @State private var index = 0
-    @State private var sound = AlarmSoundPlayer()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -21,7 +20,7 @@ struct MissionRunnerView: View {
                 }
                 Label("Alarm keeps sounding until you finish", systemImage: "speaker.wave.3.fill")
                     .font(.footnote).foregroundStyle(.orange)
-                Text("Leave the app and it rings again in \(reArmMinutes) min.")
+                Text("Leaving the app won't stop it.")
                     .font(.footnote).foregroundStyle(.secondary)
                 if reArmCount > 0 {
                     Text("Re-rung \(reArmCount)×").font(.footnote).foregroundStyle(.secondary)
@@ -39,16 +38,12 @@ struct MissionRunnerView: View {
             Spacer()
         }
         .interactiveDismissDisabled()
-        .onAppear {
-            if missions.isEmpty { onAllComplete() } else { sound.start() }
-        }
-        .onDisappear { sound.stop() }
+        .onAppear { if missions.isEmpty { onAllComplete() } }
     }
 
     private func advance() {
         if index + 1 >= missions.count {
-            sound.stop()
-            onAllComplete()
+            onAllComplete()  // coordinator stops the alarm sound
         } else {
             withAnimation { index += 1 }
         }

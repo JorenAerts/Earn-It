@@ -83,12 +83,32 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
 }
 
 @Suite @MainActor struct AlarmCoordinatorTests {
+    private let sound = FakeAlarmSound()
+
     private func makeCoordinator(plan: AlarmPlan = AlarmPlan(reArmMinutes: 2, maxReArms: 2)) -> (AlarmCoordinator, FakeScheduler) {
         let defaults = UserDefaults(suiteName: "test-\(UUID().uuidString)")!
         let store = KeyValueStore(defaults: defaults)
         store.savePlan(plan)
         let scheduler = FakeScheduler()
-        return (AlarmCoordinator(store: store, scheduler: scheduler), scheduler)
+        return (AlarmCoordinator(store: store, scheduler: scheduler, sound: sound), scheduler)
+    }
+
+    @Test func soundPlaysFromXUntilMissionDone() async {
+        let (c, _) = makeCoordinator()
+        #expect(!sound.isPlaying)
+        await c.alarmEnded(id: UUID())         // X pressed
+        #expect(sound.isPlaying, "alarm continues in-app immediately")
+        c.reload()                              // app foregrounded / relaunched
+        #expect(sound.isPlaying)
+        c.missionSucceeded()
+        #expect(!sound.isPlaying)
+    }
+
+    @Test func soundStopsAtFailSafe() async {
+        let (c, _) = makeCoordinator()
+        for _ in 0..<3 { await c.alarmEnded(id: nil) }
+        #expect(c.session?.failSafeTriggered == true)
+        #expect(!sound.isPlaying)
     }
 
     @Test func stopWithoutMissionSchedulesFollowUp() async {
@@ -263,5 +283,48 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         #expect(d.process(x: 2.5, y: 0, z: 0, timestamp: 0.2) == false) // too soon
         #expect(d.process(x: 0, y: 2.5, z: 0, timestamp: 0.5) == true)
         #expect(d.count == 2)
+    }
+}
+
+@Suite struct NewMissionTests {
+    @Test func qrMatchesTrimmedExactPayload() {
+        #expect(CodeMatcher.matches(scanned: "earnit:ABC\n", expected: "earnit:ABC"))
+        #expect(!CodeMatcher.matches(scanned: "earnit:ABD", expected: "earnit:ABC"))
+        #expect(!CodeMatcher.matches(scanned: "", expected: ""))
+        #expect(!CodeMatcher.matches(scanned: "x", expected: nil))
+    }
+
+    @Test func generatedPayloadsAreUnique() {
+        let a = CodeMatcher.newPayload(), b = CodeMatcher.newPayload()
+        #expect(a != b && a.hasPrefix(CodeMatcher.generatedPrefix))
+    }
+
+    @Test func qrMissionNeedsRegisteredCode() {
+        var qr = MissionConfig(kind: .qr)
+        #expect(!qr.isReady)
+        #expect(!AlarmPlan(missions: [qr]).isReady)
+        qr.payload = "earnit:X"
+        #expect(qr.isReady)
+        #expect(AlarmPlan(missions: [MissionConfig(kind: .math), qr]).isReady)
+    }
+
+    @Test func stepProgressNeverGoesBackwards() {
+        var p = StepProgress(target: 50)
+        p.update(cumulativeSteps: 30)
+        p.update(cumulativeSteps: 20)
+        #expect(p.steps == 30 && p.remaining == 20 && !p.isComplete)
+        p.update(cumulativeSteps: 55)
+        #expect(p.isComplete && p.fraction == 1)
+    }
+
+    @Test func titlesForNewMissions() {
+        let plan = AlarmPlan(missions: [MissionConfig(kind: .qr, payload: "x"), MissionConfig(kind: .steps)])
+        #expect(plan.alarmTitle == "Earn It - Scan Code + Walk Steps")
+    }
+
+    @Test func oldStoredMissionWithoutPayloadStillDecodes() throws {
+        let json = #"{"id":"D4B30B83-E6F4-4241-ADA8-6C619FEA3C91","kind":"math","difficulty":"easy","target":1}"#
+        let config = try JSONDecoder().decode(MissionConfig.self, from: Data(json.utf8))
+        #expect(config.kind == .math && config.payload == nil)
     }
 }
