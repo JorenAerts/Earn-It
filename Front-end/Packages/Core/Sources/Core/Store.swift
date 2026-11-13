@@ -8,20 +8,43 @@ public final class KeyValueStore: @unchecked Sendable {
     private let decoder = JSONDecoder()
 
     private enum Key {
-        static let plan = "earnit.plan"
+        static let legacyPlan = "earnit.plan"
+        static let plans = "earnit.plans"
         static let session = "earnit.session"
+        static let owners = "earnit.alarmOwners"
     }
 
     public init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
     }
 
-    public func loadPlan() -> AlarmPlan {
-        load(Key.plan) ?? AlarmPlan()
+    /// All alarms. Migrates the single alarm saved by earlier versions.
+    public func loadPlans() -> [AlarmPlan] {
+        if let plans: [AlarmPlan] = load(Key.plans) { return plans }
+        if let legacy: AlarmPlan = load(Key.legacyPlan) {
+            savePlans([legacy])
+            defaults.removeObject(forKey: Key.legacyPlan)
+            return [legacy]
+        }
+        return []
     }
 
-    public func savePlan(_ plan: AlarmPlan) {
-        save(plan, Key.plan)
+    public func savePlans(_ plans: [AlarmPlan]) {
+        save(plans, Key.plans)
+    }
+
+    /// One-off alarm (follow-up / test) → the plan it belongs to.
+    public func loadOwners() -> [UUID: UUID] {
+        load(Key.owners) ?? [:]
+    }
+
+    public func saveOwners(_ owners: [UUID: UUID]) {
+        save(owners, Key.owners)
+    }
+
+    /// Test / migration helper: write a plan in the pre-multi-alarm format.
+    public func saveLegacyPlan(_ plan: AlarmPlan) {
+        save(plan, Key.legacyPlan)
     }
 
     public func loadSession() -> SessionState? {

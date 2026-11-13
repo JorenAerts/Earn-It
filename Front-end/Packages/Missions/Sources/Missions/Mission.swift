@@ -27,7 +27,6 @@ public enum MissionRegistry {
         case .math: MathMission(config: config)
         case .shake: ShakeMission(config: config)
         case .qr: QRMission(config: config)
-        case .steps: StepsMission(config: config)
         }
     }
 
@@ -36,7 +35,6 @@ public enum MissionRegistry {
         case .math: MathMission.makeSetupView(config: config)
         case .shake: ShakeMission.makeSetupView(config: config)
         case .qr: QRMission.makeSetupView(config: config)
-        case .steps: StepsMission.makeSetupView(config: config)
         }
     }
 }

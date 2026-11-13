@@ -6,7 +6,6 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
     case math
     case shake
     case qr
-    case steps
 
     public var id: String { rawValue }
 
@@ -15,7 +14,6 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .math: "Math problems"
         case .shake: "Shake the phone"
         case .qr: "Scan a code"
-        case .steps: "Walk steps"
         }
     }
 
@@ -25,7 +23,6 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .math: "Math Problem"
         case .shake: "Shake It"
         case .qr: "Scan Code"
-        case .steps: "Walk Steps"
         }
     }
 
@@ -35,7 +32,6 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .math: "problems"
         case .shake: "shakes"
         case .qr: "code"
-        case .steps: "steps"
         }
     }
 
@@ -44,7 +40,6 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .math: 3
         case .shake: 30
         case .qr: 1
-        case .steps: 50
         }
     }
 
@@ -54,7 +49,6 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .math: 1...20
         case .shake: 5...200
         case .qr: nil
-        case .steps: 10...500
         }
     }
 
@@ -63,14 +57,13 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .math: 1
         case .shake: 5
         case .qr: 1
-        case .steps: 10
         }
     }
 
     public var usesDifficulty: Bool {
         switch self {
         case .math, .shake: true
-        case .qr, .steps: false
+        case .qr: false
         }
     }
 
@@ -87,7 +80,7 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
     public var id: UUID
     public var kind: MissionKind
     public var difficulty: MissionDifficulty
-    /// Math: problems correct in a row. Shake: shakes. Steps: steps. QR: unused (1).
+    /// Math: problems correct in a row. Shake: shakes. QR: unused (1).
     public var target: Int
     /// Mission-specific registered value. QR: the code's payload string.
     public var payload: String?
@@ -110,17 +103,51 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
     public var summary: String {
         switch kind {
         case .qr: isReady ? "Code registered" : "No code registered"
-        case .steps: "\(target) steps"
         case .math, .shake: "\(target) \(kind.targetLabel) · \(difficulty.rawValue)"
         }
+    }
+}
+
+// MARK: - Alarm sound
+
+/// Bundled alarm tones (App/Sounds/EarnIt_<rawValue>.caf). The same file rings via AlarmKit
+/// and keeps playing in-app during the mission.
+public enum AlarmSound: String, Codable, CaseIterable, Sendable, Identifiable {
+    case classic, chime, siren, digital, pulse
+
+    public var id: String { rawValue }
+
+    public var displayName: String {
+        switch self {
+        case .classic: "Classic Beep"
+        case .chime: "Morning Chime"
+        case .siren: "Rising Siren"
+        case .digital: "Digital"
+        case .pulse: "Deep Pulse"
+        }
+    }
+
+    /// Resource name without extension.
+    public var resourceName: String { "EarnIt_\(rawValue)" }
+    public var fileName: String { resourceName + ".caf" }
+}
+
+/// Decodes a mission or nil when its kind no longer exists.
+private struct LossyMission: Decodable {
+    let config: MissionConfig?
+    init(from decoder: any Decoder) throws {
+        config = try? MissionConfig(from: decoder)
     }
 }
 
 // MARK: - Alarm plan
 
 /// The single POC alarm. Stored as JSON so App Intents (and later extensions) can read it cheaply.
-public struct AlarmPlan: Codable, Hashable, Sendable {
+public struct AlarmPlan: Codable, Hashable, Sendable, Identifiable {
     public var id: UUID
+    /// Optional name shown in the list ("Work days", "Gym").
+    public var label: String
+    public var sound: AlarmSound
     public var hour: Int
     public var minute: Int
     /// Calendar weekday numbers, 1 = Sunday … 7 = Saturday. Empty = one-off (next occurrence).
@@ -133,6 +160,8 @@ public struct AlarmPlan: Codable, Hashable, Sendable {
 
     public init(
         id: UUID = UUID(),
+        label: String = "",
+        sound: AlarmSound = .classic,
         hour: Int = 7,
         minute: Int = 0,
         weekdays: Set<Int> = Set(1...7),
@@ -142,6 +171,8 @@ public struct AlarmPlan: Codable, Hashable, Sendable {
         isEnabled: Bool = false
     ) {
         self.id = id
+        self.label = label
+        self.sound = sound
         self.hour = hour
         self.minute = minute
         self.weekdays = weekdays
@@ -149,6 +180,46 @@ public struct AlarmPlan: Codable, Hashable, Sendable {
         self.reArmMinutes = reArmMinutes
         self.maxReArms = maxReArms
         self.isEnabled = isEnabled
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, label, sound, hour, minute, weekdays, missions, reArmMinutes, maxReArms, isEnabled
+    }
+
+    /// Tolerant decoding: alarms saved by older versions lack `label` / `sound`.
+    public init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        id = try c.decode(UUID.self, forKey: .id)
+        label = try c.decodeIfPresent(String.self, forKey: .label) ?? ""
+        sound = try c.decodeIfPresent(AlarmSound.self, forKey: .sound) ?? .classic
+        hour = try c.decode(Int.self, forKey: .hour)
+        minute = try c.decode(Int.self, forKey: .minute)
+        weekdays = try c.decode(Set<Int>.self, forKey: .weekdays)
+        // Lossy: missions removed from the app (e.g. the old "steps" kind) are dropped
+        // instead of making the whole alarm list undecodable.
+        let decoded = try c.decode([LossyMission].self, forKey: .missions).compactMap(\.config)
+        // Never leave an alarm without a mission (it could then be stopped for free).
+        missions = decoded.isEmpty ? [MissionConfig(kind: .math)] : decoded
+        reArmMinutes = try c.decode(Int.self, forKey: .reArmMinutes)
+        maxReArms = try c.decode(Int.self, forKey: .maxReArms)
+        isEnabled = try c.decode(Bool.self, forKey: .isEnabled)
+    }
+
+    /// "07:00"
+    public var timeText: String { String(format: "%02d:%02d", hour, minute) }
+
+    /// "Every day", "Weekdays", "Mon, Wed", "Once".
+    public var repeatText: String {
+        switch weekdays {
+        case []: return "Once"
+        case Set(1...7): return "Every day"
+        case Set(2...6): return "Weekdays"
+        case [1, 7]: return "Weekends"
+        default:
+            let symbols = Calendar.current.shortWeekdaySymbols
+            // Monday-first order for display.
+            return [2, 3, 4, 5, 6, 7, 1].filter(weekdays.contains).map { symbols[$0 - 1] }.joined(separator: ", ")
+        }
     }
 
     /// Every mission is configured (e.g. a QR code is registered).
@@ -188,9 +259,13 @@ public struct SessionState: Codable, Hashable, Sendable {
     public var failSafeTriggered: Bool
     /// Follow-up alarm IDs currently scheduled (cancelled on mission success).
     public var followUpIDs: [UUID]
+    /// The alarm (plan) that started this ring cycle: its missions, sound and re-ring settings apply.
+    public var planID: UUID?
 
     public init(day: Date, firstEndedAt: Date? = nil, missionCompletedAt: Date? = nil,
-                reArmCount: Int = 0, failSafeTriggered: Bool = false, followUpIDs: [UUID] = []) {
+                reArmCount: Int = 0, failSafeTriggered: Bool = false, followUpIDs: [UUID] = [],
+                planID: UUID? = nil) {
+        self.planID = planID
         self.day = day
         self.firstEndedAt = firstEndedAt
         self.missionCompletedAt = missionCompletedAt

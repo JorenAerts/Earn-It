@@ -1,20 +1,23 @@
 import AVFoundation
+import Core
 import Foundation
 
 /// The in-app continuation of the alarm (after X silences the system alarm).
 @MainActor
 public protocol AlarmSounding: AnyObject {
     var isPlaying: Bool { get }
-    func start()
+    /// Loop `sound` until `stop()`. Switching sound while playing restarts with the new one.
+    func start(_ sound: AlarmSound)
     func stop()
 }
 
-/// Loops `EarnItAlarm.caf` — the same file AlarmKit rings with — until the mission is done.
+/// Loops the alarm's tone — the same file AlarmKit rings with — until the mission is done.
 /// Keeps going when the app is backgrounded or the phone is locked (`UIBackgroundModes: audio`),
 /// through the silent switch (`.playback`), and resumes after interruptions such as calls.
 @MainActor
 public final class AlarmSoundPlayer: AlarmSounding {
     private var player: AVAudioPlayer?
+    private var current: AlarmSound?
     private var shouldPlay = false
     private var interruptionObserver: NSObjectProtocol?
 
@@ -32,8 +35,13 @@ public final class AlarmSoundPlayer: AlarmSounding {
 
     public var isPlaying: Bool { player?.isPlaying == true }
 
-    public func start() {
+    public func start(_ sound: AlarmSound) {
         shouldPlay = true
+        if current != sound {
+            player?.stop()
+            player = nil
+            current = sound
+        }
         if !isPlaying { play() }
     }
 
@@ -46,7 +54,8 @@ public final class AlarmSoundPlayer: AlarmSounding {
     }
 
     private func play() {
-        guard let url = Bundle.main.url(forResource: "EarnItAlarm", withExtension: "caf") else { return }
+        guard let sound = current,
+              let url = Bundle.main.url(forResource: sound.resourceName, withExtension: "caf") else { return }
         do {
             let session = AVAudioSession.sharedInstance()
             try session.setCategory(.playback, mode: .default)
@@ -66,7 +75,11 @@ public final class AlarmSoundPlayer: AlarmSounding {
 @MainActor
 public final class FakeAlarmSound: AlarmSounding {
     public private(set) var isPlaying = false
+    public private(set) var lastSound: AlarmSound?
     public init() {}
-    public func start() { isPlaying = true }
+    public func start(_ sound: AlarmSound) {
+        isPlaying = true
+        lastSound = sound
+    }
     public func stop() { isPlaying = false }
 }

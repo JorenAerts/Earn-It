@@ -88,7 +88,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     private func makeCoordinator(plan: AlarmPlan = AlarmPlan(reArmMinutes: 2, maxReArms: 2)) -> (AlarmCoordinator, FakeScheduler) {
         let defaults = UserDefaults(suiteName: "test-\(UUID().uuidString)")!
         let store = KeyValueStore(defaults: defaults)
-        store.savePlan(plan)
+        store.savePlans([plan])
         let scheduler = FakeScheduler()
         return (AlarmCoordinator(store: store, scheduler: scheduler, sound: sound), scheduler)
     }
@@ -149,9 +149,9 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
 
     @Test func endingMainAlarmKeepsItScheduled() async {
         let (c, fake) = makeCoordinator()
-        var plan = c.plan
+        var plan = c.plans[0]
         plan.isEnabled = true
-        await c.apply(plan)
+        await c.save(plan)
         await c.alarmEnded(id: plan.id)
         #expect(fake.stopped.contains(plan.id))
         #expect(fake.mainPlans[plan.id] != nil)
@@ -159,9 +159,9 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
 
     @Test func missionSuccessSilencesEverythingButKeepsMain() async {
         let (c, fake) = makeCoordinator()
-        var plan = c.plan
+        var plan = c.plans[0]
         plan.isEnabled = true
-        await c.apply(plan)
+        await c.save(plan)
         await c.alarmEnded(id: plan.id)          // main rang, follow-up scheduled
         let orphan = fake.injectOrphan()          // untracked leftover alarm
         c.missionSucceeded()
@@ -184,7 +184,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     @Test func startMissionKeepsAlarmRinging() async throws {
         let (c, fake) = makeCoordinator()
         let ringing = UUID()
-        try await fake.scheduleOneOff(id: ringing, at: .now, title: "t")
+        try await fake.scheduleOneOff(id: ringing, at: .now, title: "t", sound: .classic)
         fake.alerting.insert(ringing)
         c.missionStarted(id: ringing)
         #expect(!fake.stopped.contains(ringing), "alarm must keep ringing during the mission")
@@ -198,7 +198,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     @Test func openingAppWhileRingingShowsMission() async throws {
         let (c, fake) = makeCoordinator()
         let ringing = UUID()
-        try await fake.scheduleOneOff(id: ringing, at: .now, title: "t")
+        try await fake.scheduleOneOff(id: ringing, at: .now, title: "t", sound: .classic)
         fake.alerting.insert(ringing)
         #expect(!c.needsMission)
         c.reload()
@@ -229,20 +229,63 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         for _ in 0..<3 { await c.alarmEnded(id: nil) }
         #expect(c.session?.failSafeTriggered == true)
         let ringing = UUID()
-        try await fake.scheduleOneOff(id: ringing, at: .now, title: "t")
+        try await fake.scheduleOneOff(id: ringing, at: .now, title: "t", sound: .classic)
         fake.alerting.insert(ringing)
         c.reload()
         #expect(c.needsMission)
     }
 
+    @Test func ringCycleUsesTheRingingAlarmsSettings() async {
+        let (c, fake) = makeCoordinator()
+        let gym = AlarmPlan(label: "Gym", sound: .siren, hour: 6, missions: [MissionConfig(kind: .qr, payload: "gym")],
+                            reArmMinutes: 5, isEnabled: true)
+        await c.save(gym)
+        await c.alarmEnded(id: gym.id)                       // the gym alarm rang, X pressed
+        #expect(c.session?.planID == gym.id)
+        #expect(c.activePlan?.missions.first?.kind == .qr)
+        #expect(Array(fake.followUpDurations.values) == [300], "gym alarm re-rings after its own 5 min")
+        #expect(fake.sounds[c.session!.followUpIDs[0]] == .siren)
+        #expect(sound.lastSound == .siren, "in-app sound matches the ringing alarm")
+    }
+
+    @Test func followUpRingKeepsOwnerAfterSessionLoss() async {
+        let (c, _) = makeCoordinator()
+        let second = AlarmPlan(label: "Second", sound: .chime, isEnabled: true)
+        await c.save(second)
+        await c.debugRing(inSeconds: 10, planID: second.id)
+        let testRing = c.debugScheduledAlarms().map(\.id).first { c.plan(id: $0) == nil }!
+        await c.alarmEnded(id: testRing)
+        #expect(c.session?.planID == second.id)
+    }
+
+    @Test func deleteRemovesAlarmAndSchedule() async {
+        let (c, fake) = makeCoordinator()
+        let extra = AlarmPlan(isEnabled: true)
+        await c.save(extra)
+        #expect(c.plans.count == 2 && fake.mainPlans[extra.id] != nil)
+        c.delete(id: extra.id)
+        #expect(c.plans.count == 1 && fake.mainPlans[extra.id] == nil)
+    }
+
+    @Test func nextAlarmIsSoonestEnabled() async {
+        let (c, _) = makeCoordinator()
+        await c.save(AlarmPlan(hour: 23, minute: 59, isEnabled: true))
+        let early = AlarmPlan(hour: 0, minute: 1, isEnabled: true)
+        await c.save(early)
+        await c.save(AlarmPlan(hour: 0, minute: 0, isEnabled: false))
+        let next = c.nextAlarm!
+        let laterCandidates = c.plans.filter(\.isEnabled).compactMap { c.nextFireDate(for: $0) }
+        #expect(next.date == laterCandidates.min())
+    }
+
     @Test func applyEnabledPlanSchedulesMain() async {
         let (c, fake) = makeCoordinator()
-        var plan = c.plan
+        var plan = c.plans[0]
         plan.isEnabled = true
-        await c.apply(plan)
+        await c.save(plan)
         #expect(fake.mainPlans[plan.id] != nil)
         plan.isEnabled = false
-        await c.apply(plan)
+        await c.save(plan)
         #expect(fake.mainPlans.isEmpty)
     }
 }
@@ -308,23 +351,56 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         #expect(AlarmPlan(missions: [MissionConfig(kind: .math), qr]).isReady)
     }
 
-    @Test func stepProgressNeverGoesBackwards() {
-        var p = StepProgress(target: 50)
-        p.update(cumulativeSteps: 30)
-        p.update(cumulativeSteps: 20)
-        #expect(p.steps == 30 && p.remaining == 20 && !p.isComplete)
-        p.update(cumulativeSteps: 55)
-        #expect(p.isComplete && p.fraction == 1)
-    }
-
     @Test func titlesForNewMissions() {
-        let plan = AlarmPlan(missions: [MissionConfig(kind: .qr, payload: "x"), MissionConfig(kind: .steps)])
-        #expect(plan.alarmTitle == "Earn It - Scan Code + Walk Steps")
+        let plan = AlarmPlan(missions: [MissionConfig(kind: .qr, payload: "x"), MissionConfig(kind: .shake)])
+        #expect(plan.alarmTitle == "Earn It - Scan Code + Shake It")
     }
 
     @Test func oldStoredMissionWithoutPayloadStillDecodes() throws {
         let json = #"{"id":"D4B30B83-E6F4-4241-ADA8-6C619FEA3C91","kind":"math","difficulty":"easy","target":1}"#
         let config = try JSONDecoder().decode(MissionConfig.self, from: Data(json.utf8))
         #expect(config.kind == .math && config.payload == nil)
+    }
+}
+
+@Suite struct MultiAlarmStorageTests {
+    @Test func legacySinglePlanMigratesToList() {
+        let store = KeyValueStore(defaults: UserDefaults(suiteName: "test-\(UUID().uuidString)")!)
+        let legacy = AlarmPlan(hour: 6, minute: 30, isEnabled: true)
+        store.saveLegacyPlan(legacy)
+        #expect(store.loadPlans() == [legacy])
+        #expect(store.loadPlans() == [legacy], "migration is persisted")
+    }
+
+    @Test func removedMissionKindIsDroppedNotFatal() throws {
+        let json = #"{"id":"FED23467-0B83-4401-8A74-82EB06908396","hour":7,"minute":0,"weekdays":[],"reArmMinutes":2,"maxReArms":15,"isEnabled":true,"missions":[{"id":"D4B30B83-E6F4-4241-ADA8-6C619FEA3C91","kind":"steps","difficulty":"medium","target":50},{"id":"D4B30B83-E6F4-4241-ADA8-6C619FEA3C92","kind":"math","difficulty":"easy","target":2}]}"#
+        let plan = try JSONDecoder().decode(AlarmPlan.self, from: Data(json.utf8))
+        #expect(plan.missions.map(\.kind) == [.math])
+    }
+
+    @Test func alarmLeftWithoutMissionsFallsBackToMath() throws {
+        let json = #"{"id":"FED23467-0B83-4401-8A74-82EB06908396","hour":7,"minute":0,"weekdays":[],"reArmMinutes":2,"maxReArms":15,"isEnabled":true,"missions":[{"id":"D4B30B83-E6F4-4241-ADA8-6C619FEA3C91","kind":"steps","difficulty":"medium","target":50}]}"#
+        let plan = try JSONDecoder().decode(AlarmPlan.self, from: Data(json.utf8))
+        #expect(plan.missions.map(\.kind) == [.math])
+    }
+
+    @Test func oldPlanJSONWithoutLabelOrSoundDecodes() throws {
+        let json = #"{"id":"FED23467-0B83-4401-8A74-82EB06908396","hour":11,"minute":53,"weekdays":[1,2],"missions":[],"reArmMinutes":2,"maxReArms":15,"isEnabled":true}"#
+        let plan = try JSONDecoder().decode(AlarmPlan.self, from: Data(json.utf8))
+        #expect(plan.sound == .classic && plan.label.isEmpty && plan.hour == 11)
+        #expect(plan.missions.map(\.kind) == [.math])
+    }
+
+    @Test func repeatText() {
+        #expect(AlarmPlan(weekdays: Set(1...7)).repeatText == "Every day")
+        #expect(AlarmPlan(weekdays: Set(2...6)).repeatText == "Weekdays")
+        #expect(AlarmPlan(weekdays: [1, 7]).repeatText == "Weekends")
+        #expect(AlarmPlan(weekdays: []).repeatText == "Once")
+    }
+
+    @Test func everySoundHasAFile() {
+        for sound in AlarmSound.allCases {
+            #expect(Bundle.main.url(forResource: sound.resourceName, withExtension: "caf") != nil, "\(sound)")
+        }
     }
 }

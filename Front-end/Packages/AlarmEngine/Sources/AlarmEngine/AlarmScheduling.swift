@@ -28,9 +28,10 @@ public protocol AlarmScheduling: AnyObject {
     /// The plan's main (possibly repeating) alarm, using `plan.id`.
     func scheduleMain(_ plan: AlarmPlan) async throws
     /// One-off alarm at a fixed date (debug "ring in…").
-    func scheduleOneOff(id: UUID, at date: Date, title: String) async throws
+    func scheduleOneOff(id: UUID, at date: Date, title: String, sound: AlarmSound) async throws
     /// Re-ring after Stop: a countdown alarm, shown live on the Lock Screen / Dynamic Island.
-    func scheduleFollowUp(id: UUID, after duration: TimeInterval, title: String, attempt: Int) async throws
+    func scheduleFollowUp(id: UUID, after duration: TimeInterval, title: String, attempt: Int,
+                          sound: AlarmSound) async throws
     /// Silence an alerting alarm. A repeating alarm stays scheduled for its next occurrence.
     func stop(id: UUID)
     /// Remove an alarm entirely.
@@ -48,6 +49,7 @@ public final class FakeScheduler: AlarmScheduling {
     public private(set) var mainPlans: [UUID: AlarmPlan] = [:]
     public private(set) var oneOffs: [UUID: (date: Date, title: String)] = [:]
     public private(set) var followUpDurations: [UUID: TimeInterval] = [:]
+    public private(set) var sounds: [UUID: AlarmSound] = [:]
     public private(set) var stopped: [UUID] = []
     public private(set) var cancelled: [UUID] = []
     /// Alarms currently ringing (tests set this).
@@ -56,11 +58,19 @@ public final class FakeScheduler: AlarmScheduling {
     public init() {}
 
     public func requestAuthorization() async -> AlarmAuthorization { authorization }
-    public func scheduleMain(_ plan: AlarmPlan) async throws { mainPlans[plan.id] = plan }
-    public func scheduleOneOff(id: UUID, at date: Date, title: String) async throws { oneOffs[id] = (date, title) }
-    public func scheduleFollowUp(id: UUID, after duration: TimeInterval, title: String, attempt: Int) async throws {
+    public func scheduleMain(_ plan: AlarmPlan) async throws {
+        mainPlans[plan.id] = plan
+        sounds[plan.id] = plan.sound
+    }
+    public func scheduleOneOff(id: UUID, at date: Date, title: String, sound: AlarmSound) async throws {
+        oneOffs[id] = (date, title)
+        sounds[id] = sound
+    }
+    public func scheduleFollowUp(id: UUID, after duration: TimeInterval, title: String, attempt: Int,
+                                 sound: AlarmSound) async throws {
         oneOffs[id] = (Date().addingTimeInterval(duration), title)
         followUpDurations[id] = duration
+        sounds[id] = sound
     }
     public func stop(id: UUID) {
         stopped.append(id)
