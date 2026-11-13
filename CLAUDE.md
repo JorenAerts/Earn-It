@@ -32,6 +32,8 @@ Signing: `Front-end/Config/Local.xcconfig` (git-ignored) holds `DEVELOPMENT_TEAM
 - **Change plans or prices only in `Front-end/Config/Pricing.json`** (week / month / 3 months / year / lifetime: `price`, `enabled`, `badge`, `title`, `trialDays`, `defaultSelection`), then run `python3 Front-end/scripts/generate_storekit.py` to regenerate `Config/EarnIt.storekit`. Test `storekitFileMatchesPricingJSON` fails if you forget.
 - App shows StoreKit's localized prices; Pricing.json decides which plans exist + order. Real prices must be mirrored in App Store Connect (same product IDs) once the paid program exists.
 - Local purchases only work when the app is **run from Xcode** (scheme uses `EarnIt.storekit`). `devicectl` installs have no StoreKit config.
+- Paywall: `Features/Paywall/PaywallView` (modes `.onboarding` / `.sheet`, `PaywallSheet` wrapper). Trial text from the product's intro offer; auto-renew disclosure (Guideline 3.1.2), Restore, Terms/Privacy (URLs in `Config/Auth.json`). Per-period math in `Purchases/PlanPeriod`.
+- The app shows nothing and starts no services when launched as the unit-test host (`XCTestConfigurationFilePath`), otherwise its StoreKit loading races `SKTestSession`.
 - StoreKitTest gotchas: `Product.purchase()` of a *subscription* times out in the unit-test host (use `SKTestSession.buyProduct`); `expireSubscription` doesn't update `currentEntitlements` there — test expiry via `EntitlementResolver` + Xcode Transaction Manager.
 
 ## Secrets

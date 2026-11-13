@@ -98,7 +98,9 @@ struct OnboardingView: View {
                 }
             }
         case .paywall:
-            OnboardingPaywallStep(store: store, accountToken: auth.user?.id, onNext: advance)
+            PaywallView(store: store, mode: .onboarding, accountToken: auth.user?.id,
+                        termsURL: auth.config.termsURL, privacyURL: auth.config.privacyURL,
+                        onFinish: advance)
         }
     }
 

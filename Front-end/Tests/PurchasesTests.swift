@@ -155,3 +155,26 @@ private final class BundleToken {}
         session.clearTransactions()
     }
 }
+
+@Suite struct PlanPeriodTests {
+    @Test func parsesISOPeriods() {
+        #expect(PlanPeriod(iso: "P1W") == PlanPeriod(value: 1, unit: .week))
+        #expect(PlanPeriod(iso: "P3M") == PlanPeriod(value: 3, unit: .month))
+        #expect(PlanPeriod(iso: "P1Y")?.perLabel == "/year")
+        #expect(PlanPeriod(iso: "P3M")?.perLabel == "/3 months")
+        #expect(PlanPeriod(iso: "P3M")?.everyLabel == "every 3 months")
+        #expect(PlanPeriod(iso: nil) == nil && PlanPeriod(iso: "1Y") == nil && PlanPeriod(iso: "P0M") == nil)
+    }
+
+    @Test func monthlyEquivalentOnlyForLongerPlans() {
+        #expect(PlanPeriod(iso: "P1Y")?.monthlyEquivalent(of: 29.99) == Decimal(string: "2.49"))
+        #expect(PlanPeriod(iso: "P3M")?.monthlyEquivalent(of: 9.99) == Decimal(string: "3.33"))
+        #expect(PlanPeriod(iso: "P1M")?.monthlyEquivalent(of: 3.99) == nil)
+        #expect(PlanPeriod(iso: "P1W")?.monthlyEquivalent(of: 1.99) == nil)
+    }
+
+    @Test func trialText() {
+        #expect(freeTrialText(value: 3, unit: .day) == "3 days free")
+        #expect(freeTrialText(value: 1, unit: .week) == "1 week free")
+    }
+}

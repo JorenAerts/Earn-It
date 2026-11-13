@@ -132,7 +132,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     }
 
     @Test func failSafeStopsLoop() async {
-        let (c, fake) = makeCoordinator()
+        let (c, _) = makeCoordinator()
         for _ in 0..<3 { await c.alarmEnded(id: nil) }
         #expect(c.session?.reArmCount == 2)
         #expect(c.session?.failSafeTriggered == true)

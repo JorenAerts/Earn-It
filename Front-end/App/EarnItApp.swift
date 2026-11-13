@@ -40,10 +40,18 @@ final class AppEnvironment {
 struct EarnItApp: App {
     private let env = AppEnvironment.shared
 
+    /// Launched as the unit-test host: start nothing (StoreKit, AlarmKit, UI) so tests own
+    /// their environment — e.g. SKTestSession product loading isn't raced by the app.
+    private static let isTestHost = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+
     var body: some Scene {
         WindowGroup {
-            RootView(coordinator: env.coordinator, auth: env.auth, store: env.purchases)
-                .tint(.orange)
+            if Self.isTestHost {
+                Color.clear
+            } else {
+                RootView(coordinator: env.coordinator, auth: env.auth, store: env.purchases)
+                    .tint(.orange)
+            }
         }
         .modelContainer(env.modelContainer)
     }
