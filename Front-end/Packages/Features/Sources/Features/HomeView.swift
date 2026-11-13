@@ -1,16 +1,41 @@
 import Account
 import AlarmEngine
 import Core
+import Purchases
 import SwiftData
 import SwiftUI
 
 struct HomeView: View {
     let coordinator: AlarmCoordinator
     let auth: any AuthService
+    let store: StoreService
+    /// One-time messages after a downgrade to the free plan.
+    var notices: [String] = []
+    var onDismissNotices: () -> Void = {}
     /// Debug: run onboarding again.
     var onReplayOnboarding: () -> Void = {}
     @Query private var logs: [DayLog]
     @State private var editing: EditTarget?
+    @State private var showPaywall = false
+
+    private var gate: FeatureGate { store.gate }
+
+    private func addAlarm() {
+        if gate.canAddAlarm(currentCount: coordinator.plans.count) {
+            editing = EditTarget(plan: AlarmPlan(), isNew: true)
+        } else {
+            showPaywall = true
+        }
+    }
+
+    private func setEnabled(_ on: Bool, _ plan: AlarmPlan) {
+        let enabledOthers = coordinator.plans.filter { $0.isEnabled && $0.id != plan.id }.count
+        if on, !gate.canEnableAlarm(enabledCount: enabledOthers) {
+            showPaywall = true
+            return
+        }
+        Task { await coordinator.setEnabled(on, for: plan.id) }
+    }
 
     /// Sheet target: an existing alarm or a fresh one.
     struct EditTarget: Identifiable {
@@ -47,7 +72,7 @@ struct HomeView: View {
                     ForEach(coordinator.plans) { plan in
                         AlarmRow(plan: plan,
                                  isOn: Binding(get: { plan.isEnabled },
-                                               set: { on in Task { await coordinator.setEnabled(on, for: plan.id) } }))
+                                               set: { on in setEnabled(on, plan) }))
                             .contentShape(.rect)
                             .onTapGesture { editing = EditTarget(plan: plan, isNew: false) }
                             #if DEBUG
@@ -61,10 +86,39 @@ struct HomeView: View {
                     .onDelete { offsets in
                         offsets.map { coordinator.plans[$0].id }.forEach(coordinator.delete(id:))
                     }
-                    Button {
-                        editing = EditTarget(plan: AlarmPlan(), isNew: true)
-                    } label: {
-                        Label("Add alarm", systemImage: "plus.circle.fill")
+                    Button(action: addAlarm) {
+                        HStack {
+                            Label("Add alarm", systemImage: "plus.circle.fill")
+                            if !gate.canAddAlarm(currentCount: coordinator.plans.count) {
+                                Spacer()
+                                ProBadge()
+                            }
+                        }
+                    }
+                }
+
+                if !notices.isEmpty {
+                    Section("Your plan changed") {
+                        ForEach(notices, id: \.self) { Text($0).font(.subheadline) }
+                        Button("Get Pro back") { showPaywall = true }
+                        Button("OK", action: onDismissNotices).foregroundStyle(.secondary)
+                    }
+                }
+
+                if !gate.isPro {
+                    Section {
+                        Button { showPaywall = true } label: {
+                            HStack(spacing: 12) {
+                                Image(systemName: "sun.max.fill").font(.title2).foregroundStyle(.orange)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text("Unlock Earn It Pro").font(.headline).foregroundStyle(.primary)
+                                    Text("Unlimited alarms, every mission, all sounds")
+                                        .font(.caption).foregroundStyle(.secondary)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right").foregroundStyle(.tertiary)
+                            }
+                        }
                     }
                 }
 
@@ -82,24 +136,51 @@ struct HomeView: View {
                 #if DEBUG
                 DebugSection(coordinator: coordinator)
                 AccountDebugSection(auth: auth)
-                Section { Button("Replay onboarding", action: onReplayOnboarding) }
+                Section("Plan (test)") {
+                    LabeledContent("Status", value: statusText)
+                    Button("Show paywall") { showPaywall = true }
+                    Button("Replay onboarding", action: onReplayOnboarding)
+                }
                 #endif
             }
             .navigationTitle("Earn It")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
-                    Button { editing = EditTarget(plan: AlarmPlan(), isNew: true) } label: {
+                    Button(action: addAlarm) {
                         Image(systemName: "plus")
                     }
                     .accessibilityLabel("Add alarm")
                 }
             }
+            .paywallSheet(isPresented: $showPaywall)
             .sheet(item: $editing) { target in
                 AlarmSetupView(plan: target.plan, isNew: target.isNew,
                                onSave: { plan in Task { await coordinator.save(plan) } },
                                onDelete: { coordinator.delete(id: target.plan.id) })
             }
         }
+    }
+}
+
+extension HomeView {
+    var statusText: String {
+        switch store.entitlement {
+        case .free: store.hasLoadedEntitlement ? "Free" : "Free (cached)"
+        case .trial(let until): "Trial until " + (until?.formatted(date: .abbreviated, time: .shortened) ?? "?")
+        case .pro(let until): until.map { "Pro until " + $0.formatted(date: .abbreviated, time: .omitted) } ?? "Pro (lifetime)"
+        }
+    }
+}
+
+/// Small "PRO" capsule next to locked features.
+struct ProBadge: View {
+    var body: some View {
+        Text("PRO")
+            .font(.caption2.weight(.heavy))
+            .padding(.horizontal, 6).padding(.vertical, 2)
+            .background(.orange, in: .capsule)
+            .foregroundStyle(.white)
+            .accessibilityLabel("Requires Pro")
     }
 }
 

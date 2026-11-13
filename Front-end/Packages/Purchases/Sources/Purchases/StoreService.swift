@@ -16,6 +16,9 @@ public final class StoreService {
     /// The user can still get the free trial (once per Apple ID per subscription group).
     public private(set) var isEligibleForTrial = true
     public private(set) var isLoading = false
+    /// True once StoreKit has been asked at least once this launch. Until then `entitlement`
+    /// is only the cached value — never take features away based on the cache alone.
+    public private(set) var hasLoadedEntitlement = false
     public private(set) var errorMessage: String?
 
     @ObservationIgnored private let cache: EntitlementCache
@@ -118,6 +121,7 @@ public final class StoreService {
         if state != entitlement { log.notice("entitlement \(String(describing: state), privacy: .public)") }
         entitlement = state
         cache.save(state)
+        hasLoadedEntitlement = true
     }
 
     #if DEBUG

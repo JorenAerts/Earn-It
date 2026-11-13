@@ -1,6 +1,7 @@
 import AlarmEngine
 import Core
 import Missions
+import Purchases
 import SwiftUI
 
 struct AlarmSetupView: View {
@@ -11,6 +12,11 @@ struct AlarmSetupView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var preview = SoundPreview()
     @State private var confirmDelete = false
+    @State private var showPaywall = false
+    @Environment(\.paywall) private var paywall
+
+    /// Without an injected context (previews) everything is unlocked.
+    private var gate: FeatureGate { paywall?.gate ?? FeatureGate(isPro: true) }
 
     private var time: Binding<Date> {
         Binding(
@@ -45,9 +51,14 @@ struct AlarmSetupView: View {
                     ForEach(AlarmSound.allCases) { sound in
                         SoundRow(sound: sound,
                                  isSelected: plan.sound == sound,
-                                 isPlaying: preview.playing == sound) {
-                            plan.sound = sound
+                                 isPlaying: preview.playing == sound,
+                                 isLocked: gate.isLocked(sound)) {
                             preview.toggle(sound)
+                            if gate.isLocked(sound) {
+                                showPaywall = true
+                            } else {
+                                plan.sound = sound
+                            }
                         }
                     }
                 } header: {
@@ -63,7 +74,13 @@ struct AlarmSetupView: View {
                     .onDelete { plan.missions.remove(atOffsets: $0) }
                     Menu("Add mission") {
                         ForEach(MissionKind.allCases) { kind in
-                            Button(kind.displayName) { plan.missions.append(MissionConfig(kind: kind)) }
+                            if gate.isLocked(kind) {
+                                Button { showPaywall = true } label: {
+                                    Label("\(kind.displayName) — Pro", systemImage: "lock.fill")
+                                }
+                            } else {
+                                Button(kind.displayName) { plan.missions.append(MissionConfig(kind: kind)) }
+                            }
                         }
                     }
                 }
@@ -86,6 +103,7 @@ struct AlarmSetupView: View {
             }
             .navigationTitle(isNew ? "New alarm" : "Edit alarm")
             .onDisappear { preview.stop() }
+            .paywallSheet(isPresented: $showPaywall)
             .confirmationDialog("Delete this alarm?", isPresented: $confirmDelete, titleVisibility: .visible) {
                 Button("Delete", role: .destructive) {
                     onDelete()
@@ -160,6 +178,7 @@ private struct SoundRow: View {
     let sound: AlarmSound
     let isSelected: Bool
     let isPlaying: Bool
+    var isLocked = false
     let action: () -> Void
 
     var body: some View {
@@ -170,6 +189,7 @@ private struct SoundRow: View {
                     .frame(width: 24)
                 Text(sound.displayName).foregroundStyle(.primary)
                 Spacer()
+                if isLocked { ProBadge() }
                 if isSelected {
                     Image(systemName: "checkmark").foregroundStyle(.tint).fontWeight(.semibold)
                 }

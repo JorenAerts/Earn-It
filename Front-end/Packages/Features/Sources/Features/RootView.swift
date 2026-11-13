@@ -12,6 +12,8 @@ public struct RootView: View {
     let store: StoreService
     let onboardingStore: OnboardingStore
     @State private var onboarded: Bool
+    private let notices = DowngradeNotices()
+    @State private var noticeMessages: [String] = []
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var modelContext
     @State private var showSuccess = false
@@ -39,13 +41,28 @@ public struct RootView: View {
                     withAnimation { onboarded = true }
                 }
             } else {
-                HomeView(coordinator: coordinator, auth: auth) {
-                    onboardingStore.reset()
-                    onboarded = false
-                }
+                HomeView(coordinator: coordinator, auth: auth, store: store,
+                         notices: noticeMessages,
+                         onDismissNotices: {
+                             notices.clear()
+                             noticeMessages = []
+                         },
+                         onReplayOnboarding: {
+                             onboardingStore.reset()
+                             onboarded = false
+                         })
             }
         }
         .animation(.default, value: coordinator.needsMission)
+        .environment(\.paywall, PaywallContext(store: store, accountToken: auth.user?.id,
+                                               termsURL: auth.config.termsURL,
+                                               privacyURL: auth.config.privacyURL))
+        // Free tier: once StoreKit has answered, bring alarms within the free limits.
+        .onChange(of: store.entitlement) { enforceTier() }
+        .onChange(of: store.hasLoadedEntitlement) { enforceTier() }
+        .onChange(of: onboarded) { enforceTier() }
+        .onChange(of: coordinator.needsMission) { enforceTier() }
+        .onAppear { noticeMessages = notices.messages }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active { coordinator.reload() }
         }
@@ -66,6 +83,15 @@ public struct RootView: View {
         }
         .fullScreenCover(isPresented: $showSuccess) {
             SuccessView { showSuccess = false }
+        }
+    }
+
+    private func enforceTier() {
+        guard onboarded, store.hasLoadedEntitlement, !store.entitlement.isPro else { return }
+        Task {
+            let changes = await TierEnforcement.enforce(on: coordinator, gate: store.gate)
+            notices.add(changes.map(\.message))
+            noticeMessages = notices.messages
         }
     }
 

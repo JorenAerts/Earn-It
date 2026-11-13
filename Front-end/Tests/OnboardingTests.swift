@@ -1,5 +1,7 @@
+import AlarmEngine
 import Core
 import Features
+import Purchases
 import Foundation
 import Testing
 
@@ -84,5 +86,59 @@ import Testing
         store.reset()
         let again = store.load()
         #expect(!again.completed && again.step == .welcome && again.answers.hour == 9)
+    }
+}
+
+@Suite @MainActor struct TierEnforcementTests {
+    private func coordinator(with plans: [AlarmPlan]) async -> (AlarmCoordinator, FakeScheduler) {
+        let store = KeyValueStore(defaults: UserDefaults(suiteName: "test-\(UUID().uuidString)")!)
+        let scheduler = FakeScheduler()
+        let c = AlarmCoordinator(store: store, scheduler: scheduler, sound: FakeAlarmSound())
+        for plan in plans { await c.save(plan) }
+        return (c, scheduler)
+    }
+
+    @Test func freeTierSwitchesExtraAlarmsOffAndReschedules() async {
+        let first = AlarmPlan(sound: .siren, hour: 6, missions: [MissionConfig(kind: .shake)], isEnabled: true)
+        let second = AlarmPlan(hour: 8, isEnabled: true)
+        let (c, scheduler) = await coordinator(with: [first, second])
+        let changes = await TierEnforcement.enforce(on: c, gate: FeatureGate(isPro: false))
+        #expect(changes.count == 3)
+        #expect(c.plans[0].sound == .classic && c.plans[0].missions.map(\.kind) == [.math])
+        #expect(!c.plans[1].isEnabled)
+        #expect(scheduler.mainPlans[second.id] == nil, "switched-off alarm is unscheduled")
+        #expect(scheduler.mainPlans[first.id]?.sound == .classic, "kept alarm rescheduled with new sound")
+        let again = await TierEnforcement.enforce(on: c, gate: FeatureGate(isPro: false))
+        #expect(again.isEmpty, "idempotent")
+    }
+
+    @Test func proIsLeftAlone() async {
+        let (c, _) = await coordinator(with: [AlarmPlan(sound: .siren, isEnabled: true), AlarmPlan(isEnabled: true)])
+        let changes = await TierEnforcement.enforce(on: c, gate: FeatureGate(isPro: true))
+        #expect(changes.isEmpty)
+        let allEnabled = c.plans.allSatisfy { $0.isEnabled }
+        #expect(allEnabled)
+    }
+
+    @Test func neverDuringARingingMission() async {
+        let (c, _) = await coordinator(with: [AlarmPlan(isEnabled: true), AlarmPlan(isEnabled: true)])
+        await c.alarmEnded(id: c.plans[0].id)   // mission due
+        let changes = await TierEnforcement.enforce(on: c, gate: FeatureGate(isPro: false))
+        #expect(changes.isEmpty)
+    }
+
+    @Test func noticesPersistAndDedupe() {
+        let notices = DowngradeNotices(defaults: UserDefaults(suiteName: "test-\(UUID().uuidString)")!)
+        notices.add(["a", "b"])
+        notices.add(["b", "c"])
+        #expect(notices.messages == ["a", "b", "c"])
+        notices.clear()
+        #expect(notices.messages.isEmpty)
+    }
+
+    @Test func enableGate() {
+        let free = FeatureGate(isPro: false)
+        #expect(free.canEnableAlarm(enabledCount: 0) && !free.canEnableAlarm(enabledCount: 1))
+        #expect(FeatureGate(isPro: true).canEnableAlarm(enabledCount: 9))
     }
 }

@@ -25,6 +25,11 @@ public struct FeatureGate: Equatable, Sendable {
         maxAlarms.map { currentCount < $0 } ?? true
     }
 
+    /// Switching an alarm on: free users may have one alarm enabled at a time.
+    public func canEnableAlarm(enabledCount: Int) -> Bool {
+        maxAlarms.map { enabledCount < $0 } ?? true
+    }
+
     public func isLocked(_ mission: MissionKind) -> Bool {
         !isPro && !Self.freeMissions.contains(mission)
     }
