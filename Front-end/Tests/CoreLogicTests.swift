@@ -301,6 +301,13 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         #expect(StreakCalculator.currentStreak(completedDays: days, today: date(2026, 11, 13, 6), calendar: calendar) == 2)
     }
 
+    @Test func bestStreakFindsLongestRun() {
+        let days = [date(2026, 11, 1, 7), date(2026, 11, 2, 7), date(2026, 11, 3, 7),
+                    date(2026, 11, 5, 7), date(2026, 11, 6, 7), date(2026, 11, 6, 9)]
+        #expect(StreakCalculator.bestStreak(completedDays: days, calendar: calendar) == 3)
+        #expect(StreakCalculator.bestStreak(completedDays: [], calendar: calendar) == 0)
+    }
+
     @Test func gapBreaksStreak() {
         let days = [date(2026, 11, 10, 7), date(2026, 11, 12, 7)]
         #expect(StreakCalculator.currentStreak(completedDays: days, today: date(2026, 11, 13, 9), calendar: calendar) == 1)

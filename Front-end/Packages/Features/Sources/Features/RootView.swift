@@ -41,7 +41,7 @@ public struct RootView: View {
                     withAnimation { onboarded = true }
                 }
             } else {
-                HomeView(coordinator: coordinator, auth: auth, store: store,
+                MainTabView(coordinator: coordinator, auth: auth, store: store,
                          notices: noticeMessages,
                          onDismissNotices: {
                              notices.clear()

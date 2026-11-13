@@ -1,4 +1,3 @@
-import Account
 import AlarmEngine
 import Core
 import Purchases
@@ -7,13 +6,10 @@ import SwiftUI
 
 struct HomeView: View {
     let coordinator: AlarmCoordinator
-    let auth: any AuthService
     let store: StoreService
     /// One-time messages after a downgrade to the free plan.
     var notices: [String] = []
     var onDismissNotices: () -> Void = {}
-    /// Debug: run onboarding again.
-    var onReplayOnboarding: () -> Void = {}
     @Query private var logs: [DayLog]
     @State private var editing: EditTarget?
     @State private var showPaywall = false
@@ -133,17 +129,8 @@ struct HomeView: View {
                     Section { Text(error).foregroundStyle(.red) }
                 }
 
-                #if DEBUG
-                DebugSection(coordinator: coordinator)
-                AccountDebugSection(auth: auth)
-                Section("Plan (test)") {
-                    LabeledContent("Status", value: statusText)
-                    Button("Show paywall") { showPaywall = true }
-                    Button("Replay onboarding", action: onReplayOnboarding)
-                }
-                #endif
             }
-            .navigationTitle("Earn It")
+            .navigationTitle("Alarms")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: addAlarm) {
@@ -158,16 +145,6 @@ struct HomeView: View {
                                onSave: { plan in Task { await coordinator.save(plan) } },
                                onDelete: { coordinator.delete(id: target.plan.id) })
             }
-        }
-    }
-}
-
-extension HomeView {
-    var statusText: String {
-        switch store.entitlement {
-        case .free: store.hasLoadedEntitlement ? "Free" : "Free (cached)"
-        case .trial(let until): "Trial until " + (until?.formatted(date: .abbreviated, time: .shortened) ?? "?")
-        case .pro(let until): until.map { "Pro until " + $0.formatted(date: .abbreviated, time: .omitted) } ?? "Pro (lifetime)"
         }
     }
 }

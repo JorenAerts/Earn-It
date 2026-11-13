@@ -5,6 +5,8 @@ import SwiftUI
 /// password reset, and "Continue without account". Reused later from Settings.
 struct AccountStepView: View {
     let auth: any AuthService
+    /// Secondary button title: "Continue without account" in onboarding, "Not now" in Settings.
+    var skipTitle = "Continue without account"
     let onSkip: () -> Void
 
     enum Mode { case signUp, signIn }
@@ -107,7 +109,7 @@ struct AccountStepView: View {
                 PrimaryButton(title: mode == .signUp ? "Create account" : "Sign in",
                               disabled: !canSubmit, action: submit)
             }
-            Button("Continue without account", action: onSkip)
+            Button(skipTitle, action: onSkip)
                 .foregroundStyle(.secondary)
         }
     }
