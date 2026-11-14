@@ -1,5 +1,6 @@
 import AlarmEngine
 import Core
+import Permissions
 import SwiftUI
 import UIKit
 
@@ -133,52 +134,57 @@ struct GoalsStep: View {
 
 // MARK: - 5. Permissions
 
+/// Alarms (required) and Notifications (recommended) up front; Camera, Microphone and Apple Music
+/// optional here and otherwise asked the moment a feature needs them.
 struct PermissionsStep: View {
     let coordinator: AlarmCoordinator
     let onNext: () -> Void
-    @State private var status: AlarmAuthorization = .notDetermined
-    @Environment(\.openURL) private var openURL
+    @State private var center = PermissionCenter.shared
 
     var body: some View {
         OnboardingPage {
-            VStack(alignment: .leading, spacing: 20) {
-                Image(systemName: "alarm.fill")
-                    .font(.system(size: 56))
-                    .foregroundStyle(.orange)
-                    .padding(.top, 24)
-                Text("Allow alarms").font(.largeTitle.bold())
-                Text("Earn It uses iOS alarms, so your wake-up rings through silent mode and Focus — even when the app is closed.")
+            VStack(alignment: .leading, spacing: 18) {
+                Text("Permissions").font(.largeTitle.bold())
+                Text("Earn It only asks for what it needs. You can change these any time in Settings.")
                     .foregroundStyle(.secondary)
-                if status == .denied {
-                    Label("Alarms are turned off for Earn It. Without them your alarm can't ring.",
-                          systemImage: "exclamationmark.triangle.fill")
-                        .foregroundStyle(.red)
+
+                VStack(spacing: 6) {
+                    PermissionRow(kind: .alarms)
+                    Divider()
+                    PermissionRow(kind: .notifications) {
+                        CoachModel.shared.notifications.enabled = true   // reminders on when allowed here
+                    }
                 }
-                if status == .authorized {
-                    Label("Alarms allowed", systemImage: "checkmark.circle.fill")
-                        .foregroundStyle(.green)
-                        .font(.headline)
+                .padding(14)
+                .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: 18))
+
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Optional — or we'll ask when you use them")
+                        .font(.caption.weight(.bold)).textCase(.uppercase).foregroundStyle(.secondary)
+                    VStack(spacing: 6) {
+                        PermissionRow(kind: .camera, showsImportance: false)
+                        Divider()
+                        PermissionRow(kind: .microphone, showsImportance: false)
+                        Divider()
+                        PermissionRow(kind: .appleMusic, showsImportance: false)
+                    }
+                    .padding(14)
+                    .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: 18))
                 }
             }
         } footer: {
-            switch status {
-            case .authorized:
+            if center.isGranted(.alarms) {
                 PrimaryButton(title: "Continue", action: onNext)
-            case .denied:
-                PrimaryButton(title: "Open Settings") {
-                    if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
-                }
+            } else if center.status(.alarms) == .denied {
+                PrimaryButton(title: "Open Settings") { center.openSettings(.alarms) }
                 Button("Continue anyway", action: onNext).foregroundStyle(.secondary)
-            case .notDetermined:
+            } else {
                 PrimaryButton(title: "Allow alarms") {
-                    Task { status = await coordinator.requestAuthorization() }
+                    Task { await center.request(.alarms) }
                 }
             }
         }
-        .onAppear { status = coordinator.authorization }
-        .onReceive(NotificationCenter.default.publisher(for: UIApplication.didBecomeActiveNotification)) { _ in
-            status = coordinator.authorization  // back from Settings
-        }
+        .task { await center.refresh() }
     }
 }
 

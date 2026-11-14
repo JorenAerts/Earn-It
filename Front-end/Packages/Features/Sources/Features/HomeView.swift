@@ -1,6 +1,7 @@
 import AlarmEngine
 import Coach
 import Core
+import Permissions
 import Purchases
 import SwiftData
 import SwiftUI
@@ -31,7 +32,10 @@ struct HomeView: View {
             showPaywall = true
             return
         }
-        Task { await coordinator.setEnabled(on, for: plan.id) }
+        Task {
+            if on { _ = await PermissionCenter.shared.ensure(.alarms) }  // explains + Settings if off
+            await coordinator.setEnabled(on, for: plan.id)
+        }
     }
 
     /// Sheet target: an existing alarm or a fresh one.
@@ -48,6 +52,12 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             List {
+                if PermissionCenter.shared.status(.alarms) == .denied ||
+                    (PermissionCenter.shared.status(.alarms) == .notDetermined && !coordinator.plans.isEmpty) {
+                    Section {
+                        PermissionBanner(kind: .alarms, message: "Your alarms can't ring until Earn It may use alarms.")
+                    }
+                }
                 Section {
                     let coach = CoachModel.shared
                     let state = coach.state(coordinator: coordinator, logs: logs)

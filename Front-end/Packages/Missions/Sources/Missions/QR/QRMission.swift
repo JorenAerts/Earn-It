@@ -1,5 +1,6 @@
 import Core
 import CoreImage.CIFilterBuiltins
+import Permissions
 import SwiftUI
 import UIKit
 
@@ -27,6 +28,7 @@ struct QRMissionView: View {
     let onComplete: @MainActor (MissionResult) -> Void
     @State private var wrongCode = false
     @State private var finished = false
+    @State private var cameraChecked = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -35,12 +37,21 @@ struct QRMissionView: View {
                 .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
 
             Group {
-                if CodeScannerView.isAvailable {
+                if CodeScannerView.isAvailable && cameraChecked {
                     CodeScannerView(onCode: handle)
+                } else if cameraChecked {
+                    VStack(spacing: 12) {
+                        ContentUnavailableView("Camera is off", systemImage: "camera.fill",
+                                               description: Text("Turn on the camera for Earn It to scan your code, or do the backup mission."))
+                        HStack {
+                            Button("Open Settings") { PermissionCenter.shared.openSettings(.camera) }
+                                .buttonStyle(.bordered)
+                            Button("Backup mission") { onComplete(.needsBackup) }
+                                .buttonStyle(.borderedProminent)
+                        }
+                    }
                 } else {
-                    ContentUnavailableView("Camera unavailable",
-                                           systemImage: "camera.fill",
-                                           description: Text("Allow camera access in Settings to scan your code."))
+                    ProgressView()
                 }
             }
             .frame(maxWidth: .infinity)
@@ -58,6 +69,13 @@ struct QRMissionView: View {
         }
         .padding(24)
         .sensoryFeedback(.error, trigger: wrongCode) { _, new in new }
+        .task {
+            // The scanner reports "unavailable" until camera access is granted: ask first.
+            if PermissionCenter.shared.status(.camera) == .notDetermined {
+                await PermissionCenter.shared.request(.camera)
+            }
+            cameraChecked = true
+        }
     }
 
     private func handle(_ payload: String) {
@@ -93,7 +111,9 @@ struct QRSetupRow: View {
                 .foregroundStyle(config.isReady ? .green : .orange)
                 .font(.subheadline)
             HStack {
-                Button("Scan existing code") { mode = .scan }
+                Button("Scan existing code") {
+                    Task { if await PermissionCenter.shared.ensure(.camera) { mode = .scan } }
+                }
                 Button("Create printable code") { mode = .create }
             }
             .buttonStyle(.bordered)

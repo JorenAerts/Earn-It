@@ -1,5 +1,6 @@
 import Core
 import Missions
+import Permissions
 import Purchases
 import SwiftUI
 
@@ -60,7 +61,13 @@ struct MissionKindCard: View {
                     .fixedSize(horizontal: false, vertical: true)
                 HStack(spacing: 6) {
                     Tag(text: kind.estimatedDuration, symbol: "clock")
-                    if kind.needsCamera { Tag(text: "Camera", symbol: "camera.fill") }
+                    if kind.needsCamera {
+                        if PermissionCenter.shared.status(.camera) == .denied {
+                            Tag(text: "Camera off", symbol: "exclamationmark.triangle.fill")
+                        } else {
+                            Tag(text: "Camera", symbol: "camera.fill")
+                        }
+                    }
                     if kind.needsSetup { Tag(text: "Setup", symbol: "wrench.and.screwdriver.fill") }
                     if kind.usesDifficulty { Tag(text: "Difficulty", symbol: "slider.horizontal.3") }
                 }
@@ -189,8 +196,13 @@ struct MissionRow: View {
             MissionIcon(kind: config.kind, size: 40)
             VStack(alignment: .leading, spacing: 2) {
                 Text(config.kind.displayName).font(.body.weight(.semibold)).foregroundStyle(.primary)
-                Text(config.summary).font(.caption)
-                    .foregroundStyle(config.isReady ? Color.secondary : Color.orange)
+                if config.kind.needsCamera && PermissionCenter.shared.status(.camera) == .denied {
+                    Label("Camera is off — the backup mission will be used", systemImage: "exclamationmark.triangle.fill")
+                        .font(.caption).foregroundStyle(.orange)
+                } else {
+                    Text(config.summary).font(.caption)
+                        .foregroundStyle(config.isReady ? Color.secondary : Color.orange)
+                }
             }
             Spacer()
             Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)

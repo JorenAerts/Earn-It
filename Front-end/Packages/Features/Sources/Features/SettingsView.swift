@@ -2,6 +2,7 @@ import Account
 import AlarmEngine
 import Coach
 import Core
+import Permissions
 import Purchases
 import StoreKit
 import SwiftUI
@@ -116,9 +117,8 @@ struct SettingsView: View {
             if coach.notifications.enabled {
                 DatePicker("Evening reminder", selection: eveningTime, displayedComponents: .hourAndMinute)
             }
-            if remindersDenied {
-                Text("Notifications are off for Earn It. Turn them on in iPhone Settings.")
-                    .font(.footnote).foregroundStyle(.red)
+            if remindersDenied || (coach.notifications.enabled && PermissionCenter.shared.status(.notifications) == .denied) {
+                PermissionBanner(kind: .notifications, message: "Notifications are off, so reminders can't arrive.")
             }
             let sample = CoachState(mood: .angry, context: .reRing, anger: 0.6)
             CoachCard(state: sample,
@@ -167,7 +167,7 @@ struct SettingsView: View {
     private func setReminders(_ on: Bool) {
         Task {
             if on {
-                let allowed = await CoachNotifier.shared.requestAuthorization()
+                let allowed = await PermissionCenter.shared.ensure(.notifications)  // denied → Settings prompt
                 remindersDenied = !allowed
                 coach.notifications.enabled = allowed
             } else {
@@ -211,21 +211,15 @@ struct SettingsView: View {
 
     private var permissionsSection: some View {
         Section {
-            LabeledContent("Alarms") {
-                switch coordinator.authorization {
-                case .authorized: Label("Allowed", systemImage: "checkmark.circle.fill").foregroundStyle(.green)
-                case .denied: Label("Off", systemImage: "xmark.circle.fill").foregroundStyle(.red)
-                case .notDetermined: Text("Not asked").foregroundStyle(.secondary)
-                }
-            }
-            Button("Open iPhone Settings") {
-                if let url = URL(string: UIApplication.openSettingsURLString) { openURL(url) }
+            ForEach(PermissionKind.allCases) { kind in
+                PermissionRow(kind: kind)
             }
         } header: {
             Text("Permissions")
         } footer: {
-            Text("Camera access is asked the first time you use the scan-a-code mission.")
+            Text("Turned something off? \"Open Settings\" takes you to Earn It's page in iOS Settings; come back and it updates here.")
         }
+        .task { await PermissionCenter.shared.refresh() }
     }
 
     // MARK: About

@@ -1,4 +1,5 @@
 import Core
+import Permissions
 import SwiftUI
 import UIKit
 import Vision
@@ -31,7 +32,7 @@ private final class ReferencePrints: @unchecked Sendable {
 @MainActor
 @Observable
 final class ObjectRecognizer {
-    enum Status: Equatable { case loading, missingReference, cameraDenied, cameraUnavailable, scanning, done }
+    enum Status: Equatable { case loading, missingReference, cameraDenied, cameraUnavailable, paused, scanning, done }
 
     private(set) var status: Status = .loading
     private(set) var tracker = ObjectMatchTracker()
@@ -55,11 +56,40 @@ final class ObjectRecognizer {
             let distance = frame.flatMap { ObjectVision.distance($0.print, toAnyOf: references.prints) }
             Task { @MainActor in self?.record(distance) }
         }
-        switch await camera.start() {
-        case .running: status = .scanning
-        case .denied: status = .cameraDenied
-        default: status = .cameraUnavailable
+        camera.onInterruption = { [weak self] interrupted in
+            Task { @MainActor in
+                guard let self, self.status == .scanning || self.status == .paused else { return }
+                if interrupted { self.status = .paused } else { await self.resume() }
+            }
         }
+        await startCamera()
+    }
+
+    /// Starts the camera; if iOS doesn't let it run yet, keeps retrying for a while.
+    private func startCamera() async {
+        for attempt in 0..<30 {
+            switch await camera.start() {
+            case .running:
+                status = .scanning
+                return
+            case .denied:
+                status = .cameraDenied
+                return
+            case .unavailable:
+                status = .cameraUnavailable
+                return
+            case .paused, .starting:
+                status = .paused
+                if attempt < 29 { try? await Task.sleep(for: .seconds(1)) }
+                if Task.isCancelled { return }
+            }
+        }
+    }
+
+    /// Back in the foreground / interruption over: try again.
+    func resume() async {
+        guard status == .paused else { return }
+        await startCamera()
     }
 
     func stop() { camera.stop() }
@@ -91,6 +121,7 @@ struct ObjectMissionView: View {
     let onComplete: @MainActor (MissionResult) -> Void
     @State private var recognizer = ObjectRecognizer()
     @Environment(\.openURL) private var openURL
+    @Environment(\.scenePhase) private var scenePhase
 
     var body: some View {
         VStack(spacing: 14) {
@@ -142,6 +173,9 @@ struct ObjectMissionView: View {
             recognizer.onMatched = { onComplete(.success) }
             await recognizer.start(referenceID: referenceID)
         }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .active { Task { await recognizer.resume() } }
+        }
         .onDisappear { recognizer.stop() }
         .sensoryFeedback(.selection, trigger: recognizer.tracker.streak) { old, new in new > old }
     }
@@ -152,6 +186,7 @@ struct ObjectMissionView: View {
         case .missingReference: "Your item scan is missing."
         case .cameraDenied: "Camera access is off."
         case .cameraUnavailable: "No camera available."
+        case .paused: "Starting the camera…"
         case .done: "Got it!"
         case .scanning:
             if !recognizer.objectInView { "Point the camera at your \(label.lowercased())." }
@@ -168,10 +203,23 @@ struct ObjectMissionView: View {
                 onComplete(.needsBackup)
             }
         case .cameraDenied:
-            overlayMessage("Allow camera access in Settings to scan your item, or do the backup mission.",
-                           button: "Backup mission") { onComplete(.needsBackup) }
+            VStack(spacing: 12) {
+                Text("The camera is off for Earn It. Turn it on to scan your item, or do the backup mission.")
+                    .multilineTextAlignment(.center).foregroundStyle(.white)
+                HStack {
+                    Button("Open Settings") { PermissionCenter.shared.openSettings(.camera) }.buttonStyle(.bordered).tint(.white)
+                    Button("Backup mission") { onComplete(.needsBackup) }.buttonStyle(.borderedProminent)
+                }
+            }
+            .padding(24)
         case .cameraUnavailable:
             overlayMessage("This device has no camera for scanning.", button: "Backup mission") { onComplete(.needsBackup) }
+        case .paused:
+            VStack(spacing: 12) {
+                ProgressView().tint(.white)
+                Text("Starting the camera…").foregroundStyle(.white)
+                Button("Try again") { Task { await recognizer.resume() } }.buttonStyle(.bordered).tint(.white)
+            }
         case .done:
             Image(systemName: "checkmark.circle.fill")
                 .font(.system(size: 80)).foregroundStyle(.white, .green)
@@ -230,7 +278,9 @@ struct ObjectSetupRow: View {
                     .foregroundStyle(config.isReady ? .green : .orange)
                     .font(.subheadline)
             }
-            Button(config.isReady ? "Scan again" : "Scan your item") { scanning = true }
+            Button(config.isReady ? "Scan again" : "Scan your item") {
+                Task { if await PermissionCenter.shared.ensure(.camera) { scanning = true } }
+            }
                 .buttonStyle(.bordered)
         }
         .fullScreenCover(isPresented: $scanning) {
