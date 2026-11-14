@@ -37,6 +37,8 @@ packages:
     path: Packages/Coach
   WidgetShared:
     path: Packages/WidgetShared
+  Permissions:
+    path: Packages/Permissions
 
 targets:
   EarnIt:
@@ -54,6 +56,7 @@ targets:
       - package: Core
       - package: Coach
       - package: WidgetShared
+      - package: Permissions
       - package: Purchases
       - package: Account
       - package: AlarmEngine

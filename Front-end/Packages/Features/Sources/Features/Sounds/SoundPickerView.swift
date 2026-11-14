@@ -2,6 +2,7 @@ import AlarmEngine
 import Core
 import MusicKit
 import Purchases
+import Permissions
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -54,7 +55,9 @@ struct SoundPickerView: View {
                         }
                 }
                 ownSoundButton("Import a file", symbol: "square.and.arrow.down") { importing = true }
-                ownSoundButton("Record your own", symbol: "mic.fill") { recording = true }
+                ownSoundButton("Record your own", symbol: "mic.fill") {
+                    Task { if await PermissionCenter.shared.ensure(.microphone) { recording = true } }
+                }
                 if let importError {
                     Text(importError).font(.footnote).foregroundStyle(.red)
                 }
@@ -247,16 +250,24 @@ struct AppleMusicSearchView: View {
                     Text("Search for a song to wake up to.").foregroundStyle(.secondary)
                 }
             case .denied, .restricted:
-                Text("Apple Music access is off for Earn It. Turn it on in Settings › Privacy & Security › Media & Apple Music.")
+                PermissionBanner(kind: .appleMusic, message: "Apple Music access is off for Earn It, so songs can't be searched or played.")
             default:
-                Button("Allow Apple Music") { Task { status = await MusicAuthorization.request() } }
+                Button("Allow Apple Music") {
+                    Task {
+                        await PermissionCenter.shared.request(.appleMusic)
+                        status = MusicAuthorization.currentStatus
+                    }
+                }
             }
         }
         .navigationTitle("Apple Music")
         .searchable(text: $term, prompt: "Songs or artists")
         .onSubmit(of: .search) { Task { await search() } }
         .overlay { if searching { ProgressView() } }
-        .task { if status == .notDetermined { status = await MusicAuthorization.request() } }
+        .task {
+            if status == .notDetermined { await PermissionCenter.shared.request(.appleMusic) }
+            status = MusicAuthorization.currentStatus
+        }
     }
 
     private func search() async {

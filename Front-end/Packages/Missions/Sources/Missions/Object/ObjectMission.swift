@@ -1,4 +1,5 @@
 import Core
+import Permissions
 import SwiftUI
 import UIKit
 import Vision
@@ -168,8 +169,15 @@ struct ObjectMissionView: View {
                 onComplete(.needsBackup)
             }
         case .cameraDenied:
-            overlayMessage("Allow camera access in Settings to scan your item, or do the backup mission.",
-                           button: "Backup mission") { onComplete(.needsBackup) }
+            VStack(spacing: 12) {
+                Text("The camera is off for Earn It. Turn it on to scan your item, or do the backup mission.")
+                    .multilineTextAlignment(.center).foregroundStyle(.white)
+                HStack {
+                    Button("Open Settings") { PermissionCenter.shared.openSettings(.camera) }.buttonStyle(.bordered).tint(.white)
+                    Button("Backup mission") { onComplete(.needsBackup) }.buttonStyle(.borderedProminent)
+                }
+            }
+            .padding(24)
         case .cameraUnavailable:
             overlayMessage("This device has no camera for scanning.", button: "Backup mission") { onComplete(.needsBackup) }
         case .done:
@@ -230,7 +238,9 @@ struct ObjectSetupRow: View {
                     .foregroundStyle(config.isReady ? .green : .orange)
                     .font(.subheadline)
             }
-            Button(config.isReady ? "Scan again" : "Scan your item") { scanning = true }
+            Button(config.isReady ? "Scan again" : "Scan your item") {
+                Task { if await PermissionCenter.shared.ensure(.camera) { scanning = true } }
+            }
                 .buttonStyle(.bordered)
         }
         .fullScreenCover(isPresented: $scanning) {

@@ -1,6 +1,7 @@
 import AlarmEngine
 import Core
 import Missions
+import Permissions
 import Purchases
 import SwiftUI
 
@@ -64,6 +65,13 @@ struct AlarmSetupView: View {
                     Text("The same sound keeps playing in the app until your mission is done.")
                 }
 
+                if PermissionCenter.shared.status(.liveActivities) == .denied {
+                    Section {
+                        PermissionBanner(kind: .liveActivities,
+                                         message: "Live Activities are off, so the re-ring countdown won't show on your Lock Screen.")
+                    }
+                }
+
                 Section {
                     ForEach(plan.missions) { mission in
                         Button { editingMission = EditingMission(id: mission.id) } label: { MissionRow(config: mission) }
@@ -125,6 +133,7 @@ struct AlarmSetupView: View {
                     Button("Save") {
                         plan.isEnabled = true
                         onSave(plan)
+                        Task { _ = await PermissionCenter.shared.ensure(.alarms) }  // ask / explain if off
                         dismiss()
                     }
                     .disabled(!plan.isReady)

@@ -3,6 +3,7 @@ import AlarmEngine
 import Coach
 import Core
 import Missions
+import Permissions
 import Purchases
 import SwiftData
 import SwiftUI
@@ -46,6 +47,12 @@ public struct RootView: View {
                 #if DEBUG
                 NavigationStack { WidgetPreviewsView(coordinator: coordinator, store: store) }
                 #endif
+            } else if CommandLine.arguments.contains("-permissionsPreview") {
+                // Screenshot helper: -permissionsPreview
+                NavigationStack {
+                    List { Section("Permissions") { ForEach(PermissionKind.allCases) { PermissionRow(kind: $0) } } }
+                        .navigationTitle("Permissions")
+                }
             } else if CommandLine.arguments.contains("-soundPicker") {
                 // Screenshot helper: -soundPicker
                 NavigationStack { SoundPickerView(selection: .constant(.builtIn(.morningMood)), gate: FeatureGate(isPro: true)) }
@@ -88,6 +95,7 @@ public struct RootView: View {
         }
         .animation(.default, value: coordinator.needsMission)
         .paywallSheet(isPresented: $showPaywallFromWidget)
+        .permissionPrompt()
         .environment(\.paywall, PaywallContext(store: store, accountToken: auth.user?.id,
                                                termsURL: auth.config.termsURL,
                                                privacyURL: auth.config.privacyURL))
@@ -102,6 +110,7 @@ public struct RootView: View {
         .onAppear { noticeMessages = notices.messages }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
+                Task { await PermissionCenter.shared.refresh() }  // back from Settings
                 coordinator.reload()
                 refreshCoachNotifications()
             }
@@ -127,6 +136,7 @@ public struct RootView: View {
         .task {
             UNUserNotificationCenter.current().delegate = CoachModel.shared.notificationDelegate
             store.start()
+            await PermissionCenter.shared.refresh()
             coordinator.reload()
             refreshCoachNotifications()
             await coordinator.refreshAlarms()

@@ -1,5 +1,6 @@
 import AVFoundation
 import Core
+import Permissions
 import SwiftUI
 
 // MARK: - Trim (shared by import + record)
@@ -236,8 +237,8 @@ struct RecordSoundView: View {
                 .frame(height: 240)
                 Text(String(format: "0:%02d / 0:30", Int(recorder.elapsed)))
                     .font(.headline.monospacedDigit())
-                if let message = recorder.message {
-                    Text(message).foregroundStyle(.red).multilineTextAlignment(.center)
+                if recorder.message != nil {
+                    PermissionBanner(kind: .microphone, message: recorder.message ?? "")
                 }
                 Spacer()
                 if let url = recordedURL {
