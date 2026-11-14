@@ -5,7 +5,10 @@ import UIKit
 /// Back-camera feed for missions that analyse frames themselves (the item scan).
 /// Frames are delivered on a private serial queue, throttled to `interval`.
 final class CameraFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, @unchecked Sendable {
-    enum Status { case starting, running, denied, unavailable }
+    /// `.unavailable` = the device has no usable camera. `.paused` = the camera exists but couldn't
+    /// start right now (app not fully in the foreground yet, opened from the Lock Screen, another app
+    /// using it, interruption) — callers retry instead of telling the user there's no camera.
+    enum Status { case starting, running, denied, unavailable, paused }
 
     let session = AVCaptureSession()
     private let queue = DispatchQueue(label: "be.earnit.camera")
@@ -16,6 +19,22 @@ final class CameraFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, 
     var interval: CFTimeInterval = 0.25
     /// Called on the camera queue with throttled frames.
     var onFrame: (@Sendable (CVPixelBuffer) -> Void)?
+    /// `true` when iOS interrupts the session, `false` when the interruption ends.
+    var onInterruption: (@Sendable (Bool) -> Void)?
+
+    override init() {
+        super.init()
+        let center = NotificationCenter.default
+        center.addObserver(forName: AVCaptureSession.wasInterruptedNotification, object: session, queue: nil) { [weak self] _ in
+            self?.onInterruption?(true)
+        }
+        center.addObserver(forName: AVCaptureSession.interruptionEndedNotification, object: session, queue: nil) { [weak self] _ in
+            self?.onInterruption?(false)
+        }
+        center.addObserver(forName: AVCaptureSession.runtimeErrorNotification, object: session, queue: nil) { [weak self] _ in
+            self?.onInterruption?(true)
+        }
+    }
 
     static var isAvailable: Bool { AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) != nil }
 
@@ -32,7 +51,7 @@ final class CameraFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, 
             queue.async { [self] in
                 if session.inputs.isEmpty { configure() }
                 if !session.isRunning { session.startRunning() }
-                continuation.resume(returning: session.isRunning ? .running : .unavailable)
+                continuation.resume(returning: session.isRunning ? .running : .paused)
             }
         }
     }

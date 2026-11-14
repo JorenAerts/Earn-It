@@ -217,10 +217,20 @@ final class ScanSetupModel {
     var prompt: String { prompts[min(shots.count, prompts.count - 1)] }
 
     func startCamera() async {
-        switch await camera.start() {
-        case .running: cameraReady = true
+        var result = await camera.start()
+        // Not running yet (still coming to the foreground / camera busy): retry for a few seconds.
+        for _ in 0..<10 where result == .paused {
+            cameraMessage = "Starting the camera…"
+            try? await Task.sleep(for: .seconds(1))
+            result = await camera.start()
+        }
+        switch result {
+        case .running:
+            cameraReady = true
+            cameraMessage = nil
         case .denied: cameraMessage = "Allow camera access in Settings to scan your item."
-        default: cameraMessage = "No camera available."
+        case .unavailable: cameraMessage = "No camera available."
+        default: cameraMessage = "The camera couldn't start. Close other apps that use the camera and try again."
         }
     }
 
