@@ -40,6 +40,7 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 ### Account & agreements
 - [ ] Enrol in the **Apple Developer Program** (€99/year).
 - [ ] Update `Front-end/Config/Local.xcconfig` with the new paid **Team ID**.
+- [ ] Register App Group `group.be.earnit.app` (Xcode › Signing & Capabilities does it automatically) and add `EARNIT_DEVICE_APP_GROUPS = YES` to `Local.xcconfig` so the home-screen widgets get live data on device.
 - [ ] App Store Connect › Business: accept the **Paid Applications Agreement**, add bank + tax info.
 
 ### App & products

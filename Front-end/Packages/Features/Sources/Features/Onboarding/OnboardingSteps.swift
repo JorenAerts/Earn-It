@@ -11,11 +11,15 @@ struct WelcomeStep: View {
     var body: some View {
         OnboardingPage {
             VStack(alignment: .leading, spacing: 20) {
-                Image(systemName: "sun.max.fill")
-                    .font(.system(size: 72))
-                    .foregroundStyle(.orange)
-                    .symbolEffect(.bounce, options: .nonRepeating)
-                    .padding(.top, 40)
+                // App logo (App/Assets.xcassets/Logo). Clipped like an iOS app icon.
+                Image("Logo")
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 112, height: 112)
+                    .clipShape(.rect(cornerRadius: 25, style: .continuous))
+                    .shadow(color: .black.opacity(0.18), radius: 12, y: 6)
+                    .padding(.top, 32)
+                    .accessibilityHidden(true)
                 Text("Earn It")
                     .font(.system(size: 48, weight: .heavy, design: .rounded))
                 Text("An alarm you can't snooze your way out of.")

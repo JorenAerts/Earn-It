@@ -1,9 +1,12 @@
 import Account
 import AlarmEngine
+import Coach
 import Core
 import Purchases
 import SwiftData
 import SwiftUI
+import UserNotifications
+import WidgetShared
 
 /// Routes between onboarding, the forced mission screen, and home.
 public struct RootView: View {
@@ -17,6 +20,8 @@ public struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.modelContext) private var modelContext
     @State private var showSuccess = false
+    @State private var tab: MainTabView.TabID = .alarms
+    @State private var showPaywallFromWidget = false
 
     public init(coordinator: AlarmCoordinator, auth: any AuthService, store: StoreService,
                 onboardingStore: OnboardingStore = OnboardingStore()) {
@@ -29,11 +34,24 @@ public struct RootView: View {
 
     public var body: some View {
         Group {
+            #if DEBUG
+            // Launch argument for screenshots: -widgetPreviews [-sample] [-free]
+            let previewWidgets = CommandLine.arguments.contains("-widgetPreviews")
+            #else
+            let previewWidgets = false
+            #endif
             // A ringing alarm's mission always wins, even mid-onboarding.
-            if coordinator.needsMission {
+            if previewWidgets {
+                #if DEBUG
+                NavigationStack { WidgetPreviewsView(coordinator: coordinator, store: store) }
+                #endif
+            } else if coordinator.needsMission {
+                let coachState = CoachModel.shared.state(coordinator: coordinator, logs: [])
                 MissionRunnerView(missions: coordinator.activePlan?.missions ?? [],
                                   reArmCount: coordinator.session?.reArmCount ?? 0,
                                   reArmMinutes: coordinator.activePlan?.reArmMinutes ?? 2,
+                                  coachState: coachState,
+                                  coachLine: CoachModel.shared.line(for: coachState, coordinator: coordinator, logs: []),
                                   onAllComplete: completeMission)
             } else if !onboarded {
                 OnboardingView(coordinator: coordinator, auth: auth, store: store,
@@ -42,6 +60,7 @@ public struct RootView: View {
                 }
             } else {
                 MainTabView(coordinator: coordinator, auth: auth, store: store,
+                         selection: $tab,
                          notices: noticeMessages,
                          onDismissNotices: {
                              notices.clear()
@@ -54,22 +73,33 @@ public struct RootView: View {
             }
         }
         .animation(.default, value: coordinator.needsMission)
+        .paywallSheet(isPresented: $showPaywallFromWidget)
         .environment(\.paywall, PaywallContext(store: store, accountToken: auth.user?.id,
                                                termsURL: auth.config.termsURL,
                                                privacyURL: auth.config.privacyURL))
         // Free tier: once StoreKit has answered, bring alarms within the free limits.
-        .onChange(of: store.entitlement) { enforceTier() }
+        .onChange(of: store.entitlement) {
+            enforceTier()
+            refreshCoachNotifications()
+        }
         .onChange(of: store.hasLoadedEntitlement) { enforceTier() }
         .onChange(of: onboarded) { enforceTier() }
         .onChange(of: coordinator.needsMission) { enforceTier() }
         .onAppear { noticeMessages = notices.messages }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active { coordinator.reload() }
+            if phase == .active {
+                coordinator.reload()
+                refreshCoachNotifications()
+            }
         }
+        .onChange(of: coordinator.plans) { refreshCoachNotifications() }
+        .onChange(of: coordinator.session) { refreshCoachNotifications() }
         // Cold launch from the alarm's X: scenePhase never "changes", so sync on first appear too.
         .task {
+            UNUserNotificationCenter.current().delegate = CoachModel.shared.notificationDelegate
             store.start()
             coordinator.reload()
+            refreshCoachNotifications()
             await coordinator.refreshAlarms()
             await coordinator.observeSystemAlarms()
         }
@@ -78,12 +108,22 @@ public struct RootView: View {
             switch url.host() {
             case "mission": coordinator.missionStarted(id: nil)
             case "auth-callback": Task { await auth.handle(url: url) }  // email confirmation links
+            case "progress": tab = .progress                                // widget tap
+            case "paywall": if onboarded { showPaywallFromWidget = true }  // locked Pro widget
             default: break
             }
         }
         .fullScreenCover(isPresented: $showSuccess) {
-            SuccessView { showSuccess = false }
+            SuccessView(coordinator: coordinator) { showSuccess = false }
         }
+    }
+
+    /// Coach notifications + widget snapshot: both derive from alarms, today's session and history.
+    private func refreshCoachNotifications() {
+        let logs = (try? modelContext.fetch(FetchDescriptor<DayLog>())) ?? []
+        CoachNotifier.shared.completedDays = logs.compactMap(\.missionCompletedAt)
+        Task { await CoachNotifier.shared.refresh(coordinator: coordinator) }
+        WidgetPublisher.shared.publish(coordinator: coordinator, logs: logs, isPro: store.entitlement.isPro)
     }
 
     private func enforceTier() {
@@ -107,31 +147,69 @@ public struct RootView: View {
             modelContext.insert(DayLog(session: session))
         }
         try? modelContext.save()
+        refreshCoachNotifications()
         showSuccess = true
     }
 }
 
 struct SuccessView: View {
+    let coordinator: AlarmCoordinator
     let dismiss: () -> Void
     @Query private var logs: [DayLog]
 
     var body: some View {
         let streak = StreakCalculator.currentStreak(completedDays: logs.compactMap(\.missionCompletedAt), today: .now)
-        VStack(spacing: 20) {
-            Spacer()
-            Image(systemName: "sun.max.fill")
-                .font(.system(size: 90))
-                .foregroundStyle(.orange)
-                .symbolEffect(.bounce, options: .nonRepeating)
-            Text("You earned it.").font(.largeTitle.bold())
+        let coach = CoachModel.shared
+        let state = coach.state(coordinator: coordinator, logs: logs)
+        VStack(spacing: 0) {
+          ScrollView {
+           VStack(spacing: 20) {
+            CoachAvatarView(state: state, size: 170)
+                .padding(.top, 32)
+            Text(coach.line(for: state, coordinator: coordinator, logs: logs))
+                .font(.title3.weight(.semibold))
+                .multilineTextAlignment(.center)
+            let report = MorningReport.make(history: logs.map(DaySummary.init(log:)),
+                                            day: coordinator.session?.day ?? .now)
+            if report.promoted {
+                VStack(spacing: 6) {
+                    RankInsignia(rank: report.after.rank, size: 64)
+                    Text("Promoted to \(report.after.rank.title)!").font(.title2.bold())
+                }
+                .transition(.scale.combined(with: .opacity))
+            } else {
+                Text("You earned it.").font(.largeTitle.bold())
+            }
+            if report.xpGained > 0 {
+                VStack(spacing: 6) {
+                    Text("+\(report.xpGained) XP").font(.headline).foregroundStyle(.orange).monospacedDigit()
+                    ProgressView(value: report.after.fraction).tint(.orange).frame(maxWidth: 240)
+                    if let next = report.after.next, let toGo = report.after.xpToNext {
+                        Text("\(toGo) XP to \(next.title)").font(.caption).foregroundStyle(.secondary)
+                    }
+                }
+            }
+            if !report.newMedals.isEmpty {
+                VStack(spacing: 8) {
+                    Text(report.newMedals.count == 1 ? "New medal" : "New medals")
+                        .font(.caption.weight(.heavy)).textCase(.uppercase).foregroundStyle(.secondary)
+                    HStack(spacing: 12) {
+                        ForEach(report.newMedals.prefix(3)) { MedalTile(medal: $0, earned: true).frame(width: 96) }
+                    }
+                }
+            }
             Text("Follow-up alarms cancelled.").foregroundStyle(.secondary)
             Text("Streak: \(streak) day\(streak == 1 ? "" : "s")")
                 .font(.title2.weight(.semibold))
-            Spacer()
+           }
+           .frame(maxWidth: .infinity)
+           .padding(24)
+          }
+          .scrollBounceBehavior(.basedOnSize)
             Button("Done", action: dismiss)
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
+                .padding(.bottom, 24)
         }
-        .padding(24)
     }
 }

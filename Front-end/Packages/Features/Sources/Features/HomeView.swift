@@ -1,4 +1,5 @@
 import AlarmEngine
+import Coach
 import Core
 import Purchases
 import SwiftData
@@ -47,6 +48,13 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             List {
+                Section {
+                    let coach = CoachModel.shared
+                    let state = coach.state(coordinator: coordinator, logs: logs)
+                    CoachCard(state: state, line: coach.line(for: state, coordinator: coordinator, logs: logs))
+                        .padding(.vertical, 4)
+                }
+
                 Section {
                     if let next = coordinator.nextAlarm {
                         VStack(alignment: .leading, spacing: 4) {

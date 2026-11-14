@@ -1,12 +1,15 @@
+import Coach
 import Core
 import SwiftData
 import SwiftUI
+import WidgetShared
 
 /// Progress tab: streaks and the last two weeks of mornings, from `DayLog`.
 struct StatsView: View {
     @Query(sort: \DayLog.day, order: .reverse) private var logs: [DayLog]
 
     private var completed: [Date] { logs.compactMap(\.missionCompletedAt) }
+    private var history: [DaySummary] { logs.map(DaySummary.init(log:)) }
     private var current: Int { StreakCalculator.currentStreak(completedDays: completed, today: .now) }
     private var best: Int { StreakCalculator.bestStreak(completedDays: completed) }
     private var averageReRings: Double {
@@ -18,6 +21,11 @@ struct StatsView: View {
     var body: some View {
         NavigationStack {
             List {
+                Section("Rank") {
+                    RankCard(progress: XPRules.progress(history))
+                        .padding(.vertical, 4)
+                }
+
                 Section {
                     HStack(spacing: 16) {
                         Image(systemName: "flame.fill")
@@ -38,6 +46,19 @@ struct StatsView: View {
                 Section("Last 14 days") {
                     LastDaysStrip(logs: logs)
                         .padding(.vertical, 6)
+                }
+
+                Section {
+                    let earned = MedalRules.earned(history)
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 96), spacing: 12, alignment: .top)], spacing: 16) {
+                        ForEach(Medal.allCases) { MedalTile(medal: $0, earned: earned.contains($0)) }
+                    }
+                    .padding(.vertical, 8)
+                } header: {
+                    let count = MedalRules.earned(history).count
+                    Text("Medals · \(count)/\(Medal.allCases.count)")
+                } footer: {
+                    Text("XP per morning: \(XPRules.missionDone) for the mission, +\(XPRules.firstTryBonus) on the first ring, −\(XPRules.perReRing) per re-ring, +\(XPRules.perStreakDay) per streak day (up to \(XPRules.maxStreakBonusDays)).")
                 }
 
                 Section("All time") {

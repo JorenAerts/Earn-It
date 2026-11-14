@@ -1,0 +1,52 @@
+{
+  "idle": {
+    "gentle": ["Alarm set for {time}. You've got this.", "All set for {time}. Enjoy your day.", "Ready when you are. {time} tomorrow."],
+    "toughLove": ["{time} sharp, private. Don't make me come in there.", "Alarm is set for {time}. I'll be watching.", "At ease. For now. {time} tomorrow."],
+    "savage": ["{time}. Not {time} and five snoozes. {time}.", "I've seen your track record. I'll be there at {time}.", "Enjoy your freedom. It ends at {time}."]
+  },
+  "night": {
+    "gentle": ["Time to wind down. Sleep well.", "A good morning starts tonight. Rest up.", "Phone down soon. See you at {time}."],
+    "toughLove": ["Lights out, private. {time} comes fast.", "Phone down. That's an order.", "Bed. Now. Tomorrow-you will thank me."],
+    "savage": ["Still scrolling? Tomorrow-you is going to hate you.", "Nothing good happens on your phone after midnight. Bed.", "Go to sleep. Your snooze button needs a rest too."]
+  },
+  "noAlarm": {
+    "gentle": ["No alarm set yet. Add one when you're ready.", "Set an alarm and I'll help you get up.", "Whenever you're ready, add an alarm."],
+    "toughLove": ["No alarm? Then what am I doing here?", "Set an alarm, private. I'm bored.", "A soldier without an alarm is a soldier still in bed."],
+    "savage": ["No alarm. Bold strategy.", "Planning to sleep until noon? Set an alarm.", "I don't do nothing. Set. An. Alarm."]
+  },
+  "ringing": {
+    "gentle": ["Your alarm is ringing. Time to get up.", "Good morning! Let's start the mission.", "Rise and shine. You can do this."],
+    "toughLove": ["I hear an alarm. I don't hear feet on the floor.", "Up and at 'em, private!", "Feet on the floor. Mission. Now."],
+    "savage": ["Oh, you're 'just resting your eyes'? Sure.", "The alarm is ringing. Are you dead, or just lazy?", "Get up before I start singing."]
+  },
+  "reRing": {
+    "gentle": ["That's another ring. You can still turn this morning around.", "Ring {rings}. Let's do the mission together.", "Almost there. One mission and you're done."],
+    "toughLove": ["Ring {rings}, private. My patience has a snooze limit too.", "UP. NOW. That is a direct order!", "{rings} rings. Do you want me to get the megaphone?"],
+    "savage": ["Ring number {rings}. Are you allergic to mornings?", "{rings} rings. I've seen rocks with more drive.", "Snooze again and I'm telling your mother."]
+  },
+  "missionSuccess": {
+    "gentle": ["Nice work! You made it.", "Mission complete. Have a great day.", "You did it. That's what counts."],
+    "toughLove": ["Mission complete. Took you long enough. Carry on.", "Up and moving. Next time, first ring.", "Good. Now don't crawl back into bed."],
+    "savage": ["Finally. I almost filed a missing person report.", "Congratulations on doing the bare minimum.", "You're up. The bar was on the floor and you cleared it."]
+  },
+  "firstTry": {
+    "gentle": ["First ring, mission done. Wonderful start!", "Up on the first try. Proud of you.", "That's how you start a day."],
+    "toughLove": ["First ring! Outstanding, soldier!", "Up on the first try. I could cry. I won't.", "That's what I like to see. Carry on."],
+    "savage": ["First try? Who are you and what did you do with my recruit?", "Up on the first ring. Did someone replace you?", "Fine. That was impressive. Don't let it go to your head."]
+  },
+  "streakMilestone": {
+    "gentle": ["{streak} days in a row. Amazing!", "{streak}-day streak. You should be proud.", "{streak} mornings earned. Keep it going!"],
+    "toughLove": ["{streak} days straight! Promotion material, soldier.", "{streak}-day streak. Now that's discipline.", "{streak} days. I'm almost impressed."],
+    "savage": ["{streak} days. Who are you?", "{streak} in a row. I'm checking for a body double.", "{streak} days. Don't ruin it tomorrow."]
+  },
+  "failSafe": {
+    "gentle": ["We missed it today. Tomorrow is a new chance.", "Rough morning. That's okay, try again tomorrow.", "Not today. Let's get it tomorrow."],
+    "toughLove": ["Too many rings. The alarm gave up. I didn't.", "Unacceptable. Tomorrow, we do better.", "We'll call that a training exercise. Tomorrow is real."],
+    "savage": ["Even the alarm gave up on you.", "I have seen rocks with more discipline than you.", "Impressive. The alarm surrendered before you did."]
+  },
+  "streakBroken": {
+    "gentle": ["The streak reset. Let's build a new one.", "Every streak starts at day one. Today's yours.", "Start fresh. One morning at a time."],
+    "toughLove": ["I'm not angry. I'm just disappointed.", "The streak is gone. We rebuild. Starting tomorrow.", "Back to day one, private. Earn it back."],
+    "savage": ["Your streak called. It's not coming back.", "All that progress, gone. Inspiring.", "I'm writing to your mother about this."]
+  }
+}

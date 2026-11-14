@@ -150,7 +150,14 @@ private final class BundleToken {}
                                  cache: EntitlementCache(defaults: UserDefaults(suiteName: "test-\(UUID().uuidString)")!))
         await store.loadProducts()
         let lifetime = try #require(store.products.first { $0.id == "be.earnit.app.pro.lifetime" })
-        #expect(await store.purchase(lifetime))
+        // Product.purchase() can hang in the unit-test host; buy through the test session.
+        _ = try await session.buyProduct(identifier: lifetime.id)
+        // The transaction can take a moment to appear in Transaction.currentEntitlements.
+        for _ in 0..<15 {
+            await store.refreshEntitlement()
+            if store.entitlement == .pro(expiresAt: nil) { break }
+            try await Task.sleep(for: .milliseconds(200))
+        }
         #expect(store.entitlement == .pro(expiresAt: nil))
         session.clearTransactions()
     }
