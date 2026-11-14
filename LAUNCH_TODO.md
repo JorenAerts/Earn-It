@@ -19,6 +19,8 @@ currently placeholders (`https://example.com/...`).
 - [ ] Add both links in App Store Connect (App Information › Privacy Policy URL; Terms link in
       the app description or as custom EULA).
 
+- [ ] Terms of Use: users may only use audio they have the rights to as alarm sounds; own sounds stay on their device (personal use, never shared through the app).
+
 ## 2. Own email sender for Supabase (removes "email rate limit exceeded")
 
 Supabase's built-in mailer only sends a few emails per hour — fine for testing, not for users.
@@ -63,6 +65,10 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 - [ ] Check: trial starts → **Manage subscription** opens Apple's sheet → cancel → after expiry
       the app drops to Free and the downgrade notice appears (sandbox renewals take minutes).
 - [ ] Check **Restore purchases** on a second device / after reinstall.
+
+### Apple Music (needs the paid program)
+- [ ] Developer portal › Identifiers › `be.earnit.app` › App Services: enable **MusicKit**.
+- [ ] Test search + playback with an Apple Music subscription.
 
 ### Sign in with Apple (needs the paid program)
 - [ ] Enable the Sign in with Apple capability for `be.earnit.app`.

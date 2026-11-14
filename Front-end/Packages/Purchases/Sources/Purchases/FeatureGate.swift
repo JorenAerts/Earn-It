@@ -38,6 +38,13 @@ public struct FeatureGate: Equatable, Sendable {
         !isPro && !Self.freeSounds.contains(sound)
     }
 
+    /// Own sounds and Apple Music are Pro; built-ins follow `freeSounds`.
+    public func isLocked(_ choice: SoundChoice) -> Bool {
+        guard !isPro else { return false }
+        if case .builtIn(let sound) = choice { return isLocked(sound) }
+        return true
+    }
+
     /// The plan uses something the tier doesn't allow.
     public func isAllowed(_ plan: AlarmPlan) -> Bool {
         !isLocked(plan.sound) && !plan.missions.contains { isLocked($0.kind) }
@@ -51,7 +58,7 @@ public enum DowngradePolicy {
     public enum Change: Hashable, Sendable {
         case alarmTurnedOff(time: String)
         case missionsReplaced(time: String)
-        case soundReplaced(time: String, from: AlarmSound)
+        case soundReplaced(time: String, from: String)
     }
 
     public static func apply(to plans: [AlarmPlan], gate: FeatureGate) -> (plans: [AlarmPlan], changes: [Change]) {
@@ -74,7 +81,7 @@ public enum DowngradePolicy {
                 changes.append(.missionsReplaced(time: keeper.timeText))
             }
             if gate.isLocked(keeper.sound) {
-                changes.append(.soundReplaced(time: keeper.timeText, from: keeper.sound))
+                changes.append(.soundReplaced(time: keeper.timeText, from: keeper.sound.displayName))
                 keeper.sound = .classic
             }
             result[keeperIndex] = keeper
@@ -88,7 +95,7 @@ extension DowngradePolicy.Change {
         switch self {
         case .alarmTurnedOff(let time): "Alarm \(time) was switched off (free plan: 1 alarm)."
         case .missionsReplaced(let time): "Alarm \(time) now uses the Math mission."
-        case .soundReplaced(let time, let from): "Alarm \(time) now uses Classic Beep instead of \(from.displayName)."
+        case .soundReplaced(let time, let from): "Alarm \(time) now uses Classic Beep instead of \(from)."
         }
     }
 }

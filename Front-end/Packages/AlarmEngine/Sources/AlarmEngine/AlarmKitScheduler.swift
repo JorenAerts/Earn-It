@@ -49,28 +49,28 @@ public final class AlarmKitScheduler: AlarmScheduling {
             schedule: schedule,
             attributes: attributes(title: plan.alarmTitle, attempt: 0, countdown: false),
             stopIntent: intents.stop(plan.id),
-            sound: .named(plan.sound.fileName)
+            sound: .named(plan.sound.systemSoundFileName)
         )
         _ = try await AlarmManager.shared.schedule(id: plan.id, configuration: config)
     }
 
-    public func scheduleOneOff(id: UUID, at date: Date, title: String, sound: AlarmSound) async throws {
+    public func scheduleOneOff(id: UUID, at date: Date, title: String, sound: SoundChoice) async throws {
         let config = AlarmManager.AlarmConfiguration<EarnItAlarmMetadata>.alarm(
             schedule: .fixed(date),
             attributes: attributes(title: title, attempt: 0, countdown: false),
             stopIntent: intents.stop(id),
-            sound: .named(sound.fileName)
+            sound: .named(sound.systemSoundFileName)
         )
         _ = try await AlarmManager.shared.schedule(id: id, configuration: config)
     }
 
     public func scheduleFollowUp(id: UUID, after duration: TimeInterval, title: String, attempt: Int,
-                                 sound: AlarmSound) async throws {
+                                 sound: SoundChoice) async throws {
         let config = AlarmManager.AlarmConfiguration<EarnItAlarmMetadata>.timer(
             duration: duration,
             attributes: attributes(title: title, attempt: attempt, countdown: true),
             stopIntent: intents.stop(id),
-            sound: .named(sound.fileName)
+            sound: .named(sound.systemSoundFileName)
         )
         _ = try await AlarmManager.shared.schedule(id: id, configuration: config)
         log.info("follow-up \(id, privacy: .public) in \(duration)s")

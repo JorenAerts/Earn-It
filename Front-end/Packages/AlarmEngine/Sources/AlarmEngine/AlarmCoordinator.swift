@@ -216,7 +216,7 @@ public final class AlarmCoordinator {
     // MARK: Debug
 
     /// Test ring for `planID` (or the first alarm) in `seconds`.
-    public func debugRing(inSeconds seconds: TimeInterval, planID: UUID? = nil) async {
+    public func debugRing(inSeconds seconds: TimeInterval, planID: UUID? = nil, sound override: SoundChoice? = nil) async {
         guard let plan = plan(id: planID) ?? plans.first else {
             lastError = "Add an alarm first."
             return
@@ -224,7 +224,7 @@ public final class AlarmCoordinator {
         let id = UUID()
         do {
             try await scheduler.scheduleOneOff(id: id, at: now().addingTimeInterval(seconds),
-                                               title: plan.alarmTitle, sound: plan.sound)
+                                               title: plan.alarmTitle, sound: override ?? plan.sound)
             setOwner(plan.id, of: id)
         } catch {
             lastError = "Could not schedule test alarm: \(error.localizedDescription)"
