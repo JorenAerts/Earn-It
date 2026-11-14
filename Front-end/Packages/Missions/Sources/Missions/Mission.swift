@@ -3,6 +3,9 @@ import SwiftUI
 
 public enum MissionResult: Sendable, Equatable {
     case success
+    /// The mission can't be done right now (e.g. the scanned item is gone, no camera):
+    /// the runner swaps in the backup mission.
+    case needsBackup
 }
 
 /// Plug-in contract: one folder per mission, registered in `MissionRegistry`.
@@ -27,6 +30,7 @@ public enum MissionRegistry {
         case .math: MathMission(config: config)
         case .shake: ShakeMission(config: config)
         case .qr: QRMission(config: config)
+        case .object: ObjectMission(config: config)
         }
     }
 
@@ -35,6 +39,7 @@ public enum MissionRegistry {
         case .math: MathMission.makeSetupView(config: config)
         case .shake: ShakeMission.makeSetupView(config: config)
         case .qr: QRMission.makeSetupView(config: config)
+        case .object: ObjectMission.makeSetupView(config: config)
         }
     }
 }

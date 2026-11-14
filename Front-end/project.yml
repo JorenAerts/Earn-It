@@ -91,7 +91,7 @@ targets:
           - CFBundleURLName: be.earnit.app
             CFBundleURLSchemes: [earnit]
         NSAlarmKitUsageDescription: Earn It schedules your wake-up alarms so they ring through silent mode and Focus.
-        NSCameraUsageDescription: Earn It uses the camera to scan the wake-up code you registered, so you have to get out of bed to stop the alarm.
+        NSCameraUsageDescription: Earn It uses the camera to scan the code or item you registered, so you have to get out of bed to stop the alarm. Images stay on your iPhone.
 
   AlarmLiveActivity:
     type: app-extension

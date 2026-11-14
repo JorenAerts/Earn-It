@@ -13,6 +13,10 @@ struct AlarmSetupView: View {
     @State private var preview = SoundPreview()
     @State private var confirmDelete = false
     @State private var showPaywall = false
+    @State private var showMissionPicker = false
+    @State private var editingMission: EditingMission?
+
+    private struct EditingMission: Identifiable { let id: UUID }
     @Environment(\.paywall) private var paywall
 
     /// Without an injected context (previews) everything is unlocked.
@@ -67,21 +71,23 @@ struct AlarmSetupView: View {
                     Text("The same sound keeps playing in the app until your mission is done. Tap to preview.")
                 }
 
-                Section("Missions") {
-                    ForEach($plan.missions) { $mission in
-                        MissionConfigRow(mission: $mission)
+                Section {
+                    ForEach(plan.missions) { mission in
+                        Button { editingMission = EditingMission(id: mission.id) } label: { MissionRow(config: mission) }
+                            .buttonStyle(.plain)
                     }
                     .onDelete { plan.missions.remove(atOffsets: $0) }
-                    Menu("Add mission") {
-                        ForEach(MissionKind.allCases) { kind in
-                            if gate.isLocked(kind) {
-                                Button { showPaywall = true } label: {
-                                    Label("\(kind.displayName) — Pro", systemImage: "lock.fill")
-                                }
-                            } else {
-                                Button(kind.displayName) { plan.missions.append(MissionConfig(kind: kind)) }
-                            }
-                        }
+                    .onMove { plan.missions.move(fromOffsets: $0, toOffset: $1) }
+                    Button {
+                        showMissionPicker = true
+                    } label: {
+                        Label("Add mission", systemImage: "plus.circle.fill")
+                    }
+                } header: {
+                    Text("Missions")
+                } footer: {
+                    if plan.missions.count > 1 {
+                        Text("Done in this order when the alarm rings. Swipe to remove, long-press to reorder.")
                     }
                 }
 
@@ -104,6 +110,16 @@ struct AlarmSetupView: View {
             .navigationTitle(isNew ? "New alarm" : "Edit alarm")
             .onDisappear { preview.stop() }
             .paywallSheet(isPresented: $showPaywall)
+            .sheet(isPresented: $showMissionPicker) {
+                MissionPickerView(gate: gate) { plan.missions.append($0) }
+            }
+            .sheet(item: $editingMission) { editing in
+                if let index = plan.missions.firstIndex(where: { $0.id == editing.id }) {
+                    MissionEditSheet(config: $plan.missions[index]) {
+                        plan.missions.removeAll { $0.id == editing.id }
+                    }
+                }
+            }
             .confirmationDialog("Delete this alarm?", isPresented: $confirmDelete, titleVisibility: .visible) {
                 Button("Delete", role: .destructive) {
                     onDelete()
@@ -123,30 +139,6 @@ struct AlarmSetupView: View {
                 }
             }
         }
-    }
-}
-
-private struct MissionConfigRow: View {
-    @Binding var mission: MissionConfig
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(mission.kind.displayName).font(.headline)
-            if mission.kind.usesDifficulty {
-                Picker("Difficulty", selection: $mission.difficulty) {
-                    ForEach(MissionDifficulty.allCases) { Text($0.rawValue.capitalized).tag($0) }
-                }
-                .pickerStyle(.segmented)
-            }
-            if let range = mission.kind.targetRange {
-                Stepper("\(mission.target) \(mission.kind.targetLabel)", value: $mission.target,
-                        in: range, step: mission.kind.targetStep)
-            }
-            if let setup = MissionRegistry.setupView(for: $mission) {
-                setup
-            }
-        }
-        .padding(.vertical, 4)
     }
 }
 
