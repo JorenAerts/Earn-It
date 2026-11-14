@@ -6,6 +6,7 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
     case math
     case shake
     case qr
+    case object
 
     public var id: String { rawValue }
 
@@ -14,6 +15,7 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .math: "Math problems"
         case .shake: "Shake the phone"
         case .qr: "Scan a code"
+        case .object: "Scan your item"
         }
     }
 
@@ -23,6 +25,49 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .math: "Math Problem"
         case .shake: "Shake It"
         case .qr: "Scan Code"
+        case .object: "Scan Item"
+        }
+    }
+
+    /// SF Symbol used in the mission picker, editor rows and the mission screen.
+    public var symbol: String {
+        switch self {
+        case .math: "function"
+        case .shake: "iphone.radiowaves.left.and.right"
+        case .qr: "qrcode.viewfinder"
+        case .object: "camera.viewfinder"
+        }
+    }
+
+    /// One line in the mission picker: what you'll have to do.
+    public var tagline: String {
+        switch self {
+        case .math: "Solve problems in a row. Wakes up your brain."
+        case .shake: "Shake your phone hard. Wakes up your body."
+        case .qr: "Scan a code you stuck in another room."
+        case .object: "Scan an item you pick, like your toothbrush or coffee cup."
+        }
+    }
+
+    /// Rough time it takes, shown in the picker.
+    public var estimatedDuration: String {
+        switch self {
+        case .math: "~1 min"
+        case .shake: "~30 s"
+        case .qr, .object: "~1 min"
+        }
+    }
+
+    public var needsCamera: Bool { self == .qr || self == .object }
+
+    /// Has to be set up before the alarm can use it (register a code / scan an item).
+    public var needsSetup: Bool { needsPayload }
+
+    /// After this long on the mission screen, offer a backup mission ("Can't find it?").
+    public var backupAfter: TimeInterval? {
+        switch self {
+        case .object: 120
+        case .math, .shake, .qr: nil
         }
     }
 
@@ -32,6 +77,7 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .math: "problems"
         case .shake: "shakes"
         case .qr: "code"
+        case .object: "item"
         }
     }
 
@@ -39,7 +85,7 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         switch self {
         case .math: 3
         case .shake: 30
-        case .qr: 1
+        case .qr, .object: 1
         }
     }
 
@@ -48,7 +94,7 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         switch self {
         case .math: 1...20
         case .shake: 5...200
-        case .qr: nil
+        case .qr, .object: nil
         }
     }
 
@@ -56,19 +102,19 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         switch self {
         case .math: 1
         case .shake: 5
-        case .qr: 1
+        case .qr, .object: 1
         }
     }
 
     public var usesDifficulty: Bool {
         switch self {
         case .math, .shake: true
-        case .qr: false
+        case .qr, .object: false
         }
     }
 
-    /// Needs something registered at setup (e.g. the QR code to scan).
-    public var needsPayload: Bool { self == .qr }
+    /// Needs something registered at setup (the QR code / the scanned item).
+    public var needsPayload: Bool { self == .qr || self == .object }
 }
 
 public enum MissionDifficulty: String, Codable, CaseIterable, Sendable, Identifiable {
@@ -82,16 +128,35 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
     public var difficulty: MissionDifficulty
     /// Math: problems correct in a row. Shake: shakes. QR: unused (1).
     public var target: Int
-    /// Mission-specific registered value. QR: the code's payload string.
+    /// Mission-specific registered value. QR: the code's payload string. Object: reference ID.
     public var payload: String?
+    /// User-facing name of what was registered, e.g. "Toothbrush".
+    public var label: String?
 
     public init(id: UUID = UUID(), kind: MissionKind, difficulty: MissionDifficulty = .medium,
-                target: Int? = nil, payload: String? = nil) {
+                target: Int? = nil, payload: String? = nil, label: String? = nil) {
         self.id = id
         self.kind = kind
         self.difficulty = difficulty
         self.target = target ?? kind.defaultTarget
         self.payload = payload
+        self.label = label
+    }
+
+    /// What the mission screen tells the user to do.
+    public var instruction: String {
+        switch kind {
+        case .math: "Solve \(target) problem\(target == 1 ? "" : "s") in a row."
+        case .shake: "Shake your phone \(target) times."
+        case .qr: "Go to your code and scan it."
+        case .object: "Find your \(label?.lowercased() ?? "item") and point the camera at it."
+        }
+    }
+
+    /// Alarm title part: "Scan Toothbrush" for a named item.
+    public var alarmTitle: String {
+        if kind == .object, let label, !label.isEmpty { return "Scan \(label)" }
+        return kind.alarmTitle
     }
 
     /// Fully configured and playable.
@@ -103,6 +168,7 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
     public var summary: String {
         switch kind {
         case .qr: isReady ? "Code registered" : "No code registered"
+        case .object: isReady ? (label ?? "Item scanned") : "No item scanned yet"
         case .math, .shake: "\(target) \(kind.targetLabel) · \(difficulty.rawValue)"
         }
     }
@@ -227,7 +293,7 @@ public struct AlarmPlan: Codable, Hashable, Sendable, Identifiable {
 
     /// Alarm title: app name + the mission(s) to solve, e.g. "Earn It - Math Problem + Shake It".
     public var alarmTitle: String {
-        let missions = missions.map(\.kind.alarmTitle)
+        let missions = missions.map(\.alarmTitle)
         return missions.isEmpty ? "Earn It" : "Earn It - " + missions.joined(separator: " + ")
     }
 

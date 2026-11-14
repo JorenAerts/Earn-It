@@ -182,7 +182,7 @@ private struct AlarmRow: View {
                 Text([plan.label.isEmpty ? nil : plan.label, plan.repeatText]
                         .compactMap { $0 }.joined(separator: " · "))
                     .font(.subheadline)
-                Text(plan.missions.map(\.kind.alarmTitle).joined(separator: " + ") + " · " + plan.sound.displayName)
+                Text(plan.missions.map(\.alarmTitle).joined(separator: " + ") + " · " + plan.sound.displayName)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)

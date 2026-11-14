@@ -2,6 +2,7 @@ import Account
 import AlarmEngine
 import Coach
 import Core
+import Missions
 import Purchases
 import SwiftData
 import SwiftUI
@@ -45,6 +46,16 @@ public struct RootView: View {
                 #if DEBUG
                 NavigationStack { WidgetPreviewsView(coordinator: coordinator, store: store) }
                 #endif
+            } else if CommandLine.arguments.contains("-missionPicker") {
+                // Screenshot helper: -missionPicker
+                MissionPickerView(gate: store.gate) { _ in }
+            } else if CommandLine.arguments.contains("-missionRunner") {
+                // Screenshot helper: -missionRunner (object step without a scan, then math)
+                MissionRunnerView(missions: [MissionConfig(kind: .object, payload: "none", label: "Toothbrush"),
+                                             MissionConfig(kind: .math)],
+                                  reArmCount: 2, reArmMinutes: 2,
+                                  coachState: CoachState(mood: .angry, context: .reRing, anger: 0.4),
+                                  coachLine: "Ring 2, private. My patience has a snooze limit too.") {}
             } else if coordinator.needsMission {
                 let coachState = CoachModel.shared.state(coordinator: coordinator, logs: [])
                 MissionRunnerView(missions: coordinator.activePlan?.missions ?? [],
@@ -92,7 +103,12 @@ public struct RootView: View {
                 refreshCoachNotifications()
             }
         }
-        .onChange(of: coordinator.plans) { refreshCoachNotifications() }
+        .onChange(of: coordinator.plans) {
+            refreshCoachNotifications()
+            // Delete item scans that no alarm uses anymore.
+            let inUse = Set(coordinator.plans.flatMap(\.missions).filter { $0.kind == .object }.compactMap(\.payload))
+            ObjectReferenceStore.shared.prune(keeping: inUse)
+        }
         .onChange(of: coordinator.session) { refreshCoachNotifications() }
         // Cold launch from the alarm's X: scenePhase never "changes", so sync on first appear too.
         .task {
