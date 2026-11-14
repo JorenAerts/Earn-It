@@ -116,6 +116,26 @@ public final class SupabaseAuthService: AuthService {
         }
     }
 
+    public func loadProfile() async -> ProfileUpdate? {
+        guard let user else { return nil }
+        struct Row: Decodable {
+            let display_name: String?
+            let wake_goal: ProfileUpdate.WakeGoal?
+        }
+        do {
+            let rows: [Row] = try await client.from("profiles")
+                .select("display_name, wake_goal")
+                .eq("id", value: user.id)
+                .limit(1)
+                .execute()
+                .value
+            return rows.first.map { ProfileUpdate(displayName: $0.display_name, wakeGoal: $0.wake_goal) }
+        } catch {
+            log.error("profile load failed: \(error.localizedDescription, privacy: .public)")
+            return nil
+        }
+    }
+
     public func handle(url: URL) async {
         do {
             _ = try await client.auth.session(from: url)
@@ -125,7 +145,8 @@ public final class SupabaseAuthService: AuthService {
     }
 
     private static func map(_ user: User) -> AccountUser {
-        AccountUser(id: user.id, email: user.email)
+        let provider: String? = if case .string(let name)? = user.appMetadata["provider"] { name } else { nil }
+        return AccountUser(id: user.id, email: user.email, provider: provider)
     }
 
     private static func map(_ provider: AuthProvider) -> Provider {
@@ -156,6 +177,7 @@ public final class UnavailableAuthService: AuthService {
     public func signOut() async {}
     public func deleteAccount() async throws { throw AuthError.notConfigured }
     public func updateProfile(_ update: ProfileUpdate) async {}
+    public func loadProfile() async -> ProfileUpdate? { nil }
     public func handle(url: URL) async {}
 }
 
@@ -183,11 +205,12 @@ public final class FakeAuthService: AuthService {
         profile = nil
     }
     public func updateProfile(_ update: ProfileUpdate) async { profile = update }
+    public func loadProfile() async -> ProfileUpdate? { user == nil ? nil : profile }
     public func handle(url: URL) async {}
 
     private func sign(_ email: String) throws {
         try check()
-        user = AccountUser(id: UUID(), email: email)
+        user = AccountUser(id: UUID(), email: email, provider: email.hasSuffix("@example.com") ? email.components(separatedBy: "@")[0] : "email")
     }
 
     private func check() throws {

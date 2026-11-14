@@ -75,6 +75,12 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 - [ ] Create a Services ID + Sign in with Apple key, paste them in Supabase › Providers › **Apple**.
 - [ ] Keep `"apple"` in `Front-end/Config/Auth.json` → `providers`.
 
+### Settings › Help & feedback
+- [ ] Set `supportEmail` in `Front-end/Config/Auth.json` (the Contact support row stays hidden while empty).
+- [ ] Set `shareURL` (website or App Store page, `https://apps.apple.com/app/id<APP_ID>`) — now a placeholder.
+- [ ] Add your Supabase user UUID to `Front-end/Config/Developer.json` so the 7-tap developer tools
+      unlock on TestFlight builds (copy it in Settings › Developer tools › Info).
+
 ### Submission
 - [ ] App privacy labels (email, user ID, purchases; no tracking).
 - [ ] Review notes: explain AlarmKit alarm + background audio (keeps the alarm sounding until the

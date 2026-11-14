@@ -124,11 +124,9 @@ public final class StoreService {
         hasLoadedEntitlement = true
     }
 
-    #if DEBUG
-    /// Debug: forget the cached entitlement (StoreKit stays the source of truth).
+    /// Developer tools: forget the cached entitlement (StoreKit stays the source of truth).
     public func debugResetCache() {
         cache.save(.free)
         entitlement = .free
     }
-    #endif
 }

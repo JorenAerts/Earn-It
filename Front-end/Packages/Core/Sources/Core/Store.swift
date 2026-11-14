@@ -12,6 +12,7 @@ public final class KeyValueStore: @unchecked Sendable {
         static let plans = "earnit.plans"
         static let session = "earnit.session"
         static let owners = "earnit.alarmOwners"
+        static let pause = "earnit.pause"
     }
 
     public init(defaults: UserDefaults = .standard) {
@@ -45,6 +46,15 @@ public final class KeyValueStore: @unchecked Sendable {
     /// Test / migration helper: write a plan in the pre-multi-alarm format.
     public func saveLegacyPlan(_ plan: AlarmPlan) {
         save(plan, Key.legacyPlan)
+    }
+
+    /// "Pause all alarms": nil = not paused.
+    public func loadPause() -> AlarmPause? {
+        load(Key.pause)
+    }
+
+    public func savePause(_ pause: AlarmPause?) {
+        if let pause { save(pause, Key.pause) } else { defaults.removeObject(forKey: Key.pause) }
     }
 
     public func loadSession() -> SessionState? {

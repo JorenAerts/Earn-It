@@ -1,0 +1,4 @@
+{
+  "_help": "Supabase user UUIDs that may unlock Settings › Developer in TestFlight / App Store builds (7 taps on Version). Xcode builds: anyone. Copy your ID from the Developer page › Info.",
+  "developerUserIDs": []
+}

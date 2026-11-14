@@ -34,6 +34,10 @@ public struct AuthConfig: Codable, Sendable, Equatable {
     public let redirectURL: URL
     public let termsURL: URL
     public let privacyURL: URL
+    /// Help & feedback › Contact support. Optional: hidden when missing.
+    public let supportEmail: String?
+    /// Help & feedback › Share Earn It (website / App Store page).
+    public let shareURL: URL?
 
     public static func load(from bundle: Bundle = .main) -> AuthConfig {
         guard let url = bundle.url(forResource: "Auth", withExtension: "json"),
@@ -50,16 +54,19 @@ public struct AuthConfig: Codable, Sendable, Equatable {
         privacyURL: URL(string: "https://example.com/privacy")!
     )
 
-    public init(emailPassword: Bool, providers: [AuthProvider], redirectURL: URL, termsURL: URL, privacyURL: URL) {
+    public init(emailPassword: Bool, providers: [AuthProvider], redirectURL: URL, termsURL: URL, privacyURL: URL,
+                supportEmail: String? = nil, shareURL: URL? = nil) {
         self.emailPassword = emailPassword
         self.providers = providers
         self.redirectURL = redirectURL
         self.termsURL = termsURL
         self.privacyURL = privacyURL
+        self.supportEmail = supportEmail
+        self.shareURL = shareURL
     }
 
     private enum CodingKeys: String, CodingKey {
-        case emailPassword, providers, redirectURL, termsURL, privacyURL
+        case emailPassword, providers, redirectURL, termsURL, privacyURL, supportEmail, shareURL
     }
 
     /// Unknown provider names in the JSON are ignored instead of breaking login.
@@ -71,17 +78,33 @@ public struct AuthConfig: Codable, Sendable, Equatable {
         redirectURL = try c.decode(URL.self, forKey: .redirectURL)
         termsURL = try c.decode(URL.self, forKey: .termsURL)
         privacyURL = try c.decode(URL.self, forKey: .privacyURL)
+        let email = try c.decodeIfPresent(String.self, forKey: .supportEmail)?.trimmingCharacters(in: .whitespaces)
+        supportEmail = (email?.isEmpty ?? true) ? nil : email
+        shareURL = try c.decodeIfPresent(URL.self, forKey: .shareURL)
     }
 }
 
 public struct AccountUser: Equatable, Sendable {
     public let id: UUID
     public let email: String?
+    /// How the account signs in: "email", "apple", "google", "azure", … (Supabase app metadata).
+    public let provider: String?
 
-    public init(id: UUID, email: String?) {
+    public init(id: UUID, email: String?, provider: String? = nil) {
         self.id = id
         self.email = email
+        self.provider = provider
     }
+
+    /// "Email", "Apple", "Microsoft", …
+    public var providerName: String? {
+        guard let provider else { return nil }
+        if provider == "email" { return "Email & password" }
+        if provider == "azure" { return AuthProvider.microsoft.displayName }
+        return AuthProvider(rawValue: provider)?.displayName ?? provider.capitalized
+    }
+
+    public var usesPassword: Bool { provider == "email" }
 }
 
 /// Profile fields synced to the `profiles` table when signed in.
@@ -141,6 +164,8 @@ public protocol AuthService: AnyObject {
     /// Permanently deletes the account (App Review 5.1.1(v)).
     func deleteAccount() async throws
     func updateProfile(_ update: ProfileUpdate) async
+    /// The signed-in user's profile row (nil when signed out or offline).
+    func loadProfile() async -> ProfileUpdate?
     /// Email confirmation / OAuth callback deep links (`earnit://auth-callback…`).
     func handle(url: URL) async
 }

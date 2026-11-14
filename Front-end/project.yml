@@ -52,6 +52,12 @@ targets:
         buildPhase: resources
       - path: Config/CoachLines.json
         buildPhase: resources
+      - path: Config/Help.json
+        buildPhase: resources
+      - path: Config/WhatsNew.json
+        buildPhase: resources
+      - path: Config/Developer.json
+        buildPhase: resources
     dependencies:
       - package: Core
       - package: Coach
