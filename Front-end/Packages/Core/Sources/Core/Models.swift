@@ -180,6 +180,7 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
 /// and keeps playing in-app during the mission.
 public enum AlarmSound: String, Codable, CaseIterable, Sendable, Identifiable {
     case classic, chime, siren, digital, pulse
+    case radar, gentleRise, reveille, morningMood, furElise
 
     public var id: String { rawValue }
 
@@ -190,12 +191,165 @@ public enum AlarmSound: String, Codable, CaseIterable, Sendable, Identifiable {
         case .siren: "Rising Siren"
         case .digital: "Digital"
         case .pulse: "Deep Pulse"
+        case .radar: "Radar"
+        case .gentleRise: "Gentle Rise"
+        case .reveille: "Reveille"
+        case .morningMood: "Morning Mood"
+        case .furElise: "Für Elise"
+        }
+    }
+
+    public enum Category: String, CaseIterable, Sendable {
+        case tones = "Tones", melodies = "Melodies"
+    }
+
+    public var category: Category {
+        switch self {
+        case .classic, .siren, .digital, .pulse, .radar: .tones
+        case .chime, .gentleRise, .reveille, .morningMood, .furElise: .melodies
+        }
+    }
+
+    /// Short credit for public-domain melodies (performed by our own generator).
+    public var credit: String? {
+        switch self {
+        case .reveille: "Traditional bugle call"
+        case .morningMood: "Edvard Grieg, Peer Gynt"
+        case .furElise: "Ludwig van Beethoven"
+        default: nil
         }
     }
 
     /// Resource name without extension.
     public var resourceName: String { "EarnIt_\(rawValue)" }
     public var fileName: String { resourceName + ".caf" }
+}
+
+// MARK: - Sound choice
+
+/// A song picked from Apple Music. Plays in the app (MusicKit, subscribers); the system alarm
+/// rings with `fallback` because Apple Music songs can't become alarm sound files.
+public struct AppleMusicPick: Codable, Hashable, Sendable {
+    public var songID: String
+    public var title: String
+    public var artist: String
+    /// Where playback starts, in seconds.
+    public var startOffset: Double
+    public var artworkURL: URL?
+    public var fallback: AlarmSound
+
+    public init(songID: String, title: String, artist: String, startOffset: Double = 0,
+                artworkURL: URL? = nil, fallback: AlarmSound = .classic) {
+        self.songID = songID
+        self.title = title
+        self.artist = artist
+        self.startOffset = startOffset
+        self.artworkURL = artworkURL
+        self.fallback = fallback
+    }
+}
+
+/// What an alarm sounds like: a built-in tone, the user's own sound, or an Apple Music song.
+public enum SoundChoice: Hashable, Sendable {
+    case builtIn(AlarmSound)
+    /// File `Library/Sounds/custom-<id>.caf`, see `CustomSoundLibrary`.
+    case custom(id: UUID, name: String)
+    case appleMusic(AppleMusicPick)
+
+    // Shortcuts so `sound: .classic` reads naturally.
+    public static let classic = SoundChoice.builtIn(.classic)
+    public static let chime = SoundChoice.builtIn(.chime)
+    public static let siren = SoundChoice.builtIn(.siren)
+    public static let digital = SoundChoice.builtIn(.digital)
+    public static let pulse = SoundChoice.builtIn(.pulse)
+
+    /// Whether AlarmKit plays files from `Library/Sounds` (device-verified, see CLAUDE.md).
+    /// When false, own sounds ring the system alarm with Classic Beep and play in-app after X.
+    nonisolated(unsafe) public static var customSoundsRingNatively = true
+
+    public var displayName: String {
+        switch self {
+        case .builtIn(let sound): sound.displayName
+        case .custom(_, let name): name
+        case .appleMusic(let pick): "\(pick.title) – \(pick.artist)"
+        }
+    }
+
+    public var builtIn: AlarmSound? {
+        if case .builtIn(let sound) = self { return sound }
+        return nil
+    }
+
+    /// The file the *system* alarm (AlarmKit) rings with.
+    public var systemSoundFileName: String {
+        switch self {
+        case .builtIn(let sound): sound.fileName
+        case .custom(let id, _):
+            Self.customSoundsRingNatively ? CustomSoundLibrary.fileName(for: id) : AlarmSound.classic.fileName
+        case .appleMusic(let pick): pick.fallback.fileName
+        }
+    }
+
+    public var symbol: String {
+        switch self {
+        case .builtIn: "speaker.wave.2.fill"
+        case .custom: "waveform"
+        case .appleMusic: "music.note"
+        }
+    }
+}
+
+extension SoundChoice: Codable {
+    private enum CodingKeys: String, CodingKey { case type, sound, id, name, appleMusic }
+
+    /// Accepts the old format (`"sound": "chime"`) as well as the new tagged object.
+    public init(from decoder: any Decoder) throws {
+        if let single = try? decoder.singleValueContainer(), let raw = try? single.decode(String.self) {
+            self = .builtIn(AlarmSound(rawValue: raw) ?? .classic)
+            return
+        }
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        switch try c.decode(String.self, forKey: .type) {
+        case "custom":
+            self = .custom(id: try c.decode(UUID.self, forKey: .id), name: try c.decode(String.self, forKey: .name))
+        case "appleMusic":
+            self = .appleMusic(try c.decode(AppleMusicPick.self, forKey: .appleMusic))
+        default:
+            self = .builtIn(AlarmSound(rawValue: try c.decodeIfPresent(String.self, forKey: .sound) ?? "") ?? .classic)
+        }
+    }
+
+    public func encode(to encoder: any Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+        switch self {
+        case .builtIn(let sound):
+            try c.encode("builtIn", forKey: .type)
+            try c.encode(sound.rawValue, forKey: .sound)
+        case .custom(let id, let name):
+            try c.encode("custom", forKey: .type)
+            try c.encode(id, forKey: .id)
+            try c.encode(name, forKey: .name)
+        case .appleMusic(let pick):
+            try c.encode("appleMusic", forKey: .type)
+            try c.encode(pick, forKey: .appleMusic)
+        }
+    }
+}
+
+/// Where the user's own sounds live: `Library/Sounds` (the folder iOS searches for named sounds).
+public enum CustomSoundLibrary {
+    public static let maxSounds = 20
+    public static let maxDuration: Double = 30
+
+    public static func fileName(for id: UUID) -> String { "custom-\(id.uuidString).caf" }
+
+    public static var directory: URL {
+        FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask)[0].appending(path: "Sounds")
+    }
+
+    public static func url(for id: UUID, in directory: URL = directory) -> URL {
+        directory.appending(path: fileName(for: id))
+    }
 }
 
 /// Decodes a mission or nil when its kind no longer exists.
@@ -213,7 +367,7 @@ public struct AlarmPlan: Codable, Hashable, Sendable, Identifiable {
     public var id: UUID
     /// Optional name shown in the list ("Work days", "Gym").
     public var label: String
-    public var sound: AlarmSound
+    public var sound: SoundChoice
     public var hour: Int
     public var minute: Int
     /// Calendar weekday numbers, 1 = Sunday … 7 = Saturday. Empty = one-off (next occurrence).
@@ -227,7 +381,7 @@ public struct AlarmPlan: Codable, Hashable, Sendable, Identifiable {
     public init(
         id: UUID = UUID(),
         label: String = "",
-        sound: AlarmSound = .classic,
+        sound: SoundChoice = .classic,
         hour: Int = 7,
         minute: Int = 0,
         weekdays: Set<Int> = Set(1...7),
@@ -257,7 +411,7 @@ public struct AlarmPlan: Codable, Hashable, Sendable, Identifiable {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         id = try c.decode(UUID.self, forKey: .id)
         label = try c.decodeIfPresent(String.self, forKey: .label) ?? ""
-        sound = try c.decodeIfPresent(AlarmSound.self, forKey: .sound) ?? .classic
+        sound = try c.decodeIfPresent(SoundChoice.self, forKey: .sound) ?? .classic
         hour = try c.decode(Int.self, forKey: .hour)
         minute = try c.decode(Int.self, forKey: .minute)
         weekdays = try c.decode(Set<Int>.self, forKey: .weekdays)

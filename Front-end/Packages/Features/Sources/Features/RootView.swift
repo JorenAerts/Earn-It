@@ -46,6 +46,9 @@ public struct RootView: View {
                 #if DEBUG
                 NavigationStack { WidgetPreviewsView(coordinator: coordinator, store: store) }
                 #endif
+            } else if CommandLine.arguments.contains("-soundPicker") {
+                // Screenshot helper: -soundPicker
+                NavigationStack { SoundPickerView(selection: .constant(.builtIn(.morningMood)), gate: FeatureGate(isPro: true)) }
             } else if CommandLine.arguments.contains("-missionPicker") {
                 // Screenshot helper: -missionPicker
                 MissionPickerView(gate: store.gate) { _ in }
@@ -101,6 +104,16 @@ public struct RootView: View {
             if phase == .active {
                 coordinator.reload()
                 refreshCoachNotifications()
+            }
+        }
+        // An own sound was deleted: alarms using it go back to Classic Beep.
+        .onChange(of: MySounds.shared.sounds) { _, sounds in
+            let ids = Set(sounds.map(\.id))
+            for var plan in coordinator.plans {
+                if case .custom(let id, _) = plan.sound, !ids.contains(id) {
+                    plan.sound = .classic
+                    Task { await coordinator.save(plan) }
+                }
             }
         }
         .onChange(of: coordinator.plans) {

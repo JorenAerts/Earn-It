@@ -10,7 +10,6 @@ struct AlarmSetupView: View {
     let onSave: (AlarmPlan) -> Void
     let onDelete: () -> Void
     @Environment(\.dismiss) private var dismiss
-    @State private var preview = SoundPreview()
     @State private var confirmDelete = false
     @State private var showPaywall = false
     @State private var showMissionPicker = false
@@ -52,23 +51,17 @@ struct AlarmSetupView: View {
                 }
 
                 Section {
-                    ForEach(AlarmSound.allCases) { sound in
-                        SoundRow(sound: sound,
-                                 isSelected: plan.sound == sound,
-                                 isPlaying: preview.playing == sound,
-                                 isLocked: gate.isLocked(sound)) {
-                            preview.toggle(sound)
-                            if gate.isLocked(sound) {
-                                showPaywall = true
-                            } else {
-                                plan.sound = sound
-                            }
+                    NavigationLink {
+                        SoundPickerView(selection: $plan.sound, gate: gate)
+                    } label: {
+                        LabeledContent {
+                            Text(plan.sound.displayName).lineLimit(1)
+                        } label: {
+                            Label("Sound", systemImage: plan.sound.symbol)
                         }
                     }
-                } header: {
-                    Text("Sound")
                 } footer: {
-                    Text("The same sound keeps playing in the app until your mission is done. Tap to preview.")
+                    Text("The same sound keeps playing in the app until your mission is done.")
                 }
 
                 Section {
@@ -108,7 +101,6 @@ struct AlarmSetupView: View {
                 }
             }
             .navigationTitle(isNew ? "New alarm" : "Edit alarm")
-            .onDisappear { preview.stop() }
             .paywallSheet(isPresented: $showPaywall)
             .sheet(isPresented: $showMissionPicker) {
                 MissionPickerView(gate: gate) { plan.missions.append($0) }
@@ -166,57 +158,3 @@ struct WeekdayPicker: View {
     }
 }
 
-private struct SoundRow: View {
-    let sound: AlarmSound
-    let isSelected: Bool
-    let isPlaying: Bool
-    var isLocked = false
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            HStack {
-                Image(systemName: isPlaying ? "speaker.wave.2.fill" : "speaker.fill")
-                    .foregroundStyle(.tint)
-                    .frame(width: 24)
-                Text(sound.displayName).foregroundStyle(.primary)
-                Spacer()
-                if isLocked { ProBadge() }
-                if isSelected {
-                    Image(systemName: "checkmark").foregroundStyle(.tint).fontWeight(.semibold)
-                }
-            }
-        }
-        .accessibilityAddTraits(isSelected ? .isSelected : [])
-    }
-}
-
-/// Plays a few seconds of a tone in the editor. Tapping the playing tone stops it.
-@MainActor
-@Observable
-final class SoundPreview {
-    private(set) var playing: AlarmSound?
-    @ObservationIgnored private let player = AlarmSoundPlayer()
-    @ObservationIgnored private var stopTask: Task<Void, Never>?
-
-    func toggle(_ sound: AlarmSound) {
-        if playing == sound {
-            stop()
-            return
-        }
-        playing = sound
-        player.start(sound)
-        stopTask?.cancel()
-        stopTask = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(4))
-            guard !Task.isCancelled else { return }
-            self?.stop()
-        }
-    }
-
-    func stop() {
-        stopTask?.cancel()
-        player.stop()
-        playing = nil
-    }
-}

@@ -91,6 +91,8 @@ targets:
           - CFBundleURLName: be.earnit.app
             CFBundleURLSchemes: [earnit]
         NSAlarmKitUsageDescription: Earn It schedules your wake-up alarms so they ring through silent mode and Focus.
+        NSMicrophoneUsageDescription: Earn It uses the microphone only when you record your own alarm sound.
+        NSAppleMusicUsageDescription: Earn It plays the Apple Music song you pick while you do your wake-up mission.
         NSCameraUsageDescription: Earn It uses the camera to scan the code or item you registered, so you have to get out of bed to stop the alarm. Images stay on your iPhone.
 
   AlarmLiveActivity:

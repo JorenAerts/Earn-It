@@ -1,6 +1,7 @@
 import Account
 import AlarmEngine
 import Coach
+import Core
 import Purchases
 import StoreKit
 import SwiftUI
@@ -253,6 +254,18 @@ struct SettingsView: View {
         Section("Developer") {
             NavigationLink("Widget previews") { WidgetPreviewsView(coordinator: coordinator, store: store) }
             Button("Show paywall") { showPaywall = true }
+            Button("Test: own sound via alarm in 10 s") {
+                // Spike: does AlarmKit find files in Library/Sounds? Copies Rising Siren under a custom name;
+                // if the alarm plays the siren, own sounds ring natively.
+                let id = UUID(uuidString: "00000000-0000-0000-0000-00000000C0DE")!
+                let target = CustomSoundLibrary.url(for: id)
+                try? FileManager.default.createDirectory(at: CustomSoundLibrary.directory, withIntermediateDirectories: true)
+                if !FileManager.default.fileExists(atPath: target.path()),
+                   let siren = Bundle.main.url(forResource: AlarmSound.siren.resourceName, withExtension: "caf") {
+                    try? FileManager.default.copyItem(at: siren, to: target)
+                }
+                Task { await coordinator.debugRing(inSeconds: 10, sound: .custom(id: id, name: "Spike")) }
+            }
             Button("Replay onboarding", action: onReplayOnboarding)
             Button("Reset cached plan status") { store.debugResetCache() }
             if let user = auth.user {

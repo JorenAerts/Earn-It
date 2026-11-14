@@ -28,10 +28,10 @@ public protocol AlarmScheduling: AnyObject {
     /// The plan's main (possibly repeating) alarm, using `plan.id`.
     func scheduleMain(_ plan: AlarmPlan) async throws
     /// One-off alarm at a fixed date (debug "ring in…").
-    func scheduleOneOff(id: UUID, at date: Date, title: String, sound: AlarmSound) async throws
+    func scheduleOneOff(id: UUID, at date: Date, title: String, sound: SoundChoice) async throws
     /// Re-ring after Stop: a countdown alarm, shown live on the Lock Screen / Dynamic Island.
     func scheduleFollowUp(id: UUID, after duration: TimeInterval, title: String, attempt: Int,
-                          sound: AlarmSound) async throws
+                          sound: SoundChoice) async throws
     /// Silence an alerting alarm. A repeating alarm stays scheduled for its next occurrence.
     func stop(id: UUID)
     /// Remove an alarm entirely.
@@ -49,7 +49,7 @@ public final class FakeScheduler: AlarmScheduling {
     public private(set) var mainPlans: [UUID: AlarmPlan] = [:]
     public private(set) var oneOffs: [UUID: (date: Date, title: String)] = [:]
     public private(set) var followUpDurations: [UUID: TimeInterval] = [:]
-    public private(set) var sounds: [UUID: AlarmSound] = [:]
+    public private(set) var sounds: [UUID: SoundChoice] = [:]
     public private(set) var stopped: [UUID] = []
     public private(set) var cancelled: [UUID] = []
     /// Alarms currently ringing (tests set this).
@@ -62,12 +62,12 @@ public final class FakeScheduler: AlarmScheduling {
         mainPlans[plan.id] = plan
         sounds[plan.id] = plan.sound
     }
-    public func scheduleOneOff(id: UUID, at date: Date, title: String, sound: AlarmSound) async throws {
+    public func scheduleOneOff(id: UUID, at date: Date, title: String, sound: SoundChoice) async throws {
         oneOffs[id] = (date, title)
         sounds[id] = sound
     }
     public func scheduleFollowUp(id: UUID, after duration: TimeInterval, title: String, attempt: Int,
-                                 sound: AlarmSound) async throws {
+                                 sound: SoundChoice) async throws {
         oneOffs[id] = (Date().addingTimeInterval(duration), title)
         followUpDurations[id] = duration
         sounds[id] = sound
