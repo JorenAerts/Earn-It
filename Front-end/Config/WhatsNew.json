@@ -1,0 +1,15 @@
+{
+  "_help": "Help & feedback › What's new. Newest first.",
+  "releases": [
+    {
+      "version": "1.0",
+      "items": [
+        "Alarms that keep ringing until you finish your mission",
+        "Missions: maths, shake, scan a code, scan your item",
+        "Sergeant Rise, ranks, medals and widgets",
+        "Your own sounds and Apple Music songs",
+        "Pause all alarms for a holiday"
+      ]
+    }
+  ]
+}

@@ -48,6 +48,7 @@ final class CoachNotifier {
             alreadyRoastedToday: preferences.lastRoastDay == todayKey,
             intensity: preferences.intensity,
             lines: CoachModel.shared.lines,
+            pause: coordinator.activePause,
             calendar: calendar)
 
         for item in planned {
@@ -68,7 +69,7 @@ final class CoachNotifier {
         log.info("coach notifications scheduled: \(planned.count)")
     }
 
-    #if DEBUG
+    /// Developer tools: a coach notification in a few seconds.
     func sendTest(after seconds: TimeInterval = 5) async {
         let content = UNMutableNotificationContent()
         content.title = "Sergeant Rise"
@@ -79,7 +80,6 @@ final class CoachNotifier {
                                             trigger: UNTimeIntervalNotificationTrigger(timeInterval: seconds, repeats: false))
         try? await center.add(request)
     }
-    #endif
 
     /// All rings of enabled alarms within `days` days.
     static func upcomingAlarms(_ plans: [AlarmPlan], from now: Date, days: Int) -> [Date] {

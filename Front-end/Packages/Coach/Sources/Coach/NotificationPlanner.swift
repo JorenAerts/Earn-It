@@ -44,15 +44,17 @@ public enum NotificationPlanner {
                             alreadyRoastedToday: Bool,
                             intensity: CoachIntensity,
                             lines: CoachLines,
+                            pause: AlarmPause? = nil,
                             calendar: Calendar = .current) -> [CoachNotification] {
         guard settings.enabled else { return [] }
         var result: [CoachNotification] = []
         let horizon = now.addingTimeInterval(TimeInterval(horizonDays) * 86_400)
 
         // Evening reminders: the evening before each alarm day (earliest alarm per day).
-        let byDay = Dictionary(grouping: upcomingAlarms.filter { $0 > now && $0 <= horizon }) {
-            calendar.startOfDay(for: $0)
-        }
+        // Paused days have no alarm, so no reminder; the first day back gets a "leave's over".
+        let rings = PausePolicy.filter(upcomingAlarms, pause: pause, now: now).filter { $0 > now && $0 <= horizon }
+        let byDay = Dictionary(grouping: rings) { calendar.startOfDay(for: $0) }
+        let firstDayBack = PausePolicy.isPaused(pause, at: now) ? rings.min().map { calendar.startOfDay(for: $0) } : nil
         for (day, alarms) in byDay.sorted(by: { $0.key < $1.key }) {
             guard let alarm = alarms.min(),
                   let eveBefore = calendar.date(byAdding: .day, value: -1, to: day),
@@ -66,6 +68,7 @@ public enum NotificationPlanner {
             guard reminder > now, alarm.timeIntervalSince(reminder) >= minimumLeadTime else { continue }
             let time = alarm.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)).minute(.twoDigits))
             var body = lines.line(for: .night, intensity: intensity, day: day, values: ["time": time], calendar: calendar)
+            if day == firstDayBack { body = "Leave's over, soldier. Back to duty tomorrow. " + body }
             if streak >= 3 { body += " Your \(streak)-day streak is on the line." }
             result.append(CoachNotification(id: "\(CoachNotification.idPrefix)evening.\(dayKey(day, calendar))",
                                             date: reminder, body: body))

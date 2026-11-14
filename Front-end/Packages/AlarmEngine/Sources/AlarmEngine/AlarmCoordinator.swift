@@ -16,6 +16,8 @@ public final class AlarmCoordinator {
     public private(set) var plans: [AlarmPlan]
     public private(set) var session: SessionState?
     public private(set) var lastError: String?
+    /// "Pause all alarms". Stays set until resumed or (for a dated pause) until it runs out.
+    public private(set) var pause: AlarmPause?
 
     private let store: KeyValueStore
     private let scheduler: any AlarmScheduling
@@ -30,6 +32,7 @@ public final class AlarmCoordinator {
         self.now = now
         self.plans = store.loadPlans()
         self.session = store.loadSession()
+        self.pause = store.loadPause()
     }
 
     public var authorization: AlarmAuthorization { scheduler.authorization }
@@ -42,6 +45,7 @@ public final class AlarmCoordinator {
     public func reload() {
         plans = store.loadPlans()
         session = store.loadSession()
+        pause = store.loadPause()
         sync(with: scheduler.scheduledAlarms())
         updateSound()
     }
@@ -75,12 +79,45 @@ public final class AlarmCoordinator {
 
     /// Soonest upcoming ring across all enabled alarms.
     public var nextAlarm: (plan: AlarmPlan, date: Date)? {
-        plans.compactMap { plan in plan.isEnabled ? plan.nextFireDate(after: now()).map { (plan, $0) } : nil }
+        plans.compactMap { plan in nextFireDate(for: plan).map { (plan, $0) } }
             .min { $0.1 < $1.1 }
     }
 
+    /// Next ring, taking a pause into account (nil while paused indefinitely).
     public func nextFireDate(for plan: AlarmPlan) -> Date? {
-        plan.isEnabled ? plan.nextFireDate(after: now()) : nil
+        guard plan.isEnabled else { return nil }
+        if let pause = activePause { return PausePolicy.firstRing(of: plan, after: pause) }
+        return plan.nextFireDate(after: now())
+    }
+
+    // MARK: Pause all alarms
+
+    /// The pause in effect right now (an expired one is ignored).
+    public var activePause: AlarmPause? {
+        PausePolicy.isPaused(pause, at: now()) ? pause : nil
+    }
+
+    /// Pause every alarm. Alarms ringing or counting down right now are left alone. A dated
+    /// pause schedules each alarm's first ring after the pause as a one-off (same id), so alarms
+    /// come back even if the app is never opened; the weekly repeat returns on the next launch.
+    public func pauseAll(_ newPause: AlarmPause) async {
+        pause = newPause
+        store.savePause(newPause)
+        await rescheduleAll()
+        log.notice("alarms paused until \(newPause.until?.description ?? "resumed", privacy: .public)")
+    }
+
+    public func resumeAll() async {
+        pause = nil
+        store.savePause(nil)
+        await rescheduleAll()
+        log.notice("alarms resumed")
+    }
+
+    /// Clears a pause that has run out and restores the normal schedule. Called on launch / foreground.
+    public func resumeIfPauseExpired() async {
+        guard PausePolicy.isExpired(pause, at: now()) else { return }
+        await resumeAll()
     }
 
     // MARK: Alarms (CRUD)
@@ -112,6 +149,25 @@ public final class AlarmCoordinator {
     /// Re-register enabled alarms so they pick up the current alarm layout / sound after an app
     /// update. Skips alarms that are ringing or counting down right now.
     public func refreshAlarms() async {
+        if PausePolicy.isExpired(pause, at: now()) {
+            pause = nil
+            store.savePause(nil)
+        }
+        await rescheduleAll()
+    }
+
+    /// Repeating alarms that AlarmKit no longer holds (e.g. the one-off "first ring after a pause"
+    /// just finished) get their weekly schedule back.
+    public func restoreMissingAlarms() async {
+        await resumeIfPauseExpired()
+        guard activePause == nil else { return }
+        let known = Set(scheduler.scheduledAlarms().map(\.id))
+        for plan in plans where plan.isEnabled && !plan.weekdays.isEmpty && !known.contains(plan.id) {
+            await schedule(plan)
+        }
+    }
+
+    private func rescheduleAll() async {
         let busy = Set(scheduler.scheduledAlarms().filter { $0.isAlerting || $0.isCountingDown }.map(\.id))
         for plan in plans where plan.isEnabled && !busy.contains(plan.id) {
             await schedule(plan)
@@ -122,7 +178,13 @@ public final class AlarmCoordinator {
         scheduler.cancel(id: plan.id)
         guard plan.isEnabled else { return }
         do {
-            try await scheduler.scheduleMain(plan)
+            if let pause = activePause {
+                // Paused: only the first ring after the pause, as a one-off with the plan's id.
+                guard let first = PausePolicy.firstRing(of: plan, after: pause) else { return }
+                try await scheduler.scheduleOneOff(id: plan.id, at: first, title: plan.alarmTitle, sound: plan.sound)
+            } else {
+                try await scheduler.scheduleMain(plan)
+            }
             lastError = nil
         } catch {
             lastError = "Could not schedule alarm: \(error.localizedDescription)"
@@ -198,6 +260,7 @@ public final class AlarmCoordinator {
         s.missionCompletedAt = now()
         persist(s)
         log.notice("mission succeeded, all alarms silenced")
+        Task { await restoreMissingAlarms() }
         return s
     }
 

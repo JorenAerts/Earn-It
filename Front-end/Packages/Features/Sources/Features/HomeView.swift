@@ -15,6 +15,7 @@ struct HomeView: View {
     @Query private var logs: [DayLog]
     @State private var editing: EditTarget?
     @State private var showPaywall = false
+    @State private var developer = DeveloperMode.shared
 
     private var gate: FeatureGate { store.gate }
 
@@ -58,6 +59,9 @@ struct HomeView: View {
                         PermissionBanner(kind: .alarms, message: "Your alarms can't ring until Earn It may use alarms.")
                     }
                 }
+                if coordinator.activePause != nil {
+                    Section { PauseBanner(coordinator: coordinator) }
+                }
                 Section {
                     let coach = CoachModel.shared
                     let state = coach.state(coordinator: coordinator, logs: logs)
@@ -74,7 +78,8 @@ struct HomeView: View {
                                 .font(.title2.weight(.semibold))
                         }
                     } else {
-                        Text(coordinator.plans.isEmpty ? "No alarms yet — tap + to add one." : "All alarms are off.")
+                        Text(coordinator.plans.isEmpty ? "No alarms yet — tap + to add one."
+                             : coordinator.activePause != nil ? "Alarms are paused." : "All alarms are off.")
                             .foregroundStyle(.secondary)
                     }
                     Label("\(streak) day streak", systemImage: "flame.fill")
@@ -89,13 +94,13 @@ struct HomeView: View {
                                                set: { on in setEnabled(on, plan) }))
                             .contentShape(.rect)
                             .onTapGesture { editing = EditTarget(plan: plan, isNew: false) }
-                            #if DEBUG
                             .contextMenu {
-                                Button("Test: ring in 10 seconds") {
-                                    Task { await coordinator.debugRing(inSeconds: 10, planID: plan.id) }
+                                if developer.isOn {
+                                    Button("Test: ring in 10 seconds") {
+                                        Task { await coordinator.debugRing(inSeconds: 10, planID: plan.id) }
+                                    }
                                 }
                             }
-                            #endif
                     }
                     .onDelete { offsets in
                         offsets.map { coordinator.plans[$0].id }.forEach(coordinator.delete(id:))
@@ -205,34 +210,3 @@ private struct AlarmRow: View {
         .accessibilityElement(children: .combine)
     }
 }
-
-#if DEBUG
-struct DebugSection: View {
-    let coordinator: AlarmCoordinator
-    @State private var alarms: [ScheduledAlarm] = []
-
-    var body: some View {
-        Section("Debug") {
-            Button("Ring in 1 minute (first alarm)") { Task { await coordinator.debugRing(inSeconds: 60); refresh() } }
-            Button("Ring in 10 seconds (first alarm)") { Task { await coordinator.debugRing(inSeconds: 10); refresh() } }
-            Button("Stop all alarms", role: .destructive) { coordinator.debugStopAll(); refresh() }
-            Button("Reset today's session", role: .destructive) { coordinator.debugResetSession(); refresh() }
-            if let s = coordinator.session {
-                LabeledContent("Re-arms", value: "\(s.reArmCount)")
-                LabeledContent("Follow-ups pending", value: "\(s.followUpIDs.count)")
-                LabeledContent("Mission done", value: s.missionDone ? "yes" : "no")
-            }
-        }
-        Section("AlarmKit alarms (\(alarms.count))") {
-            ForEach(alarms) { alarm in
-                LabeledContent(coordinator.plan(id: alarm.id).map { "Main " + $0.timeText } ?? String(alarm.id.uuidString.prefix(8)),
-                               value: alarm.state)
-            }
-            Button("Refresh", action: refresh)
-        }
-        .onAppear(perform: refresh)
-    }
-
-    private func refresh() { alarms = coordinator.debugScheduledAlarms() }
-}
-#endif

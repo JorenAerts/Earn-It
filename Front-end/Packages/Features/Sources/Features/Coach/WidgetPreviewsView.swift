@@ -1,4 +1,3 @@
-#if DEBUG
 import AlarmEngine
 import Coach
 import Core
@@ -62,4 +61,3 @@ struct WidgetPreviewsView: View {
         .frame(maxWidth: .infinity)
     }
 }
-#endif

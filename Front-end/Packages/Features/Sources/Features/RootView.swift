@@ -32,6 +32,8 @@ public struct RootView: View {
         self.store = store
         self.onboardingStore = onboardingStore
         _onboarded = State(initialValue: onboardingStore.load().completed)
+        // Screenshot helper: -settings opens on the Settings tab.
+        if CommandLine.arguments.contains("-settings") { _tab = State(initialValue: .settings) }
     }
 
     public var body: some View {
@@ -113,6 +115,7 @@ public struct RootView: View {
                 Task { await PermissionCenter.shared.refresh() }  // back from Settings
                 coordinator.reload()
                 refreshCoachNotifications()
+                Task { await coordinator.restoreMissingAlarms() }  // pause over → weekly repeat back
             }
         }
         // An own sound was deleted: alarms using it go back to Classic Beep.
@@ -132,6 +135,7 @@ public struct RootView: View {
             ObjectReferenceStore.shared.prune(keeping: inUse)
         }
         .onChange(of: coordinator.session) { refreshCoachNotifications() }
+        .onChange(of: coordinator.pause) { refreshCoachNotifications() }
         // Cold launch from the alarm's X: scenePhase never "changes", so sync on first appear too.
         .task {
             UNUserNotificationCenter.current().delegate = CoachModel.shared.notificationDelegate

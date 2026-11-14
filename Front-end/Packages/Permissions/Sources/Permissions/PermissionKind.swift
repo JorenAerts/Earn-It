@@ -127,3 +127,23 @@ public enum PermissionRules {
         skipped || PermissionKind.allCases.filter { $0.importance == .required }.allSatisfy { statuses[$0] == .granted }
     }
 }
+
+/// Settings home row: "All set" or "N need attention" (required / recommended ones that are off).
+public enum PermissionSummary: Equatable, Sendable {
+    case allSet
+    case needsAttention(Int)
+
+    public static func make(_ status: (PermissionKind) -> PermissionStatus) -> PermissionSummary {
+        let missing = PermissionKind.allCases.filter { kind in
+            kind.importance <= .recommended && [.denied, .notDetermined].contains(status(kind))
+        }
+        return missing.isEmpty ? .allSet : .needsAttention(missing.count)
+    }
+
+    public var text: String {
+        switch self {
+        case .allSet: "All set"
+        case .needsAttention(let n): n == 1 ? "1 needs attention" : "\(n) need attention"
+        }
+    }
+}
