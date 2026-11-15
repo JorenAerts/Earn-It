@@ -1,0 +1,13 @@
+{
+  "_help": "Values filled into Config/Legal/*.md ({{key}}). Empty = shown as [to be completed] in the app. See LAUNCH_TODO.md.",
+  "appName": "Gloop",
+  "company": "JA-Solutions",
+  "legalForm": "",
+  "enterpriseNumber": "",
+  "address": "",
+  "country": "Belgium",
+  "privacyEmail": "",
+  "supportEmail": "",
+  "effectiveDate": "15 November 2026",
+  "minimumAge": "13"
+}

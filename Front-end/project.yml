@@ -66,6 +66,11 @@ targets:
         buildPhase: resources
       - path: Config/Telemetry.json
         buildPhase: resources
+      - path: Config/Legal.json
+        buildPhase: resources
+      - path: Config/Legal
+        type: folder
+        buildPhase: resources
     dependencies:
       - package: Core
       - package: Coach

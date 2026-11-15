@@ -282,6 +282,12 @@ struct CommunityRulesView: View {
                     }
                 }
                 Text("Breaking these rules can get your content removed and your account blocked from Buddies.")
+                NavigationLink {
+                    LegalDocumentView(kind: .community)
+                } label: {
+                    Label("Read the full Community Guidelines", systemImage: "doc.text")
+                }
+                .font(.subheadline.weight(.semibold))
                     .font(.footnote).foregroundStyle(.secondary)
                 if showsAgree {
                     Button(action: onAgree) {
