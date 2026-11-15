@@ -16,6 +16,7 @@ supabase/
   migrations/*_delete_own_account.sql delete_own_account() RPC: in-app account deletion (App Review 5.1.1(v))
   migrations/*_buddies.sql            clubs, members, wake reports, morning photos (bucket `morning`),
                                       reactions, blocks, reports + RPCs; delete_own_account hands clubs over
+  migrations/*_profile_onboarding.sql profiles.onboarding jsonb (age range, where they heard of us, …)
   functions/cleanup-morning-posts     hourly: deletes photos older than 24 h + files of deleted users
 ```
 

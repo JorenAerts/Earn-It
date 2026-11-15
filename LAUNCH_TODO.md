@@ -77,7 +77,9 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 
 ### Settings › Help & feedback
 - [ ] Set `supportEmail` in `Front-end/Config/Auth.json` (the Contact support row stays hidden while empty).
-- [ ] Set `shareURL` (website or App Store page, `https://apps.apple.com/app/id<APP_ID>`) — now a placeholder.
+- [ ] Add `"shareURL"` to `Front-end/Config/Auth.json` once there's a website or App Store page
+      (`https://apps.apple.com/app/id<APP_ID>`). Until then there is no link: Settings › Share Earn It and
+      Help › Share are hidden, and the onboarding invite sends the message without a link.
 - [ ] Add your Supabase user UUID to `Front-end/Config/Developer.json` so the 7-tap developer tools
       unlock on TestFlight builds (copy it in Settings › Developer tools › Info).
 
@@ -89,6 +91,11 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 - [ ] Age rating: user-generated content → answer "yes" for UGC (12+ likely).
 - [ ] Universal links (`https://…/join/<code>`) once there's a website, so invites open the App Store if not installed.
 - [ ] Push notifications (buddy woke up, nudges) — needs the paid program (APNs).
+
+### Onboarding
+- [ ] Apply `Backend/supabase/migrations/20261116000000_profile_onboarding.sql` (SQL Editor).
+- [ ] `Front-end/Config/SocialProof.json`: add stats / reviews only when they're real and current (reviews with permission). Never placeholders.
+- [ ] App Privacy labels: age range + "where did you hear about us" are collected (linked to the account when signed in).
 
 ### Submission
 - [ ] App privacy labels (email, user ID, purchases; no tracking).

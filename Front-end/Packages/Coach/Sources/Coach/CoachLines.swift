@@ -2,7 +2,8 @@ import Foundation
 
 /// Sergeant Rise's lines from `Config/CoachLines.json`:
 /// `{ "<context>": { "gentle": [...], "toughLove": [...], "savage": [...] } }`.
-/// Placeholders: `{streak}`, `{time}` (next alarm, e.g. 07:00), `{rings}` (re-rings so far).
+/// Placeholders: `{streak}`, `{time}` (next alarm, e.g. 07:00), `{rings}` (re-rings so far),
+/// `{name}` (the user's name; "soldier" when unknown).
 public struct CoachLines: Sendable {
     public let table: [String: [String: [String]]]
 
@@ -30,7 +31,9 @@ public struct CoachLines: Sendable {
         guard !options.isEmpty else { return "" }
         let dayNumber = calendar.ordinality(of: .day, in: .era, for: day) ?? 0
         let index = (dayNumber &+ variant &+ context.rawValue.count) % options.count
-        return Self.fill(options[abs(index)], values)
+        var filled = values
+        if (filled["name"] ?? "").trimmingCharacters(in: .whitespaces).isEmpty { filled["name"] = "soldier" }
+        return Self.fill(options[abs(index)], filled)
     }
 
     public static func fill(_ template: String, _ values: [String: String]) -> String {

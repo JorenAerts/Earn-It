@@ -45,7 +45,7 @@ import Testing
         for sound in AlarmSound.allCases {
             #expect(Bundle.main.url(forResource: sound.resourceName, withExtension: "caf") != nil, "\(sound)")
         }
-        #expect(AlarmSound.allCases.count == 10)
+        #expect(AlarmSound.allCases.count == 11, "10 + the invite bonus sound")
     }
 }
 

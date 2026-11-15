@@ -1,79 +1,143 @@
 import AlarmEngine
+import Coach
 import Core
 import Permissions
 import SwiftUI
 import UIKit
 
-// MARK: - 1. Welcome
+// MARK: - Welcome
 
 struct WelcomeStep: View {
+    let canSignIn: Bool
+    let onSignIn: () -> Void
     let onNext: () -> Void
 
-    var body: some View {
-        OnboardingPage {
-            VStack(alignment: .leading, spacing: 20) {
-                // App logo (App/Assets.xcassets/Logo). Clipped like an iOS app icon.
-                Image("Logo")
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 112, height: 112)
-                    .clipShape(.rect(cornerRadius: 25, style: .continuous))
-                    .shadow(color: .black.opacity(0.18), radius: 12, y: 6)
-                    .padding(.top, 32)
-                    .accessibilityHidden(true)
-                Text("Earn It")
-                    .font(.system(size: 48, weight: .heavy, design: .rounded))
-                Text("An alarm you can't snooze your way out of.")
-                    .font(.title2.weight(.semibold))
-                Text("Every morning starts with a small mission. Stopping the alarm without doing it just makes it ring again.")
-                    .font(.body)
-                    .foregroundStyle(.secondary)
-            }
-        } footer: {
-            PrimaryButton(title: "Get started", action: onNext)
-        }
-    }
-}
-
-// MARK: - 2. How it works
-
-struct HowItWorksStep: View {
-    let onNext: () -> Void
-
-    private let items: [(symbol: String, title: String, text: String)] = [
-        ("alarm.fill", "Your alarm rings", "Through silent mode and Focus, like a real alarm."),
-        ("brain.head.profile", "Complete a mission", "Solve math, shake your phone or scan a code in another room."),
-        ("checkmark.seal.fill", "Earn your morning", "Only a finished mission ends the alarm. Build a streak."),
+    private let points: [(String, String)] = [
+        ("alarm.fill", "An alarm that keeps ringing until you're up"),
+        ("brain.head.profile", "A quick mission proves you're awake"),
+        ("flame.fill", "Streaks, ranks and buddies keep you going"),
     ]
 
     var body: some View {
         OnboardingPage {
-            VStack(alignment: .leading, spacing: 28) {
-                Text("How it works")
-                    .font(.largeTitle.bold())
-                ForEach(items, id: \.title) { item in
-                    HStack(alignment: .top, spacing: 16) {
-                        Image(systemName: item.symbol)
-                            .font(.title)
-                            .foregroundStyle(.orange)
-                            .frame(width: 44)
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(item.title).font(.headline)
-                            Text(item.text).foregroundStyle(.secondary)
+            VStack(spacing: 22) {
+                Image("Logo")
+                    .resizable().scaledToFill()
+                    .frame(width: 104, height: 104)
+                    .clipShape(.rect(cornerRadius: 24, style: .continuous))
+                    .shadow(color: .black.opacity(0.18), radius: 12, y: 6)
+                    .padding(.top, 28)
+                    .accessibilityHidden(true)
+                Text("Waking up,\nearned.")
+                    .font(.system(size: 44, weight: .heavy, design: .rounded))
+                    .multilineTextAlignment(.center)
+                VStack(alignment: .leading, spacing: 14) {
+                    ForEach(points, id: \.1) { symbol, text in
+                        HStack(spacing: 14) {
+                            Image(systemName: symbol).font(.title3).foregroundStyle(.orange).frame(width: 30)
+                            Text(text).font(.body.weight(.medium))
                         }
                     }
-                    .accessibilityElement(children: .combine)
+                }
+                .padding(18)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .background(Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 22))
+                CoachBubble(line: OnboardingPersonalization.coachReaction(to: .welcome, answers: OnboardingAnswers()) ?? "")
+            }
+            .frame(maxWidth: .infinity)
+        } footer: {
+            PrimaryButton(title: "Get started", action: onNext)
+            if canSignIn {
+                HStack(spacing: 4) {
+                    Text("Already have an account?").foregroundStyle(.secondary)
+                    Button("Sign in", action: onSignIn).fontWeight(.semibold)
+                }
+                .font(.subheadline)
+            }
+        }
+    }
+}
+
+// MARK: - Name
+
+struct NameStep: View {
+    @Binding var answers: OnboardingAnswers
+    let onNext: () -> Void
+    @FocusState private var focused: Bool
+
+    var body: some View {
+        OnboardingPage(title: "What should Sergeant Rise call you?",
+                       subtitle: "Your first name or a nickname. Used in your coach's lines and your profile.") {
+            TextField("Your name", text: $answers.name)
+                .font(.title2.weight(.semibold))
+                .textContentType(.givenName)
+                .submitLabel(.continue)
+                .focused($focused)
+                .padding(18)
+                .background(Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 18))
+                .onSubmit(onNext)
+            CoachBubble(line: OnboardingPersonalization.coachReaction(to: .name, answers: answers) ?? "",
+                        mood: answers.name.isEmpty ? .suspicious : .proud)
+        } footer: {
+            PrimaryButton(title: "Continue", disabled: answers.name.trimmingCharacters(in: .whitespaces).isEmpty,
+                          action: onNext)
+            Button("Skip") {
+                answers.name = ""
+                onNext()
+            }
+            .foregroundStyle(.secondary)
+        }
+        .onAppear { focused = answers.name.isEmpty }
+    }
+}
+
+// MARK: - Multi-select: what keeps you in bed
+
+struct StrugglesStep: View {
+    @Binding var answers: OnboardingAnswers
+    let onNext: () -> Void
+
+    var body: some View {
+        OnboardingPage(title: "What keeps you in bed after your alarm?", subtitle: "Pick everything that sounds like you.") {
+            VStack(spacing: 12) {
+                ForEach(MorningStruggle.choices) { struggle in
+                    let on = answers.struggles.contains(struggle)
+                    ChoiceCard(title: struggle.title, symbol: struggle.symbol, selected: on, multiSelect: true) {
+                        withAnimation(.snappy) {
+                            if on { answers.struggles.remove(struggle) } else { answers.struggles.insert(struggle) }
+                        }
+                    }
                 }
             }
+            if !answers.struggles.isEmpty, let line = OnboardingPersonalization.coachReaction(to: .struggles, answers: answers) {
+                CoachBubble(line: line, mood: .suspicious)
+            }
+        } footer: {
+            PrimaryButton(title: "Continue", disabled: answers.struggles.isEmpty, action: onNext)
+        }
+    }
+}
+
+// MARK: - Why it works
+
+struct WhyItWorksStep: View {
+    let onNext: () -> Void
+
+    var body: some View {
+        OnboardingPage(title: "Earn It gets you out of bed and wide awake") {
+            EnergyChart()
+            Text("Snoozing drops you back into sleep you can't finish, so every extra ring tends to leave you groggier. One alarm and a short mission gets your brain and body going at once.")
+                .font(.subheadline).foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
         } footer: {
             PrimaryButton(title: "Continue", action: onNext)
         }
     }
 }
 
-// MARK: - 3. Goals
+// MARK: - Wake-up time
 
-struct GoalsStep: View {
+struct WakeTimeStep: View {
     @Binding var answers: OnboardingAnswers
     let onNext: () -> Void
 
@@ -88,90 +152,70 @@ struct GoalsStep: View {
     }
 
     var body: some View {
-        OnboardingPage {
-            VStack(alignment: .leading, spacing: 24) {
-                Text("Your mornings").font(.largeTitle.bold())
-
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("When do you want to get up?").font(.headline)
-                    DatePicker("Wake-up time", selection: time, displayedComponents: .hourAndMinute)
-                        .datePickerStyle(.wheel)
-                        .labelsHidden()
-                        .frame(maxWidth: .infinity)
-                    WeekdayPicker(selection: $answers.weekdays)
-                }
-
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("What makes mornings hard?").font(.headline)
-                    Text("Pick any — we'll suggest the right mission.")
-                        .font(.subheadline).foregroundStyle(.secondary)
-                    ForEach(MorningStruggle.allCases) { struggle in
-                        let selected = answers.struggles.contains(struggle)
-                        Button {
-                            if selected { answers.struggles.remove(struggle) } else { answers.struggles.insert(struggle) }
-                        } label: {
-                            HStack(spacing: 12) {
-                                Image(systemName: struggle.symbol).frame(width: 28)
-                                Text(struggle.title)
-                                Spacer()
-                                Image(systemName: selected ? "checkmark.circle.fill" : "circle")
-                            }
-                            .padding(14)
-                            .foregroundStyle(selected ? Color.orange : Color.primary)
-                            .background(selected ? Color.orange.opacity(0.12) : Color(.secondarySystemBackground),
-                                        in: .rect(cornerRadius: 14))
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityAddTraits(selected ? .isSelected : [])
-                    }
-                }
+        OnboardingPage(title: "What time do you want to be up?") {
+            VStack(spacing: 6) {
+                Text(answers.timeText)
+                    .font(.system(size: 76, weight: .bold, design: .rounded))
+                    .monospacedDigit()
+                    .contentTransition(.numericText())
+                    .animation(.snappy, value: answers.timeText)
+                DatePicker("Wake-up time", selection: time, displayedComponents: .hourAndMinute)
+                    .datePickerStyle(.wheel)
+                    .labelsHidden()
             }
+            .frame(maxWidth: .infinity)
+            VStack(alignment: .leading, spacing: 10) {
+                Text("On these days").font(.headline)
+                WeekdayPicker(selection: $answers.weekdays)
+            }
+            CoachBubble(line: OnboardingPersonalization.coachReaction(to: .wakeTime, answers: answers) ?? "")
+        } footer: {
+            PrimaryButton(title: "Continue", disabled: answers.weekdays.isEmpty, action: onNext)
+        }
+    }
+}
+
+// MARK: - Comparison
+
+struct ComparisonStep: View {
+    let answers: OnboardingAnswers
+    let onNext: () -> Void
+
+    var body: some View {
+        OnboardingPage(title: "Let's get you out of bed",
+                       subtitle: "No more stacking alarms. One alarm that doesn't give up.") {
+            AlarmComparison(hour: answers.hour, minute: answers.minute)
         } footer: {
             PrimaryButton(title: "Continue", action: onNext)
         }
     }
 }
 
-// MARK: - 5. Permissions
+// MARK: - Permissions
 
-/// Alarms (required) and Notifications (recommended) up front; Camera, Microphone and Apple Music
-/// optional here and otherwise asked the moment a feature needs them.
+/// Alarms (required) + Notifications (recommended). Camera / microphone / Apple Music are asked the
+/// moment a feature needs them.
 struct PermissionsStep: View {
-    let coordinator: AlarmCoordinator
+    let answers: OnboardingAnswers
     let onNext: () -> Void
     @State private var center = PermissionCenter.shared
 
     var body: some View {
         OnboardingPage {
-            VStack(alignment: .leading, spacing: 18) {
-                Text("Permissions").font(.largeTitle.bold())
-                Text("Earn It only asks for what it needs. You can change these any time in Settings.")
-                    .foregroundStyle(.secondary)
-
-                VStack(spacing: 6) {
-                    PermissionRow(kind: .alarms)
-                    Divider()
-                    PermissionRow(kind: .notifications) {
-                        CoachModel.shared.notifications.enabled = true   // reminders on when allowed here
-                    }
+            VStack(spacing: 26) {
+                Text("Make sure your \(answers.timeText) alarm rings")
+                    .font(.largeTitle.bold()).multilineTextAlignment(.center)
+                    .padding(.top, 20)
+                HStack(spacing: 22) {
+                    badge("Alarms", symbol: "alarm.fill", tint: .orange, kind: .alarms)
+                    badge("Notifications", symbol: "bell.badge.fill", tint: .red, kind: .notifications)
                 }
-                .padding(14)
-                .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: 18))
-
-                VStack(alignment: .leading, spacing: 6) {
-                    Text("Optional — or we'll ask when you use them")
-                        .font(.caption.weight(.bold)).textCase(.uppercase).foregroundStyle(.secondary)
-                    VStack(spacing: 6) {
-                        PermissionRow(kind: .camera, showsImportance: false)
-                        Divider()
-                        PermissionRow(kind: .microphone, showsImportance: false)
-                        Divider()
-                        PermissionRow(kind: .appleMusic, showsImportance: false)
-                    }
-                    .padding(14)
-                    .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: 18))
-                }
+                PermissionIllustration()
+                    .padding(.bottom, 30)
+                Text("Alarms ring through silent mode and Focus. Notifications bring Sergeant Rise's evening reminders.")
+                    .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
             }
+            .frame(maxWidth: .infinity)
         } footer: {
             if center.isGranted(.alarms) {
                 PrimaryButton(title: "Continue", action: onNext)
@@ -179,50 +223,31 @@ struct PermissionsStep: View {
                 PrimaryButton(title: "Open Settings") { center.openSettings(.alarms) }
                 Button("Continue anyway", action: onNext).foregroundStyle(.secondary)
             } else {
-                PrimaryButton(title: "Allow alarms") {
-                    Task { await center.request(.alarms) }
-                }
+                PrimaryButton(title: "Allow") { Task { await requestAll() } }
             }
         }
         .task { await center.refresh() }
     }
-}
 
-// MARK: - 6. First alarm
-
-struct FirstAlarmStep: View {
-    @State var plan: AlarmPlan
-    let onCreate: (AlarmPlan) -> Void
-    @State private var customizing = false
-
-    var body: some View {
-        OnboardingPage {
-            VStack(alignment: .leading, spacing: 20) {
-                Text("Your first alarm").font(.largeTitle.bold())
-                Text("Based on your answers. You can change everything later.")
-                    .foregroundStyle(.secondary)
-
-                VStack(alignment: .leading, spacing: 12) {
-                    Text(plan.timeText)
-                        .font(.system(size: 64, weight: .bold, design: .rounded))
-                        .monospacedDigit()
-                    Label(plan.repeatText, systemImage: "calendar")
-                    Label(plan.missions.map(\.kind.displayName).joined(separator: " + "), systemImage: "target")
-                    Label(plan.sound.displayName, systemImage: "speaker.wave.2.fill")
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(20)
-                .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: 20))
-
-                Button("Customize") { customizing = true }
-            }
-        } footer: {
-            PrimaryButton(title: "Create alarm", disabled: !plan.isReady) { onCreate(plan) }
+    private func requestAll() async {
+        await center.request(.alarms)
+        if center.status(.notifications) == .notDetermined {
+            await center.request(.notifications)
         }
-        .sheet(isPresented: $customizing) {
-            AlarmSetupView(plan: plan, isNew: true,
-                           onSave: { plan = $0 },
-                           onDelete: {})
+        if center.isGranted(.notifications) { CoachModel.shared.notifications.enabled = true }
+        if center.isGranted(.alarms) { onNext() }
+    }
+
+    private func badge(_ title: String, symbol: String, tint: Color, kind: PermissionKind) -> some View {
+        HStack(spacing: 8) {
+            Image(systemName: center.isGranted(kind) ? "checkmark" : symbol)
+                .font(.headline).foregroundStyle(.white)
+                .frame(width: 34, height: 34)
+                .background((center.isGranted(kind) ? Color.green : tint).gradient, in: .rect(cornerRadius: 9))
+                .contentTransition(.symbolEffect(.replace))
+            Text(title).font(.headline)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityValue(center.status(kind).label)
     }
 }

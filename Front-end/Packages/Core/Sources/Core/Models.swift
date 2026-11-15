@@ -181,6 +181,8 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
 public enum AlarmSound: String, Codable, CaseIterable, Sendable, Identifiable {
     case classic, chime, siren, digital, pulse
     case radar, gentleRise, reveille, morningMood, furElise
+    /// Bonus: unlocked for free users by inviting a friend in onboarding.
+    case riseAndConquer
 
     public var id: String { rawValue }
 
@@ -196,6 +198,7 @@ public enum AlarmSound: String, Codable, CaseIterable, Sendable, Identifiable {
         case .reveille: "Reveille"
         case .morningMood: "Morning Mood"
         case .furElise: "Für Elise"
+        case .riseAndConquer: "Rise & Conquer"
         }
     }
 
@@ -206,7 +209,7 @@ public enum AlarmSound: String, Codable, CaseIterable, Sendable, Identifiable {
     public var category: Category {
         switch self {
         case .classic, .siren, .digital, .pulse, .radar: .tones
-        case .chime, .gentleRise, .reveille, .morningMood, .furElise: .melodies
+        case .chime, .gentleRise, .reveille, .morningMood, .furElise, .riseAndConquer: .melodies
         }
     }
 

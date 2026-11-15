@@ -44,7 +44,8 @@ public struct RootView: View {
         #else
         _buddies = State(initialValue: BuddiesModel(service: buddies))
         #endif
-        _onboarded = State(initialValue: onboardingStore.load().completed)
+        _onboarded = State(initialValue: onboardingStore.load().completed
+                           && !CommandLine.arguments.contains("-onboardingStep"))  // screenshot helper
         // Screenshot helper: -settings opens on the Settings tab.
         if CommandLine.arguments.contains("-settings") { _tab = State(initialValue: .settings) }
     }

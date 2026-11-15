@@ -111,6 +111,8 @@ public struct AccountUser: Equatable, Sendable {
 public struct ProfileUpdate: Codable, Equatable, Sendable {
     public var displayName: String?
     public var wakeGoal: WakeGoal?
+    /// Onboarding answers for insight (age range, where they heard of us, …). Stored as jsonb.
+    public var onboarding: [String: String]?
 
     public struct WakeGoal: Codable, Equatable, Sendable {
         public var hour: Int
@@ -126,9 +128,10 @@ public struct ProfileUpdate: Codable, Equatable, Sendable {
         }
     }
 
-    public init(displayName: String? = nil, wakeGoal: WakeGoal? = nil) {
+    public init(displayName: String? = nil, wakeGoal: WakeGoal? = nil, onboarding: [String: String]? = nil) {
         self.displayName = displayName
         self.wakeGoal = wakeGoal
+        self.onboarding = onboarding
     }
 }
 

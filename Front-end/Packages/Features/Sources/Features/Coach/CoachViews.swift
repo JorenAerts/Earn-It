@@ -42,7 +42,8 @@ final class CoachModel {
         let rings = coordinator.session?.reArmCount ?? 0
         let values = ["streak": "\(streak)",
                       "rings": "\(rings)",
-                      "time": coordinator.nextAlarm?.plan.timeText ?? "07:00"]
+                      "time": coordinator.nextAlarm?.plan.timeText ?? "07:00",
+                      "name": ProfileName.shared.name]
         return lines.line(for: state.context, intensity: intensity, day: now, variant: rings, values: values)
     }
 }

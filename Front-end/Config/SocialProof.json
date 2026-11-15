@@ -1,0 +1,6 @@
+{
+  "_help": "Shown in onboarding (welcome stats, summary, getting-ready carousel). ONLY real, current numbers and real App Store reviews (with permission) — invented ones break App Store Guideline 2.3.1 / 5.6 and consumer law. Empty = hidden; Sergeant Rise quotes show instead.",
+  "_example": { "stats": [{ "value": "10K+", "label": "mornings earned" }], "reviews": [{ "name": "Sam (App Store)", "text": "Haven't snoozed since.", "stars": 5 }] },
+  "stats": [],
+  "reviews": []
+}
