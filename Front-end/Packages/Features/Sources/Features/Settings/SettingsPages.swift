@@ -5,6 +5,7 @@ import Permissions
 import Purchases
 import StoreKit
 import SwiftUI
+import Telemetry
 
 // MARK: - Gloop Pro
 
@@ -61,7 +62,7 @@ struct SubscriptionSettingsView: View {
         }
         .navigationTitle("Gloop Pro")
         .navigationBarTitleDisplayMode(.inline)
-        .paywallSheet(isPresented: $showPaywall)
+        .paywallSheet(isPresented: $showPaywall, source: .settings)
         .manageSubscriptionsSheet(isPresented: $showManage)
     }
 }
@@ -105,6 +106,7 @@ struct CoachSettingsView: View {
                     ForEach(CoachIntensity.allCases) { Text($0.displayName).tag($0) }
                 }
                 .pickerStyle(.segmented)
+                .onChange(of: coach.intensity) { _, tone in Telemetry.shared.send(.action(.coachToneChanged(tone: tone.rawValue))) }
             } header: {
                 Text("Tone")
             } footer: {
@@ -151,6 +153,7 @@ struct CoachSettingsView: View {
                 let allowed = await PermissionCenter.shared.ensure(.notifications)  // denied → Settings prompt
                 remindersDenied = !allowed
                 coach.notifications.enabled = allowed
+                Telemetry.shared.send(.action(.remindersToggled(on: allowed)))
             } else {
                 coach.notifications.enabled = false
                 remindersDenied = false

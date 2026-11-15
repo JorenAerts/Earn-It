@@ -4,6 +4,7 @@ import Missions
 import Permissions
 import Purchases
 import SwiftUI
+import Telemetry
 
 struct AlarmSetupView: View {
     @State var plan: AlarmPlan
@@ -109,7 +110,7 @@ struct AlarmSetupView: View {
                 }
             }
             .navigationTitle(isNew ? "New alarm" : "Edit alarm")
-            .paywallSheet(isPresented: $showPaywall)
+            .paywallSheet(isPresented: $showPaywall, source: .lockedSound)
             .sheet(isPresented: $showMissionPicker) {
                 MissionPickerView(gate: gate) { plan.missions.append($0) }
             }

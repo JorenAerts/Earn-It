@@ -1,6 +1,7 @@
 import Purchases
 import StoreKit
 import SwiftUI
+import Telemetry
 
 /// The Gloop Pro paywall. Used as onboarding's last step, as a sheet from locked features,
 /// and from Settings. Plans + order + badges come from Pricing.json; prices from StoreKit.
@@ -14,6 +15,8 @@ struct PaywallView: View {
 
     let store: StoreService
     let mode: Mode
+    /// Where it was opened from (analytics: conversion per source).
+    var source: PaywallSource = .other
     let accountToken: UUID?
     let termsURL: URL
     let privacyURL: URL
@@ -24,6 +27,8 @@ struct PaywallView: View {
     @State private var purchasing = false
     @State private var restoring = false
     @State private var showManage = false
+    @State private var shownAt = Date.now
+    @State private var reportedUnavailable = false
     @Environment(\.openURL) private var openURL
 
     var body: some View {
@@ -56,8 +61,19 @@ struct PaywallView: View {
             }
         }
         .task {
+            shownAt = .now
+            Telemetry.shared.send(.paywallShown(source: source))
             if store.products.isEmpty { await store.loadProducts() }
             if selectedID == nil { selectedID = store.catalog.defaultPlan?.id }
+            if store.products.isEmpty, !reportedUnavailable {
+                reportedUnavailable = true
+                Telemetry.shared.send(.paywallPlansUnavailable(source: source))
+            }
+        }
+        .trackScreen("Paywall")
+        .onDisappear {
+            Telemetry.shared.send(.paywallDismissed(source: source, secondsShown: Int(Date.now.timeIntervalSince(shownAt)),
+                                                    purchased: store.entitlement.isPro))
         }
         .sensoryFeedback(.success, trigger: store.entitlement.isPro) { _, isPro in isPro }
         .manageSubscriptionsSheet(isPresented: $showManage)
@@ -137,6 +153,7 @@ struct PaywallView: View {
                                  trial: store.isEligibleForTrial ? trialText(for: product) : nil,
                                  isSelected: selectedID == plan.id) {
                             selectedID = plan.id
+                            Telemetry.shared.send(.paywallPlanSelected(plan: plan.key, source: source))
                         }
                     }
                 }
@@ -213,11 +230,21 @@ struct PaywallView: View {
 
     private func buy() {
         guard let product = selectedProduct else { return }
+        let plan = selectedPlan?.key ?? product.id
         purchasing = true
+        Telemetry.shared.send(.purchaseStarted(plan: plan, source: source))
         Task {
             let done = await store.purchase(product, accountToken: accountToken)
             purchasing = false
-            if done { onFinish() }
+            if done {
+                Telemetry.shared.send(.purchaseCompleted(plan: plan, source: source,
+                                                         trial: { if case .trial = store.entitlement { true } else { false } }()))
+                onFinish()
+            } else if store.errorMessage != nil {
+                Telemetry.shared.send(.purchaseFailed(plan: plan, source: source))
+            } else {
+                Telemetry.shared.send(.purchaseCancelled(plan: plan, source: source))
+            }
         }
     }
 
@@ -226,6 +253,7 @@ struct PaywallView: View {
         Task {
             await store.restore()
             restoring = false
+            Telemetry.shared.send(.purchaseRestored(found: store.entitlement.isPro))
             if store.entitlement.isPro { onFinish() }
         }
     }
@@ -340,13 +368,14 @@ private struct PlanCard: View {
 /// Paywall presented as a sheet (locked features, Settings).
 struct PaywallSheet: View {
     let store: StoreService
+    var source: PaywallSource = .other
     let accountToken: UUID?
     let termsURL: URL
     let privacyURL: URL
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        PaywallView(store: store, mode: .sheet, accountToken: accountToken,
+        PaywallView(store: store, mode: .sheet, source: source, accountToken: accountToken,
                     termsURL: termsURL, privacyURL: privacyURL) { dismiss() }
     }
 }

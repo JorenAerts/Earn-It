@@ -2,6 +2,7 @@ import AVFoundation
 import Core
 import Permissions
 import SwiftUI
+import Telemetry
 
 // MARK: - Trim (shared by import + record)
 
@@ -112,6 +113,7 @@ struct TrimSoundView: View {
                 let seconds = try await Task.detached { try AudioClipExporter.export(from: url, start: s, length: l, to: temp) }.value
                 let sound = try MySounds.shared.add(file: temp, name: name.trimmingCharacters(in: .whitespaces),
                                                     duration: seconds, source: kind)
+                Telemetry.shared.send(.action(kind == .recorded ? .soundRecorded : .soundImported))
                 onSaved(sound)
                 dismiss()
             } catch {

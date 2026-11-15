@@ -2,6 +2,7 @@ import Coach
 import Core
 import Missions
 import SwiftUI
+import Telemetry
 
 /// Full-screen, no way back: runs each configured mission in order.
 /// Layout: coach → progress (steps + alarm status) → mission card (what to do) → the mission.
@@ -50,6 +51,9 @@ struct MissionRunnerView: View {
 
                 if showBackupOffer {
                     Button {
+                        if let current = run.current {
+                            Telemetry.shared.send(.missionBackupUsed(kind: current.kind.rawValue))
+                        }
                         withAnimation { run.swapToBackup() }
                         showBackupOffer = false
                     } label: {
@@ -66,7 +70,12 @@ struct MissionRunnerView: View {
         .overlay { if stepDone > 0 { StepDoneFlash(trigger: stepDone) } }
         .sensoryFeedback(.success, trigger: stepDone)
         .interactiveDismissDisabled()
-        .onAppear { if missions.isEmpty { onAllComplete() } }
+        .onAppear {
+            if missions.isEmpty { onAllComplete() }
+            Telemetry.shared.send(.missionStarted(kinds: missions.map(\.kind.rawValue).joined(separator: "+"),
+                                                  attempt: reArmCount + 1))
+        }
+        .trackScreen("Mission")
         // Offer the backup after the current step's delay (e.g. 2 min for "Scan your item").
         .task(id: "\(run.index)-\(run.backedUp.count)") {
             showBackupOffer = false

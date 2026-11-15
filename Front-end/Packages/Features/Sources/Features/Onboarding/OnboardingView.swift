@@ -5,6 +5,7 @@ import Core
 import Permissions
 import Purchases
 import SwiftUI
+import Telemetry
 
 /// Full-screen onboarding: personal questions → guided first alarm → summary → paywall.
 /// Progress (step + answers) is saved after every change, so a killed app resumes.
@@ -18,6 +19,9 @@ struct OnboardingView: View {
     @State private var progress: OnboardingProgress
     @State private var goingBack = false
     @State private var showSignIn = false
+    /// When the current step appeared / onboarding started (analytics).
+    @State private var stepStartedAt = Date.now
+    @State private var onboardingStartedAt = Date.now
 
     init(coordinator: AlarmCoordinator, auth: any AuthService, store: StoreService,
          onboardingStore: OnboardingStore, onFinish: @escaping () -> Void) {
@@ -56,9 +60,11 @@ struct OnboardingView: View {
         }
         .background(Color(.systemGroupedBackground))
         .onChange(of: progress) { _, new in onboardingStore.save(new) }
+        .onChange(of: progress.step, initial: true) { _, step in stepViewed(step) }
         .onChange(of: auth.user) { _, user in
-            guard user != nil else { return }
+            guard let user else { return }
             showSignIn = false
+            Telemetry.shared.send(.onboardingSignIn(method: user.provider ?? "email"))
             // Signed in from the account step (incl. OAuth / email link): move on.
             if progress.step == .account { advance() }
         }
@@ -153,7 +159,7 @@ struct OnboardingView: View {
         case .summary:
             SummaryStep(answers: progress.answers, onNext: advance)
         case .paywall:
-            PaywallView(store: store, mode: .onboarding, accountToken: auth.user?.id,
+            PaywallView(store: store, mode: .onboarding, source: .onboarding, accountToken: auth.user?.id,
                         termsURL: auth.config.termsURL, privacyURL: auth.config.privacyURL,
                         onFinish: advance)
         }
@@ -196,12 +202,33 @@ struct OnboardingView: View {
 
     // MARK: Navigation
 
+    private func stepViewed(_ step: OnboardingStep) {
+        stepStartedAt = .now
+        if step == .welcome { onboardingStartedAt = .now }
+        let index = OnboardingFlow.visibleSteps(context).firstIndex(of: step) ?? -1
+        Telemetry.shared.send(.onboardingStepViewed(step: step.rawValue, index: index))
+        Telemetry.shared.screen("Onboarding.\(step.rawValue)")
+    }
+
     private func advance() {
+        Telemetry.shared.send(.onboardingStepCompleted(step: progress.step.rawValue,
+                                                        seconds: Int(Date.now.timeIntervalSince(stepStartedAt)),
+                                                        answers: progress.answers.telemetryAnswers(for: progress.step)))
+        if progress.step == .account, auth.user == nil {
+            Telemetry.shared.send(.onboardingSignIn(method: "skipped"))
+        }
         goingBack = false
         // Answers given before signing in reach the profile once an account exists.
         if progress.step == .account || progress.step == .summary { syncProfile() }
         guard let next = OnboardingFlow.next(after: progress.step, context) else {
             progress.completed = true
+            let outcome = switch store.entitlement {
+            case .free: "free"
+            case .trial: "trial"
+            case .pro: "pro"
+            }
+            Telemetry.shared.send(.onboardingCompleted(totalSeconds: Int(Date.now.timeIntervalSince(onboardingStartedAt)),
+                                                       outcome: outcome))
             onFinish()
             return
         }
@@ -210,6 +237,7 @@ struct OnboardingView: View {
 
     private func back() {
         guard let previous = OnboardingFlow.previous(before: progress.step, context) else { return }
+        Telemetry.shared.send(.onboardingBack(from: progress.step.rawValue))
         goingBack = true
         withAnimation(.snappy) { progress.step = previous }
     }

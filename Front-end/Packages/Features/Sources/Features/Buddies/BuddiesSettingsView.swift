@@ -1,6 +1,7 @@
 import Account
 import Buddies
 import SwiftUI
+import Telemetry
 
 /// Settings › Buddies: wake-up time privacy, blocked people, community rules.
 struct BuddiesSettingsView: View {
@@ -51,6 +52,7 @@ struct BuddiesSettingsView: View {
             }
         }
         .navigationTitle("Buddies")
+        .trackScreen("Settings.Buddies")
         .navigationBarTitleDisplayMode(.inline)
         .task(id: auth.user?.id) { await load() }
     }

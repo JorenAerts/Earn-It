@@ -2,6 +2,7 @@
 import Buddies
 import Permissions
 import SwiftUI
+import Telemetry
 import UIKit
 
 /// After the mission: snap a front-camera selfie (one retake), pick clubs, post — or skip.
@@ -134,6 +135,7 @@ struct ShareMorningView: View {
             busy = false
             if ok {
                 model.didDecidePhoto(.posted)
+                Telemetry.shared.send(.action(.photoPosted(clubCount: selected.count)))
                 dismiss()
             } else {
                 problem = model.error
@@ -146,6 +148,7 @@ struct ShareMorningView: View {
         Task {
             if await model.perform({ try await model.service.skipMorning(day: model.today) }) {
                 model.didDecidePhoto(.skipped)
+                Telemetry.shared.send(.action(.photoSkipped))
             }
             busy = false
             dismiss()

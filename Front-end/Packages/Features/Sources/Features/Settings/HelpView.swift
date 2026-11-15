@@ -1,6 +1,7 @@
 import Account
 import StoreKit
 import SwiftUI
+import Telemetry
 import UIKit
 
 /// Settings › Help & feedback: FAQ, contact, rate, share, what's new.
@@ -21,6 +22,9 @@ struct HelpView: View {
                             .font(.subheadline).foregroundStyle(.secondary)
                             .fixedSize(horizontal: false, vertical: true)
                             .padding(.vertical, 4)
+                            .onAppear {
+                                Telemetry.shared.send(.action(.faqOpened(index: content.faq.firstIndex(of: item) ?? -1)))
+                            }
                     } label: {
                         Text(item.question).font(.body.weight(.medium))
                     }
@@ -33,7 +37,7 @@ struct HelpView: View {
                         Label("Contact support", systemImage: "envelope.fill")
                     }
                 }
-                Button { requestReview() } label: {
+                Button { requestReview(); Telemetry.shared.send(.action(.rateRequested)) } label: {
                     Label("Rate Gloop", systemImage: "star.fill")
                 }
                 if let url = auth.config.shareURL {
@@ -66,6 +70,8 @@ struct HelpView: View {
             }
         }
         .navigationTitle("Help & feedback")
+        .onAppear { Telemetry.shared.send(.action(.helpOpened)) }
+        .trackScreen("Help")
         .navigationBarTitleDisplayMode(.inline)
     }
 

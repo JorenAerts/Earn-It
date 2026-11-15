@@ -1,5 +1,6 @@
 import Buddies
 import SwiftUI
+import Telemetry
 
 /// Create a club, or edit one you own.
 struct CreateClubView: View {
@@ -84,6 +85,7 @@ struct CreateClubView: View {
                     id = existing.id
                 } else {
                     id = try await model.service.createClub(draft)
+                    Telemetry.shared.send(.action(.clubCreated(isPublic: draft.isPublic)))
                 }
             }
             busy = false
@@ -155,6 +157,7 @@ struct JoinClubView: View {
         Task {
             var id: UUID?
             let ok = await model.perform { id = try await model.service.joinClub(code: code) }
+            if ok { Telemetry.shared.send(.action(.clubJoined(via: initialCode.isEmpty ? "code" : "link"))) }
             busy = false
             if ok, let id {
                 dismiss()
@@ -238,6 +241,7 @@ struct DiscoverClubsView: View {
         joining = club.id
         Task {
             if await model.perform({ try await model.service.joinPublicClub(club.id) }) {
+                Telemetry.shared.send(.action(.clubJoined(via: "discover")))
                 if let i = results.firstIndex(where: { $0.id == club.id }) {
                     results[i].isMember = true
                     results[i].memberCount += 1

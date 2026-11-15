@@ -3,6 +3,7 @@ import Core
 import Foundation
 import Purchases
 import SwiftUI
+import Telemetry
 
 /// Everything a screen needs to show the paywall. Injected once in `RootView`
 /// (`.environment(\.paywall, …)`) so any screen can present it.
@@ -21,19 +22,20 @@ extension EnvironmentValues {
 
 extension View {
     /// Presents the paywall as a sheet using the injected `PaywallContext`.
-    func paywallSheet(isPresented: Binding<Bool>) -> some View {
-        modifier(PaywallSheetModifier(isPresented: isPresented))
+    func paywallSheet(isPresented: Binding<Bool>, source: PaywallSource = .other) -> some View {
+        modifier(PaywallSheetModifier(isPresented: isPresented, source: source))
     }
 }
 
 private struct PaywallSheetModifier: ViewModifier {
     @Binding var isPresented: Bool
+    let source: PaywallSource
     @Environment(\.paywall) private var paywall
 
     func body(content: Content) -> some View {
         content.sheet(isPresented: $isPresented) {
             if let paywall {
-                PaywallSheet(store: paywall.store, accountToken: paywall.accountToken,
+                PaywallSheet(store: paywall.store, source: source, accountToken: paywall.accountToken,
                              termsURL: paywall.termsURL, privacyURL: paywall.privacyURL)
             }
         }

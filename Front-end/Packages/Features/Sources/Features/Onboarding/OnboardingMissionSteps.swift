@@ -4,6 +4,7 @@ import Missions
 import Permissions
 import Purchases
 import SwiftUI
+import Telemetry
 import UIKit
 
 // MARK: - Pick a mission
@@ -285,6 +286,7 @@ struct InviteFriendStep: View {
         .sheet(isPresented: $sharing) {
             ShareSheet(items: [Self.message] + (link.map { [$0] } ?? [])) { completed in
                 sharing = false
+                Telemetry.shared.send(.onboardingInviteShared(completed: completed))
                 if completed {
                     store.unlockInviteSound()
                     withAnimation(.snappy) { unlocked = true }

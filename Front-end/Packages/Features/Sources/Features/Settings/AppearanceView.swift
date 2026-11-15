@@ -1,5 +1,6 @@
 import Coach
 import SwiftUI
+import Telemetry
 import WidgetShared
 
 /// Settings › Appearance: Light / Dark / Match iPhone, app icon, Gloop's colour.
@@ -15,6 +16,7 @@ struct AppearanceView: View {
                     ForEach(AppearancePreference.allCases) { option in
                         ModeTile(option: option, selected: settings.preference == option) {
                             withAnimation(.snappy) { settings.preference = option }
+                            Telemetry.shared.send(.action(.appearanceChanged(mode: option.rawValue)))
                         }
                     }
                 }
@@ -68,6 +70,7 @@ struct AppearanceView: View {
             }
         }
         .navigationTitle("Appearance")
+        .trackScreen("Settings.Appearance")
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -76,6 +79,7 @@ struct AppearanceView: View {
         changing = true
         Task {
             iconError = await settings.setIcon(choice)
+            if iconError == nil { Telemetry.shared.send(.action(.iconChanged(icon: choice.rawValue))) }
             changing = false
         }
     }
