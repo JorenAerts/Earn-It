@@ -6,6 +6,7 @@ import Core
 import Missions
 import Permissions
 import Purchases
+import StoreKit
 import SwiftData
 import SwiftUI
 import Telemetry
@@ -27,6 +28,9 @@ public struct RootView: View {
     @State private var showSuccess = false
     @State private var tab: MainTabView.TabID = .alarms
     @State private var showPaywallFromWidget = false
+    /// Happy moment from this morning worth asking for a rating at (see `RatingPolicy`).
+    @State private var ratingMoment: RatingPolicy.Moment?
+    @State private var whatsNew: HelpContent.Release?
     @State private var buddies: BuddiesModel
 
     public init(coordinator: AlarmCoordinator, auth: any AuthService, store: StoreService,
@@ -46,7 +50,8 @@ public struct RootView: View {
         #else
         _buddies = State(initialValue: BuddiesModel(service: buddies))
         #endif
-        _onboarded = State(initialValue: onboardingStore.load().completed
+        _onboarded = State(initialValue: (onboardingStore.load().completed
+                                          || CommandLine.arguments.contains("-buddiesSample"))  // screenshots on a fresh simulator
                            && !CommandLine.arguments.contains("-onboardingStep"))  // screenshot helper
         // Screenshot helper: -settings opens on the Settings tab.
         if CommandLine.arguments.contains("-settings") { _tab = State(initialValue: .settings) }
@@ -64,6 +69,10 @@ public struct RootView: View {
             if previewWidgets {
                 #if DEBUG
                 NavigationStack { WidgetPreviewsView(coordinator: coordinator, store: store) }
+                #endif
+            } else if let scene = Self.storeShotScene {
+                #if DEBUG
+                StoreShotView(scene: scene, store: store)  // App Store screenshots: -storeShot <scene>
                 #endif
             } else if let i = CommandLine.arguments.firstIndex(of: "-legal"), i + 1 < CommandLine.arguments.count,
                       let kind = LegalDocumentKind(rawValue: CommandLine.arguments[i + 1]) {
@@ -207,10 +216,17 @@ public struct RootView: View {
             default: break
             }
         }
-        .fullScreenCover(isPresented: $showSuccess) {
-            SuccessView(coordinator: coordinator) { showSuccess = false }
+        .fullScreenCover(isPresented: $showSuccess, onDismiss: { ratingMoment = nil }) {
+            SuccessView(coordinator: coordinator, ratingMoment: ratingMoment) { showSuccess = false }
                 .trackScreen("Success")
         }
+        .sheet(item: $whatsNew) { release in
+            WhatsNewSheet(release: release) {
+                GrowthStore.shared.markWhatsNewSeen(release.version)
+                whatsNew = nil
+            }
+        }
+        .task(id: onboarded) { checkWhatsNew() }
     }
 
     /// Coach notifications + widget snapshot: both derive from alarms, today's session and history.
@@ -220,6 +236,26 @@ public struct RootView: View {
         CoachModel.shared.refreshVitality(logs: logs, plans: coordinator.plans)
         Task { await CoachNotifier.shared.refresh(coordinator: coordinator) }
         WidgetPublisher.shared.publish(coordinator: coordinator, logs: logs, isPro: store.entitlement.isPro)
+    }
+
+    /// What's New after an update: once per version, never on a fresh install or during a mission.
+    private func checkWhatsNew() {
+        guard onboarded, !coordinator.needsMission else { return }
+        let store = GrowthStore.shared
+        let current = GrowthStore.appVersion
+        guard let seen = store.whatsNewSeenVersion else {
+            store.markWhatsNewSeen(current)  // first launch: nothing "new" yet
+            return
+        }
+        let content = HelpContent.load()
+        if let version = WhatsNewPolicy.versionToShow(current: current, lastSeenVersion: seen,
+                                                       availableVersions: content.releases.map(\.version)),
+           let release = content.releases.first(where: { $0.version == version }) {
+            whatsNew = release
+            Telemetry.shared.send(.action(.whatsNewShown(version: version)))
+        } else {
+            store.markWhatsNewSeen(current)
+        }
     }
 
     /// Tell the clubs about this morning (queued when offline).
@@ -273,12 +309,21 @@ public struct RootView: View {
         for sticker in report.newMedals { Telemetry.shared.send(.stickerEarned(sticker: sticker.rawValue)) }
         let streak = StreakCalculator.currentStreak(completedDays: logs.compactMap(\.missionCompletedAt), today: .now)
         if [3, 7, 14, 30, 60, 100, 365].contains(streak) { Telemetry.shared.send(.streakMilestone(days: streak)) }
+
+        // Ask for a rating only at a happy moment (shown on the success screen).
+        let firstRings = logs.filter { $0.missionCompletedAt != nil && $0.reArmCount == 0 }.count
+        var moments: [RatingPolicy.Moment] = [.streak(streak), .firstRingMornings(firstRings)]
+        if report.promoted { moments.insert(.evolved, at: 0) }
+        ratingMoment = RatingPolicy.moment(from: moments, state: GrowthStore.shared.ratingState, now: .now,
+                                           appVersion: GrowthStore.appVersion, failSafeToday: session.failSafeTriggered)
     }
 }
 
 struct SuccessView: View {
     let coordinator: AlarmCoordinator
+    var ratingMoment: RatingPolicy.Moment? = nil
     let dismiss: () -> Void
+    @Environment(\.requestReview) private var requestReview
     @Query private var logs: [DayLog]
     @Environment(BuddiesModel.self) private var buddies
     @State private var sharing = false
@@ -341,6 +386,9 @@ struct SuccessView: View {
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                 }
+                ShareStreakButton(style: .plain)
+                    .font(.subheadline.weight(.semibold))
+                    .padding(.bottom, 2)
                 if buddies.shouldPromptPhoto(missionDoneToday: true) {
                     Button("Done", action: dismiss).buttonStyle(.bordered).controlSize(.large)
                 } else {
@@ -350,6 +398,15 @@ struct SuccessView: View {
             .padding(.bottom, 24)
         }
         .sheet(isPresented: $sharing) { ShareMorningView() }
+        .task {
+            // Happy moment: Apple's rating prompt, after the celebration has landed.
+            guard let ratingMoment else { return }
+            try? await Task.sleep(for: .seconds(2.5))
+            guard !Task.isCancelled else { return }
+            requestReview()
+            GrowthStore.shared.didPromptRating(version: GrowthStore.appVersion)
+            Telemetry.shared.send(.action(.ratingPrompted(reason: ratingMoment.reason)))
+        }
     }
 }
 
@@ -362,4 +419,15 @@ extension EntitlementState {
         case .pro(let until): until == nil ? "lifetime" : "pro"
         }
     }
+}
+
+extension RootView {
+    #if DEBUG
+    static var storeShotScene: StoreShotScene? {
+        guard let i = CommandLine.arguments.firstIndex(of: "-storeShot"), i + 1 < CommandLine.arguments.count else { return nil }
+        return StoreShotScene(rawValue: CommandLine.arguments[i + 1])
+    }
+    #else
+    static var storeShotScene: Never? { nil }
+    #endif
 }
