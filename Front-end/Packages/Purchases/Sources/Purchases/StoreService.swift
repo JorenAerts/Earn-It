@@ -1,3 +1,4 @@
+import Core
 import Foundation
 import Observation
 import os
@@ -20,6 +21,8 @@ public final class StoreService {
     /// is only the cached value — never take features away based on the cache alone.
     public private(set) var hasLoadedEntitlement = false
     public private(set) var errorMessage: String?
+    /// Bonus sounds unlocked without Pro (see `BonusUnlocks`).
+    public private(set) var bonusSounds: Set<AlarmSound>
 
     @ObservationIgnored private let cache: EntitlementCache
     @ObservationIgnored private var updatesTask: Task<Void, Never>?
@@ -28,9 +31,16 @@ public final class StoreService {
         self.catalog = catalog
         self.cache = cache
         self.entitlement = cache.load()
+        self.bonusSounds = BonusUnlocks.sounds()
     }
 
-    public var gate: FeatureGate { FeatureGate(entitlement) }
+    public var gate: FeatureGate { FeatureGate(entitlement, bonusSounds: bonusSounds) }
+
+    /// Onboarding › invite a friend: the bonus sound becomes free forever.
+    public func unlockInviteSound() {
+        BonusUnlocks.unlock()
+        bonusSounds = BonusUnlocks.sounds()
+    }
 
     /// Call once at launch: listens for renewals, refunds and purchases made elsewhere.
     public func start() {

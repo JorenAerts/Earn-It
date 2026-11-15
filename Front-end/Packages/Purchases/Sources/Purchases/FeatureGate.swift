@@ -5,13 +5,16 @@ import Foundation
 /// The ringing / mission path is never gated — only creating and editing alarms.
 public struct FeatureGate: Equatable, Sendable {
     public let isPro: Bool
+    /// Built-in sounds free users unlocked another way (inviting a friend).
+    public let bonusSounds: Set<AlarmSound>
 
-    public init(isPro: Bool) {
+    public init(isPro: Bool, bonusSounds: Set<AlarmSound> = []) {
         self.isPro = isPro
+        self.bonusSounds = bonusSounds
     }
 
-    public init(_ state: EntitlementState) {
-        self.init(isPro: state.isPro)
+    public init(_ state: EntitlementState, bonusSounds: Set<AlarmSound> = []) {
+        self.init(isPro: state.isPro, bonusSounds: bonusSounds)
     }
 
     public static let freeMissions: Set<MissionKind> = [.math]
@@ -35,7 +38,7 @@ public struct FeatureGate: Equatable, Sendable {
     }
 
     public func isLocked(_ sound: AlarmSound) -> Bool {
-        !isPro && !Self.freeSounds.contains(sound)
+        !isPro && !Self.freeSounds.contains(sound) && !bonusSounds.contains(sound)
     }
 
     /// Own sounds and Apple Music are Pro; built-ins follow `freeSounds`.

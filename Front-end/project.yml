@@ -60,6 +60,8 @@ targets:
         buildPhase: resources
       - path: Config/Developer.json
         buildPhase: resources
+      - path: Config/SocialProof.json
+        buildPhase: resources
     dependencies:
       - package: Core
       - package: Coach

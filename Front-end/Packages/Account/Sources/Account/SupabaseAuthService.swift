@@ -108,12 +108,24 @@ public final class SupabaseAuthService: AuthService {
             let display_name: String?
             let wake_goal: ProfileUpdate.WakeGoal?
         }
+        struct OnboardingRow: Encodable {
+            let id: UUID
+            let onboarding: [String: String]
+        }
         do {
             try await client.from("profiles")
                 .upsert(Row(id: user.id, display_name: update.displayName, wake_goal: update.wakeGoal))
                 .execute()
         } catch {
             log.error("profile update failed: \(error.localizedDescription, privacy: .public)")
+        }
+        // Separate call: works even before the `onboarding` column migration is applied.
+        if let onboarding = update.onboarding, !onboarding.isEmpty {
+            do {
+                try await client.from("profiles").upsert(OnboardingRow(id: user.id, onboarding: onboarding)).execute()
+            } catch {
+                log.notice("onboarding answers not saved (column missing?): \(error.localizedDescription, privacy: .public)")
+            }
         }
     }
 

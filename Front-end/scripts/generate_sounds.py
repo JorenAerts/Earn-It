@@ -183,8 +183,34 @@ def furElise(t):
     return _elise(t)
 
 
+# ---- bonus: unlocked by inviting a friend ------------------------------------------------------
+
+def brass(x, length, f):
+    """Bright, punchy brass: fast attack, slight swell, rich harmonics."""
+    env = min(1.0, x / 0.02) * (0.8 + 0.2 * min(1.0, x / 0.15)) * min(1.0, max(0.0, (length - x) / 0.05))
+    vib = 1 + 0.003 * math.sin(TAU * 6 * x) * min(1.0, x / 0.3)
+    return env * sum(a * math.sin(TAU * f * k * vib * x) for k, a in ((1, .45), (2, .35), (3, .25), (4, .15), (5, .1), (6, .05)))
+
+
+def _drum(t, period, offset=0.0):
+    tc = (t - offset) % period
+    return math.exp(-tc * 18) * math.sin(TAU * 70 * tc) * 0.9 if tc < 0.25 else 0.0
+
+
+# Our own fanfare (not based on any existing piece): rising D-major call, answer, big finish.
+_conquer = melody([
+    ("D4", .5), ("A4", .5), ("D5", 1), ("D5", .5), ("F#5", .5), ("A5", 1.5), (None, .5),
+    ("G5", .5), ("F#5", .5), ("E5", .5), ("F#5", .5), ("D5", 2), (None, .5),
+    ("A4", .5), ("D5", .5), ("F#5", 1), ("F#5", .5), ("A5", .5), ("D6", 1.5), (None, .5),
+    ("C#6", .5), ("B5", .5), ("A5", .5), ("B5", .5), ("D6", 3)], brass, beat=0.26, gap=0.6)
+
+
+def riseAndConquer(t):
+    return _conquer(t) + 0.35 * _drum(t, 0.52)
+
+
 SOUNDS = dict(classic=classic, chime=chime, siren=siren, digital=digital, pulse=pulse,
-              radar=radar, gentleRise=gentleRise, reveille=reveille, morningMood=morningMood, furElise=furElise)
+              radar=radar, gentleRise=gentleRise, reveille=reveille, morningMood=morningMood, furElise=furElise, riseAndConquer=riseAndConquer)
 
 
 def render(name, fn):
