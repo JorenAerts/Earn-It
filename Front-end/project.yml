@@ -39,6 +39,8 @@ packages:
     path: Packages/WidgetShared
   Permissions:
     path: Packages/Permissions
+  Buddies:
+    path: Packages/Buddies
 
 targets:
   EarnIt:
@@ -68,6 +70,7 @@ targets:
       - package: AlarmEngine
       - package: Missions
       - package: Features
+      - package: Buddies
       - target: AlarmLiveActivity
     settings:
       base:

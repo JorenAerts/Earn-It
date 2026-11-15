@@ -14,7 +14,19 @@ supabase/
   migrations/*_profiles.sql           profiles table + RLS + auto-create on sign-up
   migrations/*_profiles_grants.sql    table access for signed-in users
   migrations/*_delete_own_account.sql delete_own_account() RPC: in-app account deletion (App Review 5.1.1(v))
+  migrations/*_buddies.sql            clubs, members, wake reports, morning photos (bucket `morning`),
+                                      reactions, blocks, reports + RPCs; delete_own_account hands clubs over
+  functions/cleanup-morning-posts     hourly: deletes photos older than 24 h + files of deleted users
 ```
+
+## Buddies setup
+1. SQL Editor › paste `migrations/20261115000000_buddies.sql` › Run (creates the `morning` storage bucket too).
+2. Edge Functions › Deploy a new function › Via Editor › name `cleanup-morning-posts` › paste
+   `functions/cleanup-morning-posts/index.ts` › Deploy.
+3. Integrations › Cron › enable › Create job › type "Supabase Edge Function" › `cleanup-morning-posts`,
+   schedule `0 * * * *` (every hour).
+4. Moderation: Table Editor › `reports` (newest first). To remove a photo: delete its `morning_posts` row
+   (+ file in Storage › morning). To ban someone: Authentication › Users › delete user.
 
 ## One-time setup (hosted project)
 1. **Database** — apply the migration, either:
@@ -32,4 +44,4 @@ supabase/
 
 ## Later
 - App Store Server Notifications → edge function → `subscriptions` table (server-side record of Pro, linked through the purchase's `appAccountToken` = user id).
-- Buddies / challenges / leaderboards.
+- Push notifications for Buddies (APNs, paid program).

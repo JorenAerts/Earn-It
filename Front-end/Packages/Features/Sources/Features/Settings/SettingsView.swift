@@ -22,6 +22,7 @@ struct SettingsView: View {
     @State private var developer = DeveloperMode.shared
     @State private var profile = ProfileName.shared
     @State private var taps = TapUnlock()
+    @Environment(BuddiesModel.self) private var buddiesModel
     @State private var tapHint: String?
     @Environment(\.openURL) private var openURL
     @Environment(\.requestReview) private var requestReview
@@ -52,6 +53,14 @@ struct SettingsView: View {
                         let summary = PermissionSummary.make(permissions.status)
                         row("Permissions", symbol: "checkmark.shield.fill", tint: .green, value: summary.text,
                             valueTint: summary == .allSet ? nil : .orange)
+                    }
+                }
+
+                if buddiesModel.service.isAvailable {
+                    Section("Buddies") {
+                        NavigationLink { BuddiesSettingsView(auth: auth) } label: {
+                            row("Buddies", symbol: "person.3.fill", tint: .pink, value: "Privacy & blocked")
+                        }
                     }
                 }
 
