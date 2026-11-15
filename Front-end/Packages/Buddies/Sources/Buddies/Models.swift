@@ -1,6 +1,7 @@
 import Coach
 import Core
 import Foundation
+import Localization
 
 public enum ClubRole: String, Codable, Sendable {
     case owner, member
@@ -218,5 +219,5 @@ public enum ReportKind: String, Codable, Sendable {
 /// Shown for members without a name.
 public func buddyName(_ name: String?) -> String {
     let trimmed = name?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-    return trimmed.isEmpty ? "Buddy" : trimmed
+    return trimmed.isEmpty ? L10n.tr("Buddy") : trimmed
 }

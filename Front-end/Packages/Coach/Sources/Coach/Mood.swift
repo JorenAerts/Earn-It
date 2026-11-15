@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 
 /// The coach's five moods, best to worst.
 public enum CoachMood: String, Codable, CaseIterable, Sendable, Identifiable {
@@ -8,11 +9,11 @@ public enum CoachMood: String, Codable, CaseIterable, Sendable, Identifiable {
 
     public var displayName: String {
         switch self {
-        case .proud: "Proud"
-        case .calm: "Calm"
-        case .suspicious: "Suspicious"
-        case .angry: "Angry"
-        case .disappointed: "Disappointed"
+        case .proud: L10n.tr("Proud")
+        case .calm: L10n.tr("Calm")
+        case .suspicious: L10n.tr("Suspicious")
+        case .angry: L10n.tr("Angry")
+        case .disappointed: L10n.tr("Disappointed")
         }
     }
 }
@@ -25,9 +26,9 @@ public enum CoachIntensity: String, Codable, CaseIterable, Sendable, Identifiabl
 
     public var displayName: String {
         switch self {
-        case .gentle: "Gentle"
-        case .toughLove: "Tough love"
-        case .savage: "Savage"
+        case .gentle: L10n.tr("Gentle")
+        case .toughLove: L10n.tr("Tough love")
+        case .savage: L10n.tr("Savage")
         }
     }
 }

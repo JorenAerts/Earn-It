@@ -1,6 +1,7 @@
 import Coach
 import Core
 import Foundation
+import Localization
 
 /// The leaderboard week: Monday 00:00 → next Monday, in local time.
 public enum WeekWindow {
@@ -25,6 +26,13 @@ public enum LeaderboardRanking {
     public enum Period: String, CaseIterable, Sendable, Identifiable {
         case week = "This week", allTime = "All time"
         public var id: String { rawValue }
+
+        public var title: String {
+            switch self {
+            case .week: L10n.tr("This week")
+            case .allTime: L10n.tr("All time")
+            }
+        }
     }
 
     public struct Entry: Identifiable, Hashable, Sendable {
@@ -89,7 +97,8 @@ public enum InviteCode {
 
     /// Text for the share sheet.
     public static func shareText(club: String, code: String) -> String {
-        "Join my wake-up club \"\(club)\" on Gloop! Code: \(display(code)) — or tap \(link(code).absoluteString)"
+        let shown = display(code), url = link(code).absoluteString
+        return L10n.tr("Join my wake-up club “\(club)” on Gloop! Code: \(shown) — or tap \(url)")
     }
 }
 
@@ -114,9 +123,9 @@ public enum ClubRules {
 
         public var message: String {
             switch self {
-            case .nameLength: "Use 2 to 40 characters for the name."
-            case .descriptionLength: "Keep the description under \(ClubRules.maxDescription) characters."
-            case .inappropriate: "Pick a different name: public clubs must be friendly for everyone."
+            case .nameLength: L10n.tr("Use 2 to 40 characters for the name.")
+            case .descriptionLength: L10n.tr("Keep the description under \(ClubRules.maxDescription) characters.")
+            case .inappropriate: L10n.tr("Pick a different name: public clubs must be friendly for everyone.")
             }
         }
     }
@@ -184,7 +193,7 @@ public struct WakeReport: Codable, Equatable, Sendable {
         return WakeReport(day: DayKey.string(day, calendar: calendar), completedAt: completedAt, alarmTime: alarmTime,
                           rings: rings, xp: max(0, xp),
                           streak: StreakCalculator.currentStreak(completedDays: completed, today: day, calendar: calendar),
-                          rank: XPRules.progress(history, calendar: calendar).rank.title)
+                          rank: XPRules.progress(history, calendar: calendar).rank.englishTitle)
     }
 }
 

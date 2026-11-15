@@ -1,5 +1,6 @@
 @preconcurrency import AVFoundation
 import Buddies
+import Localization
 import Permissions
 import SwiftUI
 import Telemetry
@@ -29,7 +30,7 @@ struct ShareMorningView: View {
                     } else if camera.status == .denied || camera.status == .unavailable {
                         VStack(spacing: 10) {
                             Image(systemName: "camera.fill").font(.largeTitle)
-                            Text(camera.status == .denied ? "Camera is off for Gloop." : "No front camera available.")
+                            Text(camera.status == .denied ? L10n.tr("Camera is off for Gloop.") : L10n.tr("No front camera available."))
                             if camera.status == .denied {
                                 Button("Open Settings") { PermissionCenter.shared.openSettings(.camera) }
                                     .buttonStyle(.bordered)
@@ -65,7 +66,7 @@ struct ShareMorningView: View {
                             .controlSize(.large)
                         }
                         Button(action: post) {
-                            Text(busy ? "Posting…" : "Post").font(.headline).frame(maxWidth: .infinity)
+                            Text(busy ? L10n.tr("Posting…") : L10n.tr("Post")).font(.headline).frame(maxWidth: .infinity)
                         }
                         .buttonStyle(.borderedProminent)
                         .controlSize(.large)
@@ -120,7 +121,7 @@ struct ShareMorningView: View {
 
     private func snap() {
         Task {
-            if let image = await camera.capture() { photo = image } else { problem = "Couldn't take the photo. Try again." }
+            if let image = await camera.capture() { photo = image } else { problem = L10n.tr("Couldn't take the photo. Try again.") }
         }
     }
 

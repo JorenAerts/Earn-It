@@ -1,0 +1,178 @@
+{
+  "idle": {
+    "gentle": [
+      "Alles klaar voor {time}. Slaap lekker, {name}!",
+      "Tot {time}. Ik ben degene die stuitert.",
+      "Klaar wanneer jij het bent. Morgen om {time}.",
+      "Welterusten, {name}. Tot {time}."
+    ],
+    "toughLove": [
+      "Om {time} stipt, {name}. Laat me niet slap hangen.",
+      "De wekker staat op {time}. Ik let op. Wiebelend, maar ik let op.",
+      "Rust maar uit. Morgen om {time} stuiteren we.",
+      "Licht uit, {name}. {time} stipt."
+    ],
+    "savage": [
+      "{time}. Niet {time} plus vijf keer snoozen. {time}.",
+      "Ik ken je verleden. Ik sta er om {time}.",
+      "Geniet van je vrijheid. Die stopt om {time}.",
+      "{name}. {time}. Daag me niet uit."
+    ]
+  },
+  "night": {
+    "gentle": [
+      "Tijd om tot rust te komen. Je wekker van {time} staat klaar.",
+      "Straks de telefoon weg? {time} komt snel.",
+      "Droom zacht. Ik maak je om {time} wakker."
+    ],
+    "toughLove": [
+      "Bedtijd. Jij om {time} zal je dankbaar zijn.",
+      "Nog aan het scrollen? {time} schuift niet op, hoor.",
+      "Nu slapen, om {time} stuiteren. Zo is de deal."
+    ],
+    "savage": [
+      "Ga slapen. Ik ga morgen niet smelten door jou.",
+      "Elke minuut die je nu scrolt, is een snooze om {time}.",
+      "Bed. Nu. Ik zie je om {time}, geen smoesjes."
+    ]
+  },
+  "noAlarm": {
+    "gentle": [
+      "Nog geen wekker ingesteld. Zullen we er een toevoegen?",
+      "Ik ben klaar als jij het bent. Stel gewoon een wekker in.",
+      "Tik op + om je eerste wekker in te stellen."
+    ],
+    "toughLove": [
+      "Geen wekker? Wie maakt je dan wakker? Ik dus blijkbaar niet.",
+      "Een slijmpje zonder werk. Stel een wekker in, {name}.",
+      "Ik kan je niet helpen als er geen wekker is."
+    ],
+    "savage": [
+      "Geen wekker ingesteld. Gewaagde strategie.",
+      "Een slijmpje zonder wekker is gewoon een plasje met ogen.",
+      "Stel een wekker in of ik smelt van verveling."
+    ]
+  },
+  "ringing": {
+    "gentle": [
+      "Goedemorgen! Laten we samen opstaan.",
+      "Opstaan, {name}! Eén missie en je bent klaar.",
+      "Goedemorgen! Ik stuiter al. Jouw beurt."
+    ],
+    "toughLove": [
+      "OP! De dag begint niet vanzelf.",
+      "Voeten op de grond, {name}. Nu.",
+      "Tring tring! Dat is je teken."
+    ],
+    "savage": [
+      "Word wakker. Ik ben niet de hele nacht in vorm gebleven hiervoor.",
+      "Sta op voor ik op je kussen begin te druipen.",
+      "Opstaan. Stralen. In die volgorde. Nu."
+    ]
+  },
+  "reRing": {
+    "gentle": [
+      "Dat is nog een keer. Je kunt deze ochtend nog omdraaien.",
+      "Keer {rings}. Laten we de missie samen doen.",
+      "Bijna. Eén missie en ik fleur meteen op."
+    ],
+    "toughLove": [
+      "Keer {rings}. Ik begin hier door te zakken.",
+      "Elke snooze maakt me slapper. Sta. Op.",
+      "{rings} keer. Ik smelt letterlijk."
+    ],
+    "savage": [
+      "Keer nummer {rings}. Ik ben een plasje en het is jouw schuld.",
+      "{rings} keer. Ik heb pudding gezien met meer pit.",
+      "Nog één snooze en ik bel je moeder."
+    ]
+  },
+  "missionSuccess": {
+    "gentle": [
+      "Het is je gelukt! Fijne dag.",
+      "Kijk me stuiteren! Bedankt, {name}.",
+      "Op en wakker. Zo hoort een ochtend te gaan.",
+      "Goed gedaan, {name}. Fijne dag."
+    ],
+    "toughLove": [
+      "Zo doe je dat. Ik stuiter!",
+      "Missie voltooid. Zie je? Niet zo moeilijk.",
+      "Goed werk, {name}. Ik voel me tien keer steviger.",
+      "Op en verdiend. Respect."
+    ],
+    "savage": [
+      "Oké. Je hebt het verdiend. Net.",
+      "Dat duurde lang genoeg. Maar ik neem het.",
+      "Kijk eens wie het eindelijk gehaald heeft. Ik ben bijna onder de indruk.",
+      "Oké, {name}. Je hebt het verdiend. Net."
+    ]
+  },
+  "firstTry": {
+    "gentle": [
+      "Bij de eerste keer! Ik ben zo trots op je.",
+      "In één keer op. Geweldig!",
+      "Nul keer gesnoozed. Ik straal!"
+    ],
+    "toughLove": [
+      "Bij de eerste keer! Dat noem ik een ochtend.",
+      "Geen snooze? Wie ben jij en wat heb je met {name} gedaan?",
+      "In één keer. Ik stuiter tegen de muren."
+    ],
+    "savage": [
+      "Bij de eerste keer? Heeft iemand anders je wekker gezet?",
+      "Nul keer gesnoozed. Laat het je niet naar je hoofd stijgen.",
+      "In één keer. Zet het in de agenda."
+    ]
+  },
+  "streakMilestone": {
+    "gentle": [
+      "{streak} dagen op rij. Je bent geweldig!",
+      "Reeks van {streak} dagen. Kijk hoe ik stuiter!",
+      "{streak} ochtenden achter elkaar. Zo trots op je."
+    ],
+    "toughLove": [
+      "{streak} dagen op rij! Ik ben nog nooit zo stevig geweest.",
+      "Reeks van {streak} dagen. Hou het vol.",
+      "{streak} dagen. Waag het niet om hem te breken."
+    ],
+    "savage": [
+      "{streak} dagen. Oké, ik ben onder de indruk. Een beetje.",
+      "Reeks van {streak} dagen. Wie had dat gedacht?",
+      "{streak} dagen. Breek hem en ik smelt expres."
+    ]
+  },
+  "failSafe": {
+    "gentle": [
+      "De wekker heeft het deze keer opgegeven. Morgen is een nieuwe start.",
+      "Zware ochtend. Ik hang een beetje slap, maar we proberen het opnieuw.",
+      "Die is ontsnapt. Laten we de volgende pakken."
+    ],
+    "toughLove": [
+      "De wekker gaf het op. Ik ben een plasje. Morgen lossen we dit op.",
+      "Je hebt door de noodstop heen geslapen. Ik ben niet boos, wel gesmolten.",
+      "Dat is een misser. Morgen maak je het goed."
+    ],
+    "savage": [
+      "Noodstop. Ik ben in het tapijt gesmolten. Bedankt.",
+      "Je hebt de wekker overleefd. Dat is niet de prestatie die jij denkt.",
+      "Een hele plas teleurstelling. Morgen. Beter doen."
+    ]
+  },
+  "streakBroken": {
+    "gentle": [
+      "De reeks is voorbij, maar morgen begin je een nieuwe.",
+      "Iedereen glijdt weleens uit. Laten we terugstuiteren.",
+      "Een nieuwe reeks begint bij de volgende wekker."
+    ],
+    "toughLove": [
+      "Reeks gebroken. Ik zak in. Laten we hem weer opbouwen.",
+      "Terug naar dag nul. Laat morgen tellen.",
+      "Die reeks hield me in vorm, {name}."
+    ],
+    "savage": [
+      "Reeks weg. Ik smelt van schaamte.",
+      "Al dat werk, weg. Terug naar plasjesmodus.",
+      "Nul dagen. Laten we het er niet over hebben. Sta morgen gewoon op."
+    ]
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "idle": {
+    "gentle": ["Tudo pronto para as {time}. Dorme bem, {name}!", "Até às {time}. Eu sou o que salta.", "Pronto quando tu estiveres. Amanhã às {time}.", "Boa noite, {name}. Até às {time}."],
+    "toughLove": ["{time} em ponto, {name}. Não me deixes murchar.", "Alarme marcado para as {time}. Estou de olho. A tremer, mas de olho.", "Descansa. Amanhã às {time} saltamos.", "Luzes apagadas, {name}. {time} em ponto."],
+    "savage": ["{time}. Não {time} e cinco snoozes. {time}.", "Conheço o teu historial. Estou lá às {time}.", "Aproveita a liberdade. Acaba às {time}.", "{name}. {time}. Não me ponhas à prova."]
+  },
+  "night": {
+    "gentle": ["Hora de abrandar. O teu alarme das {time} está pronto.", "Pousas o telemóvel daqui a pouco? As {time} chegam depressa.", "Bons sonhos. Acordo-te às {time}."],
+    "toughLove": ["Cama. O tu das {time} vai agradecer.", "Ainda a fazer scroll? As {time} não mudam, sabes?", "Dorme agora, salta às {time}. É esse o acordo."],
+    "savage": ["Vai dormir. Não vou derreter amanhã por tua causa.", "Cada minuto de scroll agora é um snooze às {time}.", "Cama. Já. Vemo-nos às {time}, sem desculpas."]
+  },
+  "noAlarm": {
+    "gentle": ["Ainda não há alarme. Adicionamos um?", "Estou pronto quando tu estiveres. Basta criar um alarme.", "Toca em + para criar o teu primeiro alarme."],
+    "toughLove": ["Sem alarme? Então quem te acorda? Eu não, pelos vistos.", "Uma gosma sem emprego. Cria um alarme, {name}.", "Não te consigo ajudar sem alarme."],
+    "savage": ["Nenhum alarme. Estratégia ousada.", "Uma gosma sem alarme é só uma poça com olhos.", "Cria um alarme ou derreto de tédio."]
+  },
+  "ringing": {
+    "gentle": ["Bom dia! Vamos levantar-nos juntos.", "Levanta-te, {name}! Uma missão e está feito.", "Bom dia! Eu já estou aos saltos. É a tua vez."],
+    "toughLove": ["A PÉ! O dia não começa sozinho.", "Pés no chão, {name}. Já.", "Trrrim! É o teu sinal."],
+    "savage": ["Acorda. Não estive em forma a noite toda para isto.", "Levanta-te antes que comece a pingar na tua almofada.", "Levanta-te. Brilha. Por esta ordem. Já."]
+  },
+  "reRing": {
+    "gentle": ["Mais um toque. Ainda dás a volta a esta manhã.", "Toque {rings}. Vamos fazer a missão juntos.", "Quase. Uma missão e eu animo logo."],
+    "toughLove": ["Toque {rings}. Estou a começar a murchar.", "Cada snooze deixa-me mais mole. Le. Van. Ta-te.", "{rings} toques. Estou literalmente a derreter."],
+    "savage": ["Toque número {rings}. Sou uma poça e a culpa é tua.", "{rings} toques. Já vi gelatina com mais vontade.", "Mais um snooze e conto à tua mãe."]
+  },
+  "missionSuccess": {
+    "gentle": ["Conseguiste! Tem um ótimo dia.", "Olha para mim aos saltos! Obrigado, {name}.", "A pé e acordado. É assim que as manhãs devem ser.", "Muito bem, {name}. Tem um ótimo dia."],
+    "toughLove": ["É assim que se faz. Estou aos saltos!", "Missão cumprida. Vês? Nem foi assim tão difícil.", "Bom trabalho, {name}. Sinto-me dez vezes mais firme.", "A pé e merecido. Respeito."],
+    "savage": ["Está bem. Mereceste. À justa.", "Demoraste, hein. Mas aceito.", "Olha quem finalmente conseguiu. Estou quase impressionado.", "Está bem, {name}. Mereceste. À justa."]
+  },
+  "firstTry": {
+    "gentle": ["À primeira! Estou tão orgulhoso de ti.", "A pé à primeira. Maravilha!", "Zero snoozes. Estou a brilhar!"],
+    "toughLove": ["À primeira! Isto sim é uma manhã.", "Sem snooze? Quem és tu e o que fizeste ao {name}?", "À primeira. Estou a saltar pelas paredes."],
+    "savage": ["À primeira? Foi outra pessoa que pôs o teu alarme?", "Zero snoozes. Não te deixes subir à cabeça.", "À primeira. Marca no calendário."]
+  },
+  "streakMilestone": {
+    "gentle": ["{streak} dias seguidos. És incrível!", "Sequência de {streak} dias. Olha como salto!", "{streak} manhãs seguidas. Tão orgulhoso de ti."],
+    "toughLove": ["{streak} dias seguidos! Nunca estive tão firme.", "Sequência de {streak} dias. Continua assim.", "{streak} dias. Nem penses em quebrá-la."],
+    "savage": ["{streak} dias. Está bem, estou impressionado. Um pouco.", "Sequência de {streak} dias. Quem diria?", "{streak} dias. Quebra-a e derreto de propósito."]
+  },
+  "failSafe": {
+    "gentle": ["Desta vez o alarme desistiu. Amanhã é um novo começo.", "Manhã difícil. Estou um pouco murcho, mas tentamos outra vez.", "Essa escapou. Apanhamos a próxima."],
+    "toughLove": ["O alarme desistiu. Sou uma poça. Amanhã resolvemos isto.", "Dormiste apesar da paragem de segurança. Não estou zangado, só derretido.", "Essa perdeu-se. Amanhã compensas."],
+    "savage": ["Paragem de segurança. Derreti no tapete. Obrigado.", "Venceste o alarme. Não é a façanha que pensas.", "Uma poça inteira de desilusão. Amanhã. Faz melhor."]
+  },
+  "streakBroken": {
+    "gentle": ["A sequência acabou, mas amanhã podes começar outra.", "Toda a gente escorrega. Vamos dar a volta.", "Uma nova sequência começa no próximo alarme."],
+    "toughLove": ["Sequência quebrada. Estou a murchar. Vamos reconstruí-la.", "De volta ao dia zero. Faz com que amanhã conte.", "Aquela sequência mantinha-me em forma, {name}."],
+    "savage": ["Sequência perdida. Estou a derreter de vergonha.", "Todo aquele trabalho, perdido. De volta ao modo poça.", "Zero dias. Nem falemos disso. Levanta-te amanhã e pronto."]
+  }
+}

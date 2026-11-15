@@ -1,5 +1,5 @@
 {
-  "_help": "Values filled into Config/Legal/*.md ({{key}}). Empty = shown as [to be completed] in the app. See LAUNCH_TODO.md.",
+  "_help": "Values filled into Config/Legal/*.md ({{key}}). Empty = shown as [to be completed] in the app. See LAUNCH_TODO.md. Per language: \"<key>.<code>\" (e.g. \"country.nl\") overrides the value in that translation.",
   "appName": "Gloop",
   "company": "JA-Solutions",
   "legalForm": "",
@@ -9,5 +9,17 @@
   "privacyEmail": "",
   "supportEmail": "",
   "effectiveDate": "15 November 2026",
-  "minimumAge": "13"
+  "minimumAge": "13",
+  "country.nl": "België",
+  "effectiveDate.nl": "15 november 2026",
+  "country.fr": "Belgique",
+  "effectiveDate.fr": "15 novembre 2026",
+  "country.de": "Belgien",
+  "effectiveDate.de": "15. November 2026",
+  "country.es": "Bélgica",
+  "effectiveDate.es": "15 de noviembre de 2026",
+  "country.it": "Belgio",
+  "effectiveDate.it": "15 novembre 2026",
+  "country.pt": "Bélgica",
+  "effectiveDate.pt": "15 de novembro de 2026"
 }

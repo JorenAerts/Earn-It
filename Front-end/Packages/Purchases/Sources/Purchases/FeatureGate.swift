@@ -1,5 +1,6 @@
 import Core
 import Foundation
+import Localization
 
 /// What each tier may use. Free: 1 alarm, Math, Classic Beep. Pro: everything.
 /// The ringing / mission path is never gated — only creating and editing alarms.
@@ -96,9 +97,9 @@ public enum DowngradePolicy {
 extension DowngradePolicy.Change {
     public var message: String {
         switch self {
-        case .alarmTurnedOff(let time): "Alarm \(time) was switched off (free plan: 1 alarm)."
-        case .missionsReplaced(let time): "Alarm \(time) now uses the Math mission."
-        case .soundReplaced(let time, let from): "Alarm \(time) now uses Classic Beep instead of \(from)."
+        case .alarmTurnedOff(let time): L10n.tr("Alarm \(time) was switched off (free plan: 1 alarm).")
+        case .missionsReplaced(let time): L10n.tr("Alarm \(time) now uses the Math mission.")
+        case .soundReplaced(let time, let from): L10n.tr("Alarm \(time) now uses Classic Beep instead of \(from).")
         }
     }
 }

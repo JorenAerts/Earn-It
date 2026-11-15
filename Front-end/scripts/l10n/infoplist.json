@@ -1,0 +1,52 @@
+{
+  "_comment": "Info.plist texts (permission prompts) per language → App/InfoPlist.xcstrings via apply.py",
+  "nl": {
+    "CFBundleDisplayName": "Gloop",
+    "NSAlarmKitUsageDescription": "Gloop plant je wekalarmen, zodat ze afgaan door de stille modus en Focus heen.",
+    "NSAppleMusicUsageDescription": "Gloop speelt het Apple Music-nummer dat je kiest terwijl je je wekmissie doet.",
+    "NSCameraUsageDescription": "Gloop gebruikt de camera om de code of het voorwerp te scannen dat je hebt geregistreerd, zodat je uit bed moet om de wekker uit te zetten. Beelden blijven op je iPhone.",
+    "NSMicrophoneUsageDescription": "Gloop gebruikt de microfoon alleen als je je eigen wekgeluid opneemt."
+  },
+  "fr": {
+    "CFBundleDisplayName": "Gloop",
+    "NSAlarmKitUsageDescription": "Gloop programme tes réveils pour qu’ils sonnent malgré le mode silencieux et les modes de concentration.",
+    "NSAppleMusicUsageDescription": "Gloop joue le morceau Apple Music que tu as choisi pendant ta mission de réveil.",
+    "NSCameraUsageDescription": "Gloop utilise l’appareil photo pour scanner le code ou l’objet que tu as enregistré, pour que tu doives sortir du lit pour arrêter le réveil. Les images restent sur ton iPhone.",
+    "NSMicrophoneUsageDescription": "Gloop utilise le micro uniquement quand tu enregistres ton propre son de réveil."
+  },
+  "de": {
+    "CFBundleDisplayName": "Gloop",
+    "NSAlarmKitUsageDescription": "Gloop stellt deine Wecker, damit sie trotz Stummmodus und Fokus klingeln.",
+    "NSAppleMusicUsageDescription": "Gloop spielt den gewählten Apple-Music-Song, während du deine Weckmission machst.",
+    "NSCameraUsageDescription": "Gloop nutzt die Kamera, um den registrierten Code oder Gegenstand zu scannen, damit du zum Ausschalten des Weckers aufstehen musst. Bilder bleiben auf deinem iPhone.",
+    "NSMicrophoneUsageDescription": "Gloop nutzt das Mikrofon nur, wenn du deinen eigenen Weckton aufnimmst."
+  },
+  "es": {
+    "CFBundleDisplayName": "Gloop",
+    "NSAlarmKitUsageDescription": "Gloop programa tus alarmas para que suenen aunque estén activos el modo silencio o un modo de concentración.",
+    "NSAppleMusicUsageDescription": "Gloop reproduce la canción de Apple Music que elijas mientras haces tu misión para despertar.",
+    "NSCameraUsageDescription": "Gloop usa la cámara para escanear el código u objeto que registraste, así tienes que levantarte para parar la alarma. Las imágenes se quedan en tu iPhone.",
+    "NSMicrophoneUsageDescription": "Gloop usa el micrófono solo cuando grabas tu propio sonido de alarma."
+  },
+  "it": {
+    "CFBundleDisplayName": "Gloop",
+    "NSAlarmKitUsageDescription": "Gloop programma le tue sveglie perché suonino anche in modalità silenziosa e con Full immersion.",
+    "NSAppleMusicUsageDescription": "Gloop riproduce il brano di Apple Music che scegli mentre fai la missione sveglia.",
+    "NSCameraUsageDescription": "Gloop usa la fotocamera per scansionare il codice o l’oggetto che hai registrato, così devi alzarti per fermare la sveglia. Le immagini restano sul tuo iPhone.",
+    "NSMicrophoneUsageDescription": "Gloop usa il microfono solo quando registri il tuo suono della sveglia."
+  },
+  "pt-BR": {
+    "CFBundleDisplayName": "Gloop",
+    "NSAlarmKitUsageDescription": "O Gloop agenda seus alarmes para que toquem mesmo no modo silencioso e em Foco.",
+    "NSAppleMusicUsageDescription": "O Gloop toca a música do Apple Music que você escolher enquanto faz sua missão de despertar.",
+    "NSCameraUsageDescription": "O Gloop usa a câmera para escanear o código ou objeto que você registrou, assim você precisa sair da cama para parar o alarme. As imagens ficam no seu iPhone.",
+    "NSMicrophoneUsageDescription": "O Gloop usa o microfone apenas quando você grava seu próprio som de alarme."
+  },
+  "pt-PT": {
+    "CFBundleDisplayName": "Gloop",
+    "NSAlarmKitUsageDescription": "O Gloop agenda os seus alarmes para que toquem mesmo em silêncio e em Foco.",
+    "NSAppleMusicUsageDescription": "O Gloop reproduz a música do Apple Music que escolher enquanto faz a sua missão de despertar.",
+    "NSCameraUsageDescription": "O Gloop usa a câmara para digitalizar o código ou objeto que registou, para que tenha de sair da cama para parar o alarme. As imagens ficam no seu iPhone.",
+    "NSMicrophoneUsageDescription": "O Gloop usa o microfone apenas quando grava o seu próprio som de alarme."
+  }
+}

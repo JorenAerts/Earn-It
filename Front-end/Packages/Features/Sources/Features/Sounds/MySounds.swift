@@ -1,5 +1,6 @@
 import Core
 import Foundation
+import Localization
 import Observation
 
 /// One of the user's own alarm sounds (imported or recorded), stored as
@@ -40,7 +41,7 @@ final class MySounds {
     /// Moves an exported CAF into the library.
     @discardableResult
     func add(file: URL, name: String, duration: Double, source: CustomSound.Source) throws -> CustomSound {
-        let sound = CustomSound(id: UUID(), name: name.isEmpty ? "My sound" : name, duration: duration,
+        let sound = CustomSound(id: UUID(), name: name.isEmpty ? L10n.tr("My sound") : name, duration: duration,
                                 source: source, created: .now)
         try FileManager.default.moveItem(at: file, to: url(for: sound.id))
         sounds.insert(sound, at: 0)

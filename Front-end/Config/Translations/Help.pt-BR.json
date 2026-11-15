@@ -1,0 +1,13 @@
+{
+  "faq": [
+    {"question": "Por que o alarme continua tocando?", "answer": "Essa é a ideia: o alarme só para de vez quando você conclui a missão. Tocar no X silencia por alguns minutos (seu tempo de repetição) e depois ele toca de novo. Depois do limite de segurança ele desiste, para você nunca ficar preso."},
+    {"question": "Ele toca com o celular no silencioso ou em Foco?", "answer": "Sim. O Gloop usa os alarmes do iOS, que tocam mesmo no modo silencioso e em Foco, desde que Alarmes esteja permitido em Ajustes › Permissões."},
+    {"question": "O que acontece se eu forçar o fechamento do app?", "answer": "O alarme toca mesmo assim, e as repetições também: elas ficam agendadas no iOS. O som entre elas só toca com o app aberto, então abrir o app é o jeito mais rápido de chegar à missão."},
+    {"question": "Posso acordar com uma música do Spotify?", "answer": "Não. O iOS não deixa apps usarem músicas do Spotify como alarme. Você pode escolher uma música do Apple Music (toca durante a missão), importar seu próprio arquivo de áudio ou gravar uma mensagem."},
+    {"question": "Meu objeto não é reconhecido.", "answer": "Escaneie o objeto de novo com boa luz, pelos ângulos em que você vai vê-lo de manhã, e mantenha ele inteiro no enquadramento. Ainda não deu? Depois de 2 minutos você pode trocar para a missão reserva."},
+    {"question": "Como funcionam sequências, XP e figurinhas?", "answer": "Cada manhã em que você conclui uma missão soma um dia à sequência e rende XP: mais de primeira, menos a cada repetição, mais um bônus de sequência. O XP faz o Gloop evoluir de uma Gotinha até o Rei Gloop, com um acessório novo em cada estágio. Dias sem alarme ou pausados não quebram a sequência. As figurinhas são colecionadas por marcos como seu primeiro aperto ou uma semana perfeita."},
+    {"question": "Como pauso os alarmes nas férias?", "answer": "Ajustes › Pausar todos os alarmes. Escolha por quanto tempo; depois seus alarmes voltam sozinhos."},
+    {"question": "Como cancelo minha assinatura?", "answer": "Ajustes › Gloop Pro › Gerenciar assinatura, ou nos Ajustes do iOS › seu nome › Assinaturas. Excluir a conta não cancela a assinatura."},
+    {"question": "Quais dados o Gloop coleta?", "answer": "Estatísticas de uso anônimas (quais telas e recursos são usados, como vão a introdução e as manhãs) pela TelemetryDeck na UE, com um ID aleatório não ligado à sua conta. Nunca seu nome, e-mail, nomes de alarmes, fotos ou o que você digita. Desative quando quiser em Ajustes › Privacidade. Seus alarmes, sons e escaneamentos ficam no seu iPhone; com uma conta, seu perfil e seus dados do Buddies ficam no Supabase, na UE."}
+  ]
+}

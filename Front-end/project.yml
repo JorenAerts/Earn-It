@@ -43,6 +43,8 @@ packages:
     path: Packages/Buddies
   Telemetry:
     path: Packages/Telemetry
+  Localization:
+    path: Packages/Localization
 
 targets:
   Gloop:
@@ -71,6 +73,9 @@ targets:
       - path: Config/Legal
         type: folder
         buildPhase: resources
+      - path: Config/Translations
+        type: folder
+        buildPhase: resources
     dependencies:
       - package: Core
       - package: Coach
@@ -83,6 +88,7 @@ targets:
       - package: Features
       - package: Buddies
       - package: Telemetry
+      - package: Localization
       - target: AlarmLiveActivity
     settings:
       base:
@@ -102,6 +108,9 @@ targets:
       path: App/Info.plist
       properties:
         CFBundleDisplayName: Gloop
+        CFBundleDevelopmentRegion: en
+        # Languages with translations (keep in sync with App/Localizable.xcstrings; tested).
+        CFBundleLocalizations: [en, de, es, fr, it, nl, pt-BR, pt-PT]
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
@@ -126,11 +135,15 @@ targets:
     platform: iOS
     sources:
       - path: Extensions/AlarmLiveActivity
+      # Same strings as the app (widgets, Live Activity).
+      - path: App/Localizable.xcstrings
+        buildPhase: resources
     dependencies:
       - package: AlarmEngine
       - package: Core
       - package: Coach
       - package: WidgetShared
+      - package: Localization
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: be.gloop.app.AlarmLiveActivity
@@ -145,6 +158,8 @@ targets:
       path: Extensions/AlarmLiveActivity/Info.plist
       properties:
         CFBundleDisplayName: Gloop Widgets
+        CFBundleDevelopmentRegion: en
+        CFBundleLocalizations: [en, de, es, fr, it, nl, pt-BR, pt-PT]
         GloopAppGroup: $(GLOOP_APP_GROUP)
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension

@@ -2,11 +2,12 @@ import Account
 import AlarmEngine
 import Buddies
 import Core
-import Purchases
 import Features
+import Localization
+import Purchases
 import SwiftData
-import Telemetry
 import SwiftUI
+import Telemetry
 
 /// Single shared object graph, reachable from App Intents (they run in the app process).
 @MainActor
@@ -26,7 +27,7 @@ final class AppEnvironment {
         do {
             return StoreService(catalog: try PricingCatalog.load())
         } catch {
-            fatalError("Config/Pricing.json missing from the app bundle: \(error)")
+            fatalError(L10n.tr("Config/Pricing.json missing from the app bundle: \(error)"))
         }
     }()
 
@@ -38,7 +39,7 @@ final class AppEnvironment {
         do {
             modelContainer = try ModelContainer(for: DayLog.self)
         } catch {
-            fatalError("SwiftData container failed: \(error)")
+            fatalError(L10n.tr("SwiftData container failed: \(error)"))
         }
     }
 }
@@ -49,7 +50,7 @@ struct GloopApp: App {
 
     /// Launched as the unit-test host: start nothing (StoreKit, AlarmKit, UI) so tests own
     /// their environment — e.g. SKTestSession product loading isn't raced by the app.
-    private static let isTestHost = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+    private static let isTestHost = ProcessInfo.processInfo.environment[L10n.tr("XCTestConfigurationFilePath")] != nil
 
     init() {
         guard !Self.isTestHost else { return }

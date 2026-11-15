@@ -1,5 +1,6 @@
 import AlarmEngine
 import Core
+import Localization
 import SwiftUI
 import Telemetry
 
@@ -31,21 +32,21 @@ struct PauseAlarmsView: View {
             }
 
             Section {
-                option("Tomorrow only", .days(1))
+                option(L10n.tr("Tomorrow only"), .days(1))
                 option("3 days", .days(3))
                 option("1 week", .days(7))
                 Button("Until a date…") { choosingDate.toggle() }
                 if choosingDate {
                     DatePicker("Back on", selection: $backOn, in: tomorrow..., displayedComponents: .date)
-                    Button("Pause until \(backOn.formatted(.dateTime.weekday(.wide).day().month()))") {
+                    Button("Pause until \(backOn.localized(.dateTime.weekday(.wide).day().month()))") {
                         run { await coordinator.pauseAll(PausePolicy.pause(.untilDay(backOn), now: .now)) }
                         Telemetry.shared.send(.pauseSet(option: "untilDay"))
                     }
                     .fontWeight(.semibold)
                 }
-                option("Until I turn them back on", .indefinitely)
+                option(L10n.tr("Until I turn them back on"), .indefinitely)
             } header: {
-                Text(coordinator.activePause == nil ? "Pause for" : "Change pause")
+                Text(coordinator.activePause == nil ? L10n.tr("Pause for") : L10n.tr("Change pause"))
             } footer: {
                 Text("Paused days don't ring, don't send reminders and don't break your streak. Your alarms come back on their own afterwards, even if you don't open the app. An alarm that's ringing right now isn't affected.")
             }
@@ -74,12 +75,11 @@ struct PauseAlarmsView: View {
 
     /// "Back on Monday 18 November, first alarm 07:00."
     static func description(_ pause: AlarmPause, coordinator: AlarmCoordinator) -> String {
-        guard let until = pause.until else { return "No alarm rings until you resume." }
-        var text = "Back on " + until.formatted(.dateTime.weekday(.wide).day().month(.wide)) + "."
-        if let next = coordinator.nextAlarm {
-            text += " First alarm: " + next.date.formatted(.dateTime.weekday(.abbreviated).hour().minute()) + "."
-        }
-        return text
+        guard let until = pause.until else { return L10n.tr("No alarm rings until you resume.") }
+        let back = until.localized(.dateTime.weekday(.wide).day().month(.wide))
+        guard let next = coordinator.nextAlarm else { return L10n.tr("Back on \(back).") }
+        let first = next.date.localized(.dateTime.weekday(.abbreviated).hour().minute())
+        return L10n.tr("Back on \(back). First alarm: \(first).")
     }
 }
 
@@ -94,8 +94,8 @@ struct PauseBanner: View {
                 Image(systemName: "pause.circle.fill").font(.title2).foregroundStyle(.indigo)
                 VStack(alignment: .leading, spacing: 2) {
                     Text("Alarms paused").font(.headline)
-                    Text(pause.until.map { "Back on " + $0.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated)) }
-                         ?? "Until you resume")
+                    Text(pause.until.map { d in L10n.tr("Back on \(d.localized(.dateTime.weekday(.abbreviated).day().month(.abbreviated)))") }
+                         ?? L10n.tr("Until you resume"))
                         .font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()

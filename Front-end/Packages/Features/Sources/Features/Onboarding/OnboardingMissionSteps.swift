@@ -1,5 +1,6 @@
 import AlarmEngine
 import Core
+import Localization
 import Missions
 import Permissions
 import Purchases
@@ -17,11 +18,11 @@ struct MissionStep: View {
     private var selected: MissionKind { answers.chosenMissions.first?.kind ?? answers.suggestedMission }
 
     var body: some View {
-        OnboardingPage(title: "Pick a mission to wake you up", subtitle: "You'll do this to turn off your alarm.") {
+        OnboardingPage(title: L10n.tr("Pick a mission to wake you up"), subtitle: L10n.tr("You'll do this to turn off your alarm.")) {
             VStack(spacing: 12) {
                 ForEach(MissionKind.allCases) { kind in
                     ChoiceCard(title: kind.displayName,
-                               subtitle: kind == answers.suggestedMission ? "Suggested for you · \(kind.estimatedDuration)" : kind.tagline,
+                               subtitle: kind == answers.suggestedMission ? L10n.tr("Suggested for you · \(kind.estimatedDuration)") : kind.tagline,
                                symbol: kind.symbol,
                                selected: selected == kind,
                                badge: gate.isLocked(kind) ? "PRO" : nil) {
@@ -35,7 +36,7 @@ struct MissionStep: View {
             }
             CoachBubble(line: OnboardingPersonalization.coachReaction(to: .mission, answers: answers) ?? "")
         } footer: {
-            PrimaryButton(title: "Continue", action: onNext)
+            PrimaryButton(title: L10n.tr("Continue"), action: onNext)
         }
         .onAppear { if answers.missions == nil { select(answers.suggestedMission) } }
     }
@@ -65,7 +66,7 @@ struct MissionSetupStep: View {
             case .math:
                 mathSetup
             case .shake:
-                countCard(label: "Shakes", range: kind.targetRange ?? 5...200, step: kind.targetStep)
+                countCard(label: L10n.tr("Shakes"), range: kind.targetRange ?? 5...200, step: kind.targetStep)
             case .qr, .object:
                 if let setup = MissionRegistry.setupView(for: config) {
                     setup
@@ -75,33 +76,33 @@ struct MissionSetupStep: View {
             }
         } footer: {
             if kind.needsPayload && !config.wrappedValue.isReady {
-                PrimaryButton(title: "Continue", disabled: true) {}
+                PrimaryButton(title: L10n.tr("Continue"), disabled: true) {}
                 Button("Set up later (use Math for now)") {
                     answers.missions = [MissionConfig(kind: .math)]
                     onNext()
                 }
                 .foregroundStyle(.secondary)
             } else {
-                PrimaryButton(title: "Continue", action: onNext)
+                PrimaryButton(title: L10n.tr("Continue"), action: onNext)
             }
         }
     }
 
     private func title(_ kind: MissionKind) -> String {
         switch kind {
-        case .math: "Set up your math"
-        case .shake: "How hard should you shake?"
-        case .qr: "Register your code"
-        case .object: "Scan your item"
+        case .math: L10n.tr("Set up your math")
+        case .shake: L10n.tr("How hard should you shake?")
+        case .qr: L10n.tr("Register your code")
+        case .object: L10n.tr("Scan your item")
         }
     }
 
     private func subtitle(_ kind: MissionKind) -> String {
         switch kind {
-        case .math: "Pick how hard the problems are, and how many you'll solve."
-        case .shake: "More shakes, more awake."
-        case .qr: "Print or pick any code and stick it somewhere out of bed, like the bathroom."
-        case .object: "Something that's not in your bedroom: your toothbrush, coffee mug or shoes."
+        case .math: L10n.tr("Pick how hard the problems are, and how many you'll solve.")
+        case .shake: L10n.tr("More shakes, more awake.")
+        case .qr: L10n.tr("Print or pick any code and stick it somewhere out of bed, like the bathroom.")
+        case .object: L10n.tr("Something that's not in your bedroom: your toothbrush, coffee mug or shoes.")
         }
     }
 
@@ -113,7 +114,7 @@ struct MissionSetupStep: View {
                     withAnimation(.snappy) { config.wrappedValue.difficulty = level }
                 } label: {
                     HStack {
-                        Text(level.rawValue.capitalized).font(.headline)
+                        Text(level.title).font(.headline)
                         Spacer()
                         Text(example(level)).font(.body.monospacedDigit()).foregroundStyle(.secondary)
                     }
@@ -126,7 +127,7 @@ struct MissionSetupStep: View {
                 .accessibilityAddTraits(on ? .isSelected : [])
                 .accessibilityHint("Example: \(example(level))")
             }
-            countCard(label: "Problems in a row", range: MissionKind.math.targetRange ?? 1...20, step: 1)
+            countCard(label: L10n.tr("Problems in a row"), range: MissionKind.math.targetRange ?? 1...20, step: 1)
         }
     }
 
@@ -174,10 +175,10 @@ struct SoundStep: View {
     @State private var preview = SoundPreview()
 
     var body: some View {
-        OnboardingPage(title: "Pick your alarm sound", subtitle: "Tap to hear it. You can add your own sounds later.") {
+        OnboardingPage(title: L10n.tr("Pick your alarm sound"), subtitle: L10n.tr("Tap to hear it. You can add your own sounds later.")) {
             ForEach(AlarmSound.Category.allCases, id: \.self) { category in
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(category.rawValue.uppercased())
+                    Text(category.title.uppercased(with: L10n.locale))
                         .font(.caption.weight(.bold)).foregroundStyle(.secondary)
                     VStack(spacing: 0) {
                         let sounds = AlarmSound.allCases.filter { $0.category == category }
@@ -190,7 +191,7 @@ struct SoundStep: View {
                 }
             }
         } footer: {
-            PrimaryButton(title: "Continue") {
+            PrimaryButton(title: L10n.tr("Continue")) {
                 preview.stop()
                 onNext()
             }
@@ -242,7 +243,7 @@ struct InviteFriendStep: View {
     @State private var sharing = false
     @State private var unlocked = false
 
-    static let message = "I'm using Gloop: an alarm that keeps ringing until I'm actually out of bed. Want to be my wake-up buddy?"
+    static let message = L10n.tr("I'm using Gloop: an alarm that keeps ringing until I'm actually out of bed. Want to be my wake-up buddy?")
 
     var body: some View {
         OnboardingPage {
@@ -261,7 +262,7 @@ struct InviteFriendStep: View {
                 }
                 .padding(.top, 24)
                 .accessibilityHidden(true)
-                Text(unlocked ? "Rise & Conquer unlocked!" : "Unlock an exclusive alarm sound")
+                Text(unlocked ? L10n.tr("Rise & Conquer unlocked!") : L10n.tr("Unlock an exclusive alarm sound"))
                     .font(.largeTitle.bold()).multilineTextAlignment(.center)
                 Text(unlocked ? "It's yours, free, forever. Want to use it as your alarm?"
                               : "Know someone who oversleeps? Send them Gloop and get Rise & Conquer, a brass fanfare that's not in the free plan.")
@@ -273,13 +274,13 @@ struct InviteFriendStep: View {
             .frame(maxWidth: .infinity)
         } footer: {
             if unlocked {
-                PrimaryButton(title: "Use Rise & Conquer") {
+                PrimaryButton(title: L10n.tr("Use Rise & Conquer")) {
                     answers.sound = .builtIn(BonusUnlocks.inviteSound)
                     onNext()
                 }
                 Button("Keep my sound", action: onNext).foregroundStyle(.secondary)
             } else {
-                PrimaryButton(title: "Text one friend") { sharing = true }
+                PrimaryButton(title: L10n.tr("Text one friend")) { sharing = true }
                 Button("Skip", action: onNext).foregroundStyle(.secondary)
             }
         }

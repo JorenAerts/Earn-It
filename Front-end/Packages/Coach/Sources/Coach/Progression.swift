@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 
 /// Gloop's evolution stages, earned with XP from good mornings. Raw values and thresholds are
 /// unchanged from the old military ranks, so history and XP carry over.
@@ -7,7 +8,25 @@ public enum Rank: Int, CaseIterable, Comparable, Sendable, Identifiable {
 
     public var id: Int { rawValue }
 
+    /// Shown in the app's language.
     public var title: String {
+        switch self {
+        case .droplet: L10n.tr("Droplet")
+        case .blob: L10n.tr("Blob")
+        case .jelly: L10n.tr("Jelly")
+        case .gloopling: L10n.tr("Gloopling")
+        case .bouncer: L10n.tr("Bouncer")
+        case .squisher: L10n.tr("Squisher")
+        case .wobbler: L10n.tr("Wobbler")
+        case .megaGloop: L10n.tr("Mega Gloop")
+        case .superGloop: L10n.tr("Super Gloop")
+        case .royalGloop: L10n.tr("Royal Gloop")
+        case .kingGloop: L10n.tr("King Gloop")
+        }
+    }
+
+    /// Stored in Buddies reports (stable across languages).
+    public var englishTitle: String {
         switch self {
         case .droplet: "Droplet"
         case .blob: "Blob"
@@ -55,7 +74,7 @@ public enum Rank: Int, CaseIterable, Comparable, Sendable, Identifiable {
     /// The stage for a title, new or legacy. nil for unknown text.
     public static func from(title: String?) -> Rank? {
         guard let title else { return nil }
-        if let rank = allCases.first(where: { $0.title == title }) { return rank }
+        if let rank = allCases.first(where: { $0.englishTitle == title || $0.title == title }) { return rank }
         return legacyTitles.firstIndex(of: title).flatMap(Rank.init(rawValue:))
     }
 }

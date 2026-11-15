@@ -1,5 +1,6 @@
 import Core
 import Foundation
+import Localization
 
 /// The character's name and pronoun, in one place.
 public enum CoachIdentity {
@@ -61,10 +62,10 @@ public enum SlimeVitality {
     public static func summary(_ vitality: Double) -> String {
         let name = CoachIdentity.name
         switch vitality {
-        case 0.8...: return "\(name) is bouncing. Keep getting up on the first ring."
-        case 0.5..<0.8: return "\(name) is doing fine. A few first-ring mornings and he'll bounce."
-        case 0.25..<0.5: return "\(name) is starting to sag. Snoozes and misses make him droop."
-        default: return "\(name) has melted into a puddle. Three good mornings in a row will perk him up."
+        case 0.8...: return L10n.tr("\(name) is bouncing. Keep getting up on the first ring.")
+        case 0.5..<0.8: return L10n.tr("\(name) is doing fine. A few first-ring mornings and he'll bounce.")
+        case 0.25..<0.5: return L10n.tr("\(name) is starting to sag. Snoozes and misses make him droop.")
+        default: return L10n.tr("\(name) has melted into a puddle. Three good mornings in a row will perk him up.")
         }
     }
 }

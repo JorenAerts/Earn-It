@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 
 /// The in-app legal documents (`Config/Legal/<file>.md`), filled with `Config/Legal.json`.
 public enum LegalDocumentKind: String, CaseIterable, Identifiable, Sendable {
@@ -8,10 +9,10 @@ public enum LegalDocumentKind: String, CaseIterable, Identifiable, Sendable {
 
     public var title: String {
         switch self {
-        case .privacy: "Privacy Policy"
-        case .terms: "Terms of Use"
-        case .healthSafety: "Health & Safety"
-        case .community: "Community Guidelines"
+        case .privacy: L10n.tr("Privacy Policy")
+        case .terms: L10n.tr("Terms of Use")
+        case .healthSafety: L10n.tr("Health & Safety")
+        case .community: L10n.tr("Community Guidelines")
         }
     }
 
@@ -43,6 +44,8 @@ public struct LegalDocument: Equatable, Sendable {
 
     public let title: String
     public let blocks: [Block]
+    /// Loaded from a translated file (the English original prevails).
+    public var isTranslation = false
 
     public var headings: [String] { blocks.compactMap { if case .heading(let t) = $0 { t } else { nil } } }
 
@@ -108,14 +111,40 @@ public struct LegalDocument: Equatable, Sendable {
         return object.compactMapValues { $0 as? String }.filter { !$0.key.hasPrefix("_") }
     }
 
-    public static func load(_ kind: LegalDocumentKind, bundle: Bundle = .main) -> LegalDocument {
-        let values = values(from: bundle.url(forResource: "Legal", withExtension: "json").flatMap { try? Data(contentsOf: $0) })
-        guard let url = bundle.url(forResource: kind.rawValue, withExtension: "md", subdirectory: "Legal")
+    /// The document in the current language when `Legal/<kind>.<code>.md` exists, else English.
+    /// `english: true` always loads the English original (it prevails).
+    public static func load(_ kind: LegalDocumentKind, bundle: Bundle = .main, english: Bool = false,
+                            language: String = L10n.languageCode) -> LegalDocument {
+        var values = values(from: bundle.url(forResource: "Legal", withExtension: "json").flatMap { try? Data(contentsOf: $0) })
+        let translated = english ? nil : L10n.translatedResource(kind.rawValue, ext: "md", subdirectories: ["Legal", nil],
+                                                                 code: language, in: bundle)
+        if translated != nil { values = localizedValues(values, language: language) }
+        guard let url = translated
+                ?? bundle.url(forResource: kind.rawValue, withExtension: "md", subdirectory: "Legal")
                 ?? bundle.url(forResource: kind.rawValue, withExtension: "md"),
               let text = try? String(contentsOf: url, encoding: .utf8)
         else {
-            return LegalDocument(title: kind.title, blocks: [.paragraph("This document couldn't be loaded.")])
+            return LegalDocument(title: kind.title, blocks: [.paragraph(L10n.tr("This document couldn't be loaded."))])
         }
-        return parse(fill(text, values: values))
+        var document = parse(fill(text, values: values))
+        document.isTranslation = translated != nil
+        return document
+    }
+
+    /// `"country.nl": "België"` overrides `"country"` in the Dutch documents (most specific code wins).
+    public static func localizedValues(_ values: [String: String], language: String) -> [String: String] {
+        var result = values.filter { !$0.key.contains(".") }
+        for code in L10n.contentCodes(for: language).reversed() {
+            for (key, value) in values where key.hasSuffix(".\(code)") && !value.isEmpty {
+                result[String(key.dropLast(code.count + 1))] = value
+            }
+        }
+        return result
+    }
+
+    /// Whether a translated version exists for the current language.
+    public static func hasTranslation(_ kind: LegalDocumentKind, bundle: Bundle = .main,
+                                      language: String = L10n.languageCode) -> Bool {
+        L10n.translatedResource(kind.rawValue, ext: "md", subdirectories: ["Legal", nil], code: language, in: bundle) != nil
     }
 }

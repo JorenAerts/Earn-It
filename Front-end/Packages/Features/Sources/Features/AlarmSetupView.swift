@@ -1,5 +1,6 @@
 import AlarmEngine
 import Core
+import Localization
 import Missions
 import Permissions
 import Purchases
@@ -69,7 +70,7 @@ struct AlarmSetupView: View {
                 if PermissionCenter.shared.status(.liveActivities) == .denied {
                     Section {
                         PermissionBanner(kind: .liveActivities,
-                                         message: "Live Activities are off, so the re-ring countdown won't show on your Lock Screen.")
+                                         message: L10n.tr("Live Activities are off, so the re-ring countdown won't show on your Lock Screen."))
                     }
                 }
 
@@ -109,7 +110,7 @@ struct AlarmSetupView: View {
                     }
                 }
             }
-            .navigationTitle(isNew ? "New alarm" : "Edit alarm")
+            .navigationTitle(isNew ? L10n.tr("New alarm") : L10n.tr("Edit alarm"))
             .paywallSheet(isPresented: $showPaywall, source: .lockedSound)
             .sheet(isPresented: $showMissionPicker) {
                 MissionPickerView(gate: gate) { plan.missions.append($0) }

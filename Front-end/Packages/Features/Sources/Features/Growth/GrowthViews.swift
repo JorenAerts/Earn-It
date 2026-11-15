@@ -1,5 +1,6 @@
 import Coach
 import Core
+import Localization
 import SwiftData
 import SwiftUI
 import Telemetry
@@ -33,7 +34,7 @@ struct StreakCardView: View {
                            startPoint: .top, endPoint: .bottom)
             VStack(spacing: 14) {
                 Spacer(minLength: 40)
-                Text(content.streak == 1 ? "Day 1" : "\(content.streak)-day streak")
+                Text(content.streak == 1 ? L10n.tr("Day 1") : L10n.tr("\(content.streak)-day streak"))
                     .font(.system(size: 44, weight: .heavy, design: .rounded))
                     .foregroundStyle(Color(red: 0.16, green: 0.1, blue: 0.07))
                 Text("Up on time, every morning")
@@ -46,7 +47,7 @@ struct StreakCardView: View {
                     .padding(.vertical, 6)
                 HStack(spacing: 10) {
                     pill(content.rank.title, symbol: "sparkles")
-                    pill("\(content.stickers) sticker\(content.stickers == 1 ? "" : "s")", symbol: "seal.fill")
+                    pill(L10n.tr("\(content.stickers) stickers"), symbol: "seal.fill")
                 }
                 Spacer()
                 VStack(spacing: 2) {
@@ -122,7 +123,7 @@ struct ShareStreakButton: View {
     }
 
     static func message(_ content: StreakCardContent) -> String {
-        "\(content.streak) mornings in a row up on time with my wake-up buddy Gloop 🟠"
+        L10n.tr("\(content.streak) mornings in a row up on time with my wake-up buddy Gloop 🟠")
     }
 }
 
@@ -163,7 +164,7 @@ struct WhatsNewSheet: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 20))
             Spacer(minLength: 0)
-            PrimaryButton(title: "Got it", action: onDone)
+            PrimaryButton(title: L10n.tr("Got it"), action: onDone)
         }
         .padding(24)
         .frame(maxWidth: 560)

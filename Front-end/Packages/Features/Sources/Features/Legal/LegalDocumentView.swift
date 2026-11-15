@@ -1,3 +1,4 @@
+import Localization
 import SwiftUI
 import Telemetry
 
@@ -5,16 +6,18 @@ import Telemetry
 struct LegalDocumentView: View {
     let kind: LegalDocumentKind
     @State private var document: LegalDocument?
+    @State private var showEnglish = false
 
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView {
                 if let document {
                     VStack(alignment: .leading, spacing: 14) {
+                        if document.isTranslation || showEnglish { translationNote }
                         Text(document.title).font(.largeTitle.bold())
                             .accessibilityAddTraits(.isHeader)
                         // "Effective …" line right under the title, then the contents.
-                        let dated = document.blocks.first.map { if case .paragraph(let t) = $0 { t.hasPrefix("Effective ") } else { false } } ?? false
+                        let dated = document.blocks.first.map { if case .paragraph(let t) = $0 { t.hasPrefix(L10n.tr("Effective ")) } else { false } } ?? false
                         if dated, let first = document.blocks.first { view(for: first).padding(.top, -8) }
                         if document.headings.count >= 5 {
                             contents(document, proxy: proxy)
@@ -33,8 +36,24 @@ struct LegalDocumentView: View {
         .background(Color(.systemBackground))
         .navigationTitle(kind.title)
         .navigationBarTitleDisplayMode(.inline)
-        .task { document = LegalDocument.load(kind) }
+        .task(id: showEnglish) { document = LegalDocument.load(kind, english: showEnglish) }
         .trackScreen("Legal.\(kind.rawValue)")
+    }
+
+    /// Translations are a courtesy: the English text is the binding one.
+    private var translationNote: some View {
+        HStack(alignment: .firstTextBaseline, spacing: 10) {
+            Image(systemName: "globe").foregroundStyle(.secondary)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(showEnglish ? L10n.tr("You're reading the English original.") : L10n.tr("This is a translation. If it differs from the English version, the English version applies."))
+                    .font(.footnote).foregroundStyle(.secondary)
+                Button(showEnglish ? L10n.tr("Show translation") : L10n.tr("Read in English")) { showEnglish.toggle() }
+                    .font(.footnote.weight(.semibold))
+            }
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: 12))
     }
 
     private func contents(_ document: LegalDocument, proxy: ScrollViewProxy) -> some View {
@@ -61,7 +80,7 @@ struct LegalDocumentView: View {
         case .paragraph(let text):
             Text(Self.inline(text)).font(.body)
                 .fixedSize(horizontal: false, vertical: true)
-                .foregroundStyle(text.hasPrefix("Effective ") ? .secondary : .primary)
+                .foregroundStyle(text.hasPrefix(L10n.tr("Effective ")) ? .secondary : .primary)
         case .bullets(let items):
             VStack(alignment: .leading, spacing: 6) {
                 ForEach(items, id: \.self) { item in
@@ -99,20 +118,33 @@ struct LegalSheet: View {
 
 /// "By continuing you accept the Terms of Use and Privacy Policy." with in-app sheets.
 struct LegalConsentLine: View {
-    var prefix = "By continuing you accept the"
+    enum Context { case continuing, creatingAccount }
+    var context: Context = .continuing
     @State private var showing: LegalDocumentKind?
 
-    var body: some View {
-        HStack(spacing: 0) {
-            Text(prefix + " ").foregroundStyle(.secondary)
-            Button("Terms") { showing = .terms }
-            Text(" and ").foregroundStyle(.secondary)
-            Button("Privacy Policy") { showing = .privacy }
-            Text(".").foregroundStyle(.secondary)
+    /// One sentence with two links, so every language can order the words its own way.
+    private var markdown: String {
+        switch context {
+        case .continuing:
+            L10n.tr("By continuing you accept the [Terms](gloop-legal://terms) and [Privacy Policy](gloop-legal://privacy).")
+        case .creatingAccount:
+            L10n.tr("By creating an account you accept the [Terms](gloop-legal://terms) and [Privacy Policy](gloop-legal://privacy).")
         }
-        .font(.caption)
-        .lineLimit(2)
-        .minimumScaleFactor(0.8)
-        .sheet(item: $showing) { LegalSheet(kind: $0) }
+    }
+
+    var body: some View {
+        Text((try? AttributedString(markdown: markdown)) ?? AttributedString(markdown))
+            .foregroundStyle(.secondary)
+            .tint(.orange)
+            .font(.caption)
+            .multilineTextAlignment(.center)
+            .environment(\.openURL, OpenURLAction { url in
+                guard url.scheme == "gloop-legal", let kind = LegalDocumentKind(rawValue: url.host() ?? "") else {
+                    return .systemAction
+                }
+                showing = kind
+                return .handled
+            })
+            .sheet(item: $showing) { LegalSheet(kind: $0) }
     }
 }

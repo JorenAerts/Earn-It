@@ -2,6 +2,7 @@ import ActivityKit
 import AlarmEngine
 import AlarmKit
 import SwiftUI
+import WidgetShared
 import WidgetKit
 
 @main
@@ -22,6 +23,7 @@ struct AlarmLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: AlarmAttributes<GloopAlarmMetadata>.self) { context in
             LockScreenView(context: context)
+                .environment(\.locale, WidgetLanguage.apply())
                 .padding(16)
                 .widgetURL(missionURL)
                 .activityBackgroundTint(.black.opacity(0.75))

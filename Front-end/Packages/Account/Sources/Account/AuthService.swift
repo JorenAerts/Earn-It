@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 
 /// Login providers the app can show. Which ones appear (and in what order) comes from
 /// `Config/Auth.json`; each must also be enabled in the Supabase dashboard.
@@ -99,7 +100,7 @@ public struct AccountUser: Equatable, Sendable {
     /// "Email", "Apple", "Microsoft", …
     public var providerName: String? {
         guard let provider else { return nil }
-        if provider == "email" { return "Email & password" }
+        if provider == "email" { return L10n.tr("Email & password") }
         if provider == "azure" { return AuthProvider.microsoft.displayName }
         return AuthProvider(rawValue: provider)?.displayName ?? provider.capitalized
     }
@@ -142,8 +143,8 @@ public enum AuthError: LocalizedError, Equatable {
 
     public var errorDescription: String? {
         switch self {
-        case .notConfigured: "Accounts aren't available in this build."
-        case .confirmEmail: "Check your inbox to confirm your email, then sign in."
+        case .notConfigured: L10n.tr("Accounts aren't available in this build.")
+        case .confirmEmail: L10n.tr("Check your inbox to confirm your email, then sign in.")
         case .message(let text): text
         }
     }

@@ -70,11 +70,7 @@ Ideas to A/B test later (Product Page Optimization in App Store Connect): Gloop-
 - **Share streak card**: 1080×1920 image (Gloop at your stage + streak + stickers) from the success
   screen and Progress tab. Telemetry `Share.streakCard`. Add the store link once `shareURL` exists.
 
-## Localisation later
-The app and listing are English (US/UK). An empty String Catalog (`App/Localizable.xcstrings`) is in
-place. To add e.g. Dutch or French:
-1. Package UI strings (Features etc.) need `defaultLocalization: "en"` and `Text(…, bundle: .module)`
-   or moving strings into the app catalog. This is the biggest step.
-2. Translate `Config/CoachLines.json`, `Help.json`, `WhatsNew.json`, `Config/Legal/*.md` per language.
-3. Add `fastlane/metadata/<locale>/` with locale-specific keywords (e.g. nl: `wekker,snooze,…`)
-   and screenshots with translated headlines (`headline_<locale>` in scenes.json).
+## Localisation
+The app is translated (see `docs/Localization/README.md`). The store listing per language
+(`fastlane/metadata/<locale>/` with local keywords, and screenshots with `-language <code>` +
+`headline_<locale>` in scenes.json) is phase 5 of the language plan.

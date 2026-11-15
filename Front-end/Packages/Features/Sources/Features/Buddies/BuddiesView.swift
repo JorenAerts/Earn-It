@@ -1,6 +1,7 @@
 import Account
 import Buddies
 import Core
+import Localization
 import Purchases
 import SwiftData
 import SwiftUI
@@ -94,7 +95,7 @@ struct BuddiesView: View {
             }
         }
         .sheet(isPresented: $showSignIn) {
-            AccountStepView(auth: auth, skipTitle: "Not now") { showSignIn = false }
+            AccountStepView(auth: auth, skipTitle: L10n.tr("Not now")) { showSignIn = false }
                 .presentationDragIndicator(.visible)
         }
         .paywallSheet(isPresented: $showPaywall, source: .createClub)
@@ -107,9 +108,9 @@ struct BuddiesView: View {
             VStack(spacing: 22) {
                 BuddiesHero()
                 VStack(alignment: .leading, spacing: 14) {
-                    feature("person.3.fill", "Clubs", "Make a club with friends, family or your gym, or join a public one.")
-                    feature("trophy.fill", "Weekly ranking", "Earn points every morning. The board resets on Monday.")
-                    feature("camera.fill", "Morning face", "Share a selfie after your mission. Gone after 24 hours.")
+                    feature("person.3.fill", L10n.tr("Clubs"), L10n.tr("Make a club with friends, family or your gym, or join a public one."))
+                    feature("trophy.fill", L10n.tr("Weekly ranking"), L10n.tr("Earn points every morning. The board resets on Monday."))
+                    feature("camera.fill", L10n.tr("Morning face"), L10n.tr("Share a selfie after your mission. Gone after 24 hours."))
                 }
                 .padding(.horizontal, 8)
                 Button {
@@ -132,15 +133,15 @@ struct BuddiesView: View {
         ScrollView {
             VStack(spacing: 18) {
                 BuddiesHero()
-                ActionCard(symbol: "plus.circle.fill", tint: .orange, title: "Create a club",
-                           subtitle: "Invite friends with a code or link.") { startCreate() }
-                ActionCard(symbol: "number.circle.fill", tint: .blue, title: "Join with a code",
-                           subtitle: "Got an invite? Enter the 8-character code.") { sheet = .join(nil) }
+                ActionCard(symbol: "plus.circle.fill", tint: .orange, title: L10n.tr("Create a club"),
+                           subtitle: L10n.tr("Invite friends with a code or link.")) { startCreate() }
+                ActionCard(symbol: "number.circle.fill", tint: .blue, title: L10n.tr("Join with a code"),
+                           subtitle: L10n.tr("Got an invite? Enter the 8-character code.")) { sheet = .join(nil) }
                 NavigationLink {
                     DiscoverClubsView()
                 } label: {
-                    ActionCardLabel(symbol: "magnifyingglass.circle.fill", tint: .green, title: "Discover clubs",
-                                    subtitle: "Find public clubs like the 5 AM Club.")
+                    ActionCardLabel(symbol: "magnifyingglass.circle.fill", tint: .green, title: L10n.tr("Discover clubs"),
+                                    subtitle: L10n.tr("Find public clubs like the 5 AM Club."))
                 }
                 .buttonStyle(.plain)
                 if let error = model.error {

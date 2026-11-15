@@ -1,6 +1,7 @@
 import AlarmEngine
 import Coach
 import Core
+import Localization
 import Permissions
 import Purchases
 import SwiftData
@@ -64,7 +65,7 @@ struct HomeView: View {
                 if PermissionCenter.shared.status(.alarms) == .denied ||
                     (PermissionCenter.shared.status(.alarms) == .notDetermined && !coordinator.plans.isEmpty) {
                     Section {
-                        PermissionBanner(kind: .alarms, message: "Your alarms can't ring until Gloop may use alarms.")
+                        PermissionBanner(kind: .alarms, message: L10n.tr("Your alarms can't ring until Gloop may use alarms."))
                     }
                 }
                 if coordinator.activePause != nil {
@@ -82,7 +83,7 @@ struct HomeView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text("Next alarm").font(.caption.weight(.semibold)).textCase(.uppercase)
                                 .foregroundStyle(.secondary)
-                            Text(next.date.formatted(.relative(presentation: .named)))
+                            Text(next.date.formatted(.relative(presentation: .named).locale(L10n.locale)))
                                 .font(.title2.weight(.semibold))
                         }
                     } else {

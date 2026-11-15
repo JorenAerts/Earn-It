@@ -1,4 +1,5 @@
 import Account
+import Localization
 import SwiftUI
 
 /// Optional account: social providers (only those enabled on the server), email + password,
@@ -6,7 +7,7 @@ import SwiftUI
 struct AccountStepView: View {
     let auth: any AuthService
     /// Secondary button title: "Continue without account" in onboarding, "Not now" in Settings.
-    var skipTitle = "Continue without account"
+    var skipTitle = L10n.tr("Continue without account")
     let onSkip: () -> Void
 
     enum Mode { case signUp, signIn }
@@ -28,7 +29,7 @@ struct AccountStepView: View {
     var body: some View {
         OnboardingPage {
             VStack(alignment: .leading, spacing: 20) {
-                Text(mode == .signUp ? "Create your account" : "Welcome back")
+                Text(mode == .signUp ? L10n.tr("Create your account") : L10n.tr("Welcome back"))
                     .font(.largeTitle.bold())
                 Text("Optional — keeps your progress safe and unlocks buddy features later.")
                     .foregroundStyle(.secondary)
@@ -80,14 +81,14 @@ struct AccountStepView: View {
                     }
 
                     HStack {
-                        Button(mode == .signUp ? "I already have an account" : "Create a new account") {
+                        Button(mode == .signUp ? L10n.tr("I already have an account") : L10n.tr("Create a new account")) {
                             mode = mode == .signUp ? .signIn : .signUp
                             message = nil
                         }
                         Spacer()
                         if mode == .signIn {
                             Button("Forgot password?") {
-                                run(success: "Check your inbox for a reset link.") {
+                                run(success: L10n.tr("Check your inbox for a reset link.")) {
                                     try await auth.resetPassword(email: email)
                                 }
                             }
@@ -106,10 +107,10 @@ struct AccountStepView: View {
             }
         } footer: {
             if auth.config.emailPassword {
-                PrimaryButton(title: mode == .signUp ? "Create account" : "Sign in",
+                PrimaryButton(title: mode == .signUp ? L10n.tr("Create account") : L10n.tr("Sign in"),
                               disabled: !canSubmit, action: submit)
             }
-            LegalConsentLine(prefix: "By creating an account you accept the")
+            LegalConsentLine(context: .creatingAccount)
             Button(skipTitle, action: onSkip)
                 .foregroundStyle(.secondary)
         }

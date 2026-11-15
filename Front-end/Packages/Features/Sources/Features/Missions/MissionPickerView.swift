@@ -1,4 +1,5 @@
 import Core
+import Localization
 import Missions
 import Permissions
 import Purchases
@@ -64,13 +65,13 @@ struct MissionKindCard: View {
                     Tag(text: kind.estimatedDuration, symbol: "clock")
                     if kind.needsCamera {
                         if PermissionCenter.shared.status(.camera) == .denied {
-                            Tag(text: "Camera off", symbol: "exclamationmark.triangle.fill")
+                            Tag(text: L10n.tr("Camera off"), symbol: "exclamationmark.triangle.fill")
                         } else {
-                            Tag(text: "Camera", symbol: "camera.fill")
+                            Tag(text: L10n.tr("Camera"), symbol: "camera.fill")
                         }
                     }
-                    if kind.needsSetup { Tag(text: "Setup", symbol: "wrench.and.screwdriver.fill") }
-                    if kind.usesDifficulty { Tag(text: "Difficulty", symbol: "slider.horizontal.3") }
+                    if kind.needsSetup { Tag(text: L10n.tr("Setup"), symbol: "wrench.and.screwdriver.fill") }
+                    if kind.usesDifficulty { Tag(text: L10n.tr("Difficulty"), symbol: "slider.horizontal.3") }
                 }
             }
             Image(systemName: "chevron.right").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
@@ -145,7 +146,7 @@ struct MissionSetupPage: View {
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom) {
             Button { onAdd(config) } label: {
-                Text(config.isReady ? "Add to alarm" : "Finish setup to add").font(.headline)
+                Text(config.isReady ? L10n.tr("Add to alarm") : L10n.tr("Finish setup to add")).font(.headline)
                     .frame(maxWidth: .infinity).padding(.vertical, 6)
             }
             .buttonStyle(.borderedProminent)
@@ -166,12 +167,12 @@ struct MissionOptionsSection: View {
             Section("Settings") {
                 if config.kind.usesDifficulty {
                     Picker("Difficulty", selection: $config.difficulty) {
-                        ForEach(MissionDifficulty.allCases) { Text($0.rawValue.capitalized).tag($0) }
+                        ForEach(MissionDifficulty.allCases) { Text($0.title).tag($0) }
                     }
                     .pickerStyle(.segmented)
                 }
                 if let range = config.kind.targetRange {
-                    Stepper("\(config.target) \(config.kind.targetLabel)", value: $config.target,
+                    Stepper(config.kind.targetText(config.target), value: $config.target,
                             in: range, step: config.kind.targetStep)
                 }
             }

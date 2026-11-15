@@ -1,6 +1,7 @@
 import AlarmEngine
 import Coach
 import Core
+import Localization
 import SwiftUI
 import WidgetShared
 
@@ -10,7 +11,14 @@ import WidgetShared
 final class CoachModel {
     static let shared = CoachModel()
 
-    let lines = CoachLines.load()
+    /// Gloop's lines in the current language (reloaded after a language switch).
+    var lines: CoachLines {
+        if loadedLines?.language != L10n.languageCode {
+            loadedLines = (L10n.languageCode, CoachLines.load())
+        }
+        return loadedLines!.lines
+    }
+    @ObservationIgnored private var loadedLines: (language: String, lines: CoachLines)?
     @ObservationIgnored private let preferences = CoachPreferences()
 
     var intensity: CoachIntensity {

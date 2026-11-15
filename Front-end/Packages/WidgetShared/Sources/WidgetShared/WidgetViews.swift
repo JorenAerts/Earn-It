@@ -1,4 +1,5 @@
 import Coach
+import Localization
 import SwiftUI
 import WidgetKit
 
@@ -56,13 +57,13 @@ struct StreakBlock: View {
             Text("day streak")
                 .font(.subheadline.weight(.semibold))
                 .foregroundStyle(.secondary)
-            Text(doneToday ? "Today earned" : "Today pending")
+            Text(doneToday ? L10n.tr("Today earned") : L10n.tr("Today pending"))
                 .font(.caption2.weight(.bold))
                 .foregroundStyle(doneToday ? Color.green : Color.orange)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(streak) day streak. \(doneToday ? "Today earned." : "Today still pending.")")
+        .accessibilityLabel(doneToday ? "\(streak) day streak. Today earned." : "\(streak) day streak. Today still pending.")
     }
 }
 
@@ -88,7 +89,7 @@ public struct StreakRankWidgetView: View {
                         .frame(maxWidth: .infinity)
                 }
             } else {
-                ProLockedView(streak: snapshot.streak(at: date), feature: "Streak & Stage widget")
+                ProLockedView(streak: snapshot.streak(at: date), feature: L10n.tr("Streak & Stage widget"))
             }
         } else {
             OpenAppView(compact: false)
@@ -148,7 +149,7 @@ public struct ServiceRecordWidgetView: View {
             if snapshot.isPro {
                 content(snapshot)
             } else {
-                ProLockedView(streak: snapshot.streak(at: date), feature: "Gloop's Diary widget")
+                ProLockedView(streak: snapshot.streak(at: date), feature: L10n.tr("Gloop's Diary widget"))
             }
         } else {
             OpenAppView(compact: false)
@@ -171,8 +172,8 @@ public struct ServiceRecordWidgetView: View {
             }
             RankCard(progress: s.progress)
             HStack(spacing: 10) {
-                StatTile(symbol: "flame.fill", value: s.streak(at: date), label: "Day streak")
-                StatTile(symbol: "trophy.fill", value: s.bestStreak, label: "Best streak")
+                StatTile(symbol: "flame.fill", value: s.streak(at: date), label: L10n.tr("Day streak"))
+                StatTile(symbol: "trophy.fill", value: s.bestStreak, label: L10n.tr("Best streak"))
             }
             DayStrip(days: s.days(at: date))
             if !s.medals.isEmpty {
@@ -319,7 +320,7 @@ struct ProLockedView: View {
         VStack(spacing: 8) {
             HStack(spacing: 6) {
                 Image(systemName: "lock.fill")
-                Text("EARN IT PRO").font(.caption.weight(.heavy))
+                Text("GLOOP PRO").font(.caption.weight(.heavy))
             }
             .padding(.horizontal, 10).padding(.vertical, 4)
             .background(.orange, in: .capsule)

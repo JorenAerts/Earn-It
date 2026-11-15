@@ -1,4 +1,5 @@
 import Buddies
+import Localization
 import SwiftUI
 import Telemetry
 
@@ -53,12 +54,12 @@ struct CreateClubView: View {
                     Section { Text(problem).foregroundStyle(.red) }
                 }
             }
-            .navigationTitle(existing == nil ? "New club" : "Edit club")
+            .navigationTitle(existing == nil ? L10n.tr("New club") : L10n.tr("Edit club"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button(existing == nil ? "Create" : "Save", action: save)
+                    Button(existing == nil ? L10n.tr("Create") : L10n.tr("Save"), action: save)
                         .disabled(busy || draft.name.trimmingCharacters(in: .whitespaces).count < 2)
                 }
             }
@@ -130,7 +131,7 @@ struct JoinClubView: View {
                     Text(problem).font(.footnote).foregroundStyle(.red).multilineTextAlignment(.center)
                 }
                 Button(action: join) {
-                    Text(busy ? "Joining…" : "Join").font(.headline).frame(maxWidth: .infinity).padding(.vertical, 6)
+                    Text(busy ? L10n.tr("Joining…") : L10n.tr("Join")).font(.headline).frame(maxWidth: .infinity).padding(.vertical, 6)
                 }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
@@ -150,7 +151,7 @@ struct JoinClubView: View {
 
     private func join() {
         guard InviteCode.normalize(code) != nil else {
-            problem = "Codes have 8 letters and numbers, like ABCD-2345."
+            problem = L10n.tr("Codes have 8 letters and numbers, like ABCD-2345.")
             return
         }
         busy = true
@@ -189,7 +190,7 @@ struct DiscoverClubsView: View {
                         if !club.description.isEmpty {
                             Text(club.description).font(.caption).foregroundStyle(.secondary).lineLimit(2)
                         }
-                        Text("\(club.memberCount) member\(club.memberCount == 1 ? "" : "s")")
+                        Text("\(club.memberCount) members")
                             .font(.caption2).foregroundStyle(.secondary)
                     }
                     Spacer()
@@ -197,14 +198,14 @@ struct DiscoverClubsView: View {
                         Label("Joined", systemImage: "checkmark").labelStyle(.iconOnly).foregroundStyle(.green)
                             .accessibilityLabel("Joined")
                     } else {
-                        Button(joining == club.id ? "…" : "Join") { join(club) }
+                        Button(joining == club.id ? "…" : L10n.tr("Join")) { join(club) }
                             .buttonStyle(.bordered)
                             .disabled(joining != nil)
                     }
                 }
                 .contextMenu {
                     Button("Report club", systemImage: "flag") {
-                        Task { await model.perform { try await model.service.report(.club, id: club.id, reason: "Discover") } }
+                        Task { await model.perform { try await model.service.report(.club, id: club.id, reason: L10n.tr("Discover")) } }
                     }
                 }
             }
@@ -259,10 +260,10 @@ struct CommunityRulesView: View {
     let onAgree: () -> Void
 
     static let rules: [(String, String, String)] = [
-        ("heart.fill", "Be kind", "Cheer each other on. No bullying, harassment or hate."),
-        ("eye.slash.fill", "Keep it clean", "Morning faces only: no nudity, violence or anything you wouldn't show a friend's mum."),
-        ("hand.raised.fill", "Respect privacy", "Only share photos of yourself. Don't screenshot others' photos to post elsewhere."),
-        ("flag.fill", "Report & block", "Long-press any photo or person to report or block them. We review reports and remove people who break the rules."),
+        ("heart.fill", L10n.tr("Be kind"), L10n.tr("Cheer each other on. No bullying, harassment or hate.")),
+        ("eye.slash.fill", L10n.tr("Keep it clean"), L10n.tr("Morning faces only: no nudity, violence or anything you wouldn't show a friend's mum.")),
+        ("hand.raised.fill", L10n.tr("Respect privacy"), L10n.tr("Only share photos of yourself. Don't screenshot others' photos to post elsewhere.")),
+        ("flag.fill", L10n.tr("Report & block"), L10n.tr("Long-press any photo or person to report or block them. We review reports and remove people who break the rules.")),
     ]
 
     var body: some View {

@@ -1,4 +1,5 @@
 import Coach
+import Localization
 import SwiftUI
 
 // MARK: - Page layout
@@ -148,7 +149,7 @@ struct SingleChoiceStep<Option: Identifiable & Hashable>: View {
                 CoachBubble(line: coachLine).transition(.move(edge: .bottom).combined(with: .opacity))
             }
         } footer: {
-            PrimaryButton(title: "Continue", disabled: selection == nil, action: onNext)
+            PrimaryButton(title: L10n.tr("Continue"), disabled: selection == nil, action: onNext)
         }
         .animation(.snappy, value: selection)
     }
@@ -284,13 +285,13 @@ struct AlarmComparison: View {
 
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
-            column(title: "Normal alarm", tint: .red) {
+            column(title: L10n.tr("Normal alarm"), tint: .red) {
                 ForEach(0..<4, id: \.self) { i in
-                    tile(["First", "Second", "Third", "Fourth"][i] + " alarm", time(plus: i * 5), on: shown > i, tint: .red)
+                    tile([L10n.tr("First alarm"), L10n.tr("Second alarm"), L10n.tr("Third alarm"), L10n.tr("Fourth alarm")][i], time(plus: i * 5), on: shown > i, tint: .red)
                 }
             }
             column(title: "Gloop", tint: .orange) {
-                tile("With a mission", time(plus: 0), on: shown > 0, tint: .orange)
+                tile(L10n.tr("With a mission"), time(plus: 0), on: shown > 0, tint: .orange)
                 Label("Rings until you're up", systemImage: "checkmark.seal.fill")
                     .font(.caption.weight(.semibold)).foregroundStyle(.orange)
                     .opacity(shown >= 4 ? 1 : 0)

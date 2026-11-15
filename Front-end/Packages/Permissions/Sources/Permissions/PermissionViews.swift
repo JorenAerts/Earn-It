@@ -1,3 +1,4 @@
+import Localization
 import SwiftUI
 
 /// A permission with its reason, live status and the right button (Allow / Open Settings).
@@ -147,7 +148,7 @@ private struct PermissionPromptModifier: ViewModifier {
             Button("Not now", role: .cancel) {}
         } message: { kind in
             Text(center.status(kind) == .unavailable && kind == .camera
-                 ? "This device has no camera that Gloop can use."
+                 ? L10n.tr("This device has no camera that Gloop can use.")
                  : kind.blockedMessage)
         }
     }

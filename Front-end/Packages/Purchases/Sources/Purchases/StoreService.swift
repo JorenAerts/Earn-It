@@ -1,8 +1,9 @@
 import Core
 import Foundation
+import Localization
 import Observation
-import os
 import StoreKit
+import os
 
 private let log = Logger(subsystem: "be.gloop.app", category: "store")
 
@@ -67,9 +68,9 @@ public final class StoreService {
             if let subscription = products.compactMap(\.subscription).first {
                 isEligibleForTrial = await subscription.isEligibleForIntroOffer
             }
-            errorMessage = products.isEmpty ? "Plans are unavailable right now." : nil
+            errorMessage = products.isEmpty ? L10n.tr("Plans are unavailable right now.") : nil
         } catch {
-            errorMessage = "Couldn't load plans: \(error.localizedDescription)"
+            errorMessage = L10n.tr("Couldn't load plans: \(error.localizedDescription)")
         }
     }
 
@@ -88,7 +89,7 @@ public final class StoreService {
             switch try await product.purchase(options: options) {
             case .success(let verification):
                 guard case .verified(let transaction) = verification else {
-                    errorMessage = "The purchase couldn't be verified."
+                    errorMessage = L10n.tr("The purchase couldn't be verified.")
                     return false
                 }
                 await transaction.finish()
@@ -96,7 +97,7 @@ public final class StoreService {
                 log.notice("purchased \(product.id, privacy: .public)")
                 return true
             case .pending:
-                errorMessage = "Purchase pending approval."
+                errorMessage = L10n.tr("Purchase pending approval.")
                 return false
             case .userCancelled:
                 return false
@@ -104,7 +105,7 @@ public final class StoreService {
                 return false
             }
         } catch {
-            errorMessage = "Purchase failed: \(error.localizedDescription)"
+            errorMessage = L10n.tr("Purchase failed: \(error.localizedDescription)")
             return false
         }
     }
@@ -113,7 +114,7 @@ public final class StoreService {
         do {
             try await AppStore.sync()
         } catch {
-            errorMessage = "Restore failed: \(error.localizedDescription)"
+            errorMessage = L10n.tr("Restore failed: \(error.localizedDescription)")
         }
         await refreshEntitlement()
     }

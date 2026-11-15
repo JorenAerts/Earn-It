@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 
 /// Subscription length parsed from the ISO 8601 period in Pricing.json ("P1W", "P1M", "P3M", "P1Y").
 public struct PlanPeriod: Equatable, Sendable {
@@ -22,24 +23,22 @@ public struct PlanPeriod: Equatable, Sendable {
 
     /// "/week", "/month", "/3 months", "/year".
     public var perLabel: String {
-        let name: String = switch unit {
-        case .day: "day"
-        case .week: "week"
-        case .month: "month"
-        case .year: "year"
+        switch unit {
+        case .day: value == 1 ? L10n.tr("/day") : L10n.tr("/\(value) days")
+        case .week: value == 1 ? L10n.tr("/week") : L10n.tr("/\(value) weeks")
+        case .month: value == 1 ? L10n.tr("/month") : L10n.tr("/\(value) months")
+        case .year: value == 1 ? L10n.tr("/year") : L10n.tr("/\(value) years")
         }
-        return value == 1 ? "/\(name)" : "/\(value) \(name)s"
     }
 
     /// "per year", "every 3 months" — for legal disclosure text.
     public var everyLabel: String {
-        let name: String = switch unit {
-        case .day: "day"
-        case .week: "week"
-        case .month: "month"
-        case .year: "year"
+        switch unit {
+        case .day: value == 1 ? L10n.tr("per day") : L10n.tr("every \(value) days")
+        case .week: value == 1 ? L10n.tr("per week") : L10n.tr("every \(value) weeks")
+        case .month: value == 1 ? L10n.tr("per month") : L10n.tr("every \(value) months")
+        case .year: value == 1 ? L10n.tr("per year") : L10n.tr("every \(value) years")
         }
-        return value == 1 ? "per \(name)" : "every \(value) \(name)s"
     }
 
     /// Length in months (weeks use 52/12 weeks per month).
@@ -64,11 +63,10 @@ public struct PlanPeriod: Equatable, Sendable {
 
 /// "3 days free", "1 week free".
 public func freeTrialText(value: Int, unit: PlanPeriod.Unit) -> String {
-    let name: String = switch unit {
-    case .day: "day"
-    case .week: "week"
-    case .month: "month"
-    case .year: "year"
+    switch unit {
+    case .day: L10n.tr("\(value) days free")
+    case .week: L10n.tr("\(value) weeks free")
+    case .month: L10n.tr("\(value) months free")
+    case .year: L10n.tr("\(value) years free")
     }
-    return "\(value) \(name)\(value == 1 ? "" : "s") free"
 }

@@ -3,6 +3,7 @@ import AlarmKit
 import AppIntents
 import Core
 import Foundation
+import Localization
 import os
 import SwiftUI
 
@@ -124,7 +125,7 @@ public final class AlarmKitScheduler: AlarmScheduling {
         // No pause button: the re-ring countdown can't be paused.
         let presentation = AlarmPresentation(
             alert: alert,
-            countdown: countdown ? AlarmPresentation.Countdown(title: "Rings again in") : nil
+            countdown: countdown ? AlarmPresentation.Countdown(title: L10n.resource("Rings again in")) : nil
         )
         return AlarmAttributes(
             presentation: presentation,

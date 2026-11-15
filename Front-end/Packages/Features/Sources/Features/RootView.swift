@@ -3,13 +3,13 @@ import AlarmEngine
 import Buddies
 import Coach
 import Core
+import Localization
 import Missions
 import Permissions
 import Purchases
 import StoreKit
 import SwiftData
 import SwiftUI
-import Telemetry
 import Telemetry
 import UserNotifications
 import WidgetShared
@@ -32,6 +32,7 @@ public struct RootView: View {
     @State private var ratingMoment: RatingPolicy.Moment?
     @State private var whatsNew: HelpContent.Release?
     @State private var buddies: BuddiesModel
+    @State private var language = LanguageSettings.shared
 
     public init(coordinator: AlarmCoordinator, auth: any AuthService, store: StoreService,
                 buddies: any BuddiesService = UnavailableBuddiesService(),
@@ -53,6 +54,10 @@ public struct RootView: View {
         _onboarded = State(initialValue: (onboardingStore.load().completed
                                           || CommandLine.arguments.contains("-buddiesSample"))  // screenshots on a fresh simulator
                            && !CommandLine.arguments.contains("-onboardingStep"))  // screenshot helper
+        // Screenshot helper: -language <code> (e.g. nl) picks the app language for this run.
+        if let i = CommandLine.arguments.firstIndex(of: "-language"), i + 1 < CommandLine.arguments.count {
+            LanguageSettings.shared.select(CommandLine.arguments[i + 1], persist: false)
+        }
         // Screenshot helper: -settings opens on the Settings tab.
         if CommandLine.arguments.contains("-settings") { _tab = State(initialValue: .settings) }
     }
@@ -93,11 +98,11 @@ public struct RootView: View {
                 MissionPickerView(gate: store.gate) { _ in }
             } else if CommandLine.arguments.contains("-missionRunner") {
                 // Screenshot helper: -missionRunner (object step without a scan, then math)
-                MissionRunnerView(missions: [MissionConfig(kind: .object, payload: "none", label: "Toothbrush"),
+                MissionRunnerView(missions: [MissionConfig(kind: .object, payload: "none", label: L10n.tr("Toothbrush")),
                                              MissionConfig(kind: .math)],
                                   reArmCount: 2, reArmMinutes: 2,
                                   coachState: CoachState(mood: .angry, context: .reRing, anger: 0.4),
-                                  coachLine: "Ring 2, private. My patience has a snooze limit too.") {}
+                                  coachLine: L10n.tr("Ring 2, private. My patience has a snooze limit too.")) {}
             } else if coordinator.needsMission {
                 let coachState = CoachModel.shared.state(coordinator: coordinator, logs: [])
                 MissionRunnerView(missions: coordinator.activePlan?.missions ?? [],
@@ -125,11 +130,20 @@ public struct RootView: View {
                          })
             }
         }
+        // A new language redraws every screen (model texts are resolved when a view is built).
+        // Tab, sheets and the language picker live above this, so they stay put.
+        .id(language.current.code)
         .animation(.default, value: coordinator.needsMission)
         .paywallSheet(isPresented: $showPaywallFromWidget, source: .widget)
         .permissionPrompt()
         .environment(buddies)
         .preferredColorScheme(AppearanceSettings.shared.preference.colorScheme)
+        .sheet(isPresented: $language.isPickerPresented) {
+            LanguagePickerView(settings: language) { language.isPickerPresented = false }
+                .modifier(LanguageEnvironment(language: language.current))
+        }
+        .onChange(of: language.current) { languageChanged() }
+        .modifier(LanguageEnvironment(language: language.current))
         .environment(\.paywall, PaywallContext(store: store, accountToken: auth.user?.id,
                                                termsURL: auth.config.termsURL,
                                                privacyURL: auth.config.privacyURL))
@@ -181,7 +195,8 @@ public struct RootView: View {
         // Cold launch from the alarm's X: scenePhase never "changes", so sync on first appear too.
         .task {
             Telemetry.shared.commonParameters = { [store, onboardingStore] in
-                ["plan": store.entitlement.telemetryName, "onboarded": "\(onboardingStore.load().completed)"]
+                ["plan": store.entitlement.telemetryName, "onboarded": "\(onboardingStore.load().completed)",
+                 "language": L10n.languageCode]
             }
             coordinator.onEvent = { event in
                 switch event {
@@ -227,6 +242,14 @@ public struct RootView: View {
             }
         }
         .task(id: onboarded) { checkWhatsNew() }
+    }
+
+    /// Everything outside SwiftUI that carries text: the iOS alarm titles, coach notifications, widgets.
+    private func languageChanged() {
+        refreshCoachNotifications()
+        WidgetPublisher.shared.reloadAll()
+        guard !coordinator.needsMission else { return }  // never touch a ringing alarm
+        Task { await coordinator.refreshAlarms() }
     }
 
     /// Coach notifications + widget snapshot: both derive from alarms, today's session and history.
@@ -305,7 +328,7 @@ public struct RootView: View {
                                                 secondsFromFirstRing: max(0, seconds), firstTry: session.reArmCount == 0))
         let logs = (try? modelContext.fetch(FetchDescriptor<DayLog>())) ?? []
         let report = MorningReport.make(history: logs.map(DaySummary.init(log:)), day: session.day)
-        if report.promoted { Telemetry.shared.send(.gloopEvolved(stage: report.after.rank.title)) }
+        if report.promoted { Telemetry.shared.send(.gloopEvolved(stage: report.after.rank.englishTitle)) }
         for sticker in report.newMedals { Telemetry.shared.send(.stickerEarned(sticker: sticker.rawValue)) }
         let streak = StreakCalculator.currentStreak(completedDays: logs.compactMap(\.missionCompletedAt), today: .now)
         if [3, 7, 14, 30, 60, 100, 365].contains(streak) { Telemetry.shared.send(.streakMilestone(days: streak)) }
@@ -362,7 +385,7 @@ struct SuccessView: View {
             }
             if !report.newMedals.isEmpty {
                 VStack(spacing: 8) {
-                    Text(report.newMedals.count == 1 ? "New sticker!" : "New stickers!")
+                    Text(report.newMedals.count == 1 ? L10n.tr("New sticker!") : L10n.tr("New stickers!"))
                         .font(.caption.weight(.heavy)).textCase(.uppercase).foregroundStyle(.secondary)
                     HStack(spacing: 12) {
                         ForEach(report.newMedals.prefix(3)) { MedalTile(medal: $0, earned: true).frame(width: 96) }
@@ -370,7 +393,7 @@ struct SuccessView: View {
                 }
             }
             Text("Follow-up alarms cancelled.").foregroundStyle(.secondary)
-            Text("Streak: \(streak) day\(streak == 1 ? "" : "s")")
+            Text("Streak: \(streak) days")
                 .font(.title2.weight(.semibold))
            }
            .frame(maxWidth: .infinity)

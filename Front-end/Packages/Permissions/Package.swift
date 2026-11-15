@@ -5,5 +5,6 @@ let package = Package(
     name: "Permissions",
     platforms: [.iOS("26.1")],
     products: [.library(name: "Permissions", targets: ["Permissions"])],
-    targets: [.target(name: "Permissions")]
+    dependencies: [.package(path: "../Localization")],
+    targets: [.target(name: "Permissions", dependencies: ["Localization"])]
 )

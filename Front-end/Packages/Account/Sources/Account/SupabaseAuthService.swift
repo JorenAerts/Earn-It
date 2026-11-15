@@ -1,7 +1,8 @@
 import Foundation
+import Localization
 import Observation
-import os
 import Supabase
+import os
 
 private let log = Logger(subsystem: "be.gloop.app", category: "account")
 
@@ -97,7 +98,7 @@ public final class SupabaseAuthService: AuthService {
             try await client.rpc("delete_own_account").execute()
             await signOut()
         } catch {
-            throw AuthError.message("Couldn't delete the account: \(error.localizedDescription)")
+            throw AuthError.message(L10n.tr("Couldn't delete the account: \(error.localizedDescription)"))
         }
     }
 

@@ -1,7 +1,8 @@
 import Account
 import Foundation
-import os
+import Localization
 import Supabase
+import os
 
 private let log = Logger(subsystem: "be.gloop.app", category: "buddies")
 
@@ -58,7 +59,7 @@ public final class SupabaseBuddiesService: BuddiesService {
 
     public func joinClub(code: String) async throws -> UUID {
         guard let normalized = InviteCode.normalize(code) else {
-            throw BuddiesError.message("That doesn't look like an invite code (8 letters and numbers).")
+            throw BuddiesError.message(L10n.tr("That doesn't look like an invite code (8 letters and numbers)."))
         }
         return try await call { try await self.client.rpc("join_club", params: ["code": normalized]).execute().value }
     }
@@ -243,15 +244,15 @@ public final class SupabaseBuddiesService: BuddiesService {
         } catch let error as PostgrestError {
             log.error("buddies rpc: \(error.message, privacy: .public)")
             if Self.missingSetupCodes.contains(error.code ?? "") {
-                throw BuddiesError.message("Buddies isn't set up on the server yet (database migration missing).")
+                throw BuddiesError.message(L10n.tr("Buddies isn't set up on the server yet (database migration missing)."))
             }
             throw BuddiesError.message(error.code == "P0001" || error.code == "42501"
-                                       ? error.message : "Something went wrong. Try again in a moment.")
+                                       ? error.message : L10n.tr("Something went wrong. Try again in a moment."))
         } catch let error as BuddiesError {
             throw error
         } catch {
             log.error("buddies: \(error.localizedDescription, privacy: .public)")
-            throw BuddiesError.message("Couldn't reach Gloop. Check your connection and try again.")
+            throw BuddiesError.message(L10n.tr("Couldn't reach Gloop. Check your connection and try again."))
         }
     }
 }

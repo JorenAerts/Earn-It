@@ -17,16 +17,6 @@ public enum SlimeColor: String, CaseIterable, Codable, Sendable, Identifiable {
 
     public var id: String { rawValue }
 
-    public var title: String {
-        switch self {
-        case .orange: "Tangerine"
-        case .mint: "Mint"
-        case .grape: "Grape"
-        case .midnight: "Midnight"
-        case .gold: "Gold"
-        }
-    }
-
     /// Top (light) and bottom (deep) body colour, as RGB 0…1.
     public var rgb: (top: SIMD3<Double>, bottom: SIMD3<Double>) {
         switch self {

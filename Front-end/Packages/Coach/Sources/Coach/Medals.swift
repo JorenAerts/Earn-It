@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 
 /// Achievements earned from the wake-up history.
 public enum Medal: String, CaseIterable, Sendable, Identifiable {
@@ -8,33 +9,33 @@ public enum Medal: String, CaseIterable, Sendable, Identifiable {
 
     public var title: String {
         switch self {
-        case .firstMission: "First Squish"
-        case .firstTry: "One and Done"
-        case .streak3: "Triple Jiggle"
-        case .streak7: "Week of Wobble"
-        case .streak30: "Solid Month"
-        case .streak100: "Slime Legend"
-        case .earlyBird: "Dawn Drip"
-        case .ironWill: "Sticky Will"
-        case .comeback: "Bounce Back"
-        case .hatTrick: "Hat Trick"
-        case .perfectWeek: "Flawless Goo"
+        case .firstMission: L10n.tr("First Squish")
+        case .firstTry: L10n.tr("One and Done")
+        case .streak3: L10n.tr("Triple Jiggle")
+        case .streak7: L10n.tr("Week of Wobble")
+        case .streak30: L10n.tr("Solid Month")
+        case .streak100: L10n.tr("Slime Legend")
+        case .earlyBird: L10n.tr("Dawn Drip")
+        case .ironWill: L10n.tr("Sticky Will")
+        case .comeback: L10n.tr("Bounce Back")
+        case .hatTrick: L10n.tr("Hat Trick")
+        case .perfectWeek: L10n.tr("Flawless Goo")
         }
     }
 
     public var requirement: String {
         switch self {
-        case .firstMission: "Complete your first mission."
-        case .firstTry: "Get up on the first ring."
-        case .streak3: "3-day streak."
-        case .streak7: "7-day streak."
-        case .streak30: "30-day streak."
-        case .streak100: "100-day streak."
-        case .earlyBird: "Finish a mission before 06:00."
-        case .ironWill: "Finish a mission after 5 or more re-rings."
-        case .comeback: "Finish a mission after missing 2 or more days."
-        case .hatTrick: "First ring, 3 mornings in a row."
-        case .perfectWeek: "First ring, 7 mornings in a row."
+        case .firstMission: L10n.tr("Complete your first mission.")
+        case .firstTry: L10n.tr("Get up on the first ring.")
+        case .streak3: L10n.tr("3-day streak.")
+        case .streak7: L10n.tr("7-day streak.")
+        case .streak30: L10n.tr("30-day streak.")
+        case .streak100: L10n.tr("100-day streak.")
+        case .earlyBird: L10n.tr("Finish a mission before 06:00.")
+        case .ironWill: L10n.tr("Finish a mission after 5 or more re-rings.")
+        case .comeback: L10n.tr("Finish a mission after missing 2 or more days.")
+        case .hatTrick: L10n.tr("First ring, 3 mornings in a row.")
+        case .perfectWeek: L10n.tr("First ring, 7 mornings in a row.")
         }
     }
 

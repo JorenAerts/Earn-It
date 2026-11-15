@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 
 /// `Config/Help.json` (FAQ) and `Config/WhatsNew.json`.
 public struct HelpContent: Equatable, Sendable {
@@ -30,11 +31,20 @@ public struct HelpContent: Equatable, Sendable {
         return HelpContent(faq: faq, releases: releases)
     }
 
-    public static func load(from bundle: Bundle = .main) -> HelpContent {
-        func data(_ name: String) -> Data? {
+    /// In the current language when `Translations/<name>.<code>.json` exists; per release, missing
+    /// translations fall back to the English notes.
+    public static func load(from bundle: Bundle = .main, language: String = L10n.languageCode) -> HelpContent {
+        func english(_ name: String) -> Data? {
             bundle.url(forResource: name, withExtension: "json").flatMap { try? Data(contentsOf: $0) }
         }
-        return decode(help: data("Help"), whatsNew: data("WhatsNew"))
+        func translated(_ name: String) -> Data? {
+            L10n.translatedResource(name, ext: "json", subdirectories: ["Translations", nil], code: language, in: bundle)
+                .flatMap { try? Data(contentsOf: $0) }
+        }
+        let base = decode(help: english("Help"), whatsNew: english("WhatsNew"))
+        let local = decode(help: translated("Help"), whatsNew: translated("WhatsNew"))
+        let releases = base.releases.map { release in local.releases.first { $0.version == release.version } ?? release }
+        return HelpContent(faq: local.faq.isEmpty ? base.faq : local.faq, releases: releases)
     }
 
     /// Prefilled support mail: subject + device details that help debugging.
@@ -44,7 +54,7 @@ public struct HelpContent: Equatable, Sendable {
         components.scheme = "mailto"
         components.path = address
         components.queryItems = [
-            URLQueryItem(name: "subject", value: "Gloop support"),
+            URLQueryItem(name: "subject", value: L10n.tr("Gloop support")),
             URLQueryItem(name: "body", value: "\n\n—\nGloop \(appVersion) · iOS \(systemVersion) · \(model)"),
         ]
         return components.url

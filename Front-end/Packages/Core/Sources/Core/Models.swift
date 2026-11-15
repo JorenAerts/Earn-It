@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 
 // MARK: - Missions
 
@@ -12,20 +13,20 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
 
     public var displayName: String {
         switch self {
-        case .math: "Math problems"
-        case .shake: "Shake the phone"
-        case .qr: "Scan a code"
-        case .object: "Scan your item"
+        case .math: L10n.tr("Math problems")
+        case .shake: L10n.tr("Shake the phone")
+        case .qr: L10n.tr("Scan a code")
+        case .object: L10n.tr("Scan your item")
         }
     }
 
     /// Shown in the alarm title: "Gloop - Math Problem".
     public var alarmTitle: String {
         switch self {
-        case .math: "Math Problem"
-        case .shake: "Shake It"
-        case .qr: "Scan Code"
-        case .object: "Scan Item"
+        case .math: L10n.tr("Math Problem")
+        case .shake: L10n.tr("Shake It")
+        case .qr: L10n.tr("Scan Code")
+        case .object: L10n.tr("Scan Item")
         }
     }
 
@@ -42,19 +43,19 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
     /// One line in the mission picker: what you'll have to do.
     public var tagline: String {
         switch self {
-        case .math: "Solve problems in a row. Wakes up your brain."
-        case .shake: "Shake your phone hard. Wakes up your body."
-        case .qr: "Scan a code you stuck in another room."
-        case .object: "Scan an item you pick, like your toothbrush or coffee cup."
+        case .math: L10n.tr("Solve problems in a row. Wakes up your brain.")
+        case .shake: L10n.tr("Shake your phone hard. Wakes up your body.")
+        case .qr: L10n.tr("Scan a code you stuck in another room.")
+        case .object: L10n.tr("Scan an item you pick, like your toothbrush or coffee cup.")
         }
     }
 
     /// Rough time it takes, shown in the picker.
     public var estimatedDuration: String {
         switch self {
-        case .math: "~1 min"
-        case .shake: "~30 s"
-        case .qr, .object: "~1 min"
+        case .math: L10n.tr("~1 min")
+        case .shake: L10n.tr("~30 s")
+        case .qr, .object: L10n.tr("~1 min")
         }
     }
 
@@ -71,13 +72,13 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         }
     }
 
-    /// Unit label for `MissionConfig.target`.
-    public var targetLabel: String {
+    /// "3 problems", "30 shakes" for `MissionConfig.target`.
+    public func targetText(_ n: Int) -> String {
         switch self {
-        case .math: "problems"
-        case .shake: "shakes"
-        case .qr: "code"
-        case .object: "item"
+        case .math: L10n.tr("\(n) problems")
+        case .shake: L10n.tr("\(n) shakes")
+        case .qr: L10n.tr("\(n) codes")
+        case .object: L10n.tr("\(n) items")
         }
     }
 
@@ -120,6 +121,14 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
 public enum MissionDifficulty: String, Codable, CaseIterable, Sendable, Identifiable {
     case easy, medium, hard
     public var id: String { rawValue }
+
+    public var title: String {
+        switch self {
+        case .easy: L10n.tr("Easy")
+        case .medium: L10n.tr("Medium")
+        case .hard: L10n.tr("Hard")
+        }
+    }
 }
 
 public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
@@ -146,16 +155,18 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
     /// What the mission screen tells the user to do.
     public var instruction: String {
         switch kind {
-        case .math: "Solve \(target) problem\(target == 1 ? "" : "s") in a row."
-        case .shake: "Shake your phone \(target) times."
-        case .qr: "Go to your code and scan it."
-        case .object: "Find your \(label?.lowercased() ?? "item") and point the camera at it."
+        case .math: L10n.tr("Solve \(target) problems in a row.")
+        case .shake: L10n.tr("Shake your phone \(target) times.")
+        case .qr: L10n.tr("Go to your code and scan it.")
+        case .object:
+            if let label, !label.isEmpty { L10n.tr("Find your \(L10n.inSentence(label)) and point the camera at it.") }
+            else { L10n.tr("Find your item and point the camera at it.") }
         }
     }
 
     /// Alarm title part: "Scan Toothbrush" for a named item.
     public var alarmTitle: String {
-        if kind == .object, let label, !label.isEmpty { return "Scan \(label)" }
+        if kind == .object, let label, !label.isEmpty { return L10n.tr("Scan \(label)") }
         return kind.alarmTitle
     }
 
@@ -167,9 +178,10 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
     /// One-line description for lists: "3 problems · medium", "Code registered".
     public var summary: String {
         switch kind {
-        case .qr: isReady ? "Code registered" : "No code registered"
-        case .object: isReady ? (label ?? "Item scanned") : "No item scanned yet"
-        case .math, .shake: "\(target) \(kind.targetLabel) · \(difficulty.rawValue)"
+        case .qr: isReady ? L10n.tr("Code registered") : L10n.tr("No code registered")
+        case .object: isReady ? (label ?? L10n.tr("Item scanned")) : L10n.tr("No item scanned yet")
+        case .math: L10n.tr("\(target) problems · \(difficulty.title)")
+        case .shake: L10n.tr("\(target) shakes · \(difficulty.title)")
         }
     }
 }
@@ -188,22 +200,29 @@ public enum AlarmSound: String, Codable, CaseIterable, Sendable, Identifiable {
 
     public var displayName: String {
         switch self {
-        case .classic: "Classic Beep"
-        case .chime: "Morning Chime"
-        case .siren: "Rising Siren"
-        case .digital: "Digital"
-        case .pulse: "Deep Pulse"
-        case .radar: "Radar"
-        case .gentleRise: "Gentle Rise"
-        case .reveille: "Reveille"
-        case .morningMood: "Morning Mood"
-        case .furElise: "Für Elise"
-        case .riseAndConquer: "Rise & Conquer"
+        case .classic: L10n.tr("Classic Beep")
+        case .chime: L10n.tr("Morning Chime")
+        case .siren: L10n.tr("Rising Siren")
+        case .digital: L10n.tr("Digital")
+        case .pulse: L10n.tr("Deep Pulse")
+        case .radar: L10n.tr("Radar")
+        case .gentleRise: L10n.tr("Gentle Rise")
+        case .reveille: L10n.tr("Reveille")
+        case .morningMood: L10n.tr("Morning Mood")
+        case .furElise: L10n.tr("Für Elise")
+        case .riseAndConquer: L10n.tr("Rise & Conquer")
         }
     }
 
     public enum Category: String, CaseIterable, Sendable {
         case tones = "Tones", melodies = "Melodies"
+
+        public var title: String {
+            switch self {
+            case .tones: L10n.tr("Tones")
+            case .melodies: L10n.tr("Melodies")
+            }
+        }
     }
 
     public var category: Category {
@@ -216,9 +235,9 @@ public enum AlarmSound: String, Codable, CaseIterable, Sendable, Identifiable {
     /// Short credit for public-domain melodies (performed by our own generator).
     public var credit: String? {
         switch self {
-        case .reveille: "Traditional bugle call"
-        case .morningMood: "Edvard Grieg, Peer Gynt"
-        case .furElise: "Ludwig van Beethoven"
+        case .reveille: L10n.tr("Traditional bugle call")
+        case .morningMood: L10n.tr("Edvard Grieg, Peer Gynt")
+        case .furElise: L10n.tr("Ludwig van Beethoven")
         default: nil
         }
     }
@@ -434,12 +453,14 @@ public struct AlarmPlan: Codable, Hashable, Sendable, Identifiable {
     /// "Every day", "Weekdays", "Mon, Wed", "Once".
     public var repeatText: String {
         switch weekdays {
-        case []: return "Once"
-        case Set(1...7): return "Every day"
-        case Set(2...6): return "Weekdays"
-        case [1, 7]: return "Weekends"
+        case []: return L10n.tr("Once")
+        case Set(1...7): return L10n.tr("Every day")
+        case Set(2...6): return L10n.tr("Weekdays")
+        case [1, 7]: return L10n.tr("Weekends")
         default:
-            let symbols = Calendar.current.shortWeekdaySymbols
+            var calendar = Calendar.current
+            calendar.locale = L10n.locale
+            let symbols = calendar.shortWeekdaySymbols
             // Monday-first order for display.
             return [2, 3, 4, 5, 6, 7, 1].filter(weekdays.contains).map { symbols[$0 - 1] }.joined(separator: ", ")
         }

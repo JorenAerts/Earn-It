@@ -1,6 +1,7 @@
 import Core
 import CoreImage.CIFilterBuiltins
 import Permissions
+import Localization
 import SwiftUI
 import UIKit
 
@@ -58,7 +59,7 @@ struct QRMissionView: View {
             .frame(minHeight: 240, maxHeight: 420)
             .clipShape(.rect(cornerRadius: 20))
 
-            Text(wrongCode ? "That's not your registered code." : " ")
+            Text(wrongCode ? L10n.tr("That's not your registered code.") : " ")
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(.red)
 
@@ -106,7 +107,7 @@ struct QRSetupRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Label(config.isReady ? "Code registered" : "Register a code to use this mission",
+            Label(config.isReady ? L10n.tr("Code registered") : L10n.tr("Register a code to use this mission"),
                   systemImage: config.isReady ? "checkmark.circle.fill" : "exclamationmark.circle")
                 .foregroundStyle(config.isReady ? .green : .orange)
                 .font(.subheadline)

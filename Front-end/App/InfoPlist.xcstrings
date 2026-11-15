@@ -1,0 +1,289 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "CFBundleDisplayName" : {
+      "comment" : "Info.plist",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gloop"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop"
+          }
+        }
+      }
+    },
+    "CFBundleName" : {
+      "comment" : "Bundle name",
+      "extractionState" : "extracted_with_value",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Gloop"
+          }
+        }
+      },
+      "shouldTranslate" : false
+    },
+    "NSAlarmKitUsageDescription" : {
+      "comment" : "Info.plist",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gloop schedules your wake-up alarms so they ring through silent mode and Focus."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop plant je wekalarmen, zodat ze afgaan door de stille modus en Focus heen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop programme tes réveils pour qu’ils sonnent malgré le mode silencieux et les modes de concentration."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop stellt deine Wecker, damit sie trotz Stummmodus und Fokus klingeln."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop programa tus alarmas para que suenen aunque estén activos el modo silencio o un modo de concentración."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop programma le tue sveglie perché suonino anche in modalità silenziosa e con Full immersion."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "O Gloop agenda seus alarmes para que toquem mesmo no modo silencioso e em Foco."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "O Gloop agenda os seus alarmes para que toquem mesmo em silêncio e em Foco."
+          }
+        }
+      }
+    },
+    "NSAppleMusicUsageDescription" : {
+      "comment" : "Info.plist",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gloop plays the Apple Music song you pick while you do your wake-up mission."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop speelt het Apple Music-nummer dat je kiest terwijl je je wekmissie doet."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop joue le morceau Apple Music que tu as choisi pendant ta mission de réveil."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop spielt den gewählten Apple-Music-Song, während du deine Weckmission machst."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop reproduce la canción de Apple Music que elijas mientras haces tu misión para despertar."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop riproduce il brano di Apple Music che scegli mentre fai la missione sveglia."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "O Gloop toca a música do Apple Music que você escolher enquanto faz sua missão de despertar."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "O Gloop reproduz a música do Apple Music que escolher enquanto faz a sua missão de despertar."
+          }
+        }
+      }
+    },
+    "NSCameraUsageDescription" : {
+      "comment" : "Info.plist",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gloop uses the camera to scan the code or item you registered, so you have to get out of bed to stop the alarm. Images stay on your iPhone."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop gebruikt de camera om de code of het voorwerp te scannen dat je hebt geregistreerd, zodat je uit bed moet om de wekker uit te zetten. Beelden blijven op je iPhone."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop utilise l’appareil photo pour scanner le code ou l’objet que tu as enregistré, pour que tu doives sortir du lit pour arrêter le réveil. Les images restent sur ton iPhone."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop nutzt die Kamera, um den registrierten Code oder Gegenstand zu scannen, damit du zum Ausschalten des Weckers aufstehen musst. Bilder bleiben auf deinem iPhone."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop usa la cámara para escanear el código u objeto que registraste, así tienes que levantarte para parar la alarma. Las imágenes se quedan en tu iPhone."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop usa la fotocamera per scansionare il codice o l’oggetto che hai registrato, così devi alzarti per fermare la sveglia. Le immagini restano sul tuo iPhone."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "O Gloop usa a câmera para escanear o código ou objeto que você registrou, assim você precisa sair da cama para parar o alarme. As imagens ficam no seu iPhone."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "O Gloop usa a câmara para digitalizar o código ou objeto que registou, para que tenha de sair da cama para parar o alarme. As imagens ficam no seu iPhone."
+          }
+        }
+      }
+    },
+    "NSMicrophoneUsageDescription" : {
+      "comment" : "Info.plist",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gloop uses the microphone only when you record your own alarm sound."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop gebruikt de microfoon alleen als je je eigen wekgeluid opneemt."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop utilise le micro uniquement quand tu enregistres ton propre son de réveil."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop nutzt das Mikrofon nur, wenn du deinen eigenen Weckton aufnimmst."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop usa el micrófono solo cuando grabas tu propio sonido de alarma."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Gloop usa il microfono solo quando registri il tuo suono della sveglia."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "O Gloop usa o microfone apenas quando você grava seu próprio som de alarme."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "O Gloop usa o microfone apenas quando grava o seu próprio som de alarme."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}
