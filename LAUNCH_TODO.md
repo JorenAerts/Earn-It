@@ -81,6 +81,15 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 - [ ] Add your Supabase user UUID to `Front-end/Config/Developer.json` so the 7-tap developer tools
       unlock on TestFlight builds (copy it in Settings › Developer tools › Info).
 
+### Buddies
+- [ ] Apply `Backend/supabase/migrations/20261115000000_buddies.sql` (SQL Editor) — see Backend/README.md.
+- [ ] Deploy Edge Function `cleanup-morning-posts` and schedule it hourly (Integrations › Cron).
+- [ ] Check reports daily (Table Editor › `reports`); App Review expects action within 24 h (Guideline 1.2).
+- [ ] Privacy policy + App Privacy labels: photos, wake-up times, display name shared with club members.
+- [ ] Age rating: user-generated content → answer "yes" for UGC (12+ likely).
+- [ ] Universal links (`https://…/join/<code>`) once there's a website, so invites open the App Store if not installed.
+- [ ] Push notifications (buddy woke up, nudges) — needs the paid program (APNs).
+
 ### Submission
 - [ ] App privacy labels (email, user ID, purchases; no tracking).
 - [ ] Review notes: explain AlarmKit alarm + background audio (keeps the alarm sounding until the

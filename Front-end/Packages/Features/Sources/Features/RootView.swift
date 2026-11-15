@@ -1,5 +1,6 @@
 import Account
 import AlarmEngine
+import Buddies
 import Coach
 import Core
 import Missions
@@ -24,13 +25,25 @@ public struct RootView: View {
     @State private var showSuccess = false
     @State private var tab: MainTabView.TabID = .alarms
     @State private var showPaywallFromWidget = false
+    @State private var buddies: BuddiesModel
 
     public init(coordinator: AlarmCoordinator, auth: any AuthService, store: StoreService,
+                buddies: any BuddiesService = UnavailableBuddiesService(),
                 onboardingStore: OnboardingStore = OnboardingStore()) {
         self.coordinator = coordinator
         self.auth = auth
         self.store = store
         self.onboardingStore = onboardingStore
+        #if DEBUG
+        // Screenshot helper: -buddiesSample (fake clubs, members and photos; opens the Buddies tab).
+        let sample = CommandLine.arguments.contains("-buddiesSample")
+        let model = BuddiesModel(service: sample ? BuddiesSamples.make() : buddies)
+        model.sampleMode = sample
+        _buddies = State(initialValue: model)
+        if sample { _tab = State(initialValue: .buddies) }
+        #else
+        _buddies = State(initialValue: BuddiesModel(service: buddies))
+        #endif
         _onboarded = State(initialValue: onboardingStore.load().completed)
         // Screenshot helper: -settings opens on the Settings tab.
         if CommandLine.arguments.contains("-settings") { _tab = State(initialValue: .settings) }
@@ -98,6 +111,7 @@ public struct RootView: View {
         .animation(.default, value: coordinator.needsMission)
         .paywallSheet(isPresented: $showPaywallFromWidget)
         .permissionPrompt()
+        .environment(buddies)
         .environment(\.paywall, PaywallContext(store: store, accountToken: auth.user?.id,
                                                termsURL: auth.config.termsURL,
                                                privacyURL: auth.config.privacyURL))
@@ -116,6 +130,7 @@ public struct RootView: View {
                 coordinator.reload()
                 refreshCoachNotifications()
                 Task { await coordinator.restoreMissingAlarms() }  // pause over → weekly repeat back
+                Task { await buddies.refresh(signedIn: buddies.isSignedIn(auth.user?.id)) }  // + sends queued wake-up reports
             }
         }
         // An own sound was deleted: alarms using it go back to Classic Beep.
@@ -153,6 +168,11 @@ public struct RootView: View {
             case "auth-callback": Task { await auth.handle(url: url) }  // email confirmation links
             case "progress": tab = .progress                                // widget tap
             case "paywall": if onboarded { showPaywallFromWidget = true }  // locked Pro widget
+            case "join":                                                    // club invite link
+                if let code = url.pathComponents.dropFirst().first {
+                    tab = .buddies
+                    buddies.pendingJoinCode = code
+                }
             default: break
             }
         }
@@ -167,6 +187,18 @@ public struct RootView: View {
         CoachNotifier.shared.completedDays = logs.compactMap(\.missionCompletedAt)
         Task { await CoachNotifier.shared.refresh(coordinator: coordinator) }
         WidgetPublisher.shared.publish(coordinator: coordinator, logs: logs, isPro: store.entitlement.isPro)
+    }
+
+    /// Tell the clubs about this morning (queued when offline).
+    private func reportToBuddies(_ session: SessionState) {
+        guard let completedAt = session.missionCompletedAt else { return }
+        let logs = (try? modelContext.fetch(FetchDescriptor<DayLog>())) ?? []
+        let plan = coordinator.plan(id: session.planID)
+        Task {
+            await buddies.reportMorning(day: session.day, completedAt: completedAt, rings: session.reArmCount + 1,
+                                        alarmTime: plan?.timeText, history: logs.map(DaySummary.init(log:)),
+                                        signedIn: auth.user != nil)
+        }
     }
 
     private func enforceTier() {
@@ -191,6 +223,7 @@ public struct RootView: View {
         }
         try? modelContext.save()
         refreshCoachNotifications()
+        reportToBuddies(session)
         showSuccess = true
     }
 }
@@ -199,6 +232,8 @@ struct SuccessView: View {
     let coordinator: AlarmCoordinator
     let dismiss: () -> Void
     @Query private var logs: [DayLog]
+    @Environment(BuddiesModel.self) private var buddies
+    @State private var sharing = false
 
     var body: some View {
         let streak = StreakCalculator.currentStreak(completedDays: logs.compactMap(\.missionCompletedAt), today: .now)
@@ -249,10 +284,23 @@ struct SuccessView: View {
            .padding(24)
           }
           .scrollBounceBehavior(.basedOnSize)
-            Button("Done", action: dismiss)
-                .buttonStyle(.borderedProminent)
-                .controlSize(.large)
-                .padding(.bottom, 24)
+            VStack(spacing: 10) {
+                if buddies.shouldPromptPhoto(missionDoneToday: true) {
+                    Button { sharing = true } label: {
+                        Label("Share your morning face", systemImage: "camera.fill")
+                            .font(.headline).frame(maxWidth: 360).padding(.vertical, 6)
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+                }
+                if buddies.shouldPromptPhoto(missionDoneToday: true) {
+                    Button("Done", action: dismiss).buttonStyle(.bordered).controlSize(.large)
+                } else {
+                    Button("Done", action: dismiss).buttonStyle(.borderedProminent).controlSize(.large)
+                }
+            }
+            .padding(.bottom, 24)
         }
+        .sheet(isPresented: $sharing) { ShareMorningView() }
     }
 }

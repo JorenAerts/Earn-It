@@ -16,7 +16,8 @@ public final class SupabaseAuthService: AuthService {
     public private(set) var availableProviders: [AuthProvider] = []
     public var isAvailable: Bool { true }
 
-    @ObservationIgnored private let client: SupabaseClient
+    /// Shared with other Supabase features (Buddies) so they use the signed-in session.
+    @ObservationIgnored public let client: SupabaseClient
     @ObservationIgnored private var listener: Task<Void, Never>?
 
     public init(url: URL, publishableKey: String, config: AuthConfig) {

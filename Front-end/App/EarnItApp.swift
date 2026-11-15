@@ -1,5 +1,6 @@
 import Account
 import AlarmEngine
+import Buddies
 import Core
 import Purchases
 import Features
@@ -15,6 +16,11 @@ final class AppEnvironment {
     let coordinator: AlarmCoordinator
     let modelContainer: ModelContainer
     let auth: any AuthService = AuthServiceFactory.make()
+    /// Buddies shares the auth client (same session); without Supabase config it's unavailable.
+    lazy var buddies: any BuddiesService = {
+        guard let supabase = auth as? SupabaseAuthService else { return UnavailableBuddiesService() }
+        return SupabaseBuddiesService(client: supabase.client) { [weak supabase] in supabase?.user?.id }
+    }()
     let purchases: StoreService = {
         do {
             return StoreService(catalog: try PricingCatalog.load())
@@ -49,7 +55,7 @@ struct EarnItApp: App {
             if Self.isTestHost {
                 Color.clear
             } else {
-                RootView(coordinator: env.coordinator, auth: env.auth, store: env.purchases)
+                RootView(coordinator: env.coordinator, auth: env.auth, store: env.purchases, buddies: env.buddies)
                     .tint(.orange)
             }
         }
