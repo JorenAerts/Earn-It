@@ -3,7 +3,7 @@ import Foundation
 import Observation
 import os
 
-private let log = Logger(subsystem: "be.earnit.app", category: "alarm")
+private let log = Logger(subsystem: "be.gloop.app", category: "alarm")
 
 /// Owns the wake-up loop for all alarms: schedule → ring → re-arm until mission done → cancel.
 /// Called by the UI and by the App Intent attached to the alarm's X control.

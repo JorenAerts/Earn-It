@@ -152,8 +152,8 @@ public struct LeaderboardRow: Codable, Identifiable, Hashable, Sendable {
         self.isMe = isMe
     }
 
-    /// The rank as a `Rank` (for the insignia), from its title.
-    public var coachRank: Rank? { Rank.allCases.first { $0.title == rank } }
+    /// The evolution stage (for the badge), from its title; old military titles still map.
+    public var coachRank: Rank? { Rank.from(title: rank) }
 
     enum CodingKeys: String, CodingKey {
         case streak, rank

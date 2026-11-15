@@ -147,7 +147,7 @@ private struct PermissionPromptModifier: ViewModifier {
             Button("Not now", role: .cancel) {}
         } message: { kind in
             Text(center.status(kind) == .unavailable && kind == .camera
-                 ? "This device has no camera that Earn It can use."
+                 ? "This device has no camera that Gloop can use."
                  : kind.blockedMessage)
         }
     }

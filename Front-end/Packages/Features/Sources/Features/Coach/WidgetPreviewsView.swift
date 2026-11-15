@@ -30,13 +30,13 @@ struct WidgetPreviewsView: View {
                     .font(.footnote)
 
                 frame("Small · Streak", width: 170, height: 170) { StreakWidgetView(snapshot: snapshot, date: .now) }
-                frame("Medium · Streak & Rank", width: 364, height: 170) { StreakRankWidgetView(snapshot: snapshot, date: .now) }
-                frame("Large · Service Record", width: 364, height: 382) { ServiceRecordWidgetView(snapshot: snapshot, date: .now) }
+                frame("Medium · Streak & Stage", width: 364, height: 170) { StreakRankWidgetView(snapshot: snapshot, date: .now) }
+                frame("Large · Gloop's Diary", width: 364, height: 382) { ServiceRecordWidgetView(snapshot: snapshot, date: .now) }
                 HStack(alignment: .top, spacing: 24) {
                     frame("Lock · Streak", width: 76, height: 76, padding: 0, round: true) {
                         LockStreakView(snapshot: snapshot, date: .now)
                     }
-                    frame("Lock · Streak & Rank", width: 172, height: 76, padding: 4) {
+                    frame("Lock · Streak & Stage", width: 172, height: 76, padding: 4) {
                         LockStreakRankView(snapshot: snapshot, date: .now)
                     }
                 }

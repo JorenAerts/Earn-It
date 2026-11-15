@@ -19,7 +19,7 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         }
     }
 
-    /// Shown in the alarm title: "Earn It - Math Problem".
+    /// Shown in the alarm title: "Gloop - Math Problem".
     public var alarmTitle: String {
         switch self {
         case .math: "Math Problem"
@@ -176,7 +176,7 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
 
 // MARK: - Alarm sound
 
-/// Bundled alarm tones (App/Sounds/EarnIt_<rawValue>.caf). The same file rings via AlarmKit
+/// Bundled alarm tones (App/Sounds/Gloop_<rawValue>.caf). The same file rings via AlarmKit
 /// and keeps playing in-app during the mission.
 public enum AlarmSound: String, Codable, CaseIterable, Sendable, Identifiable {
     case classic, chime, siren, digital, pulse
@@ -224,7 +224,7 @@ public enum AlarmSound: String, Codable, CaseIterable, Sendable, Identifiable {
     }
 
     /// Resource name without extension.
-    public var resourceName: String { "EarnIt_\(rawValue)" }
+    public var resourceName: String { "Gloop_\(rawValue)" }
     public var fileName: String { resourceName + ".caf" }
 }
 
@@ -448,10 +448,10 @@ public struct AlarmPlan: Codable, Hashable, Sendable, Identifiable {
     /// Every mission is configured (e.g. a QR code is registered).
     public var isReady: Bool { !missions.isEmpty && missions.allSatisfy(\.isReady) }
 
-    /// Alarm title: app name + the mission(s) to solve, e.g. "Earn It - Math Problem + Shake It".
+    /// Alarm title: app name + the mission(s) to solve, e.g. "Gloop - Math Problem + Shake It".
     public var alarmTitle: String {
         let missions = missions.map(\.alarmTitle)
-        return missions.isEmpty ? "Earn It" : "Earn It - " + missions.joined(separator: " + ")
+        return missions.isEmpty ? "Gloop" : "Gloop - " + missions.joined(separator: " + ")
     }
 
     /// Next time this plan rings strictly after `date`.

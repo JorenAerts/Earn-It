@@ -11,7 +11,7 @@ final class CameraFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, 
     enum Status { case starting, running, denied, unavailable, paused }
 
     let session = AVCaptureSession()
-    private let queue = DispatchQueue(label: "be.earnit.camera")
+    private let queue = DispatchQueue(label: "be.gloop.camera")
     private var lastDelivery: CFTimeInterval = 0
     private var latest: CVPixelBuffer?
     private let lock = NSLock()

@@ -3,7 +3,7 @@ import Foundation
 
 /// Free extras earned without Pro. Today: inviting a friend in onboarding unlocks one sound.
 public enum BonusUnlocks {
-    static let key = "earnit.bonus.inviteSound"
+    static let key = "gloop.bonus.inviteSound"
     public static let inviteSound: AlarmSound = .riseAndConquer
 
     public static func isUnlocked(_ defaults: UserDefaults = .standard) -> Bool {

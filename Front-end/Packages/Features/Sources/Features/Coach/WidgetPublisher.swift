@@ -6,7 +6,7 @@ import os
 import WidgetKit
 import WidgetShared
 
-private let log = Logger(subsystem: "be.earnit.app", category: "widgets")
+private let log = Logger(subsystem: "be.gloop.app", category: "widgets")
 
 /// Writes the widget snapshot into the App Group and asks iOS to redraw the widgets —
 /// only when something visible changed, so we don't burn the widget reload budget.
@@ -20,7 +20,9 @@ final class WidgetPublisher {
         let state = coach.state(coordinator: coordinator, logs: logs, now: now)
         return WidgetSnapshot.make(history: logs.map(DaySummary.init(log:)), now: now, state: state,
                                    line: coach.line(for: state, coordinator: coordinator, logs: logs, now: now),
-                                   isPro: isPro, nextAlarm: coordinator.nextAlarm?.date)
+                                   isPro: isPro, nextAlarm: coordinator.nextAlarm?.date,
+                                   vitality: (coach.vitality * 100).rounded() / 100,
+                                   slimeColor: AppearanceSettings.shared.slimeColor.rawValue)
     }
 
     func publish(coordinator: AlarmCoordinator, logs: [DayLog], isPro: Bool) {

@@ -2,13 +2,13 @@
   "currency": "EUR",
   "storefront": "BEL",
   "trialDays": 3,
-  "subscriptionGroup": "Earn It Pro",
+  "subscriptionGroup": "Gloop Pro",
   "defaultSelection": "yearly",
   "products": [
-    { "key": "weekly",    "id": "be.earnit.app.pro.weekly",    "type": "subscription", "period": "P1W", "price": 1.99,  "enabled": true, "badge": null,         "title": "Weekly" },
-    { "key": "monthly",   "id": "be.earnit.app.pro.monthly",   "type": "subscription", "period": "P1M", "price": 3.99,  "enabled": true, "badge": null,         "title": "Monthly" },
-    { "key": "quarterly", "id": "be.earnit.app.pro.quarterly", "type": "subscription", "period": "P3M", "price": 9.99,  "enabled": true, "badge": null,         "title": "3 months" },
-    { "key": "yearly",    "id": "be.earnit.app.pro.yearly",    "type": "subscription", "period": "P1Y", "price": 29.99, "enabled": true, "badge": "Best value", "title": "Yearly" },
-    { "key": "lifetime",  "id": "be.earnit.app.pro.lifetime",  "type": "lifetime",     "period": null,  "price": 59.99, "enabled": true, "badge": null,         "title": "Lifetime" }
+    { "key": "weekly",    "id": "be.gloop.app.pro.weekly",    "type": "subscription", "period": "P1W", "price": 1.99,  "enabled": true, "badge": null,         "title": "Weekly" },
+    { "key": "monthly",   "id": "be.gloop.app.pro.monthly",   "type": "subscription", "period": "P1M", "price": 3.99,  "enabled": true, "badge": null,         "title": "Monthly" },
+    { "key": "quarterly", "id": "be.gloop.app.pro.quarterly", "type": "subscription", "period": "P3M", "price": 9.99,  "enabled": true, "badge": null,         "title": "3 months" },
+    { "key": "yearly",    "id": "be.gloop.app.pro.yearly",    "type": "subscription", "period": "P1Y", "price": 29.99, "enabled": true, "badge": "Best value", "title": "Yearly" },
+    { "key": "lifetime",  "id": "be.gloop.app.pro.lifetime",  "type": "lifetime",     "period": null,  "price": 59.99, "enabled": true, "badge": null,         "title": "Lifetime" }
   ]
 }

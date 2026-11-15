@@ -7,7 +7,7 @@
     },
     {
       "question": "Does it ring when my phone is on silent or in a Focus?",
-      "answer": "Yes. Earn It uses iOS alarms, which ring through silent mode and Focus, as long as Alarms is allowed in Settings › Permissions."
+      "answer": "Yes. Gloop uses iOS alarms, which ring through silent mode and Focus, as long as Alarms is allowed in Settings › Permissions."
     },
     {
       "question": "What happens if I force-quit the app?",
@@ -22,8 +22,8 @@
       "answer": "Scan the item again in good light, from the angles you'll see it in the morning, and hold it fully in view. Still stuck? After 2 minutes you can switch to the backup mission."
     },
     {
-      "question": "How do streaks and XP work?",
-      "answer": "Every morning you finish a mission adds a day to your streak and earns XP: more on the first ring, less for each re-ring, plus a streak bonus. XP raises your rank from Recruit to General. Days without an alarm, or paused days, don't break your streak."
+      "question": "How do streaks, XP and stickers work?",
+      "answer": "Every morning you finish a mission adds a day to your streak and earns XP: more on the first ring, less for each re-ring, plus a streak bonus. XP evolves Gloop from a tiny Droplet all the way to King Gloop, with a new accessory at every stage. Days without an alarm, or paused days, don't break your streak. Stickers are collected for milestones like your first squish or a flawless week."
     },
     {
       "question": "How do I pause alarms for a holiday?",
@@ -31,7 +31,7 @@
     },
     {
       "question": "How do I cancel my subscription?",
-      "answer": "Settings › Earn It Pro › Manage subscription, or in iOS Settings › your name › Subscriptions. Deleting your account does not cancel a subscription."
+      "answer": "Settings › Gloop Pro › Manage subscription, or in iOS Settings › your name › Subscriptions. Deleting your account does not cancel a subscription."
     }
   ]
 }

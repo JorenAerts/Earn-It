@@ -5,7 +5,7 @@ import SwiftUI
 import WidgetKit
 
 @main
-struct EarnItWidgetBundle: WidgetBundle {
+struct GloopWidgetBundle: WidgetBundle {
     var body: some Widget {
         AlarmLiveActivity()
         StreakWidget()
@@ -16,11 +16,11 @@ struct EarnItWidgetBundle: WidgetBundle {
     }
 }
 
-/// Lock Screen + Dynamic Island UI for Earn It alarms. AlarmKit drives the state;
-/// we render the title ("Earn It - Math Problem") and the re-ring countdown after Stop.
+/// Lock Screen + Dynamic Island UI for Gloop alarms. AlarmKit drives the state;
+/// we render the title ("Gloop - Math Problem") and the re-ring countdown after Stop.
 struct AlarmLiveActivity: Widget {
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: AlarmAttributes<EarnItAlarmMetadata>.self) { context in
+        ActivityConfiguration(for: AlarmAttributes<GloopAlarmMetadata>.self) { context in
             LockScreenView(context: context)
                 .padding(16)
                 .widgetURL(missionURL)
@@ -55,7 +55,7 @@ struct AlarmLiveActivity: Widget {
 }
 
 private struct LockScreenView: View {
-    let context: ActivityViewContext<AlarmAttributes<EarnItAlarmMetadata>>
+    let context: ActivityViewContext<AlarmAttributes<GloopAlarmMetadata>>
 
     var body: some View {
         HStack(alignment: .center, spacing: 12) {
@@ -99,10 +99,10 @@ private struct CountdownText: View {
     }
 }
 
-private let missionURL = URL(string: "earnit://mission")
+private let missionURL = URL(string: "gloop://mission")
 
-private func title(_ context: ActivityViewContext<AlarmAttributes<EarnItAlarmMetadata>>) -> String {
-    context.attributes.metadata?.title ?? "Earn It"
+private func title(_ context: ActivityViewContext<AlarmAttributes<GloopAlarmMetadata>>) -> String {
+    context.attributes.metadata?.title ?? "Gloop"
 }
 
 private func subtitle(_ state: AlarmPresentationState) -> String {

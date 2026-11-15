@@ -40,7 +40,7 @@ struct SettingsView: View {
 
                 Section {
                     NavigationLink { SubscriptionSettingsView(store: store) } label: {
-                        row("Earn It Pro", symbol: "sun.max.fill", tint: .orange, value: store.entitlement.shortText)
+                        row("Gloop Pro", symbol: "sun.max.fill", tint: .orange, value: store.entitlement.shortText)
                     }
                 }
 
@@ -64,9 +64,16 @@ struct SettingsView: View {
                     }
                 }
 
-                Section("Sergeant Rise") {
+                Section(CoachIdentity.name) {
                     NavigationLink { CoachSettingsView(coordinator: coordinator) } label: {
-                        row("Coach", symbol: "figure.stand", tint: .brown, value: coachSummary)
+                        row("Coach", symbol: "drop.fill", tint: .orange, value: coachSummary)
+                    }
+                }
+
+                Section("Look & feel") {
+                    NavigationLink { AppearanceView() } label: {
+                        row("Appearance", symbol: "paintbrush.fill", tint: .purple,
+                            value: AppearanceSettings.shared.preference.title)
                     }
                 }
 
@@ -75,12 +82,12 @@ struct SettingsView: View {
                         row("Help & feedback", symbol: "questionmark.bubble.fill", tint: .blue)
                     }
                     Button { requestReview() } label: {
-                        row("Rate Earn It", symbol: "star.fill", tint: .yellow)
+                        row("Rate Gloop", symbol: "star.fill", tint: .yellow)
                     }
                     .foregroundStyle(.primary)
                     if let url = auth.config.shareURL {
                         ShareLink(item: url, message: Text(HelpView.shareMessage)) {
-                            row("Share Earn It", symbol: "square.and.arrow.up.fill", tint: .teal)
+                            row("Share Gloop", symbol: "square.and.arrow.up.fill", tint: .teal)
                         }
                         .foregroundStyle(.primary)
                     }

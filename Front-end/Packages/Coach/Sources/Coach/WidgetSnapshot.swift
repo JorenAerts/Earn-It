@@ -21,10 +21,36 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
     public var coachLine: String
     public var isPro: Bool
     public var nextAlarm: Date?
+    /// Coach vitality 0…1 (how droopy the slime is) and its colour (`SlimeColor` raw value).
+    public var vitality: Double
+    public var slimeColor: String
+
+    private enum CodingKeys: String, CodingKey {
+        case generatedAt, lastCompletedDay, streak, bestStreak, xp, lastDays, recentMedals, mood, coachLine
+        case isPro, nextAlarm, vitality, slimeColor
+    }
+
+    /// Tolerant: snapshots written by older app versions lack the slime fields.
+    public init(from decoder: any Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        generatedAt = try c.decode(Date.self, forKey: .generatedAt)
+        lastCompletedDay = try c.decodeIfPresent(Date.self, forKey: .lastCompletedDay)
+        streak = try c.decode(Int.self, forKey: .streak)
+        bestStreak = try c.decode(Int.self, forKey: .bestStreak)
+        xp = try c.decode(Int.self, forKey: .xp)
+        lastDays = try c.decode([DayMark].self, forKey: .lastDays)
+        recentMedals = try c.decode([String].self, forKey: .recentMedals)
+        mood = try c.decode(CoachMood.self, forKey: .mood)
+        coachLine = try c.decode(String.self, forKey: .coachLine)
+        isPro = try c.decode(Bool.self, forKey: .isPro)
+        nextAlarm = try c.decodeIfPresent(Date.self, forKey: .nextAlarm)
+        vitality = try c.decodeIfPresent(Double.self, forKey: .vitality) ?? SlimeVitality.start
+        slimeColor = try c.decodeIfPresent(String.self, forKey: .slimeColor) ?? "orange"
+    }
 
     public init(generatedAt: Date, lastCompletedDay: Date?, streak: Int, bestStreak: Int, xp: Int,
                 lastDays: [DayMark], recentMedals: [String], mood: CoachMood, coachLine: String,
-                isPro: Bool, nextAlarm: Date?) {
+                isPro: Bool, nextAlarm: Date?, vitality: Double = SlimeVitality.start, slimeColor: String = "orange") {
         self.generatedAt = generatedAt
         self.lastCompletedDay = lastCompletedDay
         self.streak = streak
@@ -36,6 +62,8 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
         self.coachLine = coachLine
         self.isPro = isPro
         self.nextAlarm = nextAlarm
+        self.vitality = vitality
+        self.slimeColor = slimeColor
     }
 
     public var progress: RankProgress { RankProgress(xp: xp) }
@@ -66,7 +94,8 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
 
     /// Builds the snapshot from the full wake-up history.
     public static func make(history: [DaySummary], now: Date, state: CoachState, line: String,
-                            isPro: Bool, nextAlarm: Date?, calendar: Calendar = .current) -> WidgetSnapshot {
+                            isPro: Bool, nextAlarm: Date?, vitality: Double = SlimeVitality.start,
+                            slimeColor: String = "orange", calendar: Calendar = .current) -> WidgetSnapshot {
         let completed = history.filter(\.completed).map(\.day)
         let today = calendar.startOfDay(for: now)
         let byDay = Dictionary(history.map { (calendar.startOfDay(for: $0.day), $0) }, uniquingKeysWith: { a, _ in a })
@@ -87,7 +116,9 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
             mood: state.mood,
             coachLine: line,
             isPro: isPro,
-            nextAlarm: nextAlarm)
+            nextAlarm: nextAlarm,
+            vitality: vitality,
+            slimeColor: slimeColor)
     }
 
     /// Shown in the widget gallery and before the app has written anything.
@@ -95,5 +126,5 @@ public struct WidgetSnapshot: Codable, Equatable, Sendable {
         generatedAt: .now, lastCompletedDay: Calendar.current.startOfDay(for: .now), streak: 12, bestStreak: 21,
         xp: 1_240, lastDays: Array(repeating: .done, count: 12) + [.failed, .done],
         recentMedals: [Medal.streak7.rawValue, Medal.hatTrick.rawValue, Medal.firstTry.rawValue],
-        mood: .proud, coachLine: "Twelve days straight. Promotion material, soldier.", isPro: true, nextAlarm: nil)
+        mood: .proud, coachLine: "12 days straight! I've never been this bouncy.", isPro: true, nextAlarm: nil, vitality: 0.9)
 }

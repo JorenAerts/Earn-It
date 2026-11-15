@@ -63,8 +63,8 @@ struct StreakRankWidget: Widget {
                 .containerBackground(for: .widget) { WidgetBackground() }
                 .widgetURL(entry.snapshot?.isPro == false ? WidgetIDs.paywallURL : WidgetIDs.progressURL)
         }
-        .configurationDisplayName("Streak & Rank")
-        .description("Your streak, rank and progress to the next promotion. Earn It Pro.")
+        .configurationDisplayName("Streak & Stage")
+        .description("Your streak, Gloop's stage and progress to his next evolution. Gloop Pro.")
         .supportedFamilies([.systemMedium])
     }
 }
@@ -77,8 +77,8 @@ struct ServiceRecordWidget: Widget {
                 .containerBackground(for: .widget) { WidgetBackground() }
                 .widgetURL(entry.snapshot?.isPro == false ? WidgetIDs.paywallURL : WidgetIDs.progressURL)
         }
-        .configurationDisplayName("Service Record")
-        .description("Sergeant Rise, your rank, streaks, last 14 days and medals. Earn It Pro.")
+        .configurationDisplayName("Gloop's Diary")
+        .description("Gloop, his stage, your streaks, last 14 days and stickers. Gloop Pro.")
         .supportedFamilies([.systemLarge])
     }
 }
@@ -105,12 +105,12 @@ struct LockStreakRankWidget: Widget {
                 .containerBackground(for: .widget) { Color.clear }
                 .widgetURL(WidgetIDs.progressURL)
         }
-        .configurationDisplayName("Streak & Rank")
-        .description("Streak and rank on the Lock Screen.")
+        .configurationDisplayName("Streak & Stage")
+        .description("Streak and Gloop's stage on the Lock Screen.")
         .supportedFamilies([.accessoryRectangular])
     }
 }
 
 #Preview("Streak", as: .systemSmall) { StreakWidget() } timeline: { SnapshotEntry(date: .now, snapshot: .placeholder) }
-#Preview("Streak & Rank", as: .systemMedium) { StreakRankWidget() } timeline: { SnapshotEntry(date: .now, snapshot: .placeholder) }
-#Preview("Service Record", as: .systemLarge) { ServiceRecordWidget() } timeline: { SnapshotEntry(date: .now, snapshot: .placeholder) }
+#Preview("Streak & Stage", as: .systemMedium) { StreakRankWidget() } timeline: { SnapshotEntry(date: .now, snapshot: .placeholder) }
+#Preview("Gloop's Diary", as: .systemLarge) { ServiceRecordWidget() } timeline: { SnapshotEntry(date: .now, snapshot: .placeholder) }

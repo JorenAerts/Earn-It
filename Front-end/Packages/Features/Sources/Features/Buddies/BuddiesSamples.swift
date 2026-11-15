@@ -30,15 +30,15 @@ enum BuddiesSamples {
             if let date = cal.date(byAdding: .day, value: offset - 1, to: monday), date < cal.startOfDay(for: .now) {
                 service.simulateMorning(of: user, day: DayKey.string(date),
                                         report: WakeReport(day: DayKey.string(date), completedAt: date, alarmTime: nil,
-                                                           rings: 1, xp: 85, streak: offset, rank: "Private"),
+                                                           rings: 1, xp: 85, streak: offset, rank: "Blob"),
                                         photo: false, clubs: [])
             }
         }
-        service.simulateMorning(of: anna, day: day, report: report(6, 2, rings: 1, xp: 95, streak: 12, rank: "Corporal"),
+        service.simulateMorning(of: anna, day: day, report: report(6, 2, rings: 1, xp: 95, streak: 12, rank: "Gloopling"),
                                 photo: true, clubs: [crew])
-        service.simulateMorning(of: bram, day: day, report: report(6, 41, rings: 3, xp: 60, streak: 4, rank: "Private"),
+        service.simulateMorning(of: bram, day: day, report: report(6, 41, rings: 3, xp: 60, streak: 4, rank: "Blob"),
                                 photo: true, clubs: [crew, gym])
-        service.simulateMorning(of: cas, day: day, report: report(7, 15, rings: 2, xp: 55, streak: 2, rank: "Recruit"),
+        service.simulateMorning(of: cas, day: day, report: report(7, 15, rings: 2, xp: 55, streak: 2, rank: "Droplet"),
                                 photo: false, clubs: [])
         service.addPublicClub("5 AM Club", emoji: "🌅", members: 48)
         service.addPublicClub("Students who actually go to class", emoji: "🎓", members: 17)

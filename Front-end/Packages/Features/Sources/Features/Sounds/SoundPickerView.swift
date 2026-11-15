@@ -250,7 +250,7 @@ struct AppleMusicSearchView: View {
                     Text("Search for a song to wake up to.").foregroundStyle(.secondary)
                 }
             case .denied, .restricted:
-                PermissionBanner(kind: .appleMusic, message: "Apple Music access is off for Earn It, so songs can't be searched or played.")
+                PermissionBanner(kind: .appleMusic, message: "Apple Music access is off for Gloop, so songs can't be searched or played.")
             default:
                 Button("Allow Apple Music") {
                     Task {

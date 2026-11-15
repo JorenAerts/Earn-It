@@ -8,11 +8,11 @@ public final class KeyValueStore: @unchecked Sendable {
     private let decoder = JSONDecoder()
 
     private enum Key {
-        static let legacyPlan = "earnit.plan"
-        static let plans = "earnit.plans"
-        static let session = "earnit.session"
-        static let owners = "earnit.alarmOwners"
-        static let pause = "earnit.pause"
+        static let legacyPlan = "gloop.plan"
+        static let plans = "gloop.plans"
+        static let session = "gloop.session"
+        static let owners = "gloop.alarmOwners"
+        static let pause = "gloop.pause"
     }
 
     public init(defaults: UserDefaults = .standard) {

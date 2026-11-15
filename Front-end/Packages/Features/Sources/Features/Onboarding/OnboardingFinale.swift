@@ -1,3 +1,4 @@
+import Coach
 import Core
 import SwiftUI
 
@@ -18,7 +19,7 @@ struct BuildingStep: View {
     private var tasks: [String] {
         let mission = answers.chosenMissions.first?.kind.displayName ?? "Math"
         return ["Setting your \(answers.timeText) alarm", "Loading \(mission)",
-                "Adding your alarm sound", "Briefing Sergeant Rise"]
+                "Adding your alarm sound", "Waking up \(CoachIdentity.name)"]
     }
 
     var body: some View {

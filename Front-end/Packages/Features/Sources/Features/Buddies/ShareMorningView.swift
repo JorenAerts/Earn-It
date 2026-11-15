@@ -28,7 +28,7 @@ struct ShareMorningView: View {
                     } else if camera.status == .denied || camera.status == .unavailable {
                         VStack(spacing: 10) {
                             Image(systemName: "camera.fill").font(.largeTitle)
-                            Text(camera.status == .denied ? "Camera is off for Earn It." : "No front camera available.")
+                            Text(camera.status == .denied ? "Camera is off for Gloop." : "No front camera available.")
                             if camera.status == .denied {
                                 Button("Open Settings") { PermissionCenter.shared.openSettings(.camera) }
                                     .buttonStyle(.bordered)
@@ -162,7 +162,7 @@ final class SelfieCamera: NSObject {
     @ObservationIgnored let session = AVCaptureSession()
     @ObservationIgnored private let output = AVCapturePhotoOutput()
     @ObservationIgnored private var continuation: CheckedContinuation<UIImage?, Never>?
-    @ObservationIgnored private let queue = DispatchQueue(label: "be.earnit.selfie")
+    @ObservationIgnored private let queue = DispatchQueue(label: "be.gloop.selfie")
 
     func markDenied() { status = .denied }
 

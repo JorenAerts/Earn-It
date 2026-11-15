@@ -4,7 +4,7 @@ import Observation
 import os
 import StoreKit
 
-private let log = Logger(subsystem: "be.earnit.app", category: "store")
+private let log = Logger(subsystem: "be.gloop.app", category: "store")
 
 /// StoreKit 2 wrapper: products, purchases, restore and the live entitlement.
 /// Prices shown come from StoreKit (localized); which plans exist comes from `PricingCatalog`.

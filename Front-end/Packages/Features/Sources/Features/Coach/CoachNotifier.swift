@@ -5,9 +5,9 @@ import Foundation
 import os
 import UserNotifications
 
-private let log = Logger(subsystem: "be.earnit.app", category: "coach")
+private let log = Logger(subsystem: "be.gloop.app", category: "coach")
 
-/// Keeps Sergeant Rise's local notifications in sync with the alarms and today's result.
+/// Keeps the coach's local notifications in sync with the alarms and today's result.
 /// Only touches notifications whose id starts with `coach.`.
 @MainActor
 final class CoachNotifier {
@@ -72,7 +72,7 @@ final class CoachNotifier {
     /// Developer tools: a coach notification in a few seconds.
     func sendTest(after seconds: TimeInterval = 5) async {
         let content = UNMutableNotificationContent()
-        content.title = "Sergeant Rise"
+        content.title = CoachIdentity.name
         content.body = CoachModel.shared.lines.line(for: .ringing, intensity: preferences.intensity, day: .now)
         content.sound = .default
         let request = UNNotificationRequest(identifier: "\(CoachNotification.idPrefix)test",

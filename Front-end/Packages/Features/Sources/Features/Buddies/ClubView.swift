@@ -223,7 +223,7 @@ struct ClubView: View {
                     .listRowSeparator(.hidden)
             }
         } footer: {
-            Text(period == .week ? "Points this week (XP from your mornings). Resets every Monday." : "All XP since joining Earn It.")
+            Text(period == .week ? "Points this week (XP from your mornings). Resets every Monday." : "All XP since joining Gloop.")
         }
         Section {
             ForEach(ranked) { entry in

@@ -223,8 +223,8 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
             alreadyRoastedToday: false, intensity: .toughLove, lines: lines,
             pause: AlarmPause(until: day(15)), calendar: brussels)
         #expect(result.map(\.date) == [day(14, 22), day(15, 22)])
-        #expect(result[0].body.hasPrefix("Leave's over"))
-        #expect(!result[1].body.hasPrefix("Leave's over"))
+        #expect(result[0].body.hasPrefix("Break's over"))
+        #expect(!result[1].body.hasPrefix("Break's over"))
     }
 }
 
@@ -240,10 +240,10 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
     }
 
     @Test func authConfigDecodesWithoutNewFields() throws {
-        let json = #"{"redirectURL":"earnit://auth-callback","termsURL":"https://a.b/t","privacyURL":"https://a.b/p"}"#
+        let json = #"{"redirectURL":"gloop://auth-callback","termsURL":"https://a.b/t","privacyURL":"https://a.b/p"}"#
         let config = try JSONDecoder().decode(AuthConfig.self, from: Data(json.utf8))
         #expect(config.supportEmail == nil && config.shareURL == nil)
-        let blank = #"{"redirectURL":"earnit://x","termsURL":"https://a.b/t","privacyURL":"https://a.b/p","supportEmail":" "}"#
+        let blank = #"{"redirectURL":"gloop://x","termsURL":"https://a.b/t","privacyURL":"https://a.b/p","supportEmail":" "}"#
         #expect(try JSONDecoder().decode(AuthConfig.self, from: Data(blank.utf8)).supportEmail == nil)
     }
 
@@ -259,10 +259,10 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
     }
 
     @Test func supportMailIsPrefilled() throws {
-        let url = try #require(HelpContent.supportMailURL(to: "help@earnit.app", appVersion: "1.0 (7)",
+        let url = try #require(HelpContent.supportMailURL(to: "help@gloop.app", appVersion: "1.0 (7)",
                                                           systemVersion: "26.1", model: "iPhone13,4"))
         #expect(url.scheme == "mailto")
-        #expect(url.absoluteString.hasPrefix("mailto:help@earnit.app?subject=Earn%20It%20support"))
+        #expect(url.absoluteString.hasPrefix("mailto:help@gloop.app?subject=Gloop%20support"))
         #expect(url.absoluteString.contains("iPhone13,4"))
     }
 

@@ -6,11 +6,11 @@ import Testing
     @Test func bundledConfigLoads() {
         let config = AuthConfig.load()
         #expect(config.emailPassword)
-        #expect(config.redirectURL.absoluteString == "earnit://auth-callback")
+        #expect(config.redirectURL.absoluteString == "gloop://auth-callback")
     }
 
     @Test func unknownProvidersAreIgnored() throws {
-        let json = #"{"emailPassword":true,"providers":["google","myspace","apple"],"redirectURL":"earnit://auth-callback","termsURL":"https://e.com/t","privacyURL":"https://e.com/p"}"#
+        let json = #"{"emailPassword":true,"providers":["google","myspace","apple"],"redirectURL":"gloop://auth-callback","termsURL":"https://e.com/t","privacyURL":"https://e.com/p"}"#
         let config = try JSONDecoder().decode(AuthConfig.self, from: Data(json.utf8))
         #expect(config.providers == [.google, .apple])
     }

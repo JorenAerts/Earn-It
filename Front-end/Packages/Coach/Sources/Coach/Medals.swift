@@ -8,17 +8,17 @@ public enum Medal: String, CaseIterable, Sendable, Identifiable {
 
     public var title: String {
         switch self {
-        case .firstMission: "Reporting for Duty"
-        case .firstTry: "First Ring"
-        case .streak3: "Three in a Row"
-        case .streak7: "Full Week"
-        case .streak30: "Iron Month"
-        case .streak100: "Centurion"
-        case .earlyBird: "Early Bird"
-        case .ironWill: "Iron Will"
-        case .comeback: "Comeback"
+        case .firstMission: "First Squish"
+        case .firstTry: "One and Done"
+        case .streak3: "Triple Jiggle"
+        case .streak7: "Week of Wobble"
+        case .streak30: "Solid Month"
+        case .streak100: "Slime Legend"
+        case .earlyBird: "Dawn Drip"
+        case .ironWill: "Sticky Will"
+        case .comeback: "Bounce Back"
         case .hatTrick: "Hat Trick"
-        case .perfectWeek: "Perfect Week"
+        case .perfectWeek: "Flawless Goo"
         }
     }
 

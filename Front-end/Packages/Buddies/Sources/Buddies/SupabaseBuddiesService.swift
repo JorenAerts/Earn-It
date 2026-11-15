@@ -3,7 +3,7 @@ import Foundation
 import os
 import Supabase
 
-private let log = Logger(subsystem: "be.earnit.app", category: "buddies")
+private let log = Logger(subsystem: "be.gloop.app", category: "buddies")
 
 /// Buddies on Supabase (see Backend/supabase/migrations/*_buddies.sql). Uses the auth client so
 /// every call carries the signed-in user's session; all access rules live in RLS + RPCs.
@@ -251,7 +251,7 @@ public final class SupabaseBuddiesService: BuddiesService {
             throw error
         } catch {
             log.error("buddies: \(error.localizedDescription, privacy: .public)")
-            throw BuddiesError.message("Couldn't reach Earn It. Check your connection and try again.")
+            throw BuddiesError.message("Couldn't reach Gloop. Check your connection and try again.")
         }
     }
 }

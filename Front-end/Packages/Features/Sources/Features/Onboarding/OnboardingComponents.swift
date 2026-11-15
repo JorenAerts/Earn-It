@@ -156,7 +156,7 @@ struct SingleChoiceStep<Option: Identifiable & Hashable>: View {
 
 // MARK: - Coach
 
-/// Sergeant Rise commenting on the answers.
+/// The coach commenting on the answers.
 struct CoachBubble: View {
     let line: String
     var mood: CoachMood = .proud
@@ -175,7 +175,7 @@ struct CoachBubble: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .animation(.snappy, value: line)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Sergeant Rise: \(line)")
+        .accessibilityLabel("\(CoachIdentity.name): \(line)")
     }
 }
 
@@ -209,14 +209,14 @@ struct EnergyChart: View {
                         .position(x: w * 0.82, y: h * 0.9)
                     snoozePath(w, h).trim(from: 0, to: progress)
                         .stroke(Color.red.opacity(0.75), style: StrokeStyle(lineWidth: 3, lineCap: .round, lineJoin: .round))
-                    earnItPath(w, h).trim(from: 0, to: progress)
+                    gloopPath(w, h).trim(from: 0, to: progress)
                         .stroke(Color.orange, style: StrokeStyle(lineWidth: 5, lineCap: .round))
                     Text("Snooze cycle").font(.caption.weight(.semibold)).foregroundStyle(.red)
                         .padding(.horizontal, 8).padding(.vertical, 4)
                         .background(Color(.systemBackground), in: .capsule)
                         .position(x: w * 0.42, y: h * 0.97)
                         .opacity(progress)
-                    Text("Earn It").font(.caption.weight(.bold)).foregroundStyle(.white)
+                    Text("Gloop").font(.caption.weight(.bold)).foregroundStyle(.white)
                         .padding(.horizontal, 8).padding(.vertical, 4)
                         .background(Color.orange, in: .capsule)
                         .position(x: w * 0.72, y: h * 0.12)
@@ -253,7 +253,7 @@ struct EnergyChart: View {
         return p
     }
 
-    private func earnItPath(_ w: CGFloat, _ h: CGFloat) -> Path {
+    private func gloopPath(_ w: CGFloat, _ h: CGFloat) -> Path {
         var p = Path()
         p.move(to: CGPoint(x: 0, y: h * 0.92))
         p.addCurve(to: CGPoint(x: w * 0.62, y: h * 0.18), control1: CGPoint(x: w * 0.25, y: h * 0.92),
@@ -271,7 +271,7 @@ private struct LegendLabelStyle: LabelStyle {
     }
 }
 
-/// "Normal alarm" (four alarms, all on) vs. Earn It (one alarm with a mission).
+/// "Normal alarm" (four alarms, all on) vs. Gloop (one alarm with a mission).
 struct AlarmComparison: View {
     let hour: Int
     let minute: Int
@@ -289,7 +289,7 @@ struct AlarmComparison: View {
                     tile(["First", "Second", "Third", "Fourth"][i] + " alarm", time(plus: i * 5), on: shown > i, tint: .red)
                 }
             }
-            column(title: "Earn It", tint: .orange) {
+            column(title: "Gloop", tint: .orange) {
                 tile("With a mission", time(plus: 0), on: shown > 0, tint: .orange)
                 Label("Rings until you're up", systemImage: "checkmark.seal.fill")
                     .font(.caption.weight(.semibold)).foregroundStyle(.orange)
@@ -304,7 +304,7 @@ struct AlarmComparison: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("A normal alarm needs four alarms five minutes apart. Earn It needs one alarm with a mission.")
+        .accessibilityLabel("A normal alarm needs four alarms five minutes apart. Gloop needs one alarm with a mission.")
     }
 
     private func column<C: View>(title: String, tint: Color, @ViewBuilder content: () -> C) -> some View {
@@ -342,7 +342,7 @@ struct PermissionIllustration: View {
     var body: some View {
         VStack(spacing: 0) {
             VStack(spacing: 6) {
-                Text("\"Earn It\" Would Like to Use Alarms").font(.headline).multilineTextAlignment(.center)
+                Text("\"Gloop\" Would Like to Use Alarms").font(.headline).multilineTextAlignment(.center)
                 Text("So your alarm rings through silent mode and Focus.").font(.footnote)
                     .foregroundStyle(.secondary).multilineTextAlignment(.center)
             }
@@ -414,21 +414,21 @@ struct SocialProofView: View {
     }
 }
 
-/// Sergeant Rise quotes, or real reviews when `SocialProof.json` has them, sliding by.
+/// Coach quotes, or real reviews when `SocialProof.json` has them, sliding by.
 struct QuoteCarousel: View {
     let proof: SocialProof
     @State private var index = 0
 
-    static let sergeantQuotes = [
-        "\"The snooze button is a trap. I'm the way out.\"",
+    static let coachQuotes = [
+        "\"Every snooze makes me a little droopier. Just saying.\"",
         "\"Feet on the floor first. Thinking comes later.\"",
-        "\"Nobody ever regretted getting up on time.\"",
-        "\"One mission. Then the morning is yours.\"",
+        "\"Nobody ever regretted getting up on time. Especially not me.\"",
+        "\"One mission, then the morning is yours. And I get to bounce.\"",
     ]
 
     private var items: [(title: String, text: String, stars: Int)] {
         if !proof.reviews.isEmpty { return proof.reviews.map { ($0.name, $0.text, $0.stars) } }
-        return Self.sergeantQuotes.map { ("Sergeant Rise", $0, 0) }
+        return Self.coachQuotes.map { (CoachIdentity.name, $0, 0) }
     }
 
     var body: some View {

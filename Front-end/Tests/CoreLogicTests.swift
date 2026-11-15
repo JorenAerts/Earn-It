@@ -34,12 +34,12 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
 
 @Suite struct AlarmTitleTests {
     @Test func singleMission() {
-        #expect(AlarmPlan(missions: [MissionConfig(kind: .math)]).alarmTitle == "Earn It - Math Problem")
+        #expect(AlarmPlan(missions: [MissionConfig(kind: .math)]).alarmTitle == "Gloop - Math Problem")
     }
 
     @Test func combinedMissions() {
         let plan = AlarmPlan(missions: [MissionConfig(kind: .math), MissionConfig(kind: .shake)])
-        #expect(plan.alarmTitle == "Earn It - Math Problem + Shake It")
+        #expect(plan.alarmTitle == "Gloop - Math Problem + Shake It")
     }
 }
 
@@ -338,8 +338,8 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
 
 @Suite struct NewMissionTests {
     @Test func qrMatchesTrimmedExactPayload() {
-        #expect(CodeMatcher.matches(scanned: "earnit:ABC\n", expected: "earnit:ABC"))
-        #expect(!CodeMatcher.matches(scanned: "earnit:ABD", expected: "earnit:ABC"))
+        #expect(CodeMatcher.matches(scanned: "gloop:ABC\n", expected: "gloop:ABC"))
+        #expect(!CodeMatcher.matches(scanned: "gloop:ABD", expected: "gloop:ABC"))
         #expect(!CodeMatcher.matches(scanned: "", expected: ""))
         #expect(!CodeMatcher.matches(scanned: "x", expected: nil))
     }
@@ -353,14 +353,14 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         var qr = MissionConfig(kind: .qr)
         #expect(!qr.isReady)
         #expect(!AlarmPlan(missions: [qr]).isReady)
-        qr.payload = "earnit:X"
+        qr.payload = "gloop:X"
         #expect(qr.isReady)
         #expect(AlarmPlan(missions: [MissionConfig(kind: .math), qr]).isReady)
     }
 
     @Test func titlesForNewMissions() {
         let plan = AlarmPlan(missions: [MissionConfig(kind: .qr, payload: "x"), MissionConfig(kind: .shake)])
-        #expect(plan.alarmTitle == "Earn It - Scan Code + Shake It")
+        #expect(plan.alarmTitle == "Gloop - Scan Code + Shake It")
     }
 
     @Test func oldStoredMissionWithoutPayloadStillDecodes() throws {

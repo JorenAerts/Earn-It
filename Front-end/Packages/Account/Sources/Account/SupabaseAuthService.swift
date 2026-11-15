@@ -3,11 +3,11 @@ import Observation
 import os
 import Supabase
 
-private let log = Logger(subsystem: "be.earnit.app", category: "account")
+private let log = Logger(subsystem: "be.gloop.app", category: "account")
 
 /// Supabase Auth: email + password and OAuth providers (Apple, Google, Facebook, Microsoft)
 /// through one SDK. OAuth runs in an ASWebAuthenticationSession and returns via
-/// `earnit://auth-callback`. Sessions are persisted in the Keychain by the SDK.
+/// `gloop://auth-callback`. Sessions are persisted in the Keychain by the SDK.
 @MainActor
 @Observable
 public final class SupabaseAuthService: AuthService {

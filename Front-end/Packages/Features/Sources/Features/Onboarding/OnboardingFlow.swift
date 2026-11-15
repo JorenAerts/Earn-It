@@ -343,9 +343,9 @@ public struct OnboardingProgress: Codable, Equatable, Sendable {
 
 public final class OnboardingStore: @unchecked Sendable {
     private let defaults: UserDefaults
-    private let key = "earnit.onboarding"
+    private let key = "gloop.onboarding"
     /// Flag written by versions before the onboarding flow.
-    private let legacyKey = "earnit.onboarded"
+    private let legacyKey = "gloop.onboarded"
 
     public init(defaults: UserDefaults = .standard) {
         self.defaults = defaults

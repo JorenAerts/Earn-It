@@ -2,6 +2,7 @@ import Coach
 import Core
 import Foundation
 import Testing
+import WidgetShared
 import UIKit
 
 @Suite struct MoodEngineTests {
@@ -84,10 +85,13 @@ import UIKit
         #expect(lines.line(for: .idle, intensity: .gentle, day: day).isEmpty, "missing context is safe")
     }
 
-    @Test func everyMoodHasAnImage() {
-        for mood in CoachMood.allCases {
-            #expect(UIImage(named: mood.imageName) != nil, "missing asset \(mood.imageName)")
+    @Test func everyMoodLooksDifferent() {
+        // The slime is drawn in code: each mood must give a distinct face at the same vitality.
+        let faces = CoachMood.allCases.map {
+            let pose = SlimeLook.make(vitality: 0.6, state: CoachState(mood: $0, context: .idle, anger: 0.8)).pose
+            return "\(pose.eyes)-\(pose.mouth)-\(pose.redness > 0)"
         }
+        #expect(Set(faces).count == CoachMood.allCases.count, "\(faces)")
     }
 
     @Test func intensityDefaultsToToughLoveAndPersists() {
@@ -125,11 +129,11 @@ import UIKit
     }
 
     @Test func ranksFollowThresholds() {
-        #expect(Rank.forXP(0) == .recruit)
-        #expect(Rank.forXP(99) == .recruit && Rank.forXP(100) == .privateSoldier)
-        #expect(Rank.forXP(10_000) == .general && RankProgress(xp: 20_000).fraction == 1)
+        #expect(Rank.forXP(0) == .droplet)
+        #expect(Rank.forXP(99) == .droplet && Rank.forXP(100) == .blob)
+        #expect(Rank.forXP(10_000) == .kingGloop && RankProgress(xp: 20_000).fraction == 1)
         let p = RankProgress(xp: 200)
-        #expect(p.next == .privateFirstClass && p.xpToNext == 100 && p.fraction == 0.5)
+        #expect(p.next == .jelly && p.xpToNext == 100 && p.fraction == 0.5)
         #expect(Rank.allCases.map(\.threshold) == Rank.allCases.map(\.threshold).sorted())
     }
 
@@ -148,7 +152,7 @@ import UIKit
         let history = [day(1), day(2)]
         let report = MorningReport.make(history: history, day: day(2).day, calendar: cal)
         #expect(report.xpGained == 85)
-        #expect(report.before.rank == .recruit && report.after.rank == .privateSoldier && report.promoted)
+        #expect(report.before.rank == .droplet && report.after.rank == .blob && report.promoted)
         #expect(report.newMedals.isEmpty, "first mission / first try were earned on day 1")
         let first = MorningReport.make(history: [day(1)], day: day(1).day, calendar: cal)
         #expect(first.newMedals == [.firstMission, .firstTry])

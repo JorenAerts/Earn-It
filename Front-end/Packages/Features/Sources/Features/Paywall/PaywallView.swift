@@ -2,7 +2,7 @@ import Purchases
 import StoreKit
 import SwiftUI
 
-/// The Earn It Pro paywall. Used as onboarding's last step, as a sheet from locked features,
+/// The Gloop Pro paywall. Used as onboarding's last step, as a sheet from locked features,
 /// and from Settings. Plans + order + badges come from Pricing.json; prices from StoreKit.
 struct PaywallView: View {
     enum Mode {
@@ -87,9 +87,9 @@ struct PaywallView: View {
 
     private var headline: String {
         if store.isEligibleForTrial, let trial = trialText(for: anySubscription) {
-            return "Try Earn It Pro — \(trial)"
+            return "Try Gloop Pro — \(trial)"
         }
-        return "Unlock Earn It Pro"
+        return "Unlock Gloop Pro"
     }
 
     private var features: some View {

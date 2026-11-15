@@ -42,7 +42,7 @@ struct QRMissionView: View {
                 } else if cameraChecked {
                     VStack(spacing: 12) {
                         ContentUnavailableView("Camera is off", systemImage: "camera.fill",
-                                               description: Text("Turn on the camera for Earn It to scan your code, or do the backup mission."))
+                                               description: Text("Turn on the camera for Gloop to scan your code, or do the backup mission."))
                         HStack {
                             Button("Open Settings") { PermissionCenter.shared.openSettings(.camera) }
                                 .buttonStyle(.bordered)
@@ -175,7 +175,7 @@ private struct CreateCodeView: View {
                         .padding()
                         .background(.white, in: .rect(cornerRadius: 16))
                     ShareLink(item: Image(uiImage: image),
-                              preview: SharePreview("Earn It wake-up code", image: Image(uiImage: image))) {
+                              preview: SharePreview("Gloop wake-up code", image: Image(uiImage: image))) {
                         Label("Share / print", systemImage: "square.and.arrow.up")
                     }
                     .buttonStyle(.bordered)

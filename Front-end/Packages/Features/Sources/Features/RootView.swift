@@ -63,6 +63,8 @@ public struct RootView: View {
                 #if DEBUG
                 NavigationStack { WidgetPreviewsView(coordinator: coordinator, store: store) }
                 #endif
+            } else if CommandLine.arguments.contains("-slimeGallery") {
+                NavigationStack { SlimeGallery() }  // Screenshot helper: -slimeGallery
             } else if CommandLine.arguments.contains("-permissionsPreview") {
                 // Screenshot helper: -permissionsPreview
                 NavigationStack {
@@ -113,6 +115,7 @@ public struct RootView: View {
         .paywallSheet(isPresented: $showPaywallFromWidget)
         .permissionPrompt()
         .environment(buddies)
+        .preferredColorScheme(AppearanceSettings.shared.preference.colorScheme)
         .environment(\.paywall, PaywallContext(store: store, accountToken: auth.user?.id,
                                                termsURL: auth.config.termsURL,
                                                privacyURL: auth.config.privacyURL))
@@ -162,7 +165,7 @@ public struct RootView: View {
             await coordinator.refreshAlarms()
             await coordinator.observeSystemAlarms()
         }
-        // Tap on the Live Activity (earnit://mission).
+        // Tap on the Live Activity (gloop://mission).
         .onOpenURL { url in
             switch url.host() {
             case "mission": coordinator.missionStarted(id: nil)
@@ -186,6 +189,7 @@ public struct RootView: View {
     private func refreshCoachNotifications() {
         let logs = (try? modelContext.fetch(FetchDescriptor<DayLog>())) ?? []
         CoachNotifier.shared.completedDays = logs.compactMap(\.missionCompletedAt)
+        CoachModel.shared.refreshVitality(logs: logs, plans: coordinator.plans)
         Task { await CoachNotifier.shared.refresh(coordinator: coordinator) }
         WidgetPublisher.shared.publish(coordinator: coordinator, logs: logs, isPro: store.entitlement.isPro)
     }
@@ -253,7 +257,7 @@ struct SuccessView: View {
             if report.promoted {
                 VStack(spacing: 6) {
                     RankInsignia(rank: report.after.rank, size: 64)
-                    Text("Promoted to \(report.after.rank.title)!").font(.title2.bold())
+                    Text("\(CoachIdentity.name) evolved into \(report.after.rank.title)!").font(.title2.bold()).multilineTextAlignment(.center)
                 }
                 .transition(.scale.combined(with: .opacity))
             } else {
@@ -270,7 +274,7 @@ struct SuccessView: View {
             }
             if !report.newMedals.isEmpty {
                 VStack(spacing: 8) {
-                    Text(report.newMedals.count == 1 ? "New medal" : "New medals")
+                    Text(report.newMedals.count == 1 ? "New sticker!" : "New stickers!")
                         .font(.caption.weight(.heavy)).textCase(.uppercase).foregroundStyle(.secondary)
                     HStack(spacing: 12) {
                         ForEach(report.newMedals.prefix(3)) { MedalTile(medal: $0, earned: true).frame(width: 96) }

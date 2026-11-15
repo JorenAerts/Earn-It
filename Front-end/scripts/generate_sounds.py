@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Earn It's built-in alarm sounds (App/Sounds/EarnIt_<name>.caf).
+"""Generate Gloop's built-in alarm sounds (App/Sounds/Gloop_<name>.caf).
 
 Every sound is synthesised here, so the app owns them outright. Melodies are public-domain
 compositions (composer died > 70 years ago, or traditional) in our own performance:
@@ -225,7 +225,7 @@ def render(name, fn):
             w.setsampwidth(2)
             w.setframerate(RATE)
             w.writeframes(b"".join(struct.pack("<h", max(-32767, min(32767, int(32767 * gain * s)))) for s in samples))
-        out = OUT / f"EarnIt_{name}.caf"
+        out = OUT / f"Gloop_{name}.caf"
         subprocess.run(["afconvert", "-f", "caff", "-d", f"LEI16@{RATE}", "-c", "1", str(wav), str(out)], check=True)
     print("wrote", out.relative_to(OUT.parent.parent))
 

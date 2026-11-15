@@ -2,7 +2,7 @@ import Coach
 import SwiftUI
 import WidgetKit
 
-// Layouts for the Earn It widgets. Pure views of a `WidgetSnapshot` at a `date`, used by the
+// Layouts for the Gloop widgets. Pure views of a `WidgetSnapshot` at a `date`, used by the
 // widget extension and by the in-app preview screen (Settings › Developer › Widget previews).
 
 private let flameGradient = LinearGradient(colors: [Color(red: 1, green: 0.78, blue: 0.25),
@@ -66,7 +66,7 @@ struct StreakBlock: View {
     }
 }
 
-// MARK: - Medium: streak + rank
+// MARK: - Medium: streak + stage
 
 public struct StreakRankWidgetView: View {
     let snapshot: WidgetSnapshot?
@@ -88,7 +88,7 @@ public struct StreakRankWidgetView: View {
                         .frame(maxWidth: .infinity)
                 }
             } else {
-                ProLockedView(streak: snapshot.streak(at: date), feature: "Rank widget")
+                ProLockedView(streak: snapshot.streak(at: date), feature: "Streak & Stage widget")
             }
         } else {
             OpenAppView(compact: false)
@@ -104,7 +104,7 @@ struct RankBlock: View {
             HStack(spacing: 10) {
                 RankInsignia(rank: progress.rank, size: 42)
                 VStack(alignment: .leading, spacing: 1) {
-                    Text("Rank").font(.caption2.weight(.bold)).textCase(.uppercase).foregroundStyle(.secondary)
+                    Text("Stage").font(.caption2.weight(.bold)).textCase(.uppercase).foregroundStyle(.secondary)
                     Text(progress.rank.title)
                         .font(.headline)
                         .lineLimit(2)
@@ -119,7 +119,7 @@ struct RankBlock: View {
                 if let next = progress.next, let toGo = progress.xpToNext {
                     Text("\(toGo) XP to \(next.title)")
                 } else {
-                    Text("\(progress.xp) XP · top rank")
+                    Text("\(progress.xp) XP · fully evolved")
                 }
             }
             .font(.caption2.weight(.semibold))
@@ -148,7 +148,7 @@ public struct ServiceRecordWidgetView: View {
             if snapshot.isPro {
                 content(snapshot)
             } else {
-                ProLockedView(streak: snapshot.streak(at: date), feature: "Service Record widget")
+                ProLockedView(streak: snapshot.streak(at: date), feature: "Gloop's Diary widget")
             }
         } else {
             OpenAppView(compact: false)
@@ -158,14 +158,11 @@ public struct ServiceRecordWidgetView: View {
     private func content(_ s: WidgetSnapshot) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .center, spacing: 12) {
-                Image(s.mood.imageName)
-                    .resizable()
-                    .widgetAccentedRenderingMode(.desaturated)
-                    .scaledToFit()
-                    .frame(width: 62, height: 62)
-                    .accessibilityLabel("Sergeant Rise, \(s.mood.displayName.lowercased())")
+                SlimeView(look: SlimeLook.make(vitality: s.vitality, state: CoachState(mood: s.mood, context: .idle),
+                                               accessory: s.progress.rank.accessory),
+                          color: SlimeColor(rawValue: s.slimeColor) ?? .orange, size: 62, animated: false)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Sergeant Rise").font(.caption2.weight(.heavy)).textCase(.uppercase).foregroundStyle(.secondary)
+                    Text(CoachIdentity.name).font(.caption2.weight(.heavy)).textCase(.uppercase).foregroundStyle(.secondary)
                     Text(s.coachLine)
                         .font(.subheadline.weight(.semibold))
                         .lineLimit(3)
@@ -264,7 +261,7 @@ public struct LockStreakView: View {
                     .minimumScaleFactor(0.5)
             }
         }
-        .accessibilityLabel(snapshot.map { "\($0.streak(at: date)) day streak" } ?? "Open Earn It")
+        .accessibilityLabel(snapshot.map { "\($0.streak(at: date)) day streak" } ?? "Open Gloop")
     }
 }
 
@@ -289,7 +286,7 @@ public struct LockStreakRankView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityElement(children: .combine)
         } else {
-            Label("Open Earn It", systemImage: "flame")
+            Label("Open Gloop", systemImage: "flame")
         }
     }
 }
@@ -303,9 +300,9 @@ struct OpenAppView: View {
     var body: some View {
         VStack(spacing: 6) {
             Image(systemName: "flame").font(compact ? .title2 : .title).foregroundStyle(flameGradient)
-            Text("Open Earn It").font(.headline)
+            Text("Open Gloop").font(.headline)
             if !compact {
-                Text("Your streak and rank appear here after your first visit.")
+                Text("Your streak and Gloop's stage appear here after your first visit.")
                     .font(.caption).foregroundStyle(.secondary).multilineTextAlignment(.center)
             }
         }

@@ -24,7 +24,7 @@ import Testing
 
     @Test func systemAlarmFiles() {
         let id = UUID()
-        #expect(SoundChoice.builtIn(.radar).systemSoundFileName == "EarnIt_radar.caf")
+        #expect(SoundChoice.builtIn(.radar).systemSoundFileName == "Gloop_radar.caf")
         #expect(SoundChoice.custom(id: id, name: "x").systemSoundFileName == "custom-\(id.uuidString).caf")
         let music = SoundChoice.appleMusic(AppleMusicPick(songID: "1", title: "t", artist: "a", fallback: .chime))
         #expect(music.systemSoundFileName == AlarmSound.chime.fileName, "Apple Music rings its fallback tone")
