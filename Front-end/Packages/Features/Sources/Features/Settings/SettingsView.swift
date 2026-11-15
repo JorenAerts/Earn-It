@@ -102,9 +102,12 @@ struct SettingsView: View {
                 }
 
                 Section {
-                    Button("Terms of Use") { openURL(auth.config.termsURL) }
-                    Button("Privacy Policy") { openURL(auth.config.privacyURL) }
-                    NavigationLink("Sound credits") { SoundCreditsView() }
+                    ForEach(LegalDocumentKind.allCases) { kind in
+                        NavigationLink { LegalDocumentView(kind: kind) } label: {
+                            Label(kind.title, systemImage: kind.symbol)
+                        }
+                    }
+                    NavigationLink { SoundCreditsView() } label: { Label("Sound credits", systemImage: "music.note.list") }
                     Button(action: versionTapped) {
                         LabeledContent("Version", value: Self.version).foregroundStyle(.primary)
                     }

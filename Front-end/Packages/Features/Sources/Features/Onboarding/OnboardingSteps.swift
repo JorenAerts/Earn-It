@@ -50,6 +50,7 @@ struct WelcomeStep: View {
                 }
                 .font(.subheadline)
             }
+            LegalConsentLine()
         }
     }
 }

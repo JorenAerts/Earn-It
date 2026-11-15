@@ -24,6 +24,7 @@ struct PrivacySettingsView: View {
             Section {
                 Text("Processed by TelemetryDeck (Germany, EU). No ads, no tracking across apps, nothing sold.")
                     .font(.footnote).foregroundStyle(.secondary)
+                NavigationLink("Read the Privacy Policy") { LegalDocumentView(kind: .privacy) }
             }
         }
         .navigationTitle("Privacy")

@@ -28,6 +28,7 @@ struct PaywallView: View {
     @State private var restoring = false
     @State private var showManage = false
     @State private var shownAt = Date.now
+    @State private var legal: LegalDocumentKind?
     @State private var reportedUnavailable = false
     @Environment(\.openURL) private var openURL
 
@@ -190,12 +191,13 @@ struct PaywallView: View {
             Button(restoring ? "Restoring…" : "Restore") { restore() }
                 .disabled(restoring || purchasing)
             Text("·").foregroundStyle(.tertiary)
-            Button("Terms") { openURL(termsURL) }
+            Button("Terms") { legal = .terms }
             Text("·").foregroundStyle(.tertiary)
-            Button("Privacy") { openURL(privacyURL) }
+            Button("Privacy") { legal = .privacy }
         }
         .font(.footnote)
         .foregroundStyle(.secondary)
+        .sheet(item: $legal) { LegalSheet(kind: $0) }
     }
 
     private var selectedProduct: Product? {

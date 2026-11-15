@@ -110,6 +110,14 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 - [ ] Privacy policy: "anonymous usage statistics via TelemetryDeck (EU), opt-out in Settings › Privacy".
 - [ ] App Privacy label: Usage Data › Product Interaction (+ Diagnostics if you add crash data) — not linked to you, not used for tracking. No ATT prompt needed.
 
+### Legal (Privacy Policy, Terms, Health & Safety, Community Guidelines)
+- [ ] Fill in `Front-end/Config/Legal.json`: legal form, enterprise number (KBO), registered address, privacy + support email
+      (shown as "[to be completed]" in the app until then). Also set `supportEmail` in `Config/Auth.json`.
+- [ ] Re-run `python3 Front-end/scripts/export_legal.py` and host `docs/legal/` (e.g. GitHub Pages); put the Privacy Policy
+      URL in App Store Connect (required) and optionally the Terms URL (or use Apple's standard EULA).
+- [ ] Recommended: have a lawyer review the documents once before launch.
+- [ ] Process: check Buddies reports daily (24 h promise in Terms + Community Guidelines); answer data requests within 1 month.
+
 ### Submission
 - [ ] App privacy labels (email, user ID, purchases; no tracking).
 - [ ] Review notes: explain AlarmKit alarm + background audio (keeps the alarm sounding until the

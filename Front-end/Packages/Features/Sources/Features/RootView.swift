@@ -65,6 +65,9 @@ public struct RootView: View {
                 #if DEBUG
                 NavigationStack { WidgetPreviewsView(coordinator: coordinator, store: store) }
                 #endif
+            } else if let i = CommandLine.arguments.firstIndex(of: "-legal"), i + 1 < CommandLine.arguments.count,
+                      let kind = LegalDocumentKind(rawValue: CommandLine.arguments[i + 1]) {
+                NavigationStack { LegalDocumentView(kind: kind) }  // Screenshot helper: -legal privacy|terms|health-safety|community
             } else if CommandLine.arguments.contains("-slimeGallery") {
                 NavigationStack { SlimeGallery() }  // Screenshot helper: -slimeGallery
             } else if CommandLine.arguments.contains("-permissionsPreview") {

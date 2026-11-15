@@ -109,6 +109,7 @@ struct AccountStepView: View {
                 PrimaryButton(title: mode == .signUp ? "Create account" : "Sign in",
                               disabled: !canSubmit, action: submit)
             }
+            LegalConsentLine(prefix: "By creating an account you accept the")
             Button(skipTitle, action: onSkip)
                 .foregroundStyle(.secondary)
         }
