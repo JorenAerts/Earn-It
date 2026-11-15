@@ -7,6 +7,7 @@ import Purchases
 import StoreKit
 import SwiftData
 import SwiftUI
+import Telemetry
 
 /// Settings tab: a short home of grouped rows; each opens its own page.
 /// The Developer page only appears after 7 taps on Version (see `DeveloperAccess`).
@@ -77,11 +78,18 @@ struct SettingsView: View {
                     }
                 }
 
+                Section("Privacy") {
+                    NavigationLink { PrivacySettingsView() } label: {
+                        row("Privacy", symbol: "hand.raised.fill", tint: .blue,
+                            value: Telemetry.shared.isEnabled ? "Stats on" : "Stats off")
+                    }
+                }
+
                 Section("Support") {
                     NavigationLink { HelpView(auth: auth) } label: {
                         row("Help & feedback", symbol: "questionmark.bubble.fill", tint: .blue)
                     }
-                    Button { requestReview() } label: {
+                    Button { requestReview(); Telemetry.shared.send(.action(.rateRequested)) } label: {
                         row("Rate Gloop", symbol: "star.fill", tint: .yellow)
                     }
                     .foregroundStyle(.primary)
@@ -118,6 +126,7 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
+        .trackScreen("Settings")
             .task { await permissions.refresh() }
             .onChange(of: auth.user?.id, initial: true) { _, id in developer.validate(userID: id) }
         }

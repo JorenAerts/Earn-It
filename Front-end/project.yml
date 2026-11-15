@@ -41,6 +41,8 @@ packages:
     path: Packages/Permissions
   Buddies:
     path: Packages/Buddies
+  Telemetry:
+    path: Packages/Telemetry
 
 targets:
   Gloop:
@@ -62,6 +64,8 @@ targets:
         buildPhase: resources
       - path: Config/SocialProof.json
         buildPhase: resources
+      - path: Config/Telemetry.json
+        buildPhase: resources
     dependencies:
       - package: Core
       - package: Coach
@@ -73,6 +77,7 @@ targets:
       - package: Missions
       - package: Features
       - package: Buddies
+      - package: Telemetry
       - target: AlarmLiveActivity
     settings:
       base:

@@ -4,6 +4,7 @@ import MusicKit
 import Purchases
 import Permissions
 import SwiftUI
+import Telemetry
 import UniformTypeIdentifiers
 
 /// Alarm editor › Sound: built-in sounds by category, the user's own sounds (import / record),
@@ -95,7 +96,7 @@ struct SoundPickerView: View {
         .navigationTitle("Sound")
         .navigationBarTitleDisplayMode(.inline)
         .onDisappear { preview.stop() }
-        .paywallSheet(isPresented: $showPaywall)
+        .paywallSheet(isPresented: $showPaywall, source: .lockedSound)
         .fileImporter(isPresented: $importing, allowedContentTypes: [.audio]) { result in
             importError = nil
             switch result {
@@ -327,6 +328,7 @@ private struct AppleMusicSongView: View {
             ToolbarItem(placement: .confirmationAction) {
                 Button("Use this song") {
                     stopPreview()
+                    Telemetry.shared.send(.action(.appleMusicPicked))
                     selection = .appleMusic(AppleMusicPick(songID: song.id.rawValue, title: song.title, artist: song.artistName,
                                                            startOffset: start, artworkURL: song.artwork?.url(width: 300, height: 300),
                                                            fallback: fallback))

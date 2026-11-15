@@ -4,6 +4,7 @@ import Coach
 import Core
 import Purchases
 import SwiftUI
+import Telemetry
 import UIKit
 import WidgetShared
 
@@ -90,6 +91,12 @@ struct DeveloperView: View {
                 LabeledContent("App Group", value: SnapshotStore.shared.isAvailable ? "Available" : "Unavailable")
                 LabeledContent("Entitlement", value: store.entitlement.statusText)
                 LabeledContent("Pause", value: coordinator.pause.map(\.shortText) ?? "None")
+                LabeledContent("Telemetry", value: Telemetry.shared.isConfigured
+                               ? (Telemetry.shared.isEnabled ? "On (\(DeveloperAccess.isDebugBuild ? "test mode" : "live"))" : "Opted out")
+                               : "No App ID")
+                LabeledContent("Current screen", value: Telemetry.shared.currentScreen)
+                Button("Send test signal") { Telemetry.shared.send(.action(.telemetryTest)) }
+                    .disabled(!Telemetry.shared.isConfigured || !Telemetry.shared.isEnabled)
             } header: {
                 Text("Info")
             } footer: {
@@ -107,8 +114,9 @@ struct DeveloperView: View {
             }
         }
         .navigationTitle("Developer")
+        .trackScreen("Settings.Developer")
         .navigationBarTitleDisplayMode(.inline)
-        .paywallSheet(isPresented: $showPaywall)
+        .paywallSheet(isPresented: $showPaywall, source: .developer)
     }
 }
 

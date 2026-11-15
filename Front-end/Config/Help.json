@@ -32,6 +32,10 @@
     {
       "question": "How do I cancel my subscription?",
       "answer": "Settings › Gloop Pro › Manage subscription, or in iOS Settings › your name › Subscriptions. Deleting your account does not cancel a subscription."
+    },
+    {
+      "question": "What data does Gloop collect?",
+      "answer": "Anonymous usage statistics (which screens and features are used, how onboarding and mornings go) via TelemetryDeck in the EU, with a random ID that isn't linked to your account. Never your name, email, alarm names, photos or anything you type. Turn it off any time in Settings › Privacy. Your alarms, sounds and item scans stay on your iPhone; with an account, your profile and Buddies data are stored with Supabase in the EU."
     }
   ]
 }

@@ -15,6 +15,7 @@ let package = Package(
         .package(path: "../WidgetShared"),
         .package(path: "../Permissions"),
         .package(path: "../Buddies"),
+        .package(path: "../Telemetry"),
     ],
-    targets: [.target(name: "Features", dependencies: ["Core", "AlarmEngine", "Missions", "Purchases", "Account", "Coach", "WidgetShared", "Permissions", "Buddies"])]
+    targets: [.target(name: "Features", dependencies: ["Core", "AlarmEngine", "Missions", "Purchases", "Account", "Coach", "WidgetShared", "Permissions", "Buddies", "Telemetry"])]
 )

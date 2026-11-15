@@ -4,6 +4,7 @@ import Core
 import Purchases
 import SwiftData
 import SwiftUI
+import Telemetry
 
 /// Buddies tab: your clubs, plus create / join / discover. Needs an account.
 struct BuddiesView: View {
@@ -49,6 +50,7 @@ struct BuddiesView: View {
                 }
             }
             .navigationTitle("Buddies")
+        .trackScreen("Buddies")
             .navigationDestination(for: Club.self) { club in
                 ClubView(clubID: club.id, auth: auth)
             }
@@ -95,7 +97,7 @@ struct BuddiesView: View {
             AccountStepView(auth: auth, skipTitle: "Not now") { showSignIn = false }
                 .presentationDragIndicator(.visible)
         }
-        .paywallSheet(isPresented: $showPaywall)
+        .paywallSheet(isPresented: $showPaywall, source: .createClub)
     }
 
     // MARK: States

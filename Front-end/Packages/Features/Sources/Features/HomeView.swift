@@ -5,6 +5,7 @@ import Permissions
 import Purchases
 import SwiftData
 import SwiftUI
+import Telemetry
 
 struct HomeView: View {
     let coordinator: AlarmCoordinator
@@ -16,6 +17,12 @@ struct HomeView: View {
     @State private var editing: EditTarget?
     @State private var showPaywall = false
     @State private var developer = DeveloperMode.shared
+    @State private var paywallSource: PaywallSource = .homeBanner
+
+    private func openPaywall(_ source: PaywallSource) {
+        paywallSource = source
+        showPaywall = true
+    }
 
     private var gate: FeatureGate { store.gate }
 
@@ -23,16 +30,17 @@ struct HomeView: View {
         if gate.canAddAlarm(currentCount: coordinator.plans.count) {
             editing = EditTarget(plan: AlarmPlan(), isNew: true)
         } else {
-            showPaywall = true
+            openPaywall(.addAlarm)
         }
     }
 
     private func setEnabled(_ on: Bool, _ plan: AlarmPlan) {
         let enabledOthers = coordinator.plans.filter { $0.isEnabled && $0.id != plan.id }.count
         if on, !gate.canEnableAlarm(enabledCount: enabledOthers) {
-            showPaywall = true
+            openPaywall(.enableAlarm)
             return
         }
+        Telemetry.shared.send(.alarmToggled(on: on))
         Task {
             if on { _ = await PermissionCenter.shared.ensure(.alarms) }  // explains + Settings if off
             await coordinator.setEnabled(on, for: plan.id)
@@ -104,6 +112,7 @@ struct HomeView: View {
                     }
                     .onDelete { offsets in
                         offsets.map { coordinator.plans[$0].id }.forEach(coordinator.delete(id:))
+                        Telemetry.shared.send(.alarmDeleted)
                     }
                     Button(action: addAlarm) {
                         HStack {
@@ -119,14 +128,14 @@ struct HomeView: View {
                 if !notices.isEmpty {
                     Section("Your plan changed") {
                         ForEach(notices, id: \.self) { Text($0).font(.subheadline) }
-                        Button("Get Pro back") { showPaywall = true }
+                        Button("Get Pro back") { openPaywall(.downgradeNotice) }
                         Button("OK", action: onDismissNotices).foregroundStyle(.secondary)
                     }
                 }
 
                 if !gate.isPro {
                     Section {
-                        Button { showPaywall = true } label: {
+                        Button { openPaywall(.homeBanner) } label: {
                             HStack(spacing: 12) {
                                 Image(systemName: "sun.max.fill").font(.title2).foregroundStyle(.orange)
                                 VStack(alignment: .leading, spacing: 2) {
@@ -162,12 +171,22 @@ struct HomeView: View {
                     .accessibilityLabel("Add alarm")
                 }
             }
-            .paywallSheet(isPresented: $showPaywall)
+            .paywallSheet(isPresented: $showPaywall, source: paywallSource)
             .sheet(item: $editing) { target in
                 AlarmSetupView(plan: target.plan, isNew: target.isNew,
-                               onSave: { plan in Task { await coordinator.save(plan) } },
-                               onDelete: { coordinator.delete(id: target.plan.id) })
+                               onSave: { plan in
+                                   Task {
+                                       await coordinator.save(plan)
+                                       let summary = plan.telemetrySummary(alarmCount: coordinator.plans.count)
+                                       Telemetry.shared.send(target.isNew ? .alarmCreated(summary) : .alarmEdited(summary))
+                                   }
+                               },
+                               onDelete: {
+                                   coordinator.delete(id: target.plan.id)
+                                   Telemetry.shared.send(.alarmDeleted)
+                               })
             }
+            .trackScreen("Home")
         }
     }
 }

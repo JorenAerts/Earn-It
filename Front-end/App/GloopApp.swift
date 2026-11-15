@@ -5,6 +5,7 @@ import Core
 import Purchases
 import Features
 import SwiftData
+import Telemetry
 import SwiftUI
 
 /// Single shared object graph, reachable from App Intents (they run in the app process).
@@ -49,6 +50,17 @@ struct GloopApp: App {
     /// Launched as the unit-test host: start nothing (StoreKit, AlarmKit, UI) so tests own
     /// their environment — e.g. SKTestSession product loading isn't raced by the app.
     private static let isTestHost = ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+
+    init() {
+        guard !Self.isTestHost else { return }
+        #if DEBUG
+        let testMode = true   // Xcode builds show up as test signals in TelemetryDeck
+        #else
+        let testMode = false
+        #endif
+        let config = Telemetry.bundledConfig()
+        Telemetry.shared.configure(appID: config.appID, namespace: config.namespace, testMode: testMode)
+    }
 
     var body: some Scene {
         WindowGroup {

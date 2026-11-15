@@ -10,12 +10,23 @@ private let log = Logger(subsystem: "be.gloop.app", category: "alarm")
 ///
 /// Every ring cycle belongs to one alarm (`SessionState.planID`): that alarm's missions,
 /// sound and re-ring settings apply until the cycle finishes.
+/// Moments in the wake-up loop, for analytics (forwarded by the app; the engine stays dependency-free).
+public enum AlarmLoopEvent: Equatable, Sendable {
+    case rang
+    case stopped(attempt: Int)
+    case failSafe(rings: Int)
+}
+
 @MainActor
 @Observable
 public final class AlarmCoordinator {
     public private(set) var plans: [AlarmPlan]
     public private(set) var session: SessionState?
     public private(set) var lastError: String?
+    /// Analytics hook: ring, stop (X) and fail-safe.
+    @ObservationIgnored public var onEvent: (@MainActor (AlarmLoopEvent) -> Void)?
+    @ObservationIgnored private var lastRingingID: UUID?
+
     /// "Pause all alarms". Stays set until resumed or (for a dated pause) until it runs out.
     public private(set) var pause: AlarmPause?
 
@@ -61,6 +72,10 @@ public final class AlarmCoordinator {
     private func sync(with alarms: [ScheduledAlarm]) {
         let mainIDs = Set(plans.map(\.id))
         if let ringing = alarms.first(where: \.isAlerting) {
+            if ringing.id != lastRingingID {
+                lastRingingID = ringing.id
+                onEvent?(.rang)
+            }
             markAwaitingMission(ringingID: ringing.id, newRing: true)
         } else if alarms.contains(where: { $0.isCountingDown && !mainIDs.contains($0.id) }) {
             markAwaitingMission()  // countdowns only exist inside an active cycle
@@ -222,6 +237,8 @@ public final class AlarmCoordinator {
         if s.planID == nil { s.planID = owner(of: id)?.id }
         if let id { s.followUpIDs.removeAll { $0 == id } }
         log.info("alarm ended id=\(id?.uuidString ?? "nil", privacy: .public) reArms=\(s.reArmCount)")
+        lastRingingID = nil
+        onEvent?(.stopped(attempt: s.reArmCount + 1))
 
         guard let plan = plan(id: s.planID) else {
             persist(s)
@@ -232,6 +249,7 @@ public final class AlarmCoordinator {
             break
         case .failSafe:
             s.failSafeTriggered = true
+            onEvent?(.failSafe(rings: s.reArmCount + 1))
             silenceAll()
             s.followUpIDs = []
             log.notice("fail-safe triggered")

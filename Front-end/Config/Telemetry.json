@@ -1,0 +1,6 @@
+{
+  "_help": "TelemetryDeck App ID (dashboard › your app › Set up). Empty = no analytics are sent. Not secret. See docs/Telemetry.md.",
+  "appID": "2BCB3827-1970-4F2E-91BA-A333783B96B2",
+  "_namespaceHelp": "Organisation namespace (TelemetryDeck › Organisation settings). Signals go to the default namespace when empty.",
+  "namespace": "com.jasolutions"
+}

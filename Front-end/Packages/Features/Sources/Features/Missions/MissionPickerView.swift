@@ -3,6 +3,7 @@ import Missions
 import Permissions
 import Purchases
 import SwiftUI
+import Telemetry
 
 /// "Add mission" sheet: a card per mission (what you do, how long, what it needs), locked ones
 /// show PRO. Picking one opens its setup page (difficulty, amount, or the guided scan) → "Add to alarm".
@@ -39,7 +40,7 @@ struct MissionPickerView: View {
                 }
             }
         }
-        .paywallSheet(isPresented: $showPaywall)
+        .paywallSheet(isPresented: $showPaywall, source: .lockedMission)
     }
 }
 

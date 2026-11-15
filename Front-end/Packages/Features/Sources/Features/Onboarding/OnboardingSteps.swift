@@ -3,6 +3,7 @@ import Coach
 import Core
 import Permissions
 import SwiftUI
+import Telemetry
 import UIKit
 
 // MARK: - Welcome
@@ -226,8 +227,10 @@ struct PermissionsStep: View {
 
     private func requestAll() async {
         await center.request(.alarms)
+        Telemetry.shared.send(.onboardingPermission(kind: "alarms", granted: center.isGranted(.alarms)))
         if center.status(.notifications) == .notDetermined {
             await center.request(.notifications)
+            Telemetry.shared.send(.onboardingPermission(kind: "notifications", granted: center.isGranted(.notifications)))
         }
         if center.isGranted(.notifications) { CoachModel.shared.notifications.enabled = true }
         if center.isGranted(.alarms) { onNext() }

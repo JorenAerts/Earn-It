@@ -2,6 +2,7 @@ import Account
 import Coach
 import Observation
 import SwiftUI
+import Telemetry
 import WidgetShared
 
 /// The display name, kept on this iPhone (works signed out) and synced to the account's profile.
@@ -120,7 +121,7 @@ struct AccountView: View {
                     if user.usesPassword, let email = user.email {
                         Button("Change password") { sendReset(to: email) }.disabled(busy)
                     }
-                    Button("Sign out") { Task { await auth.signOut() } }
+                    Button("Sign out") { Task { await auth.signOut() }; Telemetry.shared.send(.action(.signedOut)) }
                 }
                 Section {
                     Button("Delete account", role: .destructive) { confirmDelete = true }.disabled(busy)
@@ -146,6 +147,7 @@ struct AccountView: View {
             }
         }
         .navigationTitle("Profile")
+        .trackScreen("Settings.Account")
         .navigationBarTitleDisplayMode(.inline)
         .onAppear { name = profile.name }
         .onDisappear(perform: saveName)
@@ -197,6 +199,7 @@ struct AccountView: View {
         Task {
             do {
                 try await auth.deleteAccount()
+                Telemetry.shared.send(.action(.accountDeleted))
                 message = "Your account was deleted."
             } catch {
                 message = error.localizedDescription

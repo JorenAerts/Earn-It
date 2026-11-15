@@ -8,6 +8,8 @@ import Permissions
 import Purchases
 import SwiftData
 import SwiftUI
+import Telemetry
+import Telemetry
 import UserNotifications
 import WidgetShared
 
@@ -112,7 +114,7 @@ public struct RootView: View {
             }
         }
         .animation(.default, value: coordinator.needsMission)
-        .paywallSheet(isPresented: $showPaywallFromWidget)
+        .paywallSheet(isPresented: $showPaywallFromWidget, source: .widget)
         .permissionPrompt()
         .environment(buddies)
         .preferredColorScheme(AppearanceSettings.shared.preference.colorScheme)
@@ -128,8 +130,14 @@ public struct RootView: View {
         .onChange(of: onboarded) { enforceTier() }
         .onChange(of: coordinator.needsMission) { enforceTier() }
         .onAppear { noticeMessages = notices.messages }
+        .onChange(of: store.entitlement) { old, new in
+            guard store.hasLoadedEntitlement, old != new else { return }
+            Telemetry.shared.send(.entitlementChanged(from: old.telemetryName, to: new.telemetryName))
+        }
         .onChange(of: scenePhase) { _, phase in
+            if phase == .background { Telemetry.shared.sessionEnded() }
             if phase == .active {
+                Telemetry.shared.sessionStarted()
                 Task { await PermissionCenter.shared.refresh() }  // back from Settings
                 coordinator.reload()
                 refreshCoachNotifications()
@@ -155,8 +163,22 @@ public struct RootView: View {
         }
         .onChange(of: coordinator.session) { refreshCoachNotifications() }
         .onChange(of: coordinator.pause) { refreshCoachNotifications() }
+        .onChange(of: PermissionCenter.shared.blocked) { _, kind in
+            if let kind { Telemetry.shared.send(.action(.permissionDenied(kind: kind.rawValue))) }
+        }
         // Cold launch from the alarm's X: scenePhase never "changes", so sync on first appear too.
         .task {
+            Telemetry.shared.commonParameters = { [store, onboardingStore] in
+                ["plan": store.entitlement.telemetryName, "onboarded": "\(onboardingStore.load().completed)"]
+            }
+            coordinator.onEvent = { event in
+                switch event {
+                case .rang: Telemetry.shared.send(.alarmRang)
+                case .stopped(let attempt): Telemetry.shared.send(.alarmStopped(attempt: attempt))
+                case .failSafe(let rings): Telemetry.shared.send(.morningFailSafe(rings: rings))
+                }
+            }
+            Telemetry.shared.sessionStarted(source: coordinator.needsMission ? .alarm : .cold)
             UNUserNotificationCenter.current().delegate = CoachModel.shared.notificationDelegate
             store.start()
             await PermissionCenter.shared.refresh()
@@ -168,7 +190,9 @@ public struct RootView: View {
         // Tap on the Live Activity (gloop://mission).
         .onOpenURL { url in
             switch url.host() {
-            case "mission": coordinator.missionStarted(id: nil)
+            case "mission":
+                coordinator.missionStarted(id: nil)
+                Telemetry.shared.send(.appLaunched(source: .link))
             case "auth-callback": Task { await auth.handle(url: url) }  // email confirmation links
             case "progress": tab = .progress                                // widget tap
             case "paywall": if onboarded { showPaywallFromWidget = true }  // locked Pro widget
@@ -182,6 +206,7 @@ public struct RootView: View {
         }
         .fullScreenCover(isPresented: $showSuccess) {
             SuccessView(coordinator: coordinator) { showSuccess = false }
+                .trackScreen("Success")
         }
     }
 
@@ -229,7 +254,22 @@ public struct RootView: View {
         try? modelContext.save()
         refreshCoachNotifications()
         reportToBuddies(session)
+        reportMorningTelemetry(session)
         showSuccess = true
+    }
+
+    /// Mission done: how the morning went, plus evolutions, stickers and streak milestones.
+    private func reportMorningTelemetry(_ session: SessionState) {
+        let kinds = coordinator.plan(id: session.planID)?.missions.map(\.kind.rawValue).joined(separator: "+") ?? "unknown"
+        let seconds = session.firstEndedAt.flatMap { start in session.missionCompletedAt.map { Int($0.timeIntervalSince(start)) } } ?? 0
+        Telemetry.shared.send(.missionCompleted(kinds: kinds, rings: session.reArmCount + 1,
+                                                secondsFromFirstRing: max(0, seconds), firstTry: session.reArmCount == 0))
+        let logs = (try? modelContext.fetch(FetchDescriptor<DayLog>())) ?? []
+        let report = MorningReport.make(history: logs.map(DaySummary.init(log:)), day: session.day)
+        if report.promoted { Telemetry.shared.send(.gloopEvolved(stage: report.after.rank.title)) }
+        for sticker in report.newMedals { Telemetry.shared.send(.stickerEarned(sticker: sticker.rawValue)) }
+        let streak = StreakCalculator.currentStreak(completedDays: logs.compactMap(\.missionCompletedAt), today: .now)
+        if [3, 7, 14, 30, 60, 100, 365].contains(streak) { Telemetry.shared.send(.streakMilestone(days: streak)) }
     }
 }
 
@@ -307,5 +347,16 @@ struct SuccessView: View {
             .padding(.bottom, 24)
         }
         .sheet(isPresented: $sharing) { ShareMorningView() }
+    }
+}
+
+extension EntitlementState {
+    /// "free", "trial", "pro", "lifetime" for analytics.
+    var telemetryName: String {
+        switch self {
+        case .free: "free"
+        case .trial: "trial"
+        case .pro(let until): until == nil ? "lifetime" : "pro"
+        }
     }
 }

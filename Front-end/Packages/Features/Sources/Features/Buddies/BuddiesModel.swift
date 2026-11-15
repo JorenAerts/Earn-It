@@ -3,6 +3,7 @@ import Coach
 import Core
 import Foundation
 import Observation
+import Telemetry
 
 /// App-wide Buddies state: the user's clubs, today's photo decision, pending wake-up reports,
 /// and a join code waiting for the user (deep link). Injected with `.environment(model)`.
@@ -81,6 +82,16 @@ public final class BuddiesModel {
         FeedGate.shouldPrompt(missionDoneToday: missionDoneToday, clubCount: clubs.count, myPhotoState: myPhotoState)
     }
 
+    /// Short, non-personal error code for analytics.
+    static func errorCode(_ error: any Error) -> String {
+        switch error as? BuddiesError {
+        case .signedOut: "signedOut"
+        case .unavailable: "unavailable"
+        case .message: "server"
+        case nil: "other"
+        }
+    }
+
     func didDecidePhoto(_ state: PhotoState) {
         myPhotoState = state
     }
@@ -94,6 +105,7 @@ public final class BuddiesModel {
             return true
         } catch {
             self.error = error.localizedDescription
+            Telemetry.shared.send(.errorShown(area: "buddies", code: Self.errorCode(error)))
             return false
         }
     }

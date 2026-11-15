@@ -104,6 +104,12 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 - [ ] Check "Gloop" is free as a trademark (EU/Benelux) and grab a domain for the share link / privacy pages.
 - [ ] In-app purchase display names in App Store Connect: "Gloop Pro – Yearly" etc. (match `Config/Gloop.storekit`).
 
+### Telemetry
+- [ ] TelemetryDeck account + app "Gloop"; App ID into `Front-end/Config/Telemetry.json` (see docs/Telemetry.md).
+- [ ] Build the insights listed in docs/Telemetry.md (onboarding funnel, quit screens, revenue by paywall source, retention).
+- [ ] Privacy policy: "anonymous usage statistics via TelemetryDeck (EU), opt-out in Settings › Privacy".
+- [ ] App Privacy label: Usage Data › Product Interaction (+ Diagnostics if you add crash data) — not linked to you, not used for tracking. No ATT prompt needed.
+
 ### Submission
 - [ ] App privacy labels (email, user ID, purchases; no tracking).
 - [ ] Review notes: explain AlarmKit alarm + background audio (keeps the alarm sounding until the

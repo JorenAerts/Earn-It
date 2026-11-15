@@ -1,6 +1,7 @@
 import AlarmEngine
 import Core
 import SwiftUI
+import Telemetry
 
 /// Settings › Pause all alarms (vacation mode).
 struct PauseAlarmsView: View {
@@ -24,7 +25,7 @@ struct PauseAlarmsView: View {
                             .font(.subheadline).foregroundStyle(.secondary)
                     }
                     .padding(.vertical, 4)
-                    Button("Resume alarms now") { run { await coordinator.resumeAll() } }
+                    Button("Resume alarms now") { run { await coordinator.resumeAll() }; Telemetry.shared.send(.pauseResumed) }
                         .disabled(busy)
                 }
             }
@@ -38,6 +39,7 @@ struct PauseAlarmsView: View {
                     DatePicker("Back on", selection: $backOn, in: tomorrow..., displayedComponents: .date)
                     Button("Pause until \(backOn.formatted(.dateTime.weekday(.wide).day().month()))") {
                         run { await coordinator.pauseAll(PausePolicy.pause(.untilDay(backOn), now: .now)) }
+                        Telemetry.shared.send(.pauseSet(option: "untilDay"))
                     }
                     .fontWeight(.semibold)
                 }
@@ -49,6 +51,7 @@ struct PauseAlarmsView: View {
             }
         }
         .navigationTitle("Pause all alarms")
+        .trackScreen("Settings.Pause")
         .navigationBarTitleDisplayMode(.inline)
         .disabled(busy)
     }
@@ -56,6 +59,7 @@ struct PauseAlarmsView: View {
     private func option(_ title: String, _ option: PausePolicy.Option) -> some View {
         Button(title) {
             run { await coordinator.pauseAll(PausePolicy.pause(option, now: .now)) }
+            Telemetry.shared.send(.pauseSet(option: option.telemetryName))
         }
     }
 
@@ -99,6 +103,7 @@ struct PauseBanner: View {
                     busy = true
                     Task {
                         await coordinator.resumeAll()
+                        Telemetry.shared.send(.pauseResumed)
                         busy = false
                     }
                 }
@@ -106,6 +111,16 @@ struct PauseBanner: View {
                 .disabled(busy)
             }
             .accessibilityElement(children: .combine)
+        }
+    }
+}
+
+extension PausePolicy.Option {
+    var telemetryName: String {
+        switch self {
+        case .days(let n): "days\(n)"
+        case .untilDay: "untilDay"
+        case .indefinitely: "indefinitely"
         }
     }
 }

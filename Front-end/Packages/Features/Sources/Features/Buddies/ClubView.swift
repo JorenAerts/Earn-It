@@ -3,6 +3,7 @@ import Buddies
 import Coach
 import CoreImage.CIFilterBuiltins
 import SwiftUI
+import Telemetry
 import WidgetShared
 
 /// One club: who's up today + morning photos, the leaderboard, and members / invite.
@@ -76,6 +77,7 @@ struct ClubView: View {
             }
         }
         .navigationTitle(club?.name ?? "Club")
+        .trackScreen("Club")
         .navigationBarTitleDisplayMode(.inline)
         .overlay { if loading && members.isEmpty { ProgressView() } }
         .task(id: tab) { await load() }
@@ -295,6 +297,7 @@ struct ClubView: View {
             }
             Button("Block \(buddyName(name))", systemImage: "hand.raised", role: .destructive) {
                 run { try await model.service.block(userID) }
+                Telemetry.shared.send(.action(.blocked))
             }
         }
     }
@@ -322,6 +325,7 @@ struct ClubView: View {
 
     private func react(_ post: MorningPost, _ emoji: String?) {
         run { try await model.service.react(to: post.id, emoji: emoji) }
+        if emoji != nil { Telemetry.shared.send(.action(.reacted)) }
     }
 
     private func run(_ work: @escaping () async throws -> Void, then: @escaping () -> Void = {}) {
@@ -641,6 +645,7 @@ struct ReportSheet: View {
             let text = details.isEmpty ? reason : "\(reason): \(details)"
             let ok = await model.perform {
                 try await model.service.report(target.kind, id: target.id, reason: text)
+                Telemetry.shared.send(.action(.reported(kind: target.kind.rawValue)))
                 if alsoBlock, let user = target.userID { try await model.service.block(user) }
             }
             busy = false
