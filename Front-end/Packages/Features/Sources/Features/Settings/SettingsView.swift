@@ -2,6 +2,7 @@ import Account
 import AlarmEngine
 import Coach
 import Core
+import Localization
 import Permissions
 import Purchases
 import StoreKit
@@ -41,18 +42,18 @@ struct SettingsView: View {
 
                 Section {
                     NavigationLink { SubscriptionSettingsView(store: store) } label: {
-                        row("Gloop Pro", symbol: "sun.max.fill", tint: .orange, value: store.entitlement.shortText)
+                        row(L10n.tr("Gloop Pro"), symbol: "sun.max.fill", tint: .orange, value: store.entitlement.shortText)
                     }
                 }
 
                 Section("Alarms") {
                     NavigationLink { PauseAlarmsView(coordinator: coordinator) } label: {
-                        row("Pause all alarms", symbol: "pause.circle.fill", tint: .indigo,
-                            value: coordinator.activePause.map(\.shortText) ?? "Off")
+                        row(L10n.tr("Pause all alarms"), symbol: "pause.circle.fill", tint: .indigo,
+                            value: coordinator.activePause.map(\.shortText) ?? L10n.tr("Off"))
                     }
                     NavigationLink { PermissionsSettingsView() } label: {
                         let summary = PermissionSummary.make(permissions.status)
-                        row("Permissions", symbol: "checkmark.shield.fill", tint: .green, value: summary.text,
+                        row(L10n.tr("Permissions"), symbol: "checkmark.shield.fill", tint: .green, value: summary.text,
                             valueTint: summary == .allSet ? nil : .orange)
                     }
                 }
@@ -60,42 +61,52 @@ struct SettingsView: View {
                 if buddiesModel.service.isAvailable {
                     Section("Buddies") {
                         NavigationLink { BuddiesSettingsView(auth: auth) } label: {
-                            row("Buddies", symbol: "person.3.fill", tint: .pink, value: "Privacy & blocked")
+                            row(L10n.tr("Buddies"), symbol: "person.3.fill", tint: .pink, value: L10n.tr("Privacy & blocked"))
                         }
                     }
                 }
 
                 Section(CoachIdentity.name) {
                     NavigationLink { CoachSettingsView(coordinator: coordinator) } label: {
-                        row("Coach", symbol: "drop.fill", tint: .orange, value: coachSummary)
+                        row(L10n.tr("Coach"), symbol: "drop.fill", tint: .orange, value: coachSummary)
                     }
                 }
 
                 Section("Look & feel") {
                     NavigationLink { AppearanceView() } label: {
-                        row("Appearance", symbol: "paintbrush.fill", tint: .purple,
+                        row(L10n.tr("Appearance"), symbol: "paintbrush.fill", tint: .purple,
                             value: AppearanceSettings.shared.preference.title)
                     }
+                    Button { LanguageSettings.shared.presentPicker(source: "settings") } label: {
+                        HStack {
+                            row(L10n.tr("Language"), symbol: "globe", tint: .indigo,
+                                value: LanguageSettings.shared.isAutomatic
+                                    ? L10n.tr("Automatic · \(LanguageSettings.shared.current.nativeName)")
+                                    : LanguageSettings.shared.current.nativeName)
+                            Image(systemName: "chevron.forward").font(.footnote.weight(.semibold)).foregroundStyle(.tertiary)
+                        }
+                    }
+                    .foregroundStyle(.primary)
                 }
 
                 Section("Privacy") {
                     NavigationLink { PrivacySettingsView() } label: {
-                        row("Privacy", symbol: "hand.raised.fill", tint: .blue,
-                            value: Telemetry.shared.isEnabled ? "Stats on" : "Stats off")
+                        row(L10n.tr("Privacy"), symbol: "hand.raised.fill", tint: .blue,
+                            value: Telemetry.shared.isEnabled ? L10n.tr("Stats on") : L10n.tr("Stats off"))
                     }
                 }
 
                 Section("Support") {
                     NavigationLink { HelpView(auth: auth) } label: {
-                        row("Help & feedback", symbol: "questionmark.bubble.fill", tint: .blue)
+                        row(L10n.tr("Help & feedback"), symbol: "questionmark.bubble.fill", tint: .blue)
                     }
                     Button { requestReview(); Telemetry.shared.send(.action(.rateRequested)) } label: {
-                        row("Rate Gloop", symbol: "star.fill", tint: .yellow)
+                        row(L10n.tr("Rate Gloop"), symbol: "star.fill", tint: .yellow)
                     }
                     .foregroundStyle(.primary)
                     if let url = auth.config.shareURL {
                         ShareLink(item: url, message: Text(HelpView.shareMessage)) {
-                            row("Share Gloop", symbol: "square.and.arrow.up.fill", tint: .teal)
+                            row(L10n.tr("Share Gloop"), symbol: "square.and.arrow.up.fill", tint: .teal)
                         }
                         .foregroundStyle(.primary)
                     }
@@ -123,7 +134,7 @@ struct SettingsView: View {
                             DeveloperView(coordinator: coordinator, auth: auth, store: store,
                                           onReplayOnboarding: onReplayOnboarding)
                         } label: {
-                            row("Developer tools", symbol: "hammer.fill", tint: .gray)
+                            row(L10n.tr("Developer tools"), symbol: "hammer.fill", tint: .gray)
                         }
                     }
                 }
@@ -202,18 +213,18 @@ extension EntitlementState {
     /// "Free", "Trial until 16 Nov, 13:08", "Pro until 13 Dec", "Pro (lifetime)".
     var statusText: String {
         switch self {
-        case .free: "Free"
-        case .trial(let until): until.map { "Trial until " + $0.formatted(date: .abbreviated, time: .shortened) } ?? "Trial"
-        case .pro(let until): until.map { "Pro until " + $0.formatted(date: .abbreviated, time: .omitted) } ?? "Pro (lifetime)"
+        case .free: L10n.tr("Free")
+        case .trial(let until): until.map { d in L10n.tr("Trial until \(d.localized(date: .abbreviated, time: .shortened))") } ?? L10n.tr("Trial")
+        case .pro(let until): until.map { d in L10n.tr("Pro until \(d.localized(date: .abbreviated, time: .omitted))") } ?? L10n.tr("Pro (lifetime)")
         }
     }
 
     /// Settings home: "Free", "Trial", "Active", "Lifetime".
     var shortText: String {
         switch self {
-        case .free: "Free"
-        case .trial: "Trial"
-        case .pro(let until): until == nil ? "Lifetime" : "Active"
+        case .free: L10n.tr("Free")
+        case .trial: L10n.tr("Trial")
+        case .pro(let until): until == nil ? L10n.tr("Lifetime") : L10n.tr("Active")
         }
     }
 }
@@ -221,7 +232,7 @@ extension EntitlementState {
 extension AlarmPause {
     /// "Until Mon 18 Nov" / "Until resumed".
     var shortText: String {
-        guard let until else { return "Until resumed" }
-        return "Back " + until.formatted(.dateTime.weekday(.abbreviated).day().month(.abbreviated))
+        guard let until else { return L10n.tr("Until resumed") }
+        return L10n.tr("Back \(until.localized(.dateTime.weekday(.abbreviated).day().month(.abbreviated)))")
     }
 }

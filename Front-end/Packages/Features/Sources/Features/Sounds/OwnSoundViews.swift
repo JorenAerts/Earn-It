@@ -1,5 +1,6 @@
 import AVFoundation
 import Core
+import Localization
 import Permissions
 import SwiftUI
 import Telemetry
@@ -63,7 +64,7 @@ struct TrimSoundView: View {
                     Button {
                         preview.toggle(url: source, start: window.start, length: window.length)
                     } label: {
-                        Label(preview.isPlaying ? "Stop preview" : "Play this part",
+                        Label(preview.isPlaying ? L10n.tr("Stop preview") : L10n.tr("Play this part"),
                               systemImage: preview.isPlaying ? "stop.fill" : "play.fill")
                     }
                 }
@@ -80,7 +81,7 @@ struct TrimSoundView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .confirmationAction) {
-                Button(saving ? "Saving…" : "Save", action: save)
+                Button(saving ? L10n.tr("Saving…") : L10n.tr("Save"), action: save)
                     .disabled(saving || duration == 0 || name.trimmingCharacters(in: .whitespaces).isEmpty)
             }
         }
@@ -213,7 +214,7 @@ struct RecordSoundView: View {
         NavigationStack {
             VStack(spacing: 28) {
                 Spacer()
-                Text(recorder.isRecording ? "Recording…" : (recordedURL == nil ? "Record a wake-up message" : "Done"))
+                Text(recorder.isRecording ? L10n.tr("Recording…") : (recordedURL == nil ? L10n.tr("Record a wake-up message") : L10n.tr("Done")))
                     .font(.title2.bold())
                 Text("e.g. \"Rise and shine! Mission time!\" Max 30 seconds.")
                     .foregroundStyle(.secondary).multilineTextAlignment(.center)
@@ -245,7 +246,7 @@ struct RecordSoundView: View {
                 Spacer()
                 if let url = recordedURL {
                     NavigationLink {
-                        TrimSoundView(source: url, suggestedName: "My wake-up message", kind: .recorded) { sound in
+                        TrimSoundView(source: url, suggestedName: L10n.tr("My wake-up message"), kind: .recorded) { sound in
                             onSaved(sound)
                             dismiss()
                         }
@@ -281,7 +282,7 @@ final class MicRecorder {
         message = nil
         finishedURL = nil
         guard await AVAudioApplication.requestRecordPermission() else {
-            message = "Microphone access is off. Turn it on in Settings to record."
+            message = L10n.tr("Microphone access is off. Turn it on in Settings to record.")
             return
         }
         let session = AVAudioSession.sharedInstance()
@@ -311,7 +312,7 @@ final class MicRecorder {
                 }
             }
         } catch {
-            message = "Couldn't start recording: \(error.localizedDescription)"
+            message = L10n.tr("Couldn't start recording: \(error.localizedDescription)")
         }
     }
 

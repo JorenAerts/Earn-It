@@ -1,0 +1,40 @@
+{
+  "faq": [
+    {
+      "question": "Waarom blijft de wekker afgaan?",
+      "answer": "Dat is de bedoeling: de wekker stopt pas echt als je je missie voltooit. Met X zet je hem een paar minuten stil (je herhaaltijd), daarna gaat hij weer af. Na de noodstoplimiet geeft hij het op, zodat je nooit vastzit."
+    },
+    {
+      "question": "Gaat hij af als mijn telefoon op stil staat of in een Focus?",
+      "answer": "Ja. Gloop gebruikt iOS-wekkers, die door de stille modus en Focus heen afgaan, zolang Wekkers is toegestaan in Instellingen › Toestemmingen."
+    },
+    {
+      "question": "Wat gebeurt er als ik de app geforceerd sluit?",
+      "answer": "De wekker gaat nog steeds af, en de herhalingen ook: die zijn bij iOS ingepland. Het geluid daartussen speelt alleen als de app draait, dus als je de app opent, ben je het snelst bij je missie."
+    },
+    {
+      "question": "Kan ik wakker worden met een Spotify-nummer?",
+      "answer": "Nee. iOS laat apps geen Spotify-nummers als wekker afspelen. Je kunt een Apple Music-nummer kiezen (speelt tijdens je missie), een eigen audiobestand importeren of een bericht opnemen."
+    },
+    {
+      "question": "Mijn voorwerp wordt niet herkend.",
+      "answer": "Scan het voorwerp opnieuw in goed licht, vanuit de hoeken waarin je het 's ochtends ziet, en houd het helemaal in beeld. Lukt het nog niet? Na 2 minuten kun je overschakelen op de reservemissie."
+    },
+    {
+      "question": "Hoe werken reeksen, XP en stickers?",
+      "answer": "Elke ochtend dat je een missie voltooit, komt er een dag bij je reeks en verdien je XP: meer bij de eerste keer, minder voor elke herhaling, plus een reeksbonus. Met XP evolueert Gloop van een klein Druppeltje helemaal tot Koning Gloop, met een nieuw accessoire in elke fase. Dagen zonder wekker of gepauzeerde dagen breken je reeks niet. Stickers verzamel je voor mijlpalen zoals je eerste kneepje of een foutloze week."
+    },
+    {
+      "question": "Hoe pauzeer ik mijn wekkers voor een vakantie?",
+      "answer": "Instellingen › Alle wekkers pauzeren. Kies hoe lang; daarna komen je wekkers vanzelf terug."
+    },
+    {
+      "question": "Hoe zeg ik mijn abonnement op?",
+      "answer": "Instellingen › Gloop Pro › Abonnement beheren, of in de iOS-instellingen › je naam › Abonnementen. Je account verwijderen zegt een abonnement niet op."
+    },
+    {
+      "question": "Welke gegevens verzamelt Gloop?",
+      "answer": "Anonieme gebruiksstatistieken (welke schermen en functies worden gebruikt, hoe de introductie en ochtenden verlopen) via TelemetryDeck in de EU, met een willekeurige ID die niet aan je account gekoppeld is. Nooit je naam, e-mail, wekkernamen, foto's of iets wat je typt. Zet het op elk moment uit in Instellingen › Privacy. Je wekkers, geluiden en voorwerpscans blijven op je iPhone; met een account worden je profiel en Buddies-gegevens bij Supabase in de EU bewaard."
+    }
+  ]
+}

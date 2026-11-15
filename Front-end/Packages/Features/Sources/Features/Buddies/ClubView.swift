@@ -2,6 +2,7 @@ import Account
 import Buddies
 import Coach
 import CoreImage.CIFilterBuiltins
+import Localization
 import SwiftUI
 import Telemetry
 import WidgetShared
@@ -16,6 +17,13 @@ struct ClubView: View {
     enum Tab: String, CaseIterable, Identifiable {
         case today = "Today", ranking = "Ranking", members = "Members"
         var id: String { rawValue }
+        var title: String {
+            switch self {
+            case .today: L10n.tr("Today")
+            case .ranking: L10n.tr("Ranking")
+            case .members: L10n.tr("Members")
+            }
+        }
     }
 
     @State private var tab: Tab = .today
@@ -58,7 +66,7 @@ struct ClubView: View {
                 Section {
                     header(club)
                     Picker("Section", selection: $tab) {
-                        ForEach(Tab.allCases) { Text($0.rawValue).tag($0) }
+                        ForEach(Tab.allCases) { Text($0.title).tag($0) }
                     }
                     .pickerStyle(.segmented)
                     .listRowSeparator(.hidden)
@@ -76,7 +84,7 @@ struct ClubView: View {
                                        description: Text("You may have left it, or it was deleted."))
             }
         }
-        .navigationTitle(club?.name ?? "Club")
+        .navigationTitle(club?.name ?? L10n.tr("Club"))
         .trackScreen("Club")
         .navigationBarTitleDisplayMode(.inline)
         .overlay { if loading && members.isEmpty { ProgressView() } }
@@ -119,7 +127,7 @@ struct ClubView: View {
             }
         } message: { item in
             switch item {
-            case .leave: Text(club?.isOwner == true ? "The longest-standing member becomes the owner." : "You can join again with the code.")
+            case .leave: Text(club?.isOwner == true ? L10n.tr("The longest-standing member becomes the owner.") : L10n.tr("You can join again with the code."))
             case .delete: Text("The club, its ranking and photos are deleted for everyone.")
             case .remove: Text("They can only come back with a new invite.")
             case .newCode: Text("The old code and link stop working.")
@@ -129,10 +137,10 @@ struct ClubView: View {
 
     private var confirmTitle: String {
         switch confirm {
-        case .leave: "Leave this club?"
-        case .delete: "Delete this club?"
-        case .remove: "Remove member?"
-        case .newCode: "New invite code?"
+        case .leave: L10n.tr("Leave this club?")
+        case .delete: L10n.tr("Delete this club?")
+        case .remove: L10n.tr("Remove member?")
+        case .newCode: L10n.tr("New invite code?")
         case nil: ""
         }
     }
@@ -147,7 +155,7 @@ struct ClubView: View {
                 if !club.description.isEmpty {
                     Text(club.description).font(.subheadline).foregroundStyle(.secondary)
                 }
-                Label(club.isPublic ? "Public · \(club.memberCount) members" : "Private · \(club.memberCount) members",
+                Label(club.isPublic ? L10n.tr("Public · \(club.memberCount) members") : L10n.tr("Private · \(club.memberCount) members"),
                       systemImage: club.isPublic ? "globe" : "lock.fill")
                     .font(.caption).foregroundStyle(.secondary)
             }
@@ -178,7 +186,7 @@ struct ClubView: View {
             }
             if !unlocked {
                 Button { showShare = true } label: {
-                    Label(posts.isEmpty ? "Share your morning face" : "Post or skip to see their photos",
+                    Label(posts.isEmpty ? L10n.tr("Share your morning face") : L10n.tr("Post or skip to see their photos"),
                           systemImage: "camera.fill")
                 }
             }
@@ -217,7 +225,7 @@ struct ClubView: View {
         let ranked = LeaderboardRanking.rank(rows, by: period)
         Section {
             Picker("Period", selection: $period) {
-                ForEach(LeaderboardRanking.Period.allCases) { Text($0.rawValue).tag($0) }
+                ForEach(LeaderboardRanking.Period.allCases) { Text($0.title).tag($0) }
             }
             .pickerStyle(.segmented)
             if ranked.count >= 2 {
@@ -225,7 +233,7 @@ struct ClubView: View {
                     .listRowSeparator(.hidden)
             }
         } footer: {
-            Text(period == .week ? "Points this week (XP from your mornings). Resets every Monday." : "All XP since joining Gloop.")
+            Text(period == .week ? L10n.tr("Points this week (XP from your mornings). Resets every Monday.") : L10n.tr("All XP since joining Gloop."))
         }
         Section {
             ForEach(ranked) { entry in
@@ -248,7 +256,7 @@ struct ClubView: View {
             ForEach(members.sorted { ($0.role == .owner ? 0 : 1, buddyName($0.displayName)) < ($1.role == .owner ? 0 : 1, buddyName($1.displayName)) }) { member in
                 HStack {
                     BuddyAvatar(name: member.displayName, size: 34)
-                    Text(buddyName(member.displayName) + (member.isMe ? " (you)" : ""))
+                    Text(buddyName(member.displayName) + (member.isMe ? L10n.tr(" (you)") : ""))
                     Spacer()
                     if member.role == .owner {
                         Text("Owner").font(.caption.weight(.semibold)).foregroundStyle(.orange)
@@ -368,7 +376,7 @@ struct MemberTodayRow: View {
         HStack(spacing: 12) {
             BuddyAvatar(name: member.displayName)
             VStack(alignment: .leading, spacing: 2) {
-                Text(buddyName(member.displayName) + (member.isMe ? " (you)" : "")).font(.body.weight(.semibold))
+                Text(buddyName(member.displayName) + (member.isMe ? L10n.tr(" (you)") : "")).font(.body.weight(.semibold))
                 Text(status).font(.subheadline).foregroundStyle(member.isUp ? .primary : .secondary)
             }
             Spacer()
@@ -382,13 +390,11 @@ struct MemberTodayRow: View {
     }
 
     private var status: String {
-        guard let done = member.completedAt else { return "Still sleeping 😴" }
-        guard member.sharesTime else { return "Up ✓" }
-        var text = "Up at " + done.formatted(date: .omitted, time: .shortened)
-        if let rings = member.rings {
-            text += rings <= 1 ? " · first ring 🔥" : " · \(rings) rings"
-        }
-        return text
+        guard let done = member.completedAt else { return L10n.tr("Still sleeping 😴") }
+        guard member.sharesTime else { return L10n.tr("Up ✓") }
+        let time = done.localized(date: .omitted, time: .shortened)
+        guard let rings = member.rings else { return L10n.tr("Up at \(time)") }
+        return rings <= 1 ? L10n.tr("Up at \(time) · first ring 🔥") : L10n.tr("Up at \(time) · \(rings) rings")
     }
 }
 
@@ -427,7 +433,7 @@ struct PhotoTile: View {
                         .padding(6)
                 }
             }
-            Text(buddyName(post.displayName) + (post.isMe ? " (you)" : "")).font(.caption).lineLimit(1)
+            Text(buddyName(post.displayName) + (post.isMe ? L10n.tr(" (you)") : "")).font(.caption).lineLimit(1)
         }
         .frame(width: 110)
         .accessibilityElement(children: .combine)
@@ -449,7 +455,7 @@ struct PhotoViewer: View {
                 BuddyAvatar(name: post.displayName, size: 34)
                 VStack(alignment: .leading) {
                     Text(buddyName(post.displayName)).font(.headline)
-                    Text(post.createdAt.formatted(date: .omitted, time: .shortened)).font(.caption).foregroundStyle(.secondary)
+                    Text(post.createdAt.localized(date: .omitted, time: .shortened)).font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
                 Button("Done") { dismiss() }
@@ -495,7 +501,7 @@ struct LeaderboardRowView: View {
                 .foregroundStyle(entry.position <= 3 ? .orange : .secondary)
             BuddyAvatar(name: entry.row.displayName, size: 36)
             VStack(alignment: .leading, spacing: 2) {
-                Text(buddyName(entry.row.displayName) + (entry.row.isMe ? " (you)" : ""))
+                Text(buddyName(entry.row.displayName) + (entry.row.isMe ? L10n.tr(" (you)") : ""))
                     .font(.body.weight(entry.row.isMe ? .bold : .regular))
                 HStack(spacing: 4) {
                     if let rank = entry.row.coachRank {
@@ -591,13 +597,13 @@ struct ReportSheet: View {
     let onDone: () async -> Void
     @Environment(BuddiesModel.self) private var model
     @Environment(\.dismiss) private var dismiss
-    @State private var reason = "Inappropriate photo"
+    @State private var reason = L10n.tr("Inappropriate photo")
     @State private var details = ""
     @State private var alsoBlock = true
     @State private var busy = false
     @State private var sent = false
 
-    static let reasons = ["Inappropriate photo", "Harassment or bullying", "Hate or violence", "Spam or fake", "Something else"]
+    static let reasons = [L10n.tr("Inappropriate photo"), L10n.tr("Harassment or bullying"), L10n.tr("Hate or violence"), L10n.tr("Spam or fake"), L10n.tr("Something else")]
 
     var body: some View {
         NavigationStack {
@@ -628,7 +634,7 @@ struct ReportSheet: View {
             .navigationTitle("Report \(target.kind == .club ? "club" : target.name)")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button(sent ? "Done" : "Cancel") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) { Button(sent ? L10n.tr("Done") : L10n.tr("Cancel")) { dismiss() } }
                 if !sent {
                     ToolbarItem(placement: .confirmationAction) {
                         Button("Send", action: send).disabled(busy)

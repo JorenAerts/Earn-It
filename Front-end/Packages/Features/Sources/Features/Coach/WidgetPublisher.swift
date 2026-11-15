@@ -39,6 +39,11 @@ final class WidgetPublisher {
         log.info("widgets updated: streak \(snapshot.streak), xp \(snapshot.xp)")
     }
 
+    /// Language switch: widget texts are translated in the extension, so redraw even if the data is equal.
+    func reloadAll() {
+        WidgetCenter.shared.reloadAllTimelines()
+    }
+
     /// Equal apart from the timestamp, on the same day.
     static func sameContent(_ a: WidgetSnapshot, _ b: WidgetSnapshot) -> Bool {
         var a2 = a

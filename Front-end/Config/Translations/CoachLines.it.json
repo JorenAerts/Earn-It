@@ -1,0 +1,52 @@
+{
+  "idle": {
+    "gentle": ["Tutto pronto per le {time}. Dormi bene, {name}!", "A domani alle {time}. Sarò quello che rimbalza.", "Pronto quando lo sei tu. Domani alle {time}.", "Buonanotte, {name}. A domani alle {time}."],
+    "toughLove": ["Alle {time} in punto, {name}. Non farmi afflosciare.", "Sveglia alle {time}. Ti tengo d’occhio. Tremolando, ma ti tengo d’occhio.", "Riposa. Domani alle {time} si rimbalza.", "Luci spente, {name}. Alle {time} in punto."],
+    "savage": ["{time}. Non {time} e cinque posticipi. {time}.", "Conosco i tuoi precedenti. Sarò lì alle {time}.", "Goditi la libertà. Finisce alle {time}.", "{name}. {time}. Non mettermi alla prova."]
+  },
+  "night": {
+    "gentle": ["È ora di rilassarsi. La sveglia delle {time} è pronta.", "Molli il telefono a breve? Le {time} arrivano in fretta.", "Sogni d’oro. Ti sveglio alle {time}."],
+    "toughLove": ["A letto. Il te delle {time} ti ringrazierà.", "Stai ancora scorrendo? Le {time} non si spostano, sai.", "Dormi ora, rimbalza alle {time}. Questo è il patto."],
+    "savage": ["Vai a dormire. Domani non mi sciolgo per colpa tua.", "Ogni minuto che scorri ora è un posticipo alle {time}.", "Letto. Subito. Ci vediamo alle {time}, niente scuse."]
+  },
+  "noAlarm": {
+    "gentle": ["Ancora nessuna sveglia. Ne aggiungiamo una?", "Sono pronto quando lo sei tu. Imposta solo una sveglia.", "Tocca + per impostare la tua prima sveglia."],
+    "toughLove": ["Nessuna sveglia? Allora chi ti sveglia? Non io, a quanto pare.", "Una gelatina senza lavoro. Imposta una sveglia, {name}.", "Non posso aiutarti se non c’è una sveglia."],
+    "savage": ["Nessuna sveglia impostata. Strategia audace.", "Una gelatina senza sveglia è solo una pozzanghera con gli occhi.", "Imposta una sveglia o mi sciolgo dalla noia."]
+  },
+  "ringing": {
+    "gentle": ["Buongiorno! Alziamoci insieme.", "Sveglia, {name}! Una missione e hai finito.", "Buongiorno! Io sto già rimbalzando. Tocca a te."],
+    "toughLove": ["IN PIEDI! La giornata non inizia da sola.", "Piedi a terra, {name}. Ora.", "Driin driin! È il tuo segnale."],
+    "savage": ["Svegliati. Non sono rimasto in forma tutta la notte per questo.", "Alzati prima che inizi a gocciolare sul tuo cuscino.", "Alzati. Splendi. In quest’ordine. Ora."]
+  },
+  "reRing": {
+    "gentle": ["Un altro squillo. Puoi ancora salvare questa mattina.", "Squillo {rings}. Facciamo la missione insieme.", "Ci siamo quasi. Una missione e mi riprendo subito."],
+    "toughLove": ["Squillo {rings}. Comincio ad afflosciarmi.", "Ogni posticipo mi rende più molle. Al. Za. Ti.", "{rings} squilli. Mi sto letteralmente sciogliendo."],
+    "savage": ["Squillo numero {rings}. Sono una pozzanghera ed è colpa tua.", "{rings} squilli. Ho visto gelatine più motivate.", "Posticipa ancora e lo dico a tua madre."]
+  },
+  "missionSuccess": {
+    "gentle": ["Ce l’hai fatta! Buona giornata.", "Guardami rimbalzare! Grazie, {name}.", "In piedi e sveglio. Così dovrebbero andare le mattine.", "Ben fatto, {name}. Passa una splendida giornata."],
+    "toughLove": ["Così si fa. Sto rimbalzando!", "Missione compiuta. Visto? Non era così difficile.", "Ottimo lavoro, {name}. Mi sento dieci volte più sodo.", "In piedi e meritato. Rispetto."],
+    "savage": ["Va bene. Te lo sei guadagnato. Per un pelo.", "Ce ne hai messo di tempo. Ma lo accetto.", "Guarda chi ce l’ha fatta finalmente. Sono quasi colpito.", "Va bene, {name}. Te lo sei guadagnato. Per un pelo."]
+  },
+  "firstTry": {
+    "gentle": ["Al primo squillo! Sono così fiero di te.", "In piedi al primo colpo. Meraviglioso!", "Zero posticipi. Sto brillando!"],
+    "toughLove": ["Al primo squillo! Questa sì che è una mattina.", "Nessun posticipo? Chi sei e cosa hai fatto a {name}?", "Al primo colpo. Rimbalzo sui muri."],
+    "savage": ["Al primo squillo? Qualcun altro ti ha impostato la sveglia?", "Zero posticipi. Non montarti la testa.", "Al primo colpo. Segnalo sul calendario."]
+  },
+  "streakMilestone": {
+    "gentle": ["{streak} giorni di fila. Sei fantastico!", "Serie di {streak} giorni. Guarda come rimbalzo!", "{streak} mattine di fila. Così fiero di te."],
+    "toughLove": ["{streak} giorni di fila! Non sono mai stato così sodo.", "Serie di {streak} giorni. Continua così.", "{streak} giorni. Non azzardarti a interromperla."],
+    "savage": ["{streak} giorni. Ok, sono colpito. Un po’.", "Serie di {streak} giorni. Chi l’avrebbe mai detto?", "{streak} giorni. Interrompila e mi sciolgo apposta."]
+  },
+  "failSafe": {
+    "gentle": ["Questa volta la sveglia si è arresa. Domani si ricomincia.", "Mattina difficile. Sono un po’ floscio, ma riproviamo.", "Questa ci è sfuggita. Prendiamo la prossima."],
+    "toughLove": ["La sveglia si è arresa. Sono una pozzanghera. Domani rimediamo.", "Hai dormito oltre l’arresto di sicurezza. Non sono arrabbiato, solo sciolto.", "Questa è persa. Domani ti fai perdonare."],
+    "savage": ["Arresto di sicurezza. Mi sono sciolto nel tappeto. Grazie.", "Hai resistito più della sveglia. Non è l’impresa che pensi.", "Un’intera pozzanghera di delusione. Domani. Fai meglio."]
+  },
+  "streakBroken": {
+    "gentle": ["La serie è finita, ma domani puoi iniziarne una nuova.", "Capita a tutti di scivolare. Rimbalziamo.", "Una nuova serie inizia con la prossima sveglia."],
+    "toughLove": ["Serie interrotta. Mi sto afflosciando. Ricostruiamola.", "Si torna al giorno zero. Fai contare domani.", "Quella serie mi teneva in forma, {name}."],
+    "savage": ["Serie persa. Mi sciolgo dalla vergogna.", "Tutto quel lavoro, sparito. Di nuovo in modalità pozzanghera.", "Zero giorni. Non parliamone. Domani alzati e basta."]
+  }
+}

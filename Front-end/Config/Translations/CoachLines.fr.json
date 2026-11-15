@@ -1,0 +1,52 @@
+{
+  "idle": {
+    "gentle": ["Tout est prêt pour {time}. Dors bien, {name} !", "À {time}. Je serai celui qui rebondit.", "Prêt quand tu l’es. Demain, {time}.", "Bonne nuit, {name}. À {time}."],
+    "toughLove": ["{time} pile, {name}. Ne me fais pas ramollir.", "Réveil réglé pour {time}. Je surveille. En tremblotant, mais je surveille.", "Repose-toi. Demain à {time}, on rebondit.", "Extinction des feux, {name}. {time} pile."],
+    "savage": ["{time}. Pas {time} et cinq répétitions. {time}.", "J’ai vu ton historique. Je serai là à {time}.", "Profite de ta liberté. Elle se termine à {time}.", "{name}. {time}. Ne me teste pas."]
+  },
+  "night": {
+    "gentle": ["C’est l’heure de décompresser. Ton réveil de {time} est prêt.", "Tu lâches bientôt ton téléphone ? {time}, ça arrive vite.", "Fais de beaux rêves. Je te réveille à {time}."],
+    "toughLove": ["Au lit. Le toi de {time} te remerciera.", "Tu scrolles encore ? {time} ne bougera pas, tu sais.", "Dors maintenant, rebondis à {time}. C’est le deal."],
+    "savage": ["Va dormir. Je ne vais pas fondre demain à cause de toi.", "Chaque minute de scroll maintenant, c’est une répétition à {time}.", "Au lit. Tout de suite. On se voit à {time}, sans excuses."]
+  },
+  "noAlarm": {
+    "gentle": ["Pas encore de réveil. On en ajoute un ?", "Je suis prêt quand tu l’es. Règle juste un réveil.", "Touche + pour régler ton premier réveil."],
+    "toughLove": ["Pas de réveil ? Alors qui te réveille ? Pas moi, apparemment.", "Un slime sans travail. Règle un réveil, {name}.", "Je ne peux pas t’aider sans réveil."],
+    "savage": ["Aucun réveil. Stratégie audacieuse.", "Un slime sans réveil, c’est juste une flaque avec des yeux.", "Règle un réveil ou je fonds d’ennui."]
+  },
+  "ringing": {
+    "gentle": ["Bonjour ! On se lève ensemble.", "Debout, {name} ! Une mission et c’est fini.", "Bonjour ! Je rebondis déjà. À toi."],
+    "toughLove": ["DEBOUT ! La journée ne va pas commencer toute seule.", "Les pieds par terre, {name}. Maintenant.", "Dring dring ! C’est ton signal."],
+    "savage": ["Réveille-toi. Je ne suis pas resté en forme toute la nuit pour ça.", "Lève-toi avant que je dégouline sur ton oreiller.", "Debout. Rayonne. Dans cet ordre. Maintenant."]
+  },
+  "reRing": {
+    "gentle": ["Encore une sonnerie. Tu peux encore sauver ce matin.", "Sonnerie {rings}. Faisons la mission ensemble.", "Presque. Une mission et je reprends du peps."],
+    "toughLove": ["Sonnerie {rings}. Je commence à m’affaisser.", "Chaque répétition me ramollit. Lève. Toi.", "{rings} sonneries. Je fonds littéralement."],
+    "savage": ["Sonnerie numéro {rings}. Je suis une flaque et c’est ta faute.", "{rings} sonneries. J’ai vu de la gelée plus motivée.", "Encore une répétition et je le dis à ta mère."]
+  },
+  "missionSuccess": {
+    "gentle": ["Tu l’as fait ! Belle journée.", "Regarde-moi rebondir ! Merci, {name}.", "Debout et réveillé. Voilà comment un matin devrait se passer.", "Bravo, {name}. Passe une super journée."],
+    "toughLove": ["Voilà comment on fait. Je rebondis !", "Mission accomplie. Tu vois ? Pas si dur.", "Beau travail, {name}. Je me sens dix fois plus ferme.", "Debout et mérité. Respect."],
+    "savage": ["Bon. Tu l’as mérité. De justesse.", "Il t’en a fallu, du temps. Mais je prends.", "Regardez qui a enfin réussi. Je suis presque impressionné.", "Bon, {name}. Tu l’as mérité. De justesse."]
+  },
+  "firstTry": {
+    "gentle": ["Première sonnerie ! Je suis si fier de toi.", "Debout du premier coup. Génial !", "Zéro répétition. Je brille !"],
+    "toughLove": ["Première sonnerie ! Ça, c’est un matin.", "Pas de répétition ? Qui es-tu et qu’as-tu fait de {name} ?", "Du premier coup. Je rebondis contre les murs."],
+    "savage": ["Première sonnerie ? Quelqu’un d’autre a réglé ton réveil ?", "Zéro répétition. Ne prends pas la grosse tête.", "Du premier coup. Note-le dans le calendrier."]
+  },
+  "streakMilestone": {
+    "gentle": ["{streak} jours d’affilée. Tu es incroyable !", "Série de {streak} jours. Regarde comme je rebondis !", "{streak} matins de suite. Tellement fier de toi."],
+    "toughLove": ["{streak} jours d’affilée ! Je n’ai jamais été aussi ferme.", "Série de {streak} jours. Continue comme ça.", "{streak} jours. N’ose même pas la briser."],
+    "savage": ["{streak} jours. D’accord, je suis impressionné. Un peu.", "Série de {streak} jours. Qui l’eût cru ?", "{streak} jours. Brise-la et je fonds exprès."]
+  },
+  "failSafe": {
+    "gentle": ["Le réveil a abandonné cette fois. Demain, on repart à zéro.", "Matin difficile. Je suis un peu mou, mais on réessaie.", "Celui-là nous a échappé. On aura le prochain."],
+    "toughLove": ["Le réveil a abandonné. Je suis une flaque. Demain, on corrige ça.", "Tu as dormi malgré l’arrêt de sécurité. Je ne suis pas fâché, juste fondu.", "C’est raté. Demain, tu te rattrapes."],
+    "savage": ["Arrêt de sécurité. J’ai fondu dans la moquette. Merci.", "Tu as eu raison du réveil. Ce n’est pas l’exploit que tu crois.", "Une flaque entière de déception. Demain. Fais mieux."]
+  },
+  "streakBroken": {
+    "gentle": ["La série est finie, mais tu peux en commencer une nouvelle demain.", "Tout le monde glisse. On rebondit.", "Une nouvelle série commence au prochain réveil."],
+    "toughLove": ["Série brisée. Je m’affaisse. On la reconstruit.", "Retour au jour zéro. Fais que demain compte.", "Cette série me gardait en forme, {name}."],
+    "savage": ["Série perdue. Je fonds de honte.", "Tout ce travail, envolé. Retour en mode flaque.", "Zéro jour. N’en parlons pas. Lève-toi demain, c’est tout."]
+  }
+}

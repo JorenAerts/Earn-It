@@ -1,5 +1,6 @@
 import Account
 import Coach
+import Localization
 import Observation
 import SwiftUI
 import Telemetry
@@ -37,7 +38,7 @@ final class ProfileName {
         return placeholder
     }
 
-    nonisolated static let placeholder = "Your profile"
+    nonisolated static let placeholder = L10n.tr("Your profile")
 }
 
 /// Top of Settings: initial, name, rank, streak, PRO.
@@ -153,7 +154,7 @@ struct AccountView: View {
         .onDisappear(perform: saveName)
         .task(id: auth.user?.id) { await loadRemoteName() }
         .sheet(isPresented: $showSignIn) {
-            AccountStepView(auth: auth, skipTitle: "Not now") { showSignIn = false }
+            AccountStepView(auth: auth, skipTitle: L10n.tr("Not now")) { showSignIn = false }
                 .presentationDragIndicator(.visible)
         }
         .onChange(of: auth.user) { _, user in if user != nil { showSignIn = false } }
@@ -186,7 +187,7 @@ struct AccountView: View {
         Task {
             do {
                 try await auth.resetPassword(email: email)
-                message = "We sent a link to \(email) to choose a new password."
+                message = L10n.tr("We sent a link to \(email) to choose a new password.")
             } catch {
                 message = error.localizedDescription
             }
@@ -200,7 +201,7 @@ struct AccountView: View {
             do {
                 try await auth.deleteAccount()
                 Telemetry.shared.send(.action(.accountDeleted))
-                message = "Your account was deleted."
+                message = L10n.tr("Your account was deleted.")
             } catch {
                 message = error.localizedDescription
             }

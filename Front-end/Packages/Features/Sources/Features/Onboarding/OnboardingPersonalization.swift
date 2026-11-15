@@ -1,6 +1,7 @@
 import Coach
 import Core
 import Foundation
+import Localization
 
 /// Pure: how onboarding answers change the app, and what Gloop says about them.
 public enum OnboardingPersonalization {
@@ -37,28 +38,29 @@ public enum OnboardingPersonalization {
         let whole = Int(hours)
         let half = hours - Double(whole) >= 0.5
         let number = half ? (whole == 0 ? "½" : "\(whole)½") : "\(whole)"
-        return "That's about \(number) hour\(hours > 1 ? "s" : "") back every week."
+        return hours > 1 ? L10n.tr("That's about \(number) hours back every week.")
+                         : L10n.tr("That's about \(number) hour back every week.")
     }
 
     /// Summary line under the wake-up time.
     public static func goalLine(_ goal: MorningGoal?) -> String {
         switch goal {
-        case .onTime: "On time. Every time."
-        case .workout: "Time to train before the world wakes up"
-        case .quietTime: "Quiet time that's all yours"
-        case .getAhead: "A head start on your day"
-        case .feelAwake: "Awake, not a zombie"
-        case nil: "Your mornings, earned"
+        case .onTime: L10n.tr("On time. Every time.")
+        case .workout: L10n.tr("Time to train before the world wakes up")
+        case .quietTime: L10n.tr("Quiet time that's all yours")
+        case .getAhead: L10n.tr("A head start on your day")
+        case .feelAwake: L10n.tr("Awake, not a zombie")
+        case nil: L10n.tr("Your mornings, earned")
         }
     }
 
     /// The last step of the summary timeline.
     public static func finishLine(_ goal: MorningGoal?) -> String {
         switch goal {
-        case .workout: "You're up. Go train."
-        case .quietTime: "You're up. Coffee's yours."
-        case .getAhead: "You're up, and ahead."
-        default: "You're up. Glad you set it."
+        case .workout: L10n.tr("You're up. Go train.")
+        case .quietTime: L10n.tr("You're up. Coffee's yours.")
+        case .getAhead: L10n.tr("You're up, and ahead.")
+        default: L10n.tr("You're up. Glad you set it.")
         }
     }
 
@@ -68,43 +70,43 @@ public enum OnboardingPersonalization {
         let who = name.isEmpty ? "friend" : name
         switch step {
         case .welcome:
-            return "Hi, I'm \(CoachIdentity.name)! I get droopy when you snooze, so let's not."
+            return L10n.tr("Hi, I'm \(CoachIdentity.name)! I get droopy when you snooze, so let's not.")
         case .name:
-            return name.isEmpty ? "What should I call you?" : "\(name)! Love it. We're going to be a great team."
+            return name.isEmpty ? L10n.tr("What should I call you?") : "\(name)! Love it. We're going to be a great team."
         case .ageRange:
-            return "Just so I know who I'm waking up."
+            return L10n.tr("Just so I know who I'm waking up.")
         case .heardFrom:
-            return "Glad you found me!"
+            return L10n.tr("Glad you found me!")
         case .alarmReaction:
             switch answers.reaction {
-            case .imUp: return "Ooh, a morning person. I like you already."
-            case .fiveMore: return "Five minutes. Sure. That's how I end up a puddle."
-            case .backupAlarm: return "A backup for your backup? You only need me now."
-            case .whySoEarly: return "Because the day is waiting, \(who). I'll make it worth it."
-            case nil: return "Be honest. I can tell."
+            case .imUp: return L10n.tr("Ooh, a morning person. I like you already.")
+            case .fiveMore: return L10n.tr("Five minutes. Sure. That's how I end up a puddle.")
+            case .backupAlarm: return L10n.tr("A backup for your backup? You only need me now.")
+            case .whySoEarly: return L10n.tr("Because the day is waiting, \(who). I'll make it worth it.")
+            case nil: return L10n.tr("Be honest. I can tell.")
             }
         case .getUpTime:
             switch answers.getUpTime {
-            case .under10: return "Not bad! Let's make it zero."
-            case .tenTo30: return "That's a whole episode of lying around. Noted."
-            case .thirtyTo60: return "An hour?! I'm melting just hearing that."
-            case .overHour: return "Over an hour. Okay, short re-rings for you, \(who)."
+            case .under10: return L10n.tr("Not bad! Let's make it zero.")
+            case .tenTo30: return L10n.tr("That's a whole episode of lying around. Noted.")
+            case .thirtyTo60: return L10n.tr("An hour?! I'm melting just hearing that.")
+            case .overHour: return L10n.tr("Over an hour. Okay, short re-rings for you, \(who).")
             case nil: return nil
             }
         case .struggles:
-            if answers.struggles.contains(.snooze) { return "The snooze button is not your friend. I am." }
-            if answers.struggles.contains(.phoneInBed) { return "Phone down, feet on the floor. Deal?" }
-            if answers.struggles.contains(.sleepThrough) { return "You won't sleep through me. I keep coming back." }
-            if !answers.struggles.isEmpty { return "Got it. I'll pick a mission that gets you moving." }
-            return "Pick everything that sounds like you."
+            if answers.struggles.contains(.snooze) { return L10n.tr("The snooze button is not your friend. I am.") }
+            if answers.struggles.contains(.phoneInBed) { return L10n.tr("Phone down, feet on the floor. Deal?") }
+            if answers.struggles.contains(.sleepThrough) { return L10n.tr("You won't sleep through me. I keep coming back.") }
+            if !answers.struggles.isEmpty { return L10n.tr("Got it. I'll pick a mission that gets you moving.") }
+            return L10n.tr("Pick everything that sounds like you.")
         case .goal:
-            return answers.goal == nil ? "What's the reward, \(who)?" : "That's worth getting up for."
+            return answers.goal == nil ? L10n.tr("What's the reward, \(who)?") : L10n.tr("That's worth getting up for.")
         case .wakeTime:
-            return "\(answers.timeText). I'll be there, bouncing."
+            return L10n.tr("\(answers.timeText). I'll be there, bouncing.")
         case .mission:
-            return "This is the only thing that stops me. Pick wisely."
+            return L10n.tr("This is the only thing that stops me. Pick wisely.")
         case .sound:
-            return "Pick something you can't ignore."
+            return L10n.tr("Pick something you can't ignore.")
         default:
             return nil
         }

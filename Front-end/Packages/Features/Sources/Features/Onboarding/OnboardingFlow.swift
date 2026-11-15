@@ -1,5 +1,6 @@
 import Core
 import Foundation
+import Localization
 
 // MARK: - Answers
 
@@ -16,11 +17,11 @@ public enum MorningStruggle: String, Codable, CaseIterable, Sendable, Identifiab
 
     public var title: String {
         switch self {
-        case .phoneInBed: "Scrolling my phone"
-        case .snooze: "Hitting snooze"
-        case .sleepThrough: "Sleeping through alarms"
-        case .stayInBed, .fallBackAsleep: "I wake up but stay in bed"
-        case .noEnergy: "Feeling groggy for ages"
+        case .phoneInBed: L10n.tr("Scrolling my phone")
+        case .snooze: L10n.tr("Hitting snooze")
+        case .sleepThrough: L10n.tr("Sleeping through alarms")
+        case .stayInBed, .fallBackAsleep: L10n.tr("I wake up but stay in bed")
+        case .noEnergy: L10n.tr("Feeling groggy for ages")
         }
     }
 
@@ -64,13 +65,13 @@ public enum HeardFrom: String, Codable, CaseIterable, Sendable, Identifiable {
     public var id: String { rawValue }
     public var title: String {
         switch self {
-        case .instagram: "Instagram"
+        case .instagram: L10n.tr("Instagram")
         case .tiktok: "TikTok"
         case .youtube: "YouTube"
-        case .appStore: "App Store"
-        case .friend: "Friend or family"
-        case .reddit: "Reddit"
-        case .other: "Somewhere else"
+        case .appStore: L10n.tr("App Store")
+        case .friend: L10n.tr("Friend or family")
+        case .reddit: L10n.tr("Reddit")
+        case .other: L10n.tr("Somewhere else")
         }
     }
     /// Plain symbols (no brand logos).
@@ -93,10 +94,10 @@ public enum AlarmReaction: String, Codable, CaseIterable, Sendable, Identifiable
     public var id: String { rawValue }
     public var title: String {
         switch self {
-        case .imUp: "I'm up"
-        case .fiveMore: "Just 5 more minutes"
-        case .backupAlarm: "I have a backup alarm"
-        case .whySoEarly: "Ugh, why so early?"
+        case .imUp: L10n.tr("I'm up")
+        case .fiveMore: L10n.tr("Just 5 more minutes")
+        case .backupAlarm: L10n.tr("I have a backup alarm")
+        case .whySoEarly: L10n.tr("Ugh, why so early?")
         }
     }
     public var symbol: String {
@@ -115,10 +116,10 @@ public enum GetUpTime: String, Codable, CaseIterable, Sendable, Identifiable {
     public var id: String { rawValue }
     public var title: String {
         switch self {
-        case .under10: "Under 10 minutes"
+        case .under10: L10n.tr("Under 10 minutes")
         case .tenTo30: "10–30 minutes"
         case .thirtyTo60: "30–60 minutes"
-        case .overHour: "Over an hour"
+        case .overHour: L10n.tr("Over an hour")
         }
     }
     public var symbol: String {
@@ -146,11 +147,11 @@ public enum MorningGoal: String, Codable, CaseIterable, Sendable, Identifiable {
     public var id: String { rawValue }
     public var title: String {
         switch self {
-        case .onTime: "Be on time, every time"
-        case .workout: "Work out before my day"
-        case .quietTime: "Have quiet time for me"
-        case .getAhead: "Get ahead on my day"
-        case .feelAwake: "Feel awake, not a zombie"
+        case .onTime: L10n.tr("Be on time, every time")
+        case .workout: L10n.tr("Work out before my day")
+        case .quietTime: L10n.tr("Have quiet time for me")
+        case .getAhead: L10n.tr("Get ahead on my day")
+        case .feelAwake: L10n.tr("Feel awake, not a zombie")
         }
     }
     public var symbol: String {
@@ -226,7 +227,7 @@ public struct OnboardingAnswers: Codable, Hashable, Sendable {
     /// The first alarm, built from the answers.
     public func firstAlarm() -> AlarmPlan {
         let ready = chosenMissions.filter(\.isReady)
-        return AlarmPlan(id: createdPlanID ?? UUID(), label: "Wake up", sound: sound, hour: hour, minute: minute,
+        return AlarmPlan(id: createdPlanID ?? UUID(), label: L10n.tr("Wake up"), sound: sound, hour: hour, minute: minute,
                          weekdays: weekdays, missions: ready.isEmpty ? [MissionConfig(kind: .math)] : ready,
                          reArmMinutes: OnboardingPersonalization.reArmMinutes(getUpTime),
                          isEnabled: true)

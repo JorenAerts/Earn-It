@@ -1,5 +1,6 @@
 import Core
 import Foundation
+import Localization
 import Observation
 import os
 
@@ -202,7 +203,7 @@ public final class AlarmCoordinator {
             }
             lastError = nil
         } catch {
-            lastError = "Could not schedule alarm: \(error.localizedDescription)"
+            lastError = L10n.tr("Could not schedule alarm: \(error.localizedDescription)")
         }
     }
 
@@ -263,7 +264,7 @@ public final class AlarmCoordinator {
                 setOwner(plan.id, of: followUp)
                 log.info("re-armed attempt=\(attempt) at=\(date, privacy: .public)")
             } catch {
-                lastError = "Could not re-arm: \(error.localizedDescription)"
+                lastError = L10n.tr("Could not re-arm: \(error.localizedDescription)")
             }
         }
         persist(s)
@@ -299,7 +300,7 @@ public final class AlarmCoordinator {
     /// Test ring for `planID` (or the first alarm) in `seconds`.
     public func debugRing(inSeconds seconds: TimeInterval, planID: UUID? = nil, sound override: SoundChoice? = nil) async {
         guard let plan = plan(id: planID) ?? plans.first else {
-            lastError = "Add an alarm first."
+            lastError = L10n.tr("Add an alarm first.")
             return
         }
         let id = UUID()
@@ -308,7 +309,7 @@ public final class AlarmCoordinator {
                                                title: plan.alarmTitle, sound: override ?? plan.sound)
             setOwner(plan.id, of: id)
         } catch {
-            lastError = "Could not schedule test alarm: \(error.localizedDescription)"
+            lastError = L10n.tr("Could not schedule test alarm: \(error.localizedDescription)")
         }
     }
 

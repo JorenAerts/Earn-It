@@ -1,5 +1,6 @@
 import Coach
 import Core
+import Localization
 import Missions
 import SwiftUI
 import Telemetry
@@ -122,7 +123,7 @@ struct MissionRunnerView: View {
                 .background(LinearGradient(colors: [.orange, .red.opacity(0.85)], startPoint: .top, endPoint: .bottom),
                             in: .rect(cornerRadius: 14))
             VStack(alignment: .leading, spacing: 2) {
-                Text(run.backedUp.contains(run.index) ? "Backup mission" : config.kind.displayName)
+                Text(run.backedUp.contains(run.index) ? L10n.tr("Backup mission") : config.kind.displayName)
                     .font(.headline)
                 Text(config.instruction).font(.subheadline).foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)

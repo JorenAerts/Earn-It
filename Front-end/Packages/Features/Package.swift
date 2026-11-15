@@ -5,7 +5,7 @@ let package = Package(
     name: "Features",
     platforms: [.iOS("26.1")],
     products: [.library(name: "Features", targets: ["Features"])],
-    dependencies: [
+    dependencies: [.package(path: "../Localization"),
         .package(path: "../Core"),
         .package(path: "../AlarmEngine"),
         .package(path: "../Missions"),
@@ -17,5 +17,5 @@ let package = Package(
         .package(path: "../Buddies"),
         .package(path: "../Telemetry"),
     ],
-    targets: [.target(name: "Features", dependencies: ["Core", "AlarmEngine", "Missions", "Purchases", "Account", "Coach", "WidgetShared", "Permissions", "Buddies", "Telemetry"])]
+    targets: [.target(name: "Features", dependencies: ["Localization", "Core", "AlarmEngine", "Missions", "Purchases", "Account", "Coach", "WidgetShared", "Permissions", "Buddies", "Telemetry"])]
 )

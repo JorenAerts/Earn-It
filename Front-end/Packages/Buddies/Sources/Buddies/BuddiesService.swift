@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 
 public enum BuddiesError: LocalizedError, Equatable {
     case signedOut
@@ -7,8 +8,8 @@ public enum BuddiesError: LocalizedError, Equatable {
 
     public var errorDescription: String? {
         switch self {
-        case .signedOut: "Sign in to use Buddies."
-        case .unavailable: "Buddies isn't available in this build."
+        case .signedOut: L10n.tr("Sign in to use Buddies.")
+        case .unavailable: L10n.tr("Buddies isn't available in this build.")
         case .message(let text): text
         }
     }

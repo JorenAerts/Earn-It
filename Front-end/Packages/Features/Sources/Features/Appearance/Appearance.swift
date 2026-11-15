@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 import Observation
 import SwiftUI
 import UIKit
@@ -13,9 +14,9 @@ public enum AppearancePreference: String, CaseIterable, Codable, Sendable, Ident
 
     public var title: String {
         switch self {
-        case .light: "Light"
-        case .dark: "Dark"
-        case .system: "Match iPhone"
+        case .light: L10n.tr("Light")
+        case .dark: L10n.tr("Dark")
+        case .system: L10n.tr("Match iPhone")
         }
     }
 
@@ -38,11 +39,11 @@ public enum AppIconChoice: String, CaseIterable, Codable, Sendable, Identifiable
 
     public var title: String {
         switch self {
-        case .slime: "Classic"
-        case .mint: "Mint"
-        case .grape: "Grape"
-        case .midnight: "Midnight"
-        case .gold: "Gold"
+        case .slime: L10n.tr("Classic")
+        case .mint: L10n.tr("Mint")
+        case .grape: L10n.tr("Grape")
+        case .midnight: L10n.tr("Midnight")
+        case .gold: L10n.tr("Gold")
         }
     }
 
@@ -120,13 +121,13 @@ public final class AppearanceSettings {
 
     /// Changes the home-screen icon. iOS shows its own confirmation alert.
     public func setIcon(_ choice: AppIconChoice) async -> String? {
-        guard UIApplication.shared.supportsAlternateIcons else { return "This device can't change app icons." }
+        guard UIApplication.shared.supportsAlternateIcons else { return L10n.tr("This device can't change app icons.") }
         do {
             try await UIApplication.shared.setAlternateIconName(choice.alternateIconName)
             icon = choice
             return nil
         } catch {
-            return "Couldn't change the icon: \(error.localizedDescription)"
+            return L10n.tr("Couldn't change the icon: \(error.localizedDescription)")
         }
     }
 }

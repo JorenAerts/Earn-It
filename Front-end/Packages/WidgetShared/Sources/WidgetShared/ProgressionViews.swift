@@ -1,4 +1,5 @@
 import Coach
+import Localization
 import SwiftUI
 
 /// Evolution stage badge: a mini Gloop in a soft circle, bigger and better dressed each stage.
@@ -115,6 +116,7 @@ public struct MedalTile: View {
         .frame(maxWidth: .infinity)
         .opacity(earned ? 1 : 0.75)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("Sticker \(medal.title), \(earned ? "collected" : "locked"). \(medal.requirement)")
+        .accessibilityLabel(earned ? L10n.tr("Sticker \(medal.title), collected. \(medal.requirement)")
+                                   : L10n.tr("Sticker \(medal.title), locked. \(medal.requirement)"))
     }
 }

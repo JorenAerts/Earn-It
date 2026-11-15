@@ -1,0 +1,52 @@
+{
+  "idle": {
+    "gentle": ["Alles bereit für {time}. Schlaf gut, {name}!", "Bis {time}. Ich bin der, der hüpft.", "Bereit, wenn du es bist. Morgen um {time}.", "Gute Nacht, {name}. Bis {time}."],
+    "toughLove": ["Punkt {time}, {name}. Lass mich nicht durchhängen.", "Wecker steht auf {time}. Ich passe auf. Wackelnd, aber ich passe auf.", "Ruh dich aus. Morgen um {time} hüpfen wir.", "Licht aus, {name}. Punkt {time}."],
+    "savage": ["{time}. Nicht {time} und fünfmal Schlummern. {time}.", "Ich kenne deine Bilanz. Ich bin um {time} da.", "Genieß deine Freiheit. Sie endet um {time}.", "{name}. {time}. Leg dich nicht mit mir an."]
+  },
+  "night": {
+    "gentle": ["Zeit zum Runterkommen. Dein Wecker für {time} ist bereit.", "Bald das Handy weg? {time} kommt schnell.", "Träum süß. Ich wecke dich um {time}."],
+    "toughLove": ["Schlafenszeit. Dein Ich um {time} wird es dir danken.", "Scrollst du noch? {time} rückt nicht nach hinten, weißt du.", "Jetzt schlafen, um {time} hüpfen. So ist der Deal."],
+    "savage": ["Geh schlafen. Ich schmelze morgen nicht wegen dir.", "Jede Minute, die du jetzt scrollst, ist ein Schlummern um {time}.", "Bett. Jetzt. Wir sehen uns um {time}, keine Ausreden."]
+  },
+  "noAlarm": {
+    "gentle": ["Noch kein Wecker gestellt. Wollen wir einen hinzufügen?", "Ich bin bereit, wenn du es bist. Stell einfach einen Wecker.", "Tippe auf +, um deinen ersten Wecker zu stellen."],
+    "toughLove": ["Kein Wecker? Wer weckt dich dann? Ich anscheinend nicht.", "Ein Schleim ohne Job. Stell einen Wecker, {name}.", "Ohne Wecker kann ich dir nicht helfen."],
+    "savage": ["Kein Wecker gestellt. Mutige Strategie.", "Ein Schleim ohne Wecker ist nur eine Pfütze mit Augen.", "Stell einen Wecker, oder ich schmelze vor Langeweile."]
+  },
+  "ringing": {
+    "gentle": ["Guten Morgen! Lass uns zusammen aufstehen.", "Aufstehen, {name}! Eine Mission und du bist fertig.", "Morgen! Ich hüpfe schon. Du bist dran."],
+    "toughLove": ["AUF! Der Tag fängt nicht von selbst an.", "Füße auf den Boden, {name}. Jetzt.", "Ring ring! Das ist dein Zeichen."],
+    "savage": ["Wach auf. Ich bin nicht die ganze Nacht in Form geblieben, damit du so was machst.", "Steh auf, bevor ich auf dein Kissen tropfe.", "Aufstehen. Strahlen. In dieser Reihenfolge. Jetzt."]
+  },
+  "reRing": {
+    "gentle": ["Noch ein Klingeln. Du kannst den Morgen noch drehen.", "Klingeln {rings}. Lass uns die Mission zusammen machen.", "Fast geschafft. Eine Mission und ich blühe wieder auf."],
+    "toughLove": ["Klingeln {rings}. Ich fange an durchzuhängen.", "Jedes Schlummern macht mich schlapper. Steh. Auf.", "{rings}-mal geklingelt. Ich schmelze buchstäblich."],
+    "savage": ["Klingeln Nummer {rings}. Ich bin eine Pfütze und du bist schuld.", "{rings}-mal geklingelt. Ich habe Wackelpudding mit mehr Antrieb gesehen.", "Noch einmal Schlummern und ich erzähl’s deiner Mutter."]
+  },
+  "missionSuccess": {
+    "gentle": ["Geschafft! Einen schönen Tag.", "Schau mich hüpfen! Danke, {name}.", "Wach und auf den Beinen. So sollte ein Morgen sein.", "Gut gemacht, {name}. Hab einen tollen Tag."],
+    "toughLove": ["So macht man das. Ich hüpfe!", "Mission erfüllt. Siehst du? Gar nicht so schwer.", "Gute Arbeit, {name}. Ich fühle mich zehnmal fester.", "Auf und verdient. Respekt."],
+    "savage": ["Na gut. Du hast es verdient. Knapp.", "Hat ja lange genug gedauert. Aber ich nehm’s.", "Sieh mal, wer es endlich geschafft hat. Ich bin fast beeindruckt.", "Na gut, {name}. Verdient. Knapp."]
+  },
+  "firstTry": {
+    "gentle": ["Erstes Klingeln! Ich bin so stolz auf dich.", "Auf Anhieb wach. Wunderbar!", "Null Schlummern. Ich funkle!"],
+    "toughLove": ["Erstes Klingeln! So sieht ein Morgen aus.", "Kein Schlummern? Wer bist du und was hast du mit {name} gemacht?", "Auf Anhieb. Ich hüpfe die Wände hoch."],
+    "savage": ["Erstes Klingeln? Hat jemand anders deinen Wecker gestellt?", "Null Schlummern. Lass es dir nicht zu Kopf steigen.", "Auf Anhieb. Rot im Kalender anstreichen."]
+  },
+  "streakMilestone": {
+    "gentle": ["{streak} Tage in Folge. Du bist großartig!", "Serie von {streak} Tagen. Schau, wie ich hüpfe!", "{streak} Morgen am Stück. So stolz auf dich."],
+    "toughLove": ["{streak} Tage am Stück! So fest war ich noch nie.", "Serie von {streak} Tagen. Bleib dran.", "{streak} Tage. Wehe, du brichst sie."],
+    "savage": ["{streak} Tage. Okay, ich bin beeindruckt. Ein bisschen.", "Serie von {streak} Tagen. Wer hätte das gedacht?", "{streak} Tage. Brich sie, und ich schmelze absichtlich."]
+  },
+  "failSafe": {
+    "gentle": ["Der Wecker hat diesmal aufgegeben. Morgen ist ein neuer Anfang.", "Harter Morgen. Ich hänge etwas durch, aber wir versuchen es wieder.", "Der ist uns entwischt. Den nächsten kriegen wir."],
+    "toughLove": ["Der Wecker hat aufgegeben. Ich bin eine Pfütze. Morgen bringen wir das in Ordnung.", "Du hast den Sicherheitsstopp verschlafen. Ich bin nicht sauer, nur geschmolzen.", "Das war daneben. Morgen machst du es wieder gut."],
+    "savage": ["Sicherheitsstopp. Ich bin in den Teppich geschmolzen. Danke.", "Du hast den Wecker überdauert. Das ist nicht die Leistung, für die du es hältst.", "Eine ganze Pfütze voller Enttäuschung. Morgen. Mach’s besser."]
+  },
+  "streakBroken": {
+    "gentle": ["Die Serie ist vorbei, aber morgen kannst du eine neue starten.", "Jeder rutscht mal aus. Lass uns zurückhüpfen.", "Eine neue Serie beginnt mit dem nächsten Wecker."],
+    "toughLove": ["Serie gebrochen. Ich sacke zusammen. Bauen wir sie wieder auf.", "Zurück auf Tag null. Lass morgen zählen.", "Diese Serie hat mich in Form gehalten, {name}."],
+    "savage": ["Serie weg. Ich schmelze vor Scham.", "Die ganze Arbeit, weg. Zurück im Pfützenmodus.", "Null Tage. Reden wir nicht drüber. Steh morgen einfach auf."]
+  }
+}

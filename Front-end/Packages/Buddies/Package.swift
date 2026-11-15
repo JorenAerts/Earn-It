@@ -5,14 +5,14 @@ let package = Package(
     name: "Buddies",
     platforms: [.iOS("26.1")],
     products: [.library(name: "Buddies", targets: ["Buddies"])],
-    dependencies: [
+    dependencies: [.package(path: "../Localization"),
         .package(path: "../Core"),
         .package(path: "../Coach"),
         .package(path: "../Account"),
         .package(url: "https://github.com/supabase/supabase-swift", from: "2.55.0"),
     ],
     targets: [
-        .target(name: "Buddies", dependencies: [
+        .target(name: "Buddies", dependencies: ["Localization",
             "Core", "Coach", "Account",
             .product(name: "Supabase", package: "supabase-swift"),
         ]),

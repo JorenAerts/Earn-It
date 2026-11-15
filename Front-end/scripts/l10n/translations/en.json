@@ -1,0 +1,131 @@
+{
+  "_comment": "English plural forms only (keys are the English 'other' form). Format: key → {one, other}.",
+  "%lld codes": {
+    "one": "%lld code",
+    "other": "%lld codes"
+  },
+  "%lld days": {
+    "one": "%lld day",
+    "other": "%lld days"
+  },
+  "%lld days free": {
+    "one": "%lld day free",
+    "other": "%lld days free"
+  },
+  "%lld items": {
+    "one": "%lld item",
+    "other": "%lld items"
+  },
+  "%lld members": {
+    "one": "%lld member",
+    "other": "%lld members"
+  },
+  "%lld months free": {
+    "one": "%lld month free",
+    "other": "%lld months free"
+  },
+  "%lld problems": {
+    "one": "%lld problem",
+    "other": "%lld problems"
+  },
+  "%lld problems · %@": {
+    "one": "%lld problem · %@",
+    "other": "%lld problems · %@"
+  },
+  "%lld shakes": {
+    "one": "%lld shake",
+    "other": "%lld shakes"
+  },
+  "%lld shakes · %@": {
+    "one": "%lld shake · %@",
+    "other": "%lld shakes · %@"
+  },
+  "%lld stickers": {
+    "one": "%lld sticker",
+    "other": "%lld stickers"
+  },
+  "%lld weeks free": {
+    "one": "%lld week free",
+    "other": "%lld weeks free"
+  },
+  "%lld years free": {
+    "one": "%lld year free",
+    "other": "%lld years free"
+  },
+  "Give up after %lld re-rings": {
+    "one": "Give up after %lld re-ring",
+    "other": "Give up after %lld re-rings"
+  },
+  "Private · %lld members": {
+    "one": "Private · %lld member",
+    "other": "Private · %lld members"
+  },
+  "Public · %lld members": {
+    "one": "Public · %lld member",
+    "other": "Public · %lld members"
+  },
+  "Shake your phone %lld times.": {
+    "one": "Shake your phone once.",
+    "other": "Shake your phone %lld times."
+  },
+  "Solve %lld problems in a row.": {
+    "one": "Solve %lld problem.",
+    "other": "Solve %lld problems in a row."
+  },
+  "Streak: %lld days": {
+    "one": "Streak: %lld day",
+    "other": "Streak: %lld days"
+  },
+  "Up at %@ · %lld rings": {
+    "one": "Up at %@ · %lld ring",
+    "other": "Up at %@ · %lld rings"
+  },
+  "You have %lld sounds. Delete one first.": {
+    "one": "You have %lld sound. Delete one first.",
+    "other": "You have %lld sounds. Delete one first."
+  },
+  "every %lld days": {
+    "one": "every day",
+    "other": "every %lld days"
+  },
+  "every %lld months": {
+    "one": "every month",
+    "other": "every %lld months"
+  },
+  "every %lld weeks": {
+    "one": "every week",
+    "other": "every %lld weeks"
+  },
+  "every %lld years": {
+    "one": "every year",
+    "other": "every %lld years"
+  },
+  "/%lld days": {
+    "one": "/day",
+    "other": "/%lld days"
+  },
+  "/%lld months": {
+    "one": "/month",
+    "other": "/%lld months"
+  },
+  "/%lld weeks": {
+    "one": "/week",
+    "other": "/%lld weeks"
+  },
+  "/%lld years": {
+    "one": "/year",
+    "other": "/%lld years"
+  },
+  "%lld need attention": {
+    "one": "%lld needs attention",
+    "other": "%lld need attention"
+  },
+  "%lld mornings in a row up on time with my wake-up buddy Gloop 🟠": {
+    "one": "%lld morning up on time with my wake-up buddy Gloop 🟠",
+    "other": "%lld mornings in a row up on time with my wake-up buddy Gloop 🟠"
+  },
+  "Your %lld-day streak is on the line.": {
+    "one": "Your %lld-day streak is on the line.",
+    "other": "Your %lld-day streak is on the line."
+  }
+}

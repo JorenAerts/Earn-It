@@ -1,8 +1,9 @@
 import AlarmEngine
 import Core
+import Localization
 import MusicKit
-import Purchases
 import Permissions
+import Purchases
 import SwiftUI
 import Telemetry
 import UniformTypeIdentifiers
@@ -31,7 +32,7 @@ struct SoundPickerView: View {
     var body: some View {
         List {
             ForEach(AlarmSound.Category.allCases, id: \.self) { category in
-                Section(category.rawValue) {
+                Section(category.title) {
                     ForEach(AlarmSound.allCases.filter { $0.category == category }) { sound in
                         row(.builtIn(sound), title: sound.displayName, subtitle: sound.credit, locked: gate.isLocked(sound))
                     }
@@ -55,8 +56,8 @@ struct SoundPickerView: View {
                             .tint(.orange)
                         }
                 }
-                ownSoundButton("Import a file", symbol: "square.and.arrow.down") { importing = true }
-                ownSoundButton("Record your own", symbol: "mic.fill") {
+                ownSoundButton(L10n.tr("Import a file"), symbol: "square.and.arrow.down") { importing = true }
+                ownSoundButton(L10n.tr("Record your own"), symbol: "mic.fill") {
                     Task { if await PermissionCenter.shared.ensure(.microphone) { recording = true } }
                 }
                 if let importError {
@@ -84,7 +85,7 @@ struct SoundPickerView: View {
                     NavigationLink {
                         AppleMusicSearchView(selection: $selection)
                     } label: {
-                        Label(selection.isAppleMusic ? "Choose another song" : "Choose a song", systemImage: "music.note")
+                        Label(selection.isAppleMusic ? L10n.tr("Choose another song") : L10n.tr("Choose a song"), systemImage: "music.note")
                     }
                 }
             } header: {
@@ -156,7 +157,7 @@ struct SoundPickerView: View {
     private func ownSoundButton(_ title: String, symbol: String, action: @escaping () -> Void) -> some View {
         Button {
             if !gate.isPro { showPaywall = true }
-            else if mySounds.isFull { importError = "You have \(CustomSoundLibrary.maxSounds) sounds. Delete one first." }
+            else if mySounds.isFull { importError = L10n.tr("You have \(CustomSoundLibrary.maxSounds) sounds. Delete one first.") }
             else { action() }
         } label: {
             HStack {
@@ -176,7 +177,7 @@ struct SoundPickerView: View {
             try FileManager.default.copyItem(at: url, to: copy)
             importedURL = ImportedFile(url: copy, name: url.deletingPathExtension().lastPathComponent)
         } catch {
-            importError = "Couldn't open the file: \(error.localizedDescription)"
+            importError = L10n.tr("Couldn't open the file: \(error.localizedDescription)")
         }
     }
 }
@@ -251,7 +252,7 @@ struct AppleMusicSearchView: View {
                     Text("Search for a song to wake up to.").foregroundStyle(.secondary)
                 }
             case .denied, .restricted:
-                PermissionBanner(kind: .appleMusic, message: "Apple Music access is off for Gloop, so songs can't be searched or played.")
+                PermissionBanner(kind: .appleMusic, message: L10n.tr("Apple Music access is off for Gloop, so songs can't be searched or played."))
             default:
                 Button("Allow Apple Music") {
                     Task {
@@ -281,7 +282,7 @@ struct AppleMusicSearchView: View {
             songs = try await request.response().songs
             error = nil
         } catch {
-            self.error = "Apple Music isn't available right now. (It needs the paid Apple Developer Program with the MusicKit service.)"
+            self.error = L10n.tr("Apple Music isn't available right now. (It needs the paid Apple Developer Program with the MusicKit service.)")
         }
     }
 }
@@ -310,7 +311,7 @@ private struct AppleMusicSongView: View {
             Section {
                 Slider(value: $start, in: 0...max(1, maxStart), step: 1) { Text("Start") }
                 Text("Starts at \(Int(start) / 60):\(String(format: "%02d", Int(start) % 60))").font(.subheadline.monospacedDigit())
-                Button(previewing ? "Stop preview" : "Preview from here") { Task { await togglePreview() } }
+                Button(previewing ? L10n.tr("Stop preview") : L10n.tr("Preview from here")) { Task { await togglePreview() } }
             } header: {
                 Text("Start the song at")
             }

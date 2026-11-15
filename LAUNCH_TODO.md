@@ -134,3 +134,7 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 ### Later (recommended)
 - [ ] App Store Server Notifications → Supabase function → `subscriptions` table
       (purchases already carry the Supabase user ID as `appAccountToken`).
+
+## Languages (remaining)
+- Translate the remaining 26 languages + App Store listing per language — steps and list in `docs/Localization/README.md`.
+- Have a native speaker review at least Dutch, French, German, Spanish, Portuguese (incl. the legal documents) before launch; then set `"_reviewed": true` in their translation file.

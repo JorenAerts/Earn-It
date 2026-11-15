@@ -1,6 +1,7 @@
 import AlarmEngine
 import Coach
 import Core
+import Localization
 import Permissions
 import SwiftUI
 import Telemetry
@@ -9,21 +10,25 @@ import UIKit
 // MARK: - Welcome
 
 struct WelcomeStep: View {
+    var language = LanguageSettings.shared
     let canSignIn: Bool
     let onSignIn: () -> Void
     let onNext: () -> Void
 
     private let points: [(String, String)] = [
-        ("alarm.fill", "An alarm that keeps ringing until you're up"),
-        ("brain.head.profile", "A quick mission proves you're awake"),
-        ("flame.fill", "Streaks, evolutions and buddies keep you going"),
+        ("alarm.fill", L10n.tr("An alarm that keeps ringing until you're up")),
+        ("brain.head.profile", L10n.tr("A quick mission proves you're awake")),
+        ("flame.fill", L10n.tr("Streaks, evolutions and buddies keep you going")),
     ]
 
     var body: some View {
         OnboardingPage {
             VStack(spacing: 22) {
+                HStack {
+                    Spacer()
+                    LanguageButton(settings: language)
+                }
                 CoachAvatarView(state: CoachState(mood: .proud, context: .idle), size: 150, vitality: 0.95)
-                    .padding(.top, 20)
                 Text("Waking up,\nearned.")
                     .font(.system(size: 44, weight: .heavy, design: .rounded))
                     .multilineTextAlignment(.center)
@@ -42,7 +47,7 @@ struct WelcomeStep: View {
             }
             .frame(maxWidth: .infinity)
         } footer: {
-            PrimaryButton(title: "Get started", action: onNext)
+            PrimaryButton(title: L10n.tr("Get started"), action: onNext)
             if canSignIn {
                 HStack(spacing: 4) {
                     Text("Already have an account?").foregroundStyle(.secondary)
@@ -63,8 +68,8 @@ struct NameStep: View {
     @FocusState private var focused: Bool
 
     var body: some View {
-        OnboardingPage(title: "What should \(CoachIdentity.name) call you?",
-                       subtitle: "Your first name or a nickname. Used in your coach's lines and your profile.") {
+        OnboardingPage(title: L10n.tr("What should \(CoachIdentity.name) call you?"),
+                       subtitle: L10n.tr("Your first name or a nickname. Used in your coach's lines and your profile.")) {
             TextField("Your name", text: $answers.name)
                 .font(.title2.weight(.semibold))
                 .textContentType(.givenName)
@@ -76,7 +81,7 @@ struct NameStep: View {
             CoachBubble(line: OnboardingPersonalization.coachReaction(to: .name, answers: answers) ?? "",
                         mood: answers.name.isEmpty ? .suspicious : .proud)
         } footer: {
-            PrimaryButton(title: "Continue", disabled: answers.name.trimmingCharacters(in: .whitespaces).isEmpty,
+            PrimaryButton(title: L10n.tr("Continue"), disabled: answers.name.trimmingCharacters(in: .whitespaces).isEmpty,
                           action: onNext)
             Button("Skip") {
                 answers.name = ""
@@ -95,7 +100,7 @@ struct StrugglesStep: View {
     let onNext: () -> Void
 
     var body: some View {
-        OnboardingPage(title: "What keeps you in bed after your alarm?", subtitle: "Pick everything that sounds like you.") {
+        OnboardingPage(title: L10n.tr("What keeps you in bed after your alarm?"), subtitle: L10n.tr("Pick everything that sounds like you.")) {
             VStack(spacing: 12) {
                 ForEach(MorningStruggle.choices) { struggle in
                     let on = answers.struggles.contains(struggle)
@@ -110,7 +115,7 @@ struct StrugglesStep: View {
                 CoachBubble(line: line, mood: .suspicious)
             }
         } footer: {
-            PrimaryButton(title: "Continue", disabled: answers.struggles.isEmpty, action: onNext)
+            PrimaryButton(title: L10n.tr("Continue"), disabled: answers.struggles.isEmpty, action: onNext)
         }
     }
 }
@@ -121,13 +126,13 @@ struct WhyItWorksStep: View {
     let onNext: () -> Void
 
     var body: some View {
-        OnboardingPage(title: "Gloop gets you out of bed and wide awake") {
+        OnboardingPage(title: L10n.tr("Gloop gets you out of bed and wide awake")) {
             EnergyChart()
             Text("Snoozing drops you back into sleep you can't finish, so every extra ring tends to leave you groggier. One alarm and a short mission gets your brain and body going at once.")
                 .font(.subheadline).foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         } footer: {
-            PrimaryButton(title: "Continue", action: onNext)
+            PrimaryButton(title: L10n.tr("Continue"), action: onNext)
         }
     }
 }
@@ -149,7 +154,7 @@ struct WakeTimeStep: View {
     }
 
     var body: some View {
-        OnboardingPage(title: "What time do you want to be up?") {
+        OnboardingPage(title: L10n.tr("What time do you want to be up?")) {
             VStack(spacing: 6) {
                 Text(answers.timeText)
                     .font(.system(size: 76, weight: .bold, design: .rounded))
@@ -167,7 +172,7 @@ struct WakeTimeStep: View {
             }
             CoachBubble(line: OnboardingPersonalization.coachReaction(to: .wakeTime, answers: answers) ?? "")
         } footer: {
-            PrimaryButton(title: "Continue", disabled: answers.weekdays.isEmpty, action: onNext)
+            PrimaryButton(title: L10n.tr("Continue"), disabled: answers.weekdays.isEmpty, action: onNext)
         }
     }
 }
@@ -179,11 +184,11 @@ struct ComparisonStep: View {
     let onNext: () -> Void
 
     var body: some View {
-        OnboardingPage(title: "Let's get you out of bed",
-                       subtitle: "No more stacking alarms. One alarm that doesn't give up.") {
+        OnboardingPage(title: L10n.tr("Let's get you out of bed"),
+                       subtitle: L10n.tr("No more stacking alarms. One alarm that doesn't give up.")) {
             AlarmComparison(hour: answers.hour, minute: answers.minute)
         } footer: {
-            PrimaryButton(title: "Continue", action: onNext)
+            PrimaryButton(title: L10n.tr("Continue"), action: onNext)
         }
     }
 }
@@ -204,8 +209,8 @@ struct PermissionsStep: View {
                     .font(.largeTitle.bold()).multilineTextAlignment(.center)
                     .padding(.top, 20)
                 HStack(spacing: 22) {
-                    badge("Alarms", symbol: "alarm.fill", tint: .orange, kind: .alarms)
-                    badge("Notifications", symbol: "bell.badge.fill", tint: .red, kind: .notifications)
+                    badge(L10n.tr("Alarms"), symbol: "alarm.fill", tint: .orange, kind: .alarms)
+                    badge(L10n.tr("Notifications"), symbol: "bell.badge.fill", tint: .red, kind: .notifications)
                 }
                 PermissionIllustration()
                     .padding(.bottom, 30)
@@ -215,12 +220,12 @@ struct PermissionsStep: View {
             .frame(maxWidth: .infinity)
         } footer: {
             if center.isGranted(.alarms) {
-                PrimaryButton(title: "Continue", action: onNext)
+                PrimaryButton(title: L10n.tr("Continue"), action: onNext)
             } else if center.status(.alarms) == .denied {
-                PrimaryButton(title: "Open Settings") { center.openSettings(.alarms) }
+                PrimaryButton(title: L10n.tr("Open Settings")) { center.openSettings(.alarms) }
                 Button("Continue anyway", action: onNext).foregroundStyle(.secondary)
             } else {
-                PrimaryButton(title: "Allow") { Task { await requestAll() } }
+                PrimaryButton(title: L10n.tr("Allow")) { Task { await requestAll() } }
             }
         }
         .task { await center.refresh() }

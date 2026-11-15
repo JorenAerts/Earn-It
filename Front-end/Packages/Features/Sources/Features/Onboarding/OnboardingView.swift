@@ -2,6 +2,7 @@ import Account
 import AlarmEngine
 import Coach
 import Core
+import Localization
 import Permissions
 import Purchases
 import SwiftUI
@@ -69,7 +70,7 @@ struct OnboardingView: View {
             if progress.step == .account { advance() }
         }
         .sheet(isPresented: $showSignIn) {
-            AccountStepView(auth: auth, skipTitle: "Not now") { showSignIn = false }
+            AccountStepView(auth: auth, skipTitle: L10n.tr("Not now")) { showSignIn = false }
                 .presentationDragIndicator(.visible)
         }
     }
@@ -110,16 +111,16 @@ struct OnboardingView: View {
         case .name:
             NameStep(answers: answers, onNext: advance)
         case .ageRange:
-            SingleChoiceStep(title: "What's your age range?", subtitle: "Helps us build Gloop for people like you.",
+            SingleChoiceStep(title: L10n.tr("What's your age range?"), subtitle: L10n.tr("Helps us build Gloop for people like you."),
                              options: AgeRange.allCases, selection: answers.ageRange,
                              label: \.title, symbol: \.symbol, onNext: advance)
         case .heardFrom:
-            SingleChoiceStep(title: "Where did you hear about us?", options: HeardFrom.allCases,
+            SingleChoiceStep(title: L10n.tr("Where did you hear about us?"), options: HeardFrom.allCases,
                              selection: answers.heardFrom, label: \.title, symbol: \.symbol,
                              coachLine: OnboardingPersonalization.coachReaction(to: .heardFrom, answers: progress.answers),
                              onNext: advance)
         case .alarmReaction:
-            SingleChoiceStep(title: "What goes through your head when your alarm rings?",
+            SingleChoiceStep(title: L10n.tr("What goes through your head when your alarm rings?"),
                              options: AlarmReaction.allCases, selection: answers.reaction,
                              label: \.title, symbol: \.symbol,
                              coachLine: OnboardingPersonalization.coachReaction(to: .alarmReaction, answers: progress.answers),
@@ -127,14 +128,14 @@ struct OnboardingView: View {
         case .whyItWorks:
             WhyItWorksStep(onNext: advance)
         case .getUpTime:
-            SingleChoiceStep(title: "How much time until you actually get up?", options: GetUpTime.allCases,
+            SingleChoiceStep(title: L10n.tr("How much time until you actually get up?"), options: GetUpTime.allCases,
                              selection: answers.getUpTime, label: \.title, symbol: \.symbol,
                              coachLine: OnboardingPersonalization.coachReaction(to: .getUpTime, answers: progress.answers),
                              onNext: advance)
         case .struggles:
             StrugglesStep(answers: answers, onNext: advance)
         case .goal:
-            SingleChoiceStep(title: "What would you do with that time back?", options: MorningGoal.allCases,
+            SingleChoiceStep(title: L10n.tr("What would you do with that time back?"), options: MorningGoal.allCases,
                              selection: answers.goal, label: \.title, symbol: \.symbol,
                              coachLine: OnboardingPersonalization.coachReaction(to: .goal, answers: progress.answers),
                              onNext: advance)

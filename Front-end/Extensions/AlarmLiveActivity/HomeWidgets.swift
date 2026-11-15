@@ -46,6 +46,7 @@ struct StreakWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: WidgetIDs.streak, provider: SnapshotProvider()) { entry in
             StreakWidgetView(snapshot: entry.snapshot, date: entry.date)
+                .environment(\.locale, WidgetLanguage.apply())
                 .containerBackground(for: .widget) { WidgetBackground() }
                 .widgetURL(WidgetIDs.progressURL)
         }
@@ -60,6 +61,7 @@ struct StreakRankWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: WidgetIDs.streakRank, provider: SnapshotProvider()) { entry in
             StreakRankWidgetView(snapshot: entry.snapshot, date: entry.date)
+                .environment(\.locale, WidgetLanguage.apply())
                 .containerBackground(for: .widget) { WidgetBackground() }
                 .widgetURL(entry.snapshot?.isPro == false ? WidgetIDs.paywallURL : WidgetIDs.progressURL)
         }
@@ -74,6 +76,7 @@ struct ServiceRecordWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: WidgetIDs.serviceRecord, provider: SnapshotProvider()) { entry in
             ServiceRecordWidgetView(snapshot: entry.snapshot, date: entry.date)
+                .environment(\.locale, WidgetLanguage.apply())
                 .containerBackground(for: .widget) { WidgetBackground() }
                 .widgetURL(entry.snapshot?.isPro == false ? WidgetIDs.paywallURL : WidgetIDs.progressURL)
         }
@@ -88,6 +91,7 @@ struct LockStreakWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: WidgetIDs.lockStreak, provider: SnapshotProvider()) { entry in
             LockStreakView(snapshot: entry.snapshot, date: entry.date)
+                .environment(\.locale, WidgetLanguage.apply())
                 .containerBackground(for: .widget) { Color.clear }
                 .widgetURL(WidgetIDs.progressURL)
         }
@@ -102,6 +106,7 @@ struct LockStreakRankWidget: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: WidgetIDs.lockStreakRank, provider: SnapshotProvider()) { entry in
             LockStreakRankView(snapshot: entry.snapshot, date: entry.date)
+                .environment(\.locale, WidgetLanguage.apply())
                 .containerBackground(for: .widget) { Color.clear }
                 .widgetURL(WidgetIDs.progressURL)
         }

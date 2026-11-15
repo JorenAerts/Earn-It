@@ -1,3 +1,4 @@
+import Localization
 import Purchases
 import StoreKit
 import SwiftUI
@@ -104,17 +105,17 @@ struct PaywallView: View {
 
     private var headline: String {
         if store.isEligibleForTrial, let trial = trialText(for: anySubscription) {
-            return "Try Gloop Pro — \(trial)"
+            return L10n.tr("Try Gloop Pro — \(trial)")
         }
-        return "Unlock Gloop Pro"
+        return L10n.tr("Unlock Gloop Pro")
     }
 
     private var features: some View {
         VStack(alignment: .leading, spacing: 12) {
-            featureRow("alarm.fill", "Unlimited alarms", "Weekdays, weekends, gym days — each with its own setup.")
-            featureRow("qrcode.viewfinder", "Every mission", "Scan a code in another room, shake it awake, and more to come.")
-            featureRow("speaker.wave.3.fill", "All alarm sounds", "Chime, siren, digital, deep pulse.")
-            featureRow("lock.open.fill", "Everything new", "App locking and stats as they arrive.")
+            featureRow("alarm.fill", L10n.tr("Unlimited alarms"), L10n.tr("Weekdays, weekends, gym days — each with its own setup."))
+            featureRow("qrcode.viewfinder", L10n.tr("Every mission"), L10n.tr("Scan a code in another room, shake it awake, and more to come."))
+            featureRow("speaker.wave.3.fill", L10n.tr("All alarm sounds"), L10n.tr("Chime, siren, digital, deep pulse."))
+            featureRow("lock.open.fill", L10n.tr("Everything new"), L10n.tr("App locking and stats as they arrive."))
         }
         .padding(16)
         .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: 18))
@@ -140,7 +141,7 @@ struct PaywallView: View {
                 if store.isLoading {
                     ProgressView("Loading plans…")
                 } else {
-                    Text(store.errorMessage ?? "Plans are unavailable right now.")
+                    Text(store.errorMessage ?? L10n.tr("Plans are unavailable right now."))
                         .foregroundStyle(.secondary)
                     Button("Try again") { Task { await store.loadProducts() } }
                 }
@@ -188,7 +189,7 @@ struct PaywallView: View {
         }
 
         HStack(spacing: 16) {
-            Button(restoring ? "Restoring…" : "Restore") { restore() }
+            Button(restoring ? L10n.tr("Restoring…") : L10n.tr("Restore")) { restore() }
                 .disabled(restoring || purchasing)
             Text("·").foregroundStyle(.tertiary)
             Button("Terms") { legal = .terms }
@@ -209,23 +210,27 @@ struct PaywallView: View {
     }
 
     private var ctaTitle: String {
-        guard let product = selectedProduct, let plan = selectedPlan else { return "Continue" }
+        guard let product = selectedProduct, let plan = selectedPlan else { return L10n.tr("Continue") }
         if plan.isSubscription {
-            if store.isEligibleForTrial, trialText(for: product) != nil { return "Start free trial" }
-            return "Subscribe — \(product.displayPrice)\(PlanPeriod(iso: plan.period)?.perLabel ?? "")"
+            if store.isEligibleForTrial, trialText(for: product) != nil { return L10n.tr("Start free trial") }
+            let per = PlanPeriod(iso: plan.period)?.perLabel ?? ""
+            return L10n.tr("Subscribe — \(product.displayPrice)\(per)")
         }
-        return "Unlock forever — \(product.displayPrice)"
+        return L10n.tr("Unlock forever — \(product.displayPrice)")
     }
 
     /// Auto-renewal disclosure (App Review Guideline 3.1.2).
     private var disclosure: String? {
         guard let product = selectedProduct, let plan = selectedPlan else { return nil }
         guard plan.isSubscription, let period = PlanPeriod(iso: plan.period) else {
-            return "One-time purchase. No subscription, no renewals."
+            return L10n.tr("One-time purchase. No subscription, no renewals.")
         }
-        let renewal = "\(product.displayPrice) \(period.everyLabel)"
-        let start = store.isEligibleForTrial ? trialText(for: product).map { "\($0.capitalizedFirst), then " } ?? "" : ""
-        return "\(start)\(renewal). Payment is charged to your Apple ID. The subscription renews automatically unless cancelled at least 24 hours before the end of the current period. Manage or cancel anytime in Settings › Apple ID › Subscriptions."
+        let price = product.displayPrice, every = period.everyLabel
+        let rules = L10n.tr("Payment is charged to your Apple ID. The subscription renews automatically unless cancelled at least 24 hours before the end of the current period. Manage or cancel anytime in Settings › Apple ID › Subscriptions.")
+        if store.isEligibleForTrial, let trial = trialText(for: product) {
+            return L10n.tr("\(trial.capitalizedFirst), then \(price) \(every).") + " " + rules
+        }
+        return L10n.tr("\(price) \(every).") + " " + rules
     }
 
     // MARK: Actions
@@ -273,7 +278,7 @@ struct PaywallView: View {
                 Text(proStatusText).foregroundStyle(.secondary)
             }
         } footer: {
-            PrimaryButton(title: mode == .onboarding ? "Continue" : "Done", action: onFinish)
+            PrimaryButton(title: mode == .onboarding ? L10n.tr("Continue") : L10n.tr("Done"), action: onFinish)
             if !store.entitlement.isLifetime {
                 Button("Manage subscription") { showManage = true }
                     .foregroundStyle(.secondary)
@@ -284,11 +289,11 @@ struct PaywallView: View {
     private var proStatusText: String {
         switch store.entitlement {
         case .trial(let renewsAt):
-            renewsAt.map { "Your free trial runs until \($0.formatted(date: .abbreviated, time: .shortened))." }
-                ?? "Your free trial is active."
+            renewsAt.map { L10n.tr("Your free trial runs until \($0.localized(date: .abbreviated, time: .shortened)).") }
+                ?? L10n.tr("Your free trial is active.")
         case .pro(let expiresAt):
-            expiresAt.map { "Renews on \($0.formatted(date: .abbreviated, time: .omitted))." }
-                ?? "Lifetime access — thank you!"
+            expiresAt.map { L10n.tr("Renews on \($0.localized(date: .abbreviated, time: .omitted)).") }
+                ?? L10n.tr("Lifetime access — thank you!")
         case .free:
             ""
         }

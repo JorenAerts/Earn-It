@@ -1,4 +1,5 @@
 import Account
+import Localization
 import StoreKit
 import SwiftUI
 import Telemetry
@@ -11,7 +12,7 @@ struct HelpView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.requestReview) private var requestReview
 
-    static let shareMessage = "I'm using Gloop: an alarm that keeps ringing until I've actually got up. Try it!"
+    static let shareMessage = L10n.tr("I'm using Gloop: an alarm that keeps ringing until I've actually got up. Try it!")
 
     var body: some View {
         List {

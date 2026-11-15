@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 
 /// Every iOS permission Gloop uses. Adding one: a case here + mapping/request in
 /// `PermissionCenter` + an Info.plist usage string (project.yml).
@@ -13,22 +14,22 @@ public enum PermissionKind: String, CaseIterable, Sendable, Identifiable {
 
         public var label: String {
             switch self {
-            case .required: "Required"
-            case .recommended: "Recommended"
-            case .optional: "Optional"
-            case .info: "Info"
+            case .required: L10n.tr("Required")
+            case .recommended: L10n.tr("Recommended")
+            case .optional: L10n.tr("Optional")
+            case .info: L10n.tr("Info")
             }
         }
     }
 
     public var title: String {
         switch self {
-        case .alarms: "Alarms"
-        case .notifications: "Notifications"
-        case .camera: "Camera"
-        case .microphone: "Microphone"
+        case .alarms: L10n.tr("Alarms")
+        case .notifications: L10n.tr("Notifications")
+        case .camera: L10n.tr("Camera")
+        case .microphone: L10n.tr("Microphone")
         case .appleMusic: "Apple Music"
-        case .liveActivities: "Live Activities"
+        case .liveActivities: L10n.tr("Live Activities")
         }
     }
 
@@ -46,24 +47,24 @@ public enum PermissionKind: String, CaseIterable, Sendable, Identifiable {
     /// Why the app needs it, in one line.
     public var reason: String {
         switch self {
-        case .alarms: "Your alarm rings through silent mode and Focus, even when the app is closed."
-        case .notifications: "Evening reminders and a word from Gloop after a missed morning."
-        case .camera: "Scan your code or item to stop the alarm."
-        case .microphone: "Record your own alarm sound."
-        case .appleMusic: "Wake up to a song from Apple Music."
-        case .liveActivities: "Shows the re-ring countdown on the Lock Screen."
+        case .alarms: L10n.tr("Your alarm rings through silent mode and Focus, even when the app is closed.")
+        case .notifications: L10n.tr("Evening reminders and a word from Gloop after a missed morning.")
+        case .camera: L10n.tr("Scan your code or item to stop the alarm.")
+        case .microphone: L10n.tr("Record your own alarm sound.")
+        case .appleMusic: L10n.tr("Wake up to a song from Apple Music.")
+        case .liveActivities: L10n.tr("Shows the re-ring countdown on the Lock Screen.")
         }
     }
 
     /// Shown when a feature needs it but it's off.
     public var blockedMessage: String {
         switch self {
-        case .alarms: "Without alarm access your alarms can't ring. Turn on Alarms for Gloop in Settings."
-        case .notifications: "Turn on notifications for Gloop in Settings to get coach reminders."
-        case .camera: "Gloop needs the camera to scan your code or item. Turn on Camera for Gloop in Settings."
-        case .microphone: "Gloop needs the microphone to record your sound. Turn on Microphone for Gloop in Settings."
-        case .appleMusic: "Turn on Media & Apple Music for Gloop in Settings to pick a song."
-        case .liveActivities: "Turn on Live Activities for Gloop in Settings to see the re-ring countdown."
+        case .alarms: L10n.tr("Without alarm access your alarms can't ring. Turn on Alarms for Gloop in Settings.")
+        case .notifications: L10n.tr("Turn on notifications for Gloop in Settings to get coach reminders.")
+        case .camera: L10n.tr("Gloop needs the camera to scan your code or item. Turn on Camera for Gloop in Settings.")
+        case .microphone: L10n.tr("Gloop needs the microphone to record your sound. Turn on Microphone for Gloop in Settings.")
+        case .appleMusic: L10n.tr("Turn on Media & Apple Music for Gloop in Settings to pick a song.")
+        case .liveActivities: L10n.tr("Turn on Live Activities for Gloop in Settings to see the re-ring countdown.")
         }
     }
 
@@ -90,10 +91,10 @@ public enum PermissionStatus: String, Sendable, Equatable {
 
     public var label: String {
         switch self {
-        case .notDetermined: "Not asked"
-        case .granted: "Allowed"
-        case .denied: "Off"
-        case .unavailable: "Unavailable"
+        case .notDetermined: L10n.tr("Not asked")
+        case .granted: L10n.tr("Allowed")
+        case .denied: L10n.tr("Off")
+        case .unavailable: L10n.tr("Unavailable")
         }
     }
 }
@@ -113,8 +114,8 @@ public enum PermissionAction: Equatable, Sendable {
 
     public var buttonTitle: String? {
         switch self {
-        case .request: "Allow"
-        case .openSettings: "Open Settings"
+        case .request: L10n.tr("Allow")
+        case .openSettings: L10n.tr("Open Settings")
         case .none: nil
         }
     }
@@ -142,8 +143,8 @@ public enum PermissionSummary: Equatable, Sendable {
 
     public var text: String {
         switch self {
-        case .allSet: "All set"
-        case .needsAttention(let n): n == 1 ? "1 needs attention" : "\(n) need attention"
+        case .allSet: L10n.tr("All set")
+        case .needsAttention(let n): L10n.tr("\(n) need attention")
         }
     }
 }

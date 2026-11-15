@@ -206,6 +206,7 @@ public enum TelemetryAction: Equatable, Sendable {
     case ratingPrompted(reason: String)
     case whatsNewShown(version: String)
     case shareStreak(streak: Int)
+    case languageChanged(from: String, to: String, automatic: Bool, source: String)
 
     var name: String {
         switch self {
@@ -235,6 +236,7 @@ public enum TelemetryAction: Equatable, Sendable {
         case .ratingPrompted: "Rate.prompted"
         case .whatsNewShown: "WhatsNew.shown"
         case .shareStreak: "Share.streakCard"
+        case .languageChanged: "Language.changed"
         }
     }
 
@@ -254,6 +256,8 @@ public enum TelemetryAction: Equatable, Sendable {
         case .ratingPrompted(let reason): ["reason": reason]
         case .whatsNewShown(let version): ["version": version]
         case .shareStreak(let streak): ["streak": "\(streak)"]
+        case .languageChanged(let from, let to, let automatic, let source):
+            ["from": from, "to": to, "automatic": "\(automatic)", "source": source]
         default: [:]
         }
     }

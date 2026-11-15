@@ -1,4 +1,5 @@
 import Core
+import Localization
 import SwiftUI
 import UIKit
 import Vision
@@ -16,7 +17,7 @@ struct ObjectScanSetupView: View {
 
     enum Phase { case name, capture, done }
 
-    private let suggestions = ["Toothbrush", "Coffee cup", "Kettle", "Shoes", "Water bottle", "Book"]
+    private let suggestions = [L10n.tr("Toothbrush"), L10n.tr("Coffee cup"), L10n.tr("Kettle"), L10n.tr("Shoes"), L10n.tr("Water bottle"), L10n.tr("Book")]
 
     var body: some View {
         NavigationStack {
@@ -31,7 +32,7 @@ struct ObjectScanSetupView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button(phase == .done ? "Done" : "Cancel") {
+                    Button(phase == .done ? L10n.tr("Done") : L10n.tr("Cancel")) {
                         model.stop()
                         dismiss()
                     }
@@ -79,7 +80,7 @@ struct ObjectScanSetupView: View {
                     CameraPreview(session: model.camera.session)
                 } else {
                     Color.black.opacity(0.85)
-                    Text(model.cameraMessage ?? "Starting camera…").foregroundStyle(.white).padding()
+                    Text(model.cameraMessage ?? L10n.tr("Starting camera…")).foregroundStyle(.white).padding()
                 }
                 ViewfinderCorners().padding(28)
                 if model.busy { ProgressView().tint(.white).scaleEffect(1.4) }
@@ -89,7 +90,7 @@ struct ObjectScanSetupView: View {
             .clipShape(.rect(cornerRadius: 24))
 
             VStack(spacing: 4) {
-                Text("Shot \(min(model.shots.count + 1, ObjectMatchPolicy.requiredShots)) of \(ObjectMatchPolicy.requiredShots)")
+                Text(L10n.tr("Shot \(min(model.shots.count + 1, ObjectMatchPolicy.requiredShots)) of \(ObjectMatchPolicy.requiredShots)"))
                     .font(.caption.weight(.heavy)).textCase(.uppercase).foregroundStyle(.secondary)
                 Text(model.prompt).font(.headline).multilineTextAlignment(.center)
                 if let problem = model.problem {
@@ -212,7 +213,7 @@ final class ScanSetupModel {
     @ObservationIgnored let camera = CameraFeed()
     @ObservationIgnored private var prints: [VNFeaturePrintObservation] = []
 
-    private let prompts = ["Front of the item", "Walk a bit to the left", "Now to the right", "The other side", "From above"]
+    private let prompts = [L10n.tr("Front of the item"), L10n.tr("Walk a bit to the left"), L10n.tr("Now to the right"), L10n.tr("The other side"), L10n.tr("From above")]
 
     var prompt: String { prompts[min(shots.count, prompts.count - 1)] }
 
@@ -220,7 +221,7 @@ final class ScanSetupModel {
         var result = await camera.start()
         // Not running yet (still coming to the foreground / camera busy): retry for a few seconds.
         for _ in 0..<10 where result == .paused {
-            cameraMessage = "Starting the camera…"
+            cameraMessage = L10n.tr("Starting the camera…")
             try? await Task.sleep(for: .seconds(1))
             result = await camera.start()
         }
@@ -228,9 +229,9 @@ final class ScanSetupModel {
         case .running:
             cameraReady = true
             cameraMessage = nil
-        case .denied: cameraMessage = "Allow camera access in Settings to scan your item."
-        case .unavailable: cameraMessage = "No camera available."
-        default: cameraMessage = "The camera couldn't start. Close other apps that use the camera and try again."
+        case .denied: cameraMessage = L10n.tr("Allow camera access in Settings to scan your item.")
+        case .unavailable: cameraMessage = L10n.tr("No camera available.")
+        default: cameraMessage = L10n.tr("The camera couldn't start. Close other apps that use the camera and try again.")
         }
     }
 
@@ -245,12 +246,12 @@ final class ScanSetupModel {
         let frame = await Task.detached { ObjectVision.analyse(box.buffer, keepCutout: true) }.value
         busy = false
         guard let frame else {
-            problem = "Couldn't make out the item. Move closer and use a plain background."
+            problem = L10n.tr("Couldn't make out the item. Move closer and use a plain background.")
             return false
         }
         if let previous = prints.last, let d = ObjectVision.distance(frame.print, previous),
            !ObjectMatchPolicy.isDistinctAngle(distanceToPrevious: d) {
-            problem = "That looks the same as the last shot. Walk around the item a bit more."
+            problem = L10n.tr("That looks the same as the last shot. Walk around the item a bit more.")
             return false
         }
         prints.append(frame.print)
@@ -265,7 +266,7 @@ final class ScanSetupModel {
         do {
             return try ObjectReferenceStore.shared.save(prints: prints, threshold: threshold, thumbnail: shots.first)
         } catch {
-            problem = "Couldn't save the scan: \(error.localizedDescription)"
+            problem = L10n.tr("Couldn't save the scan: \(error.localizedDescription)")
             return nil
         }
     }

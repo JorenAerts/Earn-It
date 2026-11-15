@@ -1,6 +1,7 @@
 import AVFoundation
 import Core
 import Foundation
+import Localization
 
 /// Pure DSP helpers for own sounds (tested).
 enum ClipProcessing {
@@ -52,8 +53,8 @@ enum AudioClipError: LocalizedError {
 
     var errorDescription: String? {
         switch self {
-        case .unreadable: "This file can't be used. Copy-protected music (like Apple Music downloads) can't be imported."
-        case .empty: "The selected part is silent or empty."
+        case .unreadable: L10n.tr("This file can't be used. Copy-protected music (like Apple Music downloads) can't be imported.")
+        case .empty: L10n.tr("The selected part is silent or empty.")
         }
     }
 }

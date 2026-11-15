@@ -1,6 +1,7 @@
 import AlarmEngine
 import Coach
 import Core
+import Localization
 import Permissions
 import Purchases
 import StoreKit
@@ -17,10 +18,10 @@ struct SubscriptionSettingsView: View {
     @State private var message: String?
 
     static let proFeatures: [(symbol: String, text: String)] = [
-        ("alarm.waves.left.and.right.fill", "Unlimited alarms"),
-        ("puzzlepiece.extension.fill", "Every mission: shake, scan a code, scan your item"),
-        ("music.note", "All sounds, your own sounds and Apple Music"),
-        ("square.grid.2x2.fill", "Medium and Large widgets"),
+        ("alarm.waves.left.and.right.fill", L10n.tr("Unlimited alarms")),
+        ("puzzlepiece.extension.fill", L10n.tr("Every mission: shake, scan a code, scan your item")),
+        ("music.note", L10n.tr("All sounds, your own sounds and Apple Music")),
+        ("square.grid.2x2.fill", L10n.tr("Medium and Large widgets")),
     ]
 
     var body: some View {
@@ -33,7 +34,7 @@ struct SubscriptionSettingsView: View {
                     }
                 }
             }
-            Section(store.entitlement.isPro ? "Included" : "With Pro") {
+            Section(store.entitlement.isPro ? L10n.tr("Included") : L10n.tr("With Pro")) {
                 ForEach(Self.proFeatures, id: \.text) { feature in
                     Label(feature.text, systemImage: feature.symbol)
                         .foregroundStyle(store.entitlement.isPro ? .primary : .secondary)
@@ -47,11 +48,11 @@ struct SubscriptionSettingsView: View {
                 } else if !store.entitlement.isLifetime {
                     Button("Manage subscription") { showManage = true }
                 }
-                Button(busy ? "Restoring…" : "Restore purchases") {
+                Button(busy ? L10n.tr("Restoring…") : L10n.tr("Restore purchases")) {
                     busy = true
                     Task {
                         await store.restore()
-                        message = store.entitlement.isPro ? "Purchases restored." : "No purchases found for this Apple ID."
+                        message = store.entitlement.isPro ? L10n.tr("Purchases restored.") : L10n.tr("No purchases found for this Apple ID.")
                         busy = false
                     }
                 }
@@ -121,7 +122,7 @@ struct CoachSettingsView: View {
                     DatePicker("Evening reminder", selection: eveningTime, displayedComponents: .hourAndMinute)
                 }
                 if remindersDenied || (coach.notifications.enabled && PermissionCenter.shared.status(.notifications) == .denied) {
-                    PermissionBanner(kind: .notifications, message: "Notifications are off, so reminders can't arrive.")
+                    PermissionBanner(kind: .notifications, message: L10n.tr("Notifications are off, so reminders can't arrive."))
                 }
             } header: {
                 Text("Reminders")

@@ -1,4 +1,5 @@
 import Coach
+import Localization
 import SwiftUI
 
 /// How the slime looks: long-term droop from vitality, expression from the mood, plus a live
@@ -93,10 +94,10 @@ public struct SlimeView: View {
 
     private var description: String {
         switch look.pose.droop {
-        case ..<0.25: "bouncy and happy"
-        case ..<0.5: "doing fine"
-        case ..<0.75: "drooping"
-        default: "melted into a puddle"
+        case ..<0.25: L10n.tr("bouncy and happy")
+        case ..<0.5: L10n.tr("doing fine")
+        case ..<0.75: L10n.tr("drooping")
+        default: L10n.tr("melted into a puddle")
         }
     }
 }
@@ -138,6 +139,19 @@ struct SlimeFigure: View, Animatable {
             var p = pose
             p.droop = droop
             SlimeRenderer.draw(ctx, size: size, pose: p, color: color, squash: squash, time: time)
+        }
+    }
+}
+
+extension SlimeColor {
+    /// Name in the app's language (kept out of SlimeDrawing.swift, which must stay dependency-free).
+    public var title: String {
+        switch self {
+        case .orange: L10n.tr("Tangerine")
+        case .mint: L10n.tr("Mint")
+        case .grape: L10n.tr("Grape")
+        case .midnight: L10n.tr("Midnight")
+        case .gold: L10n.tr("Gold")
         }
     }
 }

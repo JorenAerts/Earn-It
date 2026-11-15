@@ -5,6 +5,6 @@ let package = Package(
     name: "Coach",
     platforms: [.iOS("26.1")],
     products: [.library(name: "Coach", targets: ["Coach"])],
-    dependencies: [.package(path: "../Core")],
-    targets: [.target(name: "Coach", dependencies: ["Core"])]
+    dependencies: [.package(path: "../Localization"), .package(path: "../Core")],
+    targets: [.target(name: "Coach", dependencies: ["Localization", "Core"])]
 )

@@ -1,5 +1,6 @@
 import Coach
 import Core
+import Localization
 import SwiftUI
 
 // MARK: - Building
@@ -17,9 +18,9 @@ struct BuildingStep: View {
     @State private var proof = SocialProof.load()
 
     private var tasks: [String] {
-        let mission = answers.chosenMissions.first?.kind.displayName ?? "Math"
-        return ["Setting your \(answers.timeText) alarm", "Loading \(mission)",
-                "Adding your alarm sound", "Waking up \(CoachIdentity.name)"]
+        let mission = answers.chosenMissions.first?.kind.displayName ?? L10n.tr("Math")
+        return [L10n.tr("Setting your \(answers.timeText) alarm"), L10n.tr("Loading \(mission)"),
+                L10n.tr("Adding your alarm sound"), L10n.tr("Waking up \(CoachIdentity.name)")]
     }
 
     var body: some View {
@@ -79,10 +80,10 @@ struct SummaryStep: View {
 
     private var whenText: String {
         let plan = answers.firstAlarm()
-        guard let next = plan.nextFireDate(after: .now) else { return "You'll be up at" }
-        return Calendar.current.isDateInToday(next) ? "Today, you'll be up at"
-            : Calendar.current.isDateInTomorrow(next) ? "Tomorrow, you'll be up at"
-            : "\(next.formatted(.dateTime.weekday(.wide))), you'll be up at"
+        guard let next = plan.nextFireDate(after: .now) else { return L10n.tr("You'll be up at") }
+        return Calendar.current.isDateInToday(next) ? L10n.tr("Today, you'll be up at")
+            : Calendar.current.isDateInTomorrow(next) ? L10n.tr("Tomorrow, you'll be up at")
+            : L10n.tr("\(next.localized(.dateTime.weekday(.wide))), you'll be up at")
     }
 
     var body: some View {
@@ -103,7 +104,7 @@ struct SummaryStep: View {
                 }
                 timeline
                 VStack(spacing: 12) {
-                    Text("And every \(answers.weekdays.count == 7 ? "morning" : "alarm day") after.")
+                    Text(answers.weekdays.count == 7 ? L10n.tr("And every morning after.") : L10n.tr("And every alarm day after."))
                         .font(.title3.bold())
                     WeekdayCircles(weekdays: answers.weekdays)
                     if let hours = OnboardingPersonalization.hoursBackPerWeek(answers.getUpTime, weekdays: answers.weekdays) {
@@ -114,7 +115,7 @@ struct SummaryStep: View {
             }
             .frame(maxWidth: .infinity)
         } footer: {
-            PrimaryButton(title: "I'm ready", action: onNext)
+            PrimaryButton(title: L10n.tr("I'm ready"), action: onNext)
         }
         .onAppear { withAnimation(.spring(duration: 0.5, bounce: 0.4)) { appeared = true } }
     }
@@ -122,8 +123,8 @@ struct SummaryStep: View {
     private var timeline: some View {
         let mission = answers.chosenMissions.first?.kind ?? .math
         let steps: [(String, String)] = [
-            ("bell.fill", "Alarm rings"),
-            (mission.symbol, "Complete \(mission.displayName)"),
+            ("bell.fill", L10n.tr("Alarm rings")),
+            (mission.symbol, L10n.tr("Complete \(mission.displayName)")),
             ("checkmark", OnboardingPersonalization.finishLine(answers.goal)),
         ]
         return VStack(alignment: .leading, spacing: 0) {

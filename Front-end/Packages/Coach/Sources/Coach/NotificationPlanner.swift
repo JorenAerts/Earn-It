@@ -1,5 +1,6 @@
 import Core
 import Foundation
+import Localization
 
 /// A local notification in the coach's voice.
 public struct CoachNotification: Equatable, Sendable {
@@ -66,10 +67,10 @@ public enum NotificationPlanner {
                 ? (calendar.date(bySettingHour: settings.eveningHour, minute: settings.eveningMinute, second: 0, of: day) ?? evening)
                 : evening
             guard reminder > now, alarm.timeIntervalSince(reminder) >= minimumLeadTime else { continue }
-            let time = alarm.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)).minute(.twoDigits))
+            let time = alarm.localized(.dateTime.hour(.twoDigits(amPM: .omitted)).minute(.twoDigits))
             var body = lines.line(for: .night, intensity: intensity, day: day, values: ["time": time], calendar: calendar)
-            if day == firstDayBack { body = "Break's over! I'm back tomorrow, ready to bounce. " + body }
-            if streak >= 3 { body += " Your \(streak)-day streak is on the line." }
+            if day == firstDayBack { body = L10n.tr("Break's over! I'm back tomorrow, ready to bounce. ") + body }
+            if streak >= 3 { body += " " + L10n.tr("Your \(streak)-day streak is on the line.") }
             result.append(CoachNotification(id: "\(CoachNotification.idPrefix)evening.\(dayKey(day, calendar))",
                                             date: reminder, body: body))
         }

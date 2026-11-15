@@ -1,5 +1,6 @@
 import Coach
 import Core
+import Localization
 import SwiftData
 import SwiftUI
 import Telemetry
@@ -41,7 +42,7 @@ struct StatsView: View {
                             Text("\(current)")
                                 .font(.system(size: 48, weight: .bold, design: .rounded))
                                 .monospacedDigit()
-                            Text(current == 1 ? "day streak" : "day streak").foregroundStyle(.secondary)
+                            Text(current == 1 ? L10n.tr("day streak") : L10n.tr("day streak")).foregroundStyle(.secondary)
                         }
                     }
                     .padding(.vertical, 6)
@@ -68,7 +69,7 @@ struct StatsView: View {
                 }
 
                 Section("All time") {
-                    LabeledContent("Best streak", value: "\(best) day\(best == 1 ? "" : "s")")
+                    LabeledContent("Best streak", value: L10n.tr("\(best) days"))
                     LabeledContent("Mornings earned", value: "\(completed.count)")
                     LabeledContent("Avg. re-rings per morning", value: averageReRings.formatted(.number.precision(.fractionLength(1))))
                     LabeledContent("Fail-safe stops", value: "\(logs.filter(\.failSafeTriggered).count)")
@@ -111,14 +112,15 @@ private struct LastDaysStrip: View {
                             }
                         }
                         .frame(width: 16, height: 16)
-                    Text(day.formatted(.dateTime.weekday(.narrow)))
+                    Text(day.localized(.dateTime.weekday(.narrow)))
                         .font(.system(size: 9))
                         .foregroundStyle(.secondary)
                 }
                 .frame(maxWidth: .infinity)
                 .accessibilityElement(children: .ignore)
-                .accessibilityLabel(day.formatted(date: .abbreviated, time: .omitted) + ", "
-                                    + (log?.missionCompletedAt != nil ? "mission done" : "no mission"))
+                .accessibilityLabel(log?.missionCompletedAt != nil
+                                    ? L10n.tr("\(day.localized(date: .abbreviated, time: .omitted)), mission done")
+                                    : L10n.tr("\(day.localized(date: .abbreviated, time: .omitted)), no mission"))
             }
         }
     }

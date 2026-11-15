@@ -1,4 +1,5 @@
 import Foundation
+import Localization
 
 /// The coach's (Gloop's) lines from `Config/CoachLines.json`:
 /// `{ "<context>": { "gentle": [...], "toughLove": [...], "savage": [...] } }`.
@@ -11,11 +12,21 @@ public struct CoachLines: Sendable {
         self.table = table
     }
 
-    public static func load(from bundle: Bundle = .main) -> CoachLines {
-        guard let url = bundle.url(forResource: "CoachLines", withExtension: "json"),
-              let data = try? Data(contentsOf: url),
-              let table = try? JSONDecoder().decode([String: [String: [String]]].self, from: data)
-        else { return CoachLines(table: [:]) }
+    /// English lines with the current language's translation on top (`Translations/CoachLines.<code>.json`).
+    /// Anything missing in the translation stays English.
+    public static func load(from bundle: Bundle = .main, language: String = L10n.languageCode) -> CoachLines {
+        func decode(_ url: URL?) -> [String: [String: [String]]] {
+            guard let url, let data = try? Data(contentsOf: url),
+                  let table = try? JSONDecoder().decode([String: [String: [String]]].self, from: data)
+            else { return [:] }
+            return table
+        }
+        var table = decode(bundle.url(forResource: "CoachLines", withExtension: "json"))
+        let translated = decode(L10n.translatedResource("CoachLines", ext: "json", subdirectories: ["Translations", nil],
+                                                        code: language, in: bundle))
+        for (context, tones) in translated {
+            for (tone, lines) in tones where !lines.isEmpty { table[context, default: [:]][tone] = lines }
+        }
         return CoachLines(table: table)
     }
 
@@ -32,7 +43,7 @@ public struct CoachLines: Sendable {
         let dayNumber = calendar.ordinality(of: .day, in: .era, for: day) ?? 0
         let index = (dayNumber &+ variant &+ context.rawValue.count) % options.count
         var filled = values
-        if (filled["name"] ?? "").trimmingCharacters(in: .whitespaces).isEmpty { filled["name"] = "friend" }
+        if (filled["name"] ?? "").trimmingCharacters(in: .whitespaces).isEmpty { filled["name"] = L10n.tr("friend") }
         return Self.fill(options[abs(index)], filled)
     }
 

@@ -1,4 +1,5 @@
 import Core
+import Localization
 import Permissions
 import SwiftUI
 import UIKit
@@ -182,24 +183,24 @@ struct ObjectMissionView: View {
 
     private var hint: String {
         switch recognizer.status {
-        case .loading: "Starting camera…"
-        case .missingReference: "Your item scan is missing."
-        case .cameraDenied: "Camera access is off."
-        case .cameraUnavailable: "No camera available."
-        case .paused: "Starting the camera…"
-        case .done: "Got it!"
+        case .loading: L10n.tr("Starting camera…")
+        case .missingReference: L10n.tr("Your item scan is missing.")
+        case .cameraDenied: L10n.tr("Camera access is off.")
+        case .cameraUnavailable: L10n.tr("No camera available.")
+        case .paused: L10n.tr("Starting the camera…")
+        case .done: L10n.tr("Got it!")
         case .scanning:
-            if !recognizer.objectInView { "Point the camera at your \(label.lowercased())." }
-            else if recognizer.tracker.streak > 0 { "That's it, hold still…" }
-            else if recognizer.tracker.lastCloseness > 0.5 { "Getting closer…" }
-            else { "That's not your \(label.lowercased())." }
+            if !recognizer.objectInView { L10n.tr("Point the camera at your \(L10n.inSentence(label)).") }
+            else if recognizer.tracker.streak > 0 { L10n.tr("That's it, hold still…") }
+            else if recognizer.tracker.lastCloseness > 0.5 { L10n.tr("Getting closer…") }
+            else { L10n.tr("That's not your \(L10n.inSentence(label)).") }
         }
     }
 
     @ViewBuilder private var statusOverlay: some View {
         switch recognizer.status {
         case .missingReference:
-            overlayMessage("This item was removed. Do the backup mission instead.", button: "Backup mission") {
+            overlayMessage(L10n.tr("This item was removed. Do the backup mission instead."), button: L10n.tr("Backup mission")) {
                 onComplete(.needsBackup)
             }
         case .cameraDenied:
@@ -213,7 +214,7 @@ struct ObjectMissionView: View {
             }
             .padding(24)
         case .cameraUnavailable:
-            overlayMessage("This device has no camera for scanning.", button: "Backup mission") { onComplete(.needsBackup) }
+            overlayMessage(L10n.tr("This device has no camera for scanning."), button: L10n.tr("Backup mission")) { onComplete(.needsBackup) }
         case .paused:
             VStack(spacing: 12) {
                 ProgressView().tint(.white)
@@ -273,12 +274,12 @@ struct ObjectSetupRow: View {
                         .frame(width: 52, height: 52)
                         .background(Color(.secondarySystemBackground), in: .rect(cornerRadius: 12))
                 }
-                Label(config.isReady ? "\(config.label ?? "Item") registered" : "Scan the item you'll need to find",
+                Label(config.isReady ? "\(config.label ?? L10n.tr("Item")) registered" : "Scan the item you'll need to find",
                       systemImage: config.isReady ? "checkmark.circle.fill" : "exclamationmark.circle")
                     .foregroundStyle(config.isReady ? .green : .orange)
                     .font(.subheadline)
             }
-            Button(config.isReady ? "Scan again" : "Scan your item") {
+            Button(config.isReady ? L10n.tr("Scan again") : L10n.tr("Scan your item")) {
                 Task { if await PermissionCenter.shared.ensure(.camera) { scanning = true } }
             }
                 .buttonStyle(.bordered)
