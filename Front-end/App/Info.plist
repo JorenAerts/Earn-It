@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Earn It</string>
+	<string>Gloop</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -22,25 +22,25 @@
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>be.earnit.app</string>
+			<string>be.gloop.app</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>earnit</string>
+				<string>gloop</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
-	<key>EarnItAppGroup</key>
-	<string>$(EARNIT_APP_GROUP)</string>
+	<key>GloopAppGroup</key>
+	<string>$(GLOOP_APP_GROUP)</string>
 	<key>NSAlarmKitUsageDescription</key>
-	<string>Earn It schedules your wake-up alarms so they ring through silent mode and Focus.</string>
+	<string>Gloop schedules your wake-up alarms so they ring through silent mode and Focus.</string>
 	<key>NSAppleMusicUsageDescription</key>
-	<string>Earn It plays the Apple Music song you pick while you do your wake-up mission.</string>
+	<string>Gloop plays the Apple Music song you pick while you do your wake-up mission.</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Earn It uses the camera to scan the code or item you registered, so you have to get out of bed to stop the alarm. Images stay on your iPhone.</string>
+	<string>Gloop uses the camera to scan the code or item you registered, so you have to get out of bed to stop the alarm. Images stay on your iPhone.</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>Earn It uses the microphone only when you record your own alarm sound.</string>
+	<string>Gloop uses the microphone only when you record your own alarm sound.</string>
 	<key>NSSupportsLiveActivities</key>
 	<true/>
 	<key>SUPABASE_PUBLISHABLE_KEY</key>

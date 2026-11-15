@@ -64,7 +64,7 @@ public enum InviteCode {
         String((0..<length).map { _ in alphabet.randomElement()! })
     }
 
-    /// "abcd-2345", " ABCD2345 ", "earnit://join/ABCD2345", "https://…/join/ABCD-2345" → "ABCD2345".
+    /// "abcd-2345", " ABCD2345 ", "gloop://join/ABCD2345", "https://…/join/ABCD-2345" → "ABCD2345".
     public static func normalize(_ input: String) -> String? {
         var text = input.trimmingCharacters(in: .whitespacesAndNewlines)
         if let url = URL(string: text), url.scheme != nil {
@@ -84,12 +84,12 @@ public enum InviteCode {
     }
 
     public static func link(_ code: String) -> URL {
-        URL(string: "earnit://join/\(code)")!
+        URL(string: "gloop://join/\(code)")!
     }
 
     /// Text for the share sheet.
     public static func shareText(club: String, code: String) -> String {
-        "Join my wake-up club \"\(club)\" on Earn It! Code: \(display(code)) — or tap \(link(code).absoluteString)"
+        "Join my wake-up club \"\(club)\" on Gloop! Code: \(display(code)) — or tap \(link(code).absoluteString)"
     }
 }
 
@@ -192,7 +192,7 @@ public struct WakeReport: Codable, Equatable, Sendable {
 @MainActor
 public final class WakeReportQueue {
     private let defaults: UserDefaults
-    private static let key = "earnit.buddies.pending"
+    private static let key = "gloop.buddies.pending"
 
     public init(defaults: UserDefaults = .standard) {
         self.defaults = defaults

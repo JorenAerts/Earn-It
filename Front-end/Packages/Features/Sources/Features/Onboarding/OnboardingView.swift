@@ -104,7 +104,7 @@ struct OnboardingView: View {
         case .name:
             NameStep(answers: answers, onNext: advance)
         case .ageRange:
-            SingleChoiceStep(title: "What's your age range?", subtitle: "Helps us build Earn It for people like you.",
+            SingleChoiceStep(title: "What's your age range?", subtitle: "Helps us build Gloop for people like you.",
                              options: AgeRange.allCases, selection: answers.ageRange,
                              label: \.title, symbol: \.symbol, onNext: advance)
         case .heardFrom:

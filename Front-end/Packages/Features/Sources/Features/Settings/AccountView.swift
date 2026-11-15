@@ -9,7 +9,7 @@ import WidgetShared
 @Observable
 final class ProfileName {
     static let shared = ProfileName()
-    private static let key = "earnit.profile.name"
+    private static let key = "gloop.profile.name"
     @ObservationIgnored private let defaults: UserDefaults
 
     private(set) var name: String
@@ -108,7 +108,7 @@ struct AccountView: View {
             } header: {
                 Text("Name")
             } footer: {
-                Text("How Sergeant Rise and your profile show you.")
+                Text("How \(CoachIdentity.name) and your profile show you.")
             }
 
             if let user = auth.user {

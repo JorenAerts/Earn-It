@@ -60,15 +60,15 @@ public struct TapUnlock: Equatable, Sendable {
     }
 }
 
-/// Whether the Developer page is unlocked on this device (`earnit.developerMode`).
+/// Whether the Developer page is unlocked on this device (`gloop.developerMode`).
 @MainActor
 @Observable
 public final class DeveloperMode {
     public static let shared = DeveloperMode()
 
     @ObservationIgnored private let defaults: UserDefaults
-    private static let key = "earnit.developerMode"
-    private static let ownerKey = "earnit.developerMode.user"
+    private static let key = "gloop.developerMode"
+    private static let ownerKey = "gloop.developerMode.user"
 
     public private(set) var isOn: Bool
 

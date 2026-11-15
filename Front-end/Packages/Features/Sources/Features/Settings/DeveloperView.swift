@@ -17,6 +17,7 @@ struct DeveloperView: View {
     @State private var developer = DeveloperMode.shared
     @State private var previewMood: CoachMood = .angry
     @State private var previewAnger = 0.6
+    @State private var previewVitality = 0.75
     @State private var showPaywall = false
     @State private var copied = false
     @Environment(\.dismiss) private var dismiss
@@ -42,7 +43,11 @@ struct DeveloperView: View {
 
             Section("Coach") {
                 VStack(spacing: 10) {
-                    CoachAvatarView(state: CoachState(mood: previewMood, context: .idle, anger: previewAnger), size: 120)
+                    CoachAvatarView(state: CoachState(mood: previewMood, context: .idle, anger: previewAnger), size: 140,
+                                    vitality: previewVitality)
+                    Slider(value: $previewVitality, in: 0...1) { Text("Vitality") }
+                    Text("Vitality \(Int(previewVitality * 100))% (yours: \(Int(CoachModel.shared.vitality * 100))%)")
+                        .font(.caption).foregroundStyle(.secondary)
                     Picker("Mood", selection: $previewMood) {
                         ForEach(CoachMood.allCases) { Text($0.displayName).tag($0) }
                     }
@@ -52,6 +57,7 @@ struct DeveloperView: View {
                     }
                 }
                 .padding(.vertical, 4)
+                NavigationLink("Slime gallery") { SlimeGallery() }
                 Button("Send test reminder in 5 seconds") {
                     Task { await CoachNotifier.shared.sendTest() }
                 }

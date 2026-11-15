@@ -2,6 +2,7 @@ import AlarmEngine
 import Coach
 import Core
 import SwiftUI
+import WidgetShared
 
 /// Shared coach data: lines (Config/CoachLines.json) and the user's tone setting.
 @MainActor
@@ -18,6 +19,22 @@ final class CoachModel {
 
     var notifications: CoachNotificationSettings {
         didSet { preferences.notifications = notifications }
+    }
+
+    /// How well the user keeps up (0…1): drives how droopy Gloop is. Set by `refreshVitality`.
+    private(set) var vitality = SlimeVitality.start
+    /// Gloop's evolution stage (from XP): decides the accessory he wears.
+    private(set) var rank: Rank = .droplet
+
+    /// Recomputes vitality from the history and which days had an alarm.
+    func refreshVitality(logs: [DayLog], plans: [AlarmPlan], now: Date = .now) {
+        let calendar = Calendar.current
+        let alarmWeekdays = Set(plans.filter(\.isEnabled).flatMap { $0.weekdays.isEmpty ? Array(1...7) : Array($0.weekdays) })
+        let history = logs.map(DaySummary.init(log:))
+        rank = XPRules.progress(history, calendar: calendar).rank
+        vitality = SlimeVitality.compute(history: history, now: now, calendar: calendar) { day in
+            alarmWeekdays.contains(calendar.component(.weekday, from: day))
+        }
     }
 
     /// Keeps foreground banners working for the app's lifetime.
@@ -56,56 +73,20 @@ extension DaySummary {
     }
 }
 
-/// Sergeant Rise's face. Swappable art: one image per mood (`coach_<mood>` in the asset catalog).
-/// Angry escalates on top of the image: shake, steam and a pulsing glow as `anger` rises.
+/// The character's face: Gloop the slime, drooping with the user's vitality and showing the mood.
+/// Every coach view goes through here, so swapping the character is one place.
 struct CoachAvatarView: View {
     let state: CoachState
     var size: CGFloat = 96
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    private var anger: Double { state.mood == .angry ? state.anger : 0 }
+    /// Override for previews; otherwise the user's current vitality.
+    var vitality: Double? = nil
+    /// Override for previews; otherwise the current stage's accessory.
+    var accessory: SlimeAccessory? = nil
 
     var body: some View {
-        ZStack {
-            if anger >= 0.6 { steam }
-            TimelineView(.animation(minimumInterval: 1 / 60, paused: !shaking)) { context in
-                let t = context.date.timeIntervalSinceReferenceDate
-                Image(state.mood.imageName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: size, height: size)
-                    .shadow(color: .red.opacity(anger * 0.5), radius: anger * size * 0.15)
-                    // Bursts of shaking that grow with anger.
-                    .offset(x: shaking ? sin(t * 45) * size * 0.03 * anger * max(0, sin(t * 2.2)) : 0)
-            }
-            .id(state.mood)
-            .transition(.asymmetric(insertion: .scale(scale: 0.7).combined(with: .opacity),
-                                    removal: .opacity))
-        }
-        .frame(width: size, height: size)
-        .animation(.spring(response: 0.45, dampingFraction: 0.6), value: state.mood)
-        .accessibilityElement()
-        .accessibilityLabel("Sergeant Rise, \(state.mood.displayName.lowercased())")
-    }
-
-    private var shaking: Bool { !reduceMotion && anger >= 0.4 }
-
-    private var steam: some View {
-        TimelineView(.animation(minimumInterval: 1 / 30, paused: reduceMotion)) { context in
-            let t = context.date.timeIntervalSinceReferenceDate
-            ZStack {
-                ForEach(0..<3, id: \.self) { i in
-                    let phase = (t * 0.6 + Double(i) / 3).truncatingRemainder(dividingBy: 1)
-                    Image(systemName: "cloud.fill")
-                        .font(.system(size: size * 0.22))
-                        .foregroundStyle(.white.opacity(0.9 * (1 - phase)))
-                        .shadow(color: .black.opacity(0.15), radius: 2)
-                        .offset(x: (i.isMultiple(of: 2) ? -1 : 1) * size * 0.48,
-                                y: -size * (0.15 + phase * 0.45))
-                }
-            }
-        }
-        .allowsHitTesting(false)
+        SlimeView(look: SlimeLook.make(vitality: vitality ?? CoachModel.shared.vitality, state: state,
+                                       accessory: accessory ?? CoachModel.shared.rank.accessory),
+                  color: AppearanceSettings.shared.slimeColor, size: size)
     }
 }
 
@@ -119,7 +100,7 @@ struct CoachCard: View {
         HStack(alignment: .center, spacing: 12) {
             CoachAvatarView(state: state, size: avatarSize)
             VStack(alignment: .leading, spacing: 4) {
-                Text("Sergeant Rise")
+                Text(CoachIdentity.name)
                     .font(.caption.weight(.heavy))
                     .textCase(.uppercase)
                     .foregroundStyle(.secondary)

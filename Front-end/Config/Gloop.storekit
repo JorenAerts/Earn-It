@@ -1,0 +1,142 @@
+{
+  "identifier": "A50B4D91-7533-582D-82E9-A5009147210A",
+  "nonRenewingSubscriptions": [],
+  "products": [
+    {
+      "displayPrice": "59.99",
+      "familyShareable": false,
+      "internalID": "A2C7CABE-678A-57AE-8C2D-2FC39A0863C4",
+      "localizations": [
+        {
+          "description": "Unlock Pro forever, one payment.",
+          "displayName": "Gloop Pro \u2013 Lifetime",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "be.gloop.app.pro.lifetime",
+      "referenceName": "Pro Lifetime",
+      "type": "NonConsumable"
+    }
+  ],
+  "settings": {
+    "_storefront": "BEL",
+    "_locale": "en_BE"
+  },
+  "subscriptionGroups": [
+    {
+      "id": "84C66B70-D1AA-51EF-9EB9-AA975BF40AF6",
+      "localizations": [],
+      "name": "Gloop Pro",
+      "subscriptions": [
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "winbackOffers": [],
+          "displayPrice": "29.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "D96745CF-A99C-56FA-9956-A4D5B199C8DC",
+          "introductoryOffer": {
+            "internalID": "587C276A-B5DA-5BA3-9580-F8E68362E71C",
+            "paymentMode": "free",
+            "subscriptionPeriod": "P3D"
+          },
+          "localizations": [
+            {
+              "description": "All alarms, missions and sounds.",
+              "displayName": "Gloop Pro \u2013 Yearly",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "be.gloop.app.pro.yearly",
+          "recurringSubscriptionPeriod": "P1Y",
+          "referenceName": "Pro Yearly",
+          "subscriptionGroupID": "84C66B70-D1AA-51EF-9EB9-AA975BF40AF6",
+          "type": "RecurringSubscription"
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "winbackOffers": [],
+          "displayPrice": "9.99",
+          "familyShareable": false,
+          "groupNumber": 3,
+          "internalID": "837CDFF6-1D9B-5DFC-A6B7-23B0F9CFBD62",
+          "introductoryOffer": {
+            "internalID": "71F98177-D8C6-5EC2-9E57-CA401C384E75",
+            "paymentMode": "free",
+            "subscriptionPeriod": "P3D"
+          },
+          "localizations": [
+            {
+              "description": "All alarms, missions and sounds.",
+              "displayName": "Gloop Pro \u2013 3 months",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "be.gloop.app.pro.quarterly",
+          "recurringSubscriptionPeriod": "P3M",
+          "referenceName": "Pro 3 months",
+          "subscriptionGroupID": "84C66B70-D1AA-51EF-9EB9-AA975BF40AF6",
+          "type": "RecurringSubscription"
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "winbackOffers": [],
+          "displayPrice": "3.99",
+          "familyShareable": false,
+          "groupNumber": 5,
+          "internalID": "61251109-E246-5969-BED4-3D397C30108D",
+          "introductoryOffer": {
+            "internalID": "41C197E8-61F1-581F-BC18-0DFB93B164DB",
+            "paymentMode": "free",
+            "subscriptionPeriod": "P3D"
+          },
+          "localizations": [
+            {
+              "description": "All alarms, missions and sounds.",
+              "displayName": "Gloop Pro \u2013 Monthly",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "be.gloop.app.pro.monthly",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Pro Monthly",
+          "subscriptionGroupID": "84C66B70-D1AA-51EF-9EB9-AA975BF40AF6",
+          "type": "RecurringSubscription"
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "winbackOffers": [],
+          "displayPrice": "1.99",
+          "familyShareable": false,
+          "groupNumber": 6,
+          "internalID": "A0B83529-B57B-584E-8835-C759F25BF031",
+          "introductoryOffer": {
+            "internalID": "4FC51F74-219F-5EE9-8783-F22AC584E29F",
+            "paymentMode": "free",
+            "subscriptionPeriod": "P3D"
+          },
+          "localizations": [
+            {
+              "description": "All alarms, missions and sounds.",
+              "displayName": "Gloop Pro \u2013 Weekly",
+              "locale": "en_US"
+            }
+          ],
+          "productID": "be.gloop.app.pro.weekly",
+          "recurringSubscriptionPeriod": "P1W",
+          "referenceName": "Pro Weekly",
+          "subscriptionGroupID": "84C66B70-D1AA-51EF-9EB9-AA975BF40AF6",
+          "type": "RecurringSubscription"
+        }
+      ]
+    }
+  ],
+  "version": {
+    "major": 4,
+    "minor": 0
+  }
+}

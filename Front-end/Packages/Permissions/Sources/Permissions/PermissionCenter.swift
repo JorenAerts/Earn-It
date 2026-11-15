@@ -124,7 +124,7 @@ public final class PermissionCenter {
         }
     }
 
-    /// Opens Earn It's page in the Settings app (notifications: its notification page).
+    /// Opens Gloop's page in the Settings app (notifications: its notification page).
     public func openSettings(_ kind: PermissionKind) {
         let string = kind.opensNotificationSettings ? UIApplication.openNotificationSettingsURLString
                                                     : UIApplication.openSettingsURLString

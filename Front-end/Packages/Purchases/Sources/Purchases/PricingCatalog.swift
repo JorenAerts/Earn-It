@@ -7,7 +7,7 @@ public struct PricedProduct: Codable, Hashable, Sendable, Identifiable {
     }
 
     public let key: String
-    /// App Store product identifier (must match App Store Connect / EarnIt.storekit).
+    /// App Store product identifier (must match App Store Connect / Gloop.storekit).
     public let id: String
     public let type: Kind
     /// ISO 8601 period for subscriptions ("P1W", "P1M", "P3M", "P1Y"); nil for lifetime.

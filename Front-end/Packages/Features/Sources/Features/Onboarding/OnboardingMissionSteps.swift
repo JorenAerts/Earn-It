@@ -241,7 +241,7 @@ struct InviteFriendStep: View {
     @State private var sharing = false
     @State private var unlocked = false
 
-    static let message = "I'm using Earn It: an alarm that keeps ringing until I'm actually out of bed. Want to be my wake-up buddy?"
+    static let message = "I'm using Gloop: an alarm that keeps ringing until I'm actually out of bed. Want to be my wake-up buddy?"
 
     var body: some View {
         OnboardingPage {
@@ -263,7 +263,7 @@ struct InviteFriendStep: View {
                 Text(unlocked ? "Rise & Conquer unlocked!" : "Unlock an exclusive alarm sound")
                     .font(.largeTitle.bold()).multilineTextAlignment(.center)
                 Text(unlocked ? "It's yours, free, forever. Want to use it as your alarm?"
-                              : "Know someone who oversleeps? Send them Earn It and get Rise & Conquer, a brass fanfare that's not in the free plan.")
+                              : "Know someone who oversleeps? Send them Gloop and get Rise & Conquer, a brass fanfare that's not in the free plan.")
                     .foregroundStyle(.secondary).multilineTextAlignment(.center)
                 if !unlocked {
                     Text("We'll write the message for you.").font(.subheadline).foregroundStyle(.tertiary)

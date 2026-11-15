@@ -43,7 +43,7 @@ private struct PaywallSheetModifier: ViewModifier {
 /// One-time messages shown on Home after a downgrade ("Alarm 07:30 was switched off…").
 public final class DowngradeNotices: @unchecked Sendable {
     private let defaults: UserDefaults
-    private let key = "earnit.downgradeNotices"
+    private let key = "gloop.downgradeNotices"
 
     public init(defaults: UserDefaults = .standard) {
         self.defaults = defaults

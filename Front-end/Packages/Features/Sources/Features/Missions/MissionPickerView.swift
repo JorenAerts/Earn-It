@@ -80,7 +80,7 @@ struct MissionKindCard: View {
         .opacity(locked ? 0.8 : 1)
         .contentShape(.rect)
         .accessibilityElement(children: .combine)
-        .accessibilityHint(locked ? "Requires Earn It Pro" : "Opens setup")
+        .accessibilityHint(locked ? "Requires Gloop Pro" : "Opens setup")
     }
 }
 

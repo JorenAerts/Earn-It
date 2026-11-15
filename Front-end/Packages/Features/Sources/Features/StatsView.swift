@@ -21,7 +21,11 @@ struct StatsView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section("Rank") {
+                Section {
+                    SlimeHealthCard()
+                }
+
+                Section("Gloop's stage") {
                     RankCard(progress: XPRules.progress(history))
                         .padding(.vertical, 4)
                 }
@@ -56,7 +60,7 @@ struct StatsView: View {
                     .padding(.vertical, 8)
                 } header: {
                     let count = MedalRules.earned(history).count
-                    Text("Medals · \(count)/\(Medal.allCases.count)")
+                    Text("Stickers · \(count)/\(Medal.allCases.count)")
                 } footer: {
                     Text("XP per morning: \(XPRules.missionDone) for the mission, +\(XPRules.firstTryBonus) on the first ring, −\(XPRules.perReRing) per re-ring, +\(XPRules.perStreakDay) per streak day (up to \(XPRules.maxStreakBonusDays)).")
                 }

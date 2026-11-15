@@ -77,7 +77,7 @@ import Testing
         #expect(config.isReady)
         #expect(config.summary == "Toothbrush")
         #expect(config.instruction.contains("toothbrush"))
-        #expect(AlarmPlan(missions: [config]).alarmTitle == "Earn It - Scan Toothbrush")
+        #expect(AlarmPlan(missions: [config]).alarmTitle == "Gloop - Scan Toothbrush")
     }
 
     @Test func oldMissionJSONWithoutLabelDecodes() throws {

@@ -1,9 +1,9 @@
 import Foundation
 
-/// Sergeant Rise's lines from `Config/CoachLines.json`:
+/// The coach's (Gloop's) lines from `Config/CoachLines.json`:
 /// `{ "<context>": { "gentle": [...], "toughLove": [...], "savage": [...] } }`.
 /// Placeholders: `{streak}`, `{time}` (next alarm, e.g. 07:00), `{rings}` (re-rings so far),
-/// `{name}` (the user's name; "soldier" when unknown).
+/// `{name}` (the user's name; "friend" when unknown).
 public struct CoachLines: Sendable {
     public let table: [String: [String: [String]]]
 
@@ -32,7 +32,7 @@ public struct CoachLines: Sendable {
         let dayNumber = calendar.ordinality(of: .day, in: .era, for: day) ?? 0
         let index = (dayNumber &+ variant &+ context.rawValue.count) % options.count
         var filled = values
-        if (filled["name"] ?? "").trimmingCharacters(in: .whitespaces).isEmpty { filled["name"] = "soldier" }
+        if (filled["name"] ?? "").trimmingCharacters(in: .whitespaces).isEmpty { filled["name"] = "friend" }
         return Self.fill(options[abs(index)], filled)
     }
 
@@ -44,7 +44,7 @@ public struct CoachLines: Sendable {
 /// The user's coach settings.
 public final class CoachPreferences: @unchecked Sendable {
     private let defaults: UserDefaults
-    private let intensityKey = "earnit.coach.intensity"
+    private let intensityKey = "gloop.coach.intensity"
 
     public init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
@@ -57,20 +57,20 @@ public final class CoachPreferences: @unchecked Sendable {
 
     public var notifications: CoachNotificationSettings {
         get {
-            CoachNotificationSettings(enabled: defaults.bool(forKey: "earnit.coach.notify"),
-                                      eveningHour: defaults.object(forKey: "earnit.coach.eveningHour") as? Int ?? 22,
-                                      eveningMinute: defaults.object(forKey: "earnit.coach.eveningMinute") as? Int ?? 0)
+            CoachNotificationSettings(enabled: defaults.bool(forKey: "gloop.coach.notify"),
+                                      eveningHour: defaults.object(forKey: "gloop.coach.eveningHour") as? Int ?? 22,
+                                      eveningMinute: defaults.object(forKey: "gloop.coach.eveningMinute") as? Int ?? 0)
         }
         set {
-            defaults.set(newValue.enabled, forKey: "earnit.coach.notify")
-            defaults.set(newValue.eveningHour, forKey: "earnit.coach.eveningHour")
-            defaults.set(newValue.eveningMinute, forKey: "earnit.coach.eveningMinute")
+            defaults.set(newValue.enabled, forKey: "gloop.coach.notify")
+            defaults.set(newValue.eveningHour, forKey: "gloop.coach.eveningHour")
+            defaults.set(newValue.eveningMinute, forKey: "gloop.coach.eveningMinute")
         }
     }
 
     /// Day key of the last roast sent, so a fail-safe is roasted once.
     public var lastRoastDay: String? {
-        get { defaults.string(forKey: "earnit.coach.lastRoast") }
-        set { defaults.set(newValue, forKey: "earnit.coach.lastRoast") }
+        get { defaults.string(forKey: "gloop.coach.lastRoast") }
+        set { defaults.set(newValue, forKey: "gloop.coach.lastRoast") }
     }
 }

@@ -97,7 +97,7 @@ struct CreateClubView: View {
     }
 }
 
-/// Enter an invite code (also opened by `earnit://join/<code>`).
+/// Enter an invite code (also opened by `gloop://join/<code>`).
 struct JoinClubView: View {
     var initialCode = ""
     var onJoined: (UUID) -> Void = { _ in }

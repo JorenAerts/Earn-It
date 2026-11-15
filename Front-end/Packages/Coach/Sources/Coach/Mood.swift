@@ -1,14 +1,10 @@
 import Foundation
 
-/// Sergeant Rise's five moods, best to worst.
+/// The coach's five moods, best to worst.
 public enum CoachMood: String, Codable, CaseIterable, Sendable, Identifiable {
     case proud, calm, suspicious, angry, disappointed
 
     public var id: String { rawValue }
-
-    /// Asset name of the mood image: `App/Assets.xcassets/Coach/coach_<mood>.imageset/coach_<mood>.png`.
-    /// Replace those PNGs to change the character; nothing else needs to change.
-    public var imageName: String { "coach_\(rawValue)" }
 
     public var displayName: String {
         switch self {

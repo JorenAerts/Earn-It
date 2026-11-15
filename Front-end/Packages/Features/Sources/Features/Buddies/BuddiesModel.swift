@@ -14,12 +14,12 @@ public final class BuddiesModel {
     private(set) var myPhotoState: PhotoState = .none
     private(set) var loaded = false
     var error: String?
-    /// From `earnit://join/<code>`: BuddiesView opens the join sheet with it.
+    /// From `gloop://join/<code>`: BuddiesView opens the join sheet with it.
     var pendingJoinCode: String?
 
     @ObservationIgnored private let queue: WakeReportQueue
     @ObservationIgnored private let defaults: UserDefaults
-    private static let rulesKey = "earnit.buddies.rulesAccepted"
+    private static let rulesKey = "gloop.buddies.rulesAccepted"
     private(set) var rulesAccepted: Bool
     /// Screenshot samples (`-buddiesSample`): act signed in without an account.
     var sampleMode = false {

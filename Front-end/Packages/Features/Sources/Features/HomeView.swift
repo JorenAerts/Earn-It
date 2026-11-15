@@ -56,7 +56,7 @@ struct HomeView: View {
                 if PermissionCenter.shared.status(.alarms) == .denied ||
                     (PermissionCenter.shared.status(.alarms) == .notDetermined && !coordinator.plans.isEmpty) {
                     Section {
-                        PermissionBanner(kind: .alarms, message: "Your alarms can't ring until Earn It may use alarms.")
+                        PermissionBanner(kind: .alarms, message: "Your alarms can't ring until Gloop may use alarms.")
                     }
                 }
                 if coordinator.activePause != nil {
@@ -130,7 +130,7 @@ struct HomeView: View {
                             HStack(spacing: 12) {
                                 Image(systemName: "sun.max.fill").font(.title2).foregroundStyle(.orange)
                                 VStack(alignment: .leading, spacing: 2) {
-                                    Text("Unlock Earn It Pro").font(.headline).foregroundStyle(.primary)
+                                    Text("Unlock Gloop Pro").font(.headline).foregroundStyle(.primary)
                                     Text("Unlimited alarms, every mission, all sounds")
                                         .font(.caption).foregroundStyle(.secondary)
                                 }

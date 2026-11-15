@@ -44,8 +44,8 @@ public struct HelpContent: Equatable, Sendable {
         components.scheme = "mailto"
         components.path = address
         components.queryItems = [
-            URLQueryItem(name: "subject", value: "Earn It support"),
-            URLQueryItem(name: "body", value: "\n\n—\nEarn It \(appVersion) · iOS \(systemVersion) · \(model)"),
+            URLQueryItem(name: "subject", value: "Gloop support"),
+            URLQueryItem(name: "body", value: "\n\n—\nGloop \(appVersion) · iOS \(systemVersion) · \(model)"),
         ]
         return components.url
     }

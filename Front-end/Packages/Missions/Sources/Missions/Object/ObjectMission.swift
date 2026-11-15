@@ -204,7 +204,7 @@ struct ObjectMissionView: View {
             }
         case .cameraDenied:
             VStack(spacing: 12) {
-                Text("The camera is off for Earn It. Turn it on to scan your item, or do the backup mission.")
+                Text("The camera is off for Gloop. Turn it on to scan your item, or do the backup mission.")
                     .multilineTextAlignment(.center).foregroundStyle(.white)
                 HStack {
                     Button("Open Settings") { PermissionCenter.shared.openSettings(.camera) }.buttonStyle(.bordered).tint(.white)

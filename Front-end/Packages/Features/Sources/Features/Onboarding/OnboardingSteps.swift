@@ -15,19 +15,14 @@ struct WelcomeStep: View {
     private let points: [(String, String)] = [
         ("alarm.fill", "An alarm that keeps ringing until you're up"),
         ("brain.head.profile", "A quick mission proves you're awake"),
-        ("flame.fill", "Streaks, ranks and buddies keep you going"),
+        ("flame.fill", "Streaks, evolutions and buddies keep you going"),
     ]
 
     var body: some View {
         OnboardingPage {
             VStack(spacing: 22) {
-                Image("Logo")
-                    .resizable().scaledToFill()
-                    .frame(width: 104, height: 104)
-                    .clipShape(.rect(cornerRadius: 24, style: .continuous))
-                    .shadow(color: .black.opacity(0.18), radius: 12, y: 6)
-                    .padding(.top, 28)
-                    .accessibilityHidden(true)
+                CoachAvatarView(state: CoachState(mood: .proud, context: .idle), size: 150, vitality: 0.95)
+                    .padding(.top, 20)
                 Text("Waking up,\nearned.")
                     .font(.system(size: 44, weight: .heavy, design: .rounded))
                     .multilineTextAlignment(.center)
@@ -66,7 +61,7 @@ struct NameStep: View {
     @FocusState private var focused: Bool
 
     var body: some View {
-        OnboardingPage(title: "What should Sergeant Rise call you?",
+        OnboardingPage(title: "What should \(CoachIdentity.name) call you?",
                        subtitle: "Your first name or a nickname. Used in your coach's lines and your profile.") {
             TextField("Your name", text: $answers.name)
                 .font(.title2.weight(.semibold))
@@ -124,7 +119,7 @@ struct WhyItWorksStep: View {
     let onNext: () -> Void
 
     var body: some View {
-        OnboardingPage(title: "Earn It gets you out of bed and wide awake") {
+        OnboardingPage(title: "Gloop gets you out of bed and wide awake") {
             EnergyChart()
             Text("Snoozing drops you back into sleep you can't finish, so every extra ring tends to leave you groggier. One alarm and a short mission gets your brain and body going at once.")
                 .font(.subheadline).foregroundStyle(.secondary)
@@ -212,7 +207,7 @@ struct PermissionsStep: View {
                 }
                 PermissionIllustration()
                     .padding(.bottom, 30)
-                Text("Alarms ring through silent mode and Focus. Notifications bring Sergeant Rise's evening reminders.")
+                Text("Alarms ring through silent mode and Focus. Notifications bring \(CoachIdentity.name)'s evening reminders.")
                     .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
             }
             .frame(maxWidth: .infinity)

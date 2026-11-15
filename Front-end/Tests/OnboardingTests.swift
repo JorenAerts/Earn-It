@@ -146,7 +146,7 @@ import Testing
     @Test func coachUsesTheName() {
         var answers = OnboardingAnswers()
         answers.reaction = .whySoEarly
-        #expect(OnboardingPersonalization.coachReaction(to: .alarmReaction, answers: answers)?.contains("recruit") == true)
+        #expect(OnboardingPersonalization.coachReaction(to: .alarmReaction, answers: answers)?.contains("friend") == true)
         answers.name = "Joren"
         #expect(OnboardingPersonalization.coachReaction(to: .alarmReaction, answers: answers)?.contains("Joren") == true)
         #expect(OnboardingPersonalization.coachReaction(to: .wakeTime, answers: answers)?.contains("07:00") == true)
@@ -165,11 +165,11 @@ import Testing
 }
 
 @Suite struct CoachNamePlaceholderTests {
-    @Test func nameFallsBackToSoldier() {
+    @Test func nameFallsBackToFriend() {
         let lines = CoachLines(table: ["idle": ["toughLove": ["Lights out, {name}."]]])
-        #expect(lines.line(for: .idle, intensity: .toughLove, day: .now) == "Lights out, soldier.")
+        #expect(lines.line(for: .idle, intensity: .toughLove, day: .now) == "Lights out, friend.")
         #expect(lines.line(for: .idle, intensity: .toughLove, day: .now, values: ["name": "Joren"]) == "Lights out, Joren.")
-        #expect(lines.line(for: .idle, intensity: .toughLove, day: .now, values: ["name": " "]) == "Lights out, soldier.")
+        #expect(lines.line(for: .idle, intensity: .toughLove, day: .now, values: ["name": " "]) == "Lights out, friend.")
     }
 }
 
@@ -213,7 +213,7 @@ import Testing
 
     @Test func existingUsersSkipOnboarding() {
         let d = defaults()
-        d.set(true, forKey: "earnit.onboarded")
+        d.set(true, forKey: "gloop.onboarded")
         #expect(OnboardingStore(defaults: d).load().completed)
     }
 

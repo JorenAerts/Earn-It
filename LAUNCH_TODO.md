@@ -26,7 +26,7 @@ currently placeholders (`https://example.com/...`).
 Supabase's built-in mailer only sends a few emails per hour — fine for testing, not for users.
 
 - [ ] Create an account at an email provider (e.g. **Resend**, Postmark or Brevo — all have a free tier).
-- [ ] Verify a sending domain (e.g. `earnit.app`) — add the DNS records they give you (SPF, DKIM).
+- [ ] Verify a sending domain (e.g. `gloop.app`) — add the DNS records they give you (SPF, DKIM).
 - [ ] Supabase › Project Settings › Authentication › **SMTP Settings** → enable custom SMTP,
       fill in host, port, username, password, sender `no-reply@<your-domain>`, sender name "Earn It".
 - [ ] Supabase › Authentication › **Rate Limits** → raise the email limit (e.g. 100/hour).
@@ -42,20 +42,20 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 ### Account & agreements
 - [ ] Enrol in the **Apple Developer Program** (€99/year).
 - [ ] Update `Front-end/Config/Local.xcconfig` with the new paid **Team ID**.
-- [ ] Register App Group `group.be.earnit.app` (Xcode › Signing & Capabilities does it automatically) and add `EARNIT_DEVICE_APP_GROUPS = YES` to `Local.xcconfig` so the home-screen widgets get live data on device.
+- [ ] Register App Group `group.be.gloop.app` (Xcode › Signing & Capabilities does it automatically) and add `GLOOP_DEVICE_APP_GROUPS = YES` to `Local.xcconfig` so the home-screen widgets get live data on device.
 - [ ] App Store Connect › Business: accept the **Paid Applications Agreement**, add bank + tax info.
 
 ### App & products
-- [ ] Create the app record — bundle ID `be.earnit.app`.
+- [ ] Create the app record — bundle ID `be.gloop.app`.
 - [ ] Create subscription group **"Earn It Pro"** with the subscriptions from
       `Front-end/Config/Pricing.json` — **same product IDs**:
-  - [ ] `be.earnit.app.pro.weekly` (1 week)
-  - [ ] `be.earnit.app.pro.monthly` (1 month)
-  - [ ] `be.earnit.app.pro.quarterly` (3 months)
-  - [ ] `be.earnit.app.pro.yearly` (1 year)
+  - [ ] `be.gloop.app.pro.weekly` (1 week)
+  - [ ] `be.gloop.app.pro.monthly` (1 month)
+  - [ ] `be.gloop.app.pro.quarterly` (3 months)
+  - [ ] `be.gloop.app.pro.yearly` (1 year)
   - [ ] For each: price, display name, description, review screenshot, and an
         **introductory offer: free trial, 3 days**.
-- [ ] Create `be.earnit.app.pro.lifetime` as a **non-consumable** in-app purchase.
+- [ ] Create `be.gloop.app.pro.lifetime` as a **non-consumable** in-app purchase.
 - [ ] Keep `Pricing.json` prices in sync with App Store Connect (then run
       `python3 Front-end/scripts/generate_storekit.py`).
 
@@ -67,11 +67,11 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 - [ ] Check **Restore purchases** on a second device / after reinstall.
 
 ### Apple Music (needs the paid program)
-- [ ] Developer portal › Identifiers › `be.earnit.app` › App Services: enable **MusicKit**.
+- [ ] Developer portal › Identifiers › `be.gloop.app` › App Services: enable **MusicKit**.
 - [ ] Test search + playback with an Apple Music subscription.
 
 ### Sign in with Apple (needs the paid program)
-- [ ] Enable the Sign in with Apple capability for `be.earnit.app`.
+- [ ] Enable the Sign in with Apple capability for `be.gloop.app`.
 - [ ] Create a Services ID + Sign in with Apple key, paste them in Supabase › Providers › **Apple**.
 - [ ] Keep `"apple"` in `Front-end/Config/Auth.json` → `providers`.
 
@@ -96,6 +96,13 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 - [ ] Apply `Backend/supabase/migrations/20261116000000_profile_onboarding.sql` (SQL Editor).
 - [ ] `Front-end/Config/SocialProof.json`: add stats / reviews only when they're real and current (reviews with permission). Never placeholders.
 - [ ] App Privacy labels: age range + "where did you hear about us" are collected (linked to the account when signed in).
+
+### App name
+- [ ] App Store Connect › App Information › Name: **Gloop: Your Wake-Up Buddy** (26 of 30 characters).
+      The home-screen name is already "Gloop" (`CFBundleDisplayName` in `project.yml`).
+- [ ] Subtitle (30 max), e.g. "The alarm you can't snooze".
+- [ ] Check "Gloop" is free as a trademark (EU/Benelux) and grab a domain for the share link / privacy pages.
+- [ ] In-app purchase display names in App Store Connect: "Gloop Pro – Yearly" etc. (match `Config/Gloop.storekit`).
 
 ### Submission
 - [ ] App privacy labels (email, user ID, purchases; no tracking).

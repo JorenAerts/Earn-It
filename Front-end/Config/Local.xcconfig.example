@@ -2,4 +2,4 @@
 DEVELOPMENT_TEAM = YOURTEAMID
 // After joining the paid Apple Developer Program: enable the App Group on device builds
 // (home-screen widgets need it to read your streak and rank).
-// EARNIT_DEVICE_APP_GROUPS = YES
+// GLOOP_DEVICE_APP_GROUPS = YES

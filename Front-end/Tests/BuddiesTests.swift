@@ -77,20 +77,20 @@ private func at(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11) -> Date {
     @Test func acceptsWhatPeoplePaste() {
         #expect(InviteCode.normalize(" abcd-2345 ") == "ABCD2345")
         #expect(InviteCode.normalize("ABCD 2345") == "ABCD2345")
-        #expect(InviteCode.normalize("earnit://join/ABCD2345") == "ABCD2345")
-        #expect(InviteCode.normalize("https://earnit.app/join/abcd-2345") == "ABCD2345")
+        #expect(InviteCode.normalize("gloop://join/ABCD2345") == "ABCD2345")
+        #expect(InviteCode.normalize("https://gloop.app/join/abcd-2345") == "ABCD2345")
     }
 
     @Test func rejectsNonsense() {
         #expect(InviteCode.normalize("ABC") == nil)
         #expect(InviteCode.normalize("ABCD0OI1") == nil, "look-alikes aren't in the alphabet")
-        #expect(InviteCode.normalize("earnit://mission") == nil)
+        #expect(InviteCode.normalize("gloop://mission") == nil)
         #expect(InviteCode.normalize("") == nil)
     }
 
     @Test func displayAndShare() {
         #expect(InviteCode.display("ABCD2345") == "ABCD-2345")
-        #expect(InviteCode.link("ABCD2345").absoluteString == "earnit://join/ABCD2345")
+        #expect(InviteCode.link("ABCD2345").absoluteString == "gloop://join/ABCD2345")
         #expect(InviteCode.shareText(club: "Gym", code: "ABCD2345").contains("ABCD-2345"))
     }
 }
@@ -157,7 +157,7 @@ private func at(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11) -> Date {
                                      history: history, calendar: brussels)
         #expect(report.xp == 80, "50 + 25 first ring + 5 streak")
         #expect(report.streak == 1)
-        #expect(report.rank == "Recruit")
+        #expect(report.rank == "Droplet")
     }
 }
 
@@ -266,7 +266,7 @@ private func at(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11) -> Date {
         let rows = try await service.leaderboard(club: club, weekStart: "2026-11-09")
         #expect(rows[0].weekXP == 170)
         #expect(rows[0].totalXP == 240)
-        #expect(rows[0].streak == 3 && rows[0].coachRank == .privateSoldier)
+        #expect(rows[0].streak == 3 && rows[0].coachRank == .blob)
     }
 
     @Test func signedOutFails() async {

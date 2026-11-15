@@ -1,14 +1,14 @@
 import Core
 import Foundation
 
-/// A local notification in Sergeant Rise's voice.
+/// A local notification in the coach's voice.
 public struct CoachNotification: Equatable, Sendable {
     public let id: String
     public let date: Date
     public let title: String
     public let body: String
 
-    public init(id: String, date: Date, title: String = "Sergeant Rise", body: String) {
+    public init(id: String, date: Date, title: String = CoachIdentity.name, body: String) {
         self.id = id
         self.date = date
         self.title = title
@@ -68,7 +68,7 @@ public enum NotificationPlanner {
             guard reminder > now, alarm.timeIntervalSince(reminder) >= minimumLeadTime else { continue }
             let time = alarm.formatted(.dateTime.hour(.twoDigits(amPM: .omitted)).minute(.twoDigits))
             var body = lines.line(for: .night, intensity: intensity, day: day, values: ["time": time], calendar: calendar)
-            if day == firstDayBack { body = "Leave's over, soldier. Back to duty tomorrow. " + body }
+            if day == firstDayBack { body = "Break's over! I'm back tomorrow, ready to bounce. " + body }
             if streak >= 3 { body += " Your \(streak)-day streak is on the line." }
             result.append(CoachNotification(id: "\(CoachNotification.idPrefix)evening.\(dayKey(day, calendar))",
                                             date: reminder, body: body))

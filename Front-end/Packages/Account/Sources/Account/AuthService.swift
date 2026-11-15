@@ -36,7 +36,7 @@ public struct AuthConfig: Codable, Sendable, Equatable {
     public let privacyURL: URL
     /// Help & feedback › Contact support. Optional: hidden when missing.
     public let supportEmail: String?
-    /// Help & feedback › Share Earn It (website / App Store page).
+    /// Help & feedback › Share Gloop (website / App Store page).
     public let shareURL: URL?
 
     public static func load(from bundle: Bundle = .main) -> AuthConfig {
@@ -49,7 +49,7 @@ public struct AuthConfig: Codable, Sendable, Equatable {
 
     public static let fallback = AuthConfig(
         emailPassword: true, providers: [.apple, .google],
-        redirectURL: URL(string: "earnit://auth-callback")!,
+        redirectURL: URL(string: "gloop://auth-callback")!,
         termsURL: URL(string: "https://example.com/terms")!,
         privacyURL: URL(string: "https://example.com/privacy")!
     )
@@ -169,6 +169,6 @@ public protocol AuthService: AnyObject {
     func updateProfile(_ update: ProfileUpdate) async
     /// The signed-in user's profile row (nil when signed out or offline).
     func loadProfile() async -> ProfileUpdate?
-    /// Email confirmation / OAuth callback deep links (`earnit://auth-callback…`).
+    /// Email confirmation / OAuth callback deep links (`gloop://auth-callback…`).
     func handle(url: URL) async
 }

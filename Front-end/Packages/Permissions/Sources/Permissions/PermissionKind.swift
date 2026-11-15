@@ -1,6 +1,6 @@
 import Foundation
 
-/// Every iOS permission Earn It uses. Adding one: a case here + mapping/request in
+/// Every iOS permission Gloop uses. Adding one: a case here + mapping/request in
 /// `PermissionCenter` + an Info.plist usage string (project.yml).
 public enum PermissionKind: String, CaseIterable, Sendable, Identifiable {
     case alarms, notifications, camera, microphone, appleMusic, liveActivities
@@ -47,7 +47,7 @@ public enum PermissionKind: String, CaseIterable, Sendable, Identifiable {
     public var reason: String {
         switch self {
         case .alarms: "Your alarm rings through silent mode and Focus, even when the app is closed."
-        case .notifications: "Evening reminders and a word from Sergeant Rise after a missed morning."
+        case .notifications: "Evening reminders and a word from Gloop after a missed morning."
         case .camera: "Scan your code or item to stop the alarm."
         case .microphone: "Record your own alarm sound."
         case .appleMusic: "Wake up to a song from Apple Music."
@@ -58,12 +58,12 @@ public enum PermissionKind: String, CaseIterable, Sendable, Identifiable {
     /// Shown when a feature needs it but it's off.
     public var blockedMessage: String {
         switch self {
-        case .alarms: "Without alarm access your alarms can't ring. Turn on Alarms for Earn It in Settings."
-        case .notifications: "Turn on notifications for Earn It in Settings to get coach reminders."
-        case .camera: "Earn It needs the camera to scan your code or item. Turn on Camera for Earn It in Settings."
-        case .microphone: "Earn It needs the microphone to record your sound. Turn on Microphone for Earn It in Settings."
-        case .appleMusic: "Turn on Media & Apple Music for Earn It in Settings to pick a song."
-        case .liveActivities: "Turn on Live Activities for Earn It in Settings to see the re-ring countdown."
+        case .alarms: "Without alarm access your alarms can't ring. Turn on Alarms for Gloop in Settings."
+        case .notifications: "Turn on notifications for Gloop in Settings to get coach reminders."
+        case .camera: "Gloop needs the camera to scan your code or item. Turn on Camera for Gloop in Settings."
+        case .microphone: "Gloop needs the microphone to record your sound. Turn on Microphone for Gloop in Settings."
+        case .appleMusic: "Turn on Media & Apple Music for Gloop in Settings to pick a song."
+        case .liveActivities: "Turn on Live Activities for Gloop in Settings to see the re-ring countdown."
         }
     }
 

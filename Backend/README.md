@@ -33,7 +33,7 @@ supabase/
 1. **Database** — apply the migration, either:
    - Dashboard › SQL Editor › paste each file in `supabase/migrations/` (in name order) › Run, or
    - CLI: `brew install supabase/tap/supabase`, `supabase login`, `supabase link --project-ref ttguwgmjvdrrmnsbavns`, `supabase db push`.
-2. **Auth › URL Configuration** — Site URL `earnit://auth-callback`; Redirect URLs: add `earnit://auth-callback` and `earnit://**`.
+2. **Auth › URL Configuration** — Site URL `gloop://auth-callback`; Redirect URLs: add `gloop://auth-callback` and `gloop://**`.
 3. **Auth › Providers › Email** — enabled, "Confirm email" on.
 4. **OAuth providers** (Auth › Providers; callback URL for every provider console is
    `https://ttguwgmjvdrrmnsbavns.supabase.co/auth/v1/callback`):

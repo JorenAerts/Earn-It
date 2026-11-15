@@ -14,8 +14,8 @@ major_version = 15
 
 [auth]
 enabled = true
-site_url = "earnit://auth-callback"
-additional_redirect_urls = ["earnit://auth-callback", "earnit://**"]
+site_url = "gloop://auth-callback"
+additional_redirect_urls = ["gloop://auth-callback", "gloop://**"]
 jwt_expiry = 3600
 enable_refresh_token_rotation = true
 enable_signup = true

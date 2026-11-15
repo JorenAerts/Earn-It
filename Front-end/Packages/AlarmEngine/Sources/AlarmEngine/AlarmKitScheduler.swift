@@ -6,7 +6,7 @@ import Foundation
 import os
 import SwiftUI
 
-private let log = Logger(subsystem: "be.earnit.app", category: "alarm")
+private let log = Logger(subsystem: "be.gloop.app", category: "alarm")
 
 /// Builds the intent attached to the alarm's X (stop) control. It lives in the app target
 /// (so the system can discover it); the engine only needs to construct it.
@@ -45,7 +45,7 @@ public final class AlarmKitScheduler: AlarmScheduling {
             ? .never
             : .weekly(plan.weekdays.sorted().compactMap(Self.weekday))
         let schedule = Alarm.Schedule.relative(.init(time: time, repeats: recurrence))
-        let config = AlarmManager.AlarmConfiguration<EarnItAlarmMetadata>.alarm(
+        let config = AlarmManager.AlarmConfiguration<GloopAlarmMetadata>.alarm(
             schedule: schedule,
             attributes: attributes(title: plan.alarmTitle, attempt: 0, countdown: false),
             stopIntent: intents.stop(plan.id),
@@ -55,7 +55,7 @@ public final class AlarmKitScheduler: AlarmScheduling {
     }
 
     public func scheduleOneOff(id: UUID, at date: Date, title: String, sound: SoundChoice) async throws {
-        let config = AlarmManager.AlarmConfiguration<EarnItAlarmMetadata>.alarm(
+        let config = AlarmManager.AlarmConfiguration<GloopAlarmMetadata>.alarm(
             schedule: .fixed(date),
             attributes: attributes(title: title, attempt: 0, countdown: false),
             stopIntent: intents.stop(id),
@@ -66,7 +66,7 @@ public final class AlarmKitScheduler: AlarmScheduling {
 
     public func scheduleFollowUp(id: UUID, after duration: TimeInterval, title: String, attempt: Int,
                                  sound: SoundChoice) async throws {
-        let config = AlarmManager.AlarmConfiguration<EarnItAlarmMetadata>.timer(
+        let config = AlarmManager.AlarmConfiguration<GloopAlarmMetadata>.timer(
             duration: duration,
             attributes: attributes(title: title, attempt: attempt, countdown: true),
             stopIntent: intents.stop(id),
@@ -118,7 +118,7 @@ public final class AlarmKitScheduler: AlarmScheduling {
                        isAlerting: alarm.state == .alerting, isCountingDown: alarm.state == .countdown)
     }
 
-    private func attributes(title: String, attempt: Int, countdown: Bool) -> AlarmAttributes<EarnItAlarmMetadata> {
+    private func attributes(title: String, attempt: Int, countdown: Bool) -> AlarmAttributes<GloopAlarmMetadata> {
         // Only the system X/Stop control: it opens the app on the mission (see StopAlarmIntent).
         let alert = AlarmPresentation.Alert(title: LocalizedStringResource(stringLiteral: title))
         // No pause button: the re-ring countdown can't be paused.
@@ -128,7 +128,7 @@ public final class AlarmKitScheduler: AlarmScheduling {
         )
         return AlarmAttributes(
             presentation: presentation,
-            metadata: EarnItAlarmMetadata(title: title, attempt: attempt),
+            metadata: GloopAlarmMetadata(title: title, attempt: attempt),
             tintColor: .orange
         )
     }

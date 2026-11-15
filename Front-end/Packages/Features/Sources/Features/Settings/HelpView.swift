@@ -10,7 +10,7 @@ struct HelpView: View {
     @Environment(\.openURL) private var openURL
     @Environment(\.requestReview) private var requestReview
 
-    static let shareMessage = "I'm using Earn It: an alarm that keeps ringing until I've actually got up. Try it!"
+    static let shareMessage = "I'm using Gloop: an alarm that keeps ringing until I've actually got up. Try it!"
 
     var body: some View {
         List {
@@ -34,11 +34,11 @@ struct HelpView: View {
                     }
                 }
                 Button { requestReview() } label: {
-                    Label("Rate Earn It", systemImage: "star.fill")
+                    Label("Rate Gloop", systemImage: "star.fill")
                 }
                 if let url = auth.config.shareURL {
                     ShareLink(item: url, message: Text(Self.shareMessage)) {
-                        Label("Share Earn It", systemImage: "square.and.arrow.up")
+                        Label("Share Gloop", systemImage: "square.and.arrow.up")
                     }
                 }
             } header: {

@@ -1,42 +1,42 @@
 import Foundation
 
-/// Military ranks, earned with XP from good mornings.
+/// Gloop's evolution stages, earned with XP from good mornings. Raw values and thresholds are
+/// unchanged from the old military ranks, so history and XP carry over.
 public enum Rank: Int, CaseIterable, Comparable, Sendable, Identifiable {
-    case recruit, privateSoldier, privateFirstClass, corporal, sergeant, staffSergeant,
-         lieutenant, captain, major, colonel, general
+    case droplet, blob, jelly, gloopling, bouncer, squisher, wobbler, megaGloop, superGloop, royalGloop, kingGloop
 
     public var id: Int { rawValue }
 
     public var title: String {
         switch self {
-        case .recruit: "Recruit"
-        case .privateSoldier: "Private"
-        case .privateFirstClass: "Private First Class"
-        case .corporal: "Corporal"
-        case .sergeant: "Sergeant"
-        case .staffSergeant: "Staff Sergeant"
-        case .lieutenant: "Lieutenant"
-        case .captain: "Captain"
-        case .major: "Major"
-        case .colonel: "Colonel"
-        case .general: "General"
+        case .droplet: "Droplet"
+        case .blob: "Blob"
+        case .jelly: "Jelly"
+        case .gloopling: "Gloopling"
+        case .bouncer: "Bouncer"
+        case .squisher: "Squisher"
+        case .wobbler: "Wobbler"
+        case .megaGloop: "Mega Gloop"
+        case .superGloop: "Super Gloop"
+        case .royalGloop: "Royal Gloop"
+        case .kingGloop: "King Gloop"
         }
     }
 
-    /// XP needed to reach this rank.
+    /// XP needed to reach this stage.
     public var threshold: Int {
         switch self {
-        case .recruit: 0
-        case .privateSoldier: 100
-        case .privateFirstClass: 300
-        case .corporal: 600
-        case .sergeant: 1_000
-        case .staffSergeant: 1_600
-        case .lieutenant: 2_500
-        case .captain: 3_600
-        case .major: 5_000
-        case .colonel: 7_000
-        case .general: 10_000
+        case .droplet: 0
+        case .blob: 100
+        case .jelly: 300
+        case .gloopling: 600
+        case .bouncer: 1_000
+        case .squisher: 1_600
+        case .wobbler: 2_500
+        case .megaGloop: 3_600
+        case .superGloop: 5_000
+        case .royalGloop: 7_000
+        case .kingGloop: 10_000
         }
     }
 
@@ -45,7 +45,18 @@ public enum Rank: Int, CaseIterable, Comparable, Sendable, Identifiable {
     public static func < (a: Rank, b: Rank) -> Bool { a.rawValue < b.rawValue }
 
     public static func forXP(_ xp: Int) -> Rank {
-        allCases.last { xp >= $0.threshold } ?? .recruit
+        allCases.last { xp >= $0.threshold } ?? .droplet
+    }
+
+    /// Military titles used before Gloop (still stored in Buddies reports on the server).
+    static let legacyTitles = ["Recruit", "Private", "Private First Class", "Corporal", "Sergeant", "Staff Sergeant",
+                               "Lieutenant", "Captain", "Major", "Colonel", "General"]
+
+    /// The stage for a title, new or legacy. nil for unknown text.
+    public static func from(title: String?) -> Rank? {
+        guard let title else { return nil }
+        if let rank = allCases.first(where: { $0.title == title }) { return rank }
+        return legacyTitles.firstIndex(of: title).flatMap(Rank.init(rawValue:))
     }
 }
 

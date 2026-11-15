@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Config/EarnIt.storekit (Xcode local StoreKit testing) from Config/Pricing.json.
+"""Generate Config/Gloop.storekit (Xcode local StoreKit testing) from Config/Pricing.json.
 
 Pricing.json is the single place to change plans and prices. After editing it run:
     python3 scripts/generate_storekit.py
@@ -12,11 +12,11 @@ import uuid
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "Config" / "Pricing.json"
-OUT = ROOT / "Config" / "EarnIt.storekit"
+OUT = ROOT / "Config" / "Gloop.storekit"
 
 def stable_id(*parts):
     """Deterministic IDs so regenerating doesn't churn the file."""
-    return str(uuid.uuid5(uuid.NAMESPACE_URL, "earnit:" + ":".join(parts))).upper()
+    return str(uuid.uuid5(uuid.NAMESPACE_URL, "gloop:" + ":".join(parts))).upper()
 
 def localization(title, description):
     return [{"description": description, "displayName": title, "locale": "en_US"}]
@@ -44,7 +44,7 @@ def main():
                     "paymentMode": "free",
                     "subscriptionPeriod": trial,
                 },
-                "localizations": localization(f"Earn It Pro – {p['title']}", "All alarms, missions and sounds."),
+                "localizations": localization(f"Gloop Pro – {p['title']}", "All alarms, missions and sounds."),
                 "productID": p["id"],
                 "recurringSubscriptionPeriod": p["period"],
                 "referenceName": f"Pro {p['title']}",
@@ -56,7 +56,7 @@ def main():
                 "displayPrice": price,
                 "familyShareable": False,
                 "internalID": stable_id("lifetime", p["id"]),
-                "localizations": localization("Earn It Pro – Lifetime", "Unlock Pro forever, one payment."),
+                "localizations": localization("Gloop Pro – Lifetime", "Unlock Pro forever, one payment."),
                 "productID": p["id"],
                 "referenceName": "Pro Lifetime",
                 "type": "NonConsumable",

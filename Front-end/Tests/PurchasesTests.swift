@@ -26,7 +26,7 @@ import Testing
 
     @Test func storekitFileMatchesPricingJSON() throws {
         let catalog = try PricingCatalog.load()
-        let url = try #require(Bundle(for: BundleToken.self).url(forResource: "EarnIt", withExtension: "storekit"))
+        let url = try #require(Bundle(for: BundleToken.self).url(forResource: "Gloop", withExtension: "storekit"))
         let storekit = try #require(JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [String: Any])
         let subs = ((storekit["subscriptionGroups"] as? [[String: Any]])?.first?["subscriptions"] as? [[String: Any]]) ?? []
         let oneTime = (storekit["products"] as? [[String: Any]]) ?? []
@@ -110,10 +110,10 @@ private final class BundleToken {}
     }
 }
 
-/// Real StoreKit flow against Config/EarnIt.storekit (local, no App Store Connect).
+/// Real StoreKit flow against Config/Gloop.storekit (local, no App Store Connect).
 @Suite(.serialized) @MainActor struct StoreKitFlowTests {
     @Test func subscriptionPurchaseStartsTrial() async throws {
-        let session = try SKTestSession(configurationFileNamed: "EarnIt")
+        let session = try SKTestSession(configurationFileNamed: "Gloop")
         session.disableDialogs = true
         session.clearTransactions()
         session.resetToDefaultState()
@@ -124,7 +124,7 @@ private final class BundleToken {}
         #expect(store.products.count == 5)
         #expect(store.isEligibleForTrial)
 
-        let yearly = try #require(store.products.first { $0.id == "be.earnit.app.pro.yearly" })
+        let yearly = try #require(store.products.first { $0.id == "be.gloop.app.pro.yearly" })
         // Subscription purchases via Product.purchase() time out inside the unit-test host;
         // buy through the test session instead (real signed transaction, same refresh path).
         _ = try await session.buyProduct(identifier: yearly.id)
@@ -142,14 +142,14 @@ private final class BundleToken {}
     }
 
     @Test func lifetimePurchase() async throws {
-        let session = try SKTestSession(configurationFileNamed: "EarnIt")
+        let session = try SKTestSession(configurationFileNamed: "Gloop")
         session.disableDialogs = true
         session.clearTransactions()
 
         let store = StoreService(catalog: try PricingCatalog.load(),
                                  cache: EntitlementCache(defaults: UserDefaults(suiteName: "test-\(UUID().uuidString)")!))
         await store.loadProducts()
-        let lifetime = try #require(store.products.first { $0.id == "be.earnit.app.pro.lifetime" })
+        let lifetime = try #require(store.products.first { $0.id == "be.gloop.app.pro.lifetime" })
         // Product.purchase() can hang in the unit-test host; buy through the test session.
         _ = try await session.buyProduct(identifier: lifetime.id)
         // The transaction can take a moment to appear in Transaction.currentEntitlements.

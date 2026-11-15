@@ -1,6 +1,6 @@
-name: EarnIt
+name: Gloop
 options:
-  bundleIdPrefix: be.earnit
+  bundleIdPrefix: be.gloop
   deploymentTarget:
     iOS: "26.1"
   createIntermediateGroups: true
@@ -13,8 +13,8 @@ settings:
     CODE_SIGN_STYLE: Automatic
     TARGETED_DEVICE_FAMILY: "1"
     # Shared container for widget data. Simulator builds always get the entitlement; on a device
-    # it needs the paid Apple Developer Program: set EARNIT_DEVICE_APP_GROUPS = YES in Local.xcconfig.
-    EARNIT_APP_GROUP: group.be.earnit.app
+    # it needs the paid Apple Developer Program: set GLOOP_DEVICE_APP_GROUPS = YES in Local.xcconfig.
+    GLOOP_APP_GROUP: group.be.gloop.app
 
 configFiles:
   Debug: Config/Shared.xcconfig
@@ -43,7 +43,7 @@ packages:
     path: Packages/Buddies
 
 targets:
-  EarnIt:
+  Gloop:
     type: application
     platform: iOS
     sources:
@@ -76,20 +76,22 @@ targets:
       - target: AlarmLiveActivity
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: be.earnit.app
-        PRODUCT_NAME: EarnIt
+        PRODUCT_BUNDLE_IDENTIFIER: be.gloop.app
+        PRODUCT_NAME: Gloop
         MARKETING_VERSION: "0.1.0"
         CURRENT_PROJECT_VERSION: "1"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: "AppIcon-Mint AppIcon-Grape AppIcon-Midnight AppIcon-Gold"
+        ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS: YES
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
-        INFOPLIST_KEY_CFBundleDisplayName: Earn It
-        "CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]": App/EarnIt.entitlements
-        "CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]": $(EARNIT_APP_ENTITLEMENTS_$(EARNIT_DEVICE_APP_GROUPS))
-        EARNIT_APP_ENTITLEMENTS_YES: App/EarnIt.entitlements
+        INFOPLIST_KEY_CFBundleDisplayName: Gloop
+        "CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]": App/Gloop.entitlements
+        "CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]": $(GLOOP_APP_ENTITLEMENTS_$(GLOOP_DEVICE_APP_GROUPS))
+        GLOOP_APP_ENTITLEMENTS_YES: App/Gloop.entitlements
     info:
       path: App/Info.plist
       properties:
-        CFBundleDisplayName: Earn It
+        CFBundleDisplayName: Gloop
         UILaunchScreen: {}
         UISupportedInterfaceOrientations:
           - UIInterfaceOrientationPortrait
@@ -97,24 +99,23 @@ targets:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
         NSSupportsLiveActivities: true
-        EarnItAppGroup: $(EARNIT_APP_GROUP)
+        GloopAppGroup: $(GLOOP_APP_GROUP)
         SUPABASE_URL: $(SUPABASE_URL)
         SUPABASE_PUBLISHABLE_KEY: $(SUPABASE_PUBLISHABLE_KEY)
         UIBackgroundModes: [audio]
         CFBundleURLTypes:
-          - CFBundleURLName: be.earnit.app
-            CFBundleURLSchemes: [earnit]
-        NSAlarmKitUsageDescription: Earn It schedules your wake-up alarms so they ring through silent mode and Focus.
-        NSMicrophoneUsageDescription: Earn It uses the microphone only when you record your own alarm sound.
-        NSAppleMusicUsageDescription: Earn It plays the Apple Music song you pick while you do your wake-up mission.
-        NSCameraUsageDescription: Earn It uses the camera to scan the code or item you registered, so you have to get out of bed to stop the alarm. Images stay on your iPhone.
+          - CFBundleURLName: be.gloop.app
+            CFBundleURLSchemes: [gloop]
+        NSAlarmKitUsageDescription: Gloop schedules your wake-up alarms so they ring through silent mode and Focus.
+        NSMicrophoneUsageDescription: Gloop uses the microphone only when you record your own alarm sound.
+        NSAppleMusicUsageDescription: Gloop plays the Apple Music song you pick while you do your wake-up mission.
+        NSCameraUsageDescription: Gloop uses the camera to scan the code or item you registered, so you have to get out of bed to stop the alarm. Images stay on your iPhone.
 
   AlarmLiveActivity:
     type: app-extension
     platform: iOS
     sources:
       - path: Extensions/AlarmLiveActivity
-      - path: App/CoachArt.xcassets
     dependencies:
       - package: AlarmEngine
       - package: Core
@@ -122,46 +123,46 @@ targets:
       - package: WidgetShared
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: be.earnit.app.AlarmLiveActivity
+        PRODUCT_BUNDLE_IDENTIFIER: be.gloop.app.AlarmLiveActivity
         PRODUCT_NAME: AlarmLiveActivity
         MARKETING_VERSION: "0.1.0"
         CURRENT_PROJECT_VERSION: "1"
         SKIP_INSTALL: YES
         "CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]": Extensions/AlarmLiveActivity/AlarmLiveActivity.entitlements
-        "CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]": $(EARNIT_EXT_ENTITLEMENTS_$(EARNIT_DEVICE_APP_GROUPS))
-        EARNIT_EXT_ENTITLEMENTS_YES: Extensions/AlarmLiveActivity/AlarmLiveActivity.entitlements
+        "CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]": $(GLOOP_EXT_ENTITLEMENTS_$(GLOOP_DEVICE_APP_GROUPS))
+        GLOOP_EXT_ENTITLEMENTS_YES: Extensions/AlarmLiveActivity/AlarmLiveActivity.entitlements
     info:
       path: Extensions/AlarmLiveActivity/Info.plist
       properties:
-        CFBundleDisplayName: Earn It Widgets
-        EarnItAppGroup: $(EARNIT_APP_GROUP)
+        CFBundleDisplayName: Gloop Widgets
+        GloopAppGroup: $(GLOOP_APP_GROUP)
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
 
-  EarnItTests:
+  GloopTests:
     type: bundle.unit-test
     platform: iOS
     sources:
       - path: Tests
-      - path: Config/EarnIt.storekit
+      - path: Config/Gloop.storekit
         buildPhase: resources
     dependencies:
-      - target: EarnIt
+      - target: Gloop
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: be.earnit.app.tests
+        PRODUCT_BUNDLE_IDENTIFIER: be.gloop.app.tests
         GENERATE_INFOPLIST_FILE: YES
 
 schemes:
-  EarnIt:
+  Gloop:
     build:
       targets:
-        EarnIt: all
-        EarnItTests: [test]
+        Gloop: all
+        GloopTests: [test]
     run:
       config: Debug
-      storeKitConfiguration: Config/EarnIt.storekit
+      storeKitConfiguration: Config/Gloop.storekit
     test:
       config: Debug
       targets:
-        - EarnItTests
+        - GloopTests

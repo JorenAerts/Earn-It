@@ -53,7 +53,7 @@ public enum EntitlementResolver {
 /// Last known entitlement, so the right tier shows instantly at launch / offline.
 public final class EntitlementCache: @unchecked Sendable {
     private let defaults: UserDefaults
-    private let key = "earnit.entitlement"
+    private let key = "gloop.entitlement"
 
     public init(defaults: UserDefaults = .standard) {
         self.defaults = defaults

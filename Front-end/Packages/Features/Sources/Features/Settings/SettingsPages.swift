@@ -6,7 +6,7 @@ import Purchases
 import StoreKit
 import SwiftUI
 
-// MARK: - Earn It Pro
+// MARK: - Gloop Pro
 
 struct SubscriptionSettingsView: View {
     let store: StoreService
@@ -41,7 +41,7 @@ struct SubscriptionSettingsView: View {
             Section {
                 if !store.entitlement.isPro {
                     Button { showPaywall = true } label: {
-                        Label("Unlock Earn It Pro", systemImage: "sun.max.fill")
+                        Label("Unlock Gloop Pro", systemImage: "sun.max.fill")
                     }
                 } else if !store.entitlement.isLifetime {
                     Button("Manage subscription") { showManage = true }
@@ -59,7 +59,7 @@ struct SubscriptionSettingsView: View {
                 if let message { Text(message) }
             }
         }
-        .navigationTitle("Earn It Pro")
+        .navigationTitle("Gloop Pro")
         .navigationBarTitleDisplayMode(.inline)
         .paywallSheet(isPresented: $showPaywall)
         .manageSubscriptionsSheet(isPresented: $showManage)
@@ -76,7 +76,7 @@ struct PermissionsSettingsView: View {
                     PermissionRow(kind: kind)
                 }
             } footer: {
-                Text("Turned something off? \"Open Settings\" takes you to Earn It's page in iOS Settings; come back and it updates here.")
+                Text("Turned something off? \"Open Settings\" takes you to Gloop's page in iOS Settings; come back and it updates here.")
             }
         }
         .navigationTitle("Permissions")
@@ -85,7 +85,7 @@ struct PermissionsSettingsView: View {
     }
 }
 
-// MARK: - Sergeant Rise
+// MARK: - Coach (Gloop)
 
 struct CoachSettingsView: View {
     let coordinator: AlarmCoordinator
@@ -95,6 +95,7 @@ struct CoachSettingsView: View {
     var body: some View {
         List {
             Section {
+                SlimeHealthCard()
                 let sample = CoachState(mood: .angry, context: .reRing, anger: 0.6)
                 CoachCard(state: sample,
                           line: coach.lines.line(for: .reRing, intensity: coach.intensity, day: .now,
@@ -126,7 +127,7 @@ struct CoachSettingsView: View {
                 Text("The evening before each alarm, and a word from him after a missed morning. No reminders while alarms are paused.")
             }
         }
-        .navigationTitle("Sergeant Rise")
+        .navigationTitle(CoachIdentity.name)
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -171,10 +172,10 @@ struct SoundCreditsView: View {
             } header: {
                 Text("Melodies")
             } footer: {
-                Text("Public-domain compositions, performed by Earn It's own sound generator.")
+                Text("Public-domain compositions, performed by Gloop's own sound generator.")
             }
             Section {
-                Text("Every other built-in sound was made for Earn It. Your own sounds and Apple Music songs stay yours and are never uploaded.")
+                Text("Every other built-in sound was made for Gloop. Your own sounds and Apple Music songs stay yours and are never uploaded.")
                     .font(.subheadline).foregroundStyle(.secondary)
             }
         }
