@@ -118,6 +118,13 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 - [ ] Recommended: have a lawyer review the documents once before launch.
 - [ ] Process: check Buddies reports daily (24 h promise in Terms + Community Guidelines); answer data requests within 1 month.
 
+### App Store listing (see docs/AppStore.md)
+- [ ] Copy `Front-end/fastlane/metadata/{en-US,en-GB}` into App Store Connect (or `fastlane deliver` once set up): name, subtitle, keywords, promotional text, description, release notes.
+- [ ] Upload the 10 screenshots per size from `Front-end/fastlane/screenshots/` (re-run `scripts/screenshots/make.sh` first).
+- [ ] Categories Lifestyle + Productivity, age rating questionnaire (UGC → 12+), copyright, App Privacy answers as listed in docs/AppStore.md.
+- [ ] Replace the placeholder URLs in `privacy_url.txt` / `support_url.txt` / `marketing_url.txt`.
+- [ ] Add a `Config/WhatsNew.json` entry for every release (What's New sheet).
+
 ### Submission
 - [ ] App privacy labels (email, user ID, purchases; no tracking).
 - [ ] Review notes: explain AlarmKit alarm + background audio (keeps the alarm sounding until the

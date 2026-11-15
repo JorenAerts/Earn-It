@@ -203,6 +203,9 @@ public enum TelemetryAction: Equatable, Sendable {
     case accountDeleted
     case permissionDenied(kind: String)
     case telemetryTest
+    case ratingPrompted(reason: String)
+    case whatsNewShown(version: String)
+    case shareStreak(streak: Int)
 
     var name: String {
         switch self {
@@ -229,6 +232,9 @@ public enum TelemetryAction: Equatable, Sendable {
         case .accountDeleted: "Account.deleted"
         case .permissionDenied: "Permission.denied"
         case .telemetryTest: "Telemetry.test"
+        case .ratingPrompted: "Rate.prompted"
+        case .whatsNewShown: "WhatsNew.shown"
+        case .shareStreak: "Share.streakCard"
         }
     }
 
@@ -245,6 +251,9 @@ public enum TelemetryAction: Equatable, Sendable {
         case .faqOpened(let index): ["question": "\(index)"]
         case .signedIn(let method): ["method": method]
         case .permissionDenied(let kind): ["kind": kind]
+        case .ratingPrompted(let reason): ["reason": reason]
+        case .whatsNewShown(let version): ["version": version]
+        case .shareStreak(let streak): ["streak": "\(streak)"]
         default: [:]
         }
     }

@@ -46,6 +46,7 @@ struct StatsView: View {
                     }
                     .padding(.vertical, 6)
                     .accessibilityElement(children: .combine)
+                    if current > 0 { ShareStreakButton(style: .plain) }
                 }
 
                 Section("Last 14 days") {

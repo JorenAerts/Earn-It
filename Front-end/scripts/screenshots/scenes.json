@@ -1,0 +1,95 @@
+{
+  "_help": "App Store screenshots, in order. args = app launch arguments (DEBUG scenes). headline: \\n = line break; accent = part drawn in orange. headline_en_GB overrides for the UK listing.",
+  "scenes": [
+    {
+      "id": "01-stop-snoozing",
+      "args": [
+        "-storeShot",
+        "lockscreen"
+      ],
+      "headline": "Stop snoozing.",
+      "accent": "snoozing."
+    },
+    {
+      "id": "02-do-a-mission",
+      "args": [
+        "-storeShot",
+        "math"
+      ],
+      "headline": "Do a mission\nto stop it",
+      "accent": "mission"
+    },
+    {
+      "id": "03-math-shake-scan",
+      "args": [
+        "-storeShot",
+        "missions"
+      ],
+      "headline": "Math, shake\nor scan",
+      "headline_en_GB": "Maths, shake\nor scan",
+      "accent": "scan"
+    },
+    {
+      "id": "04-gloop-droops",
+      "args": [
+        "-storeShot",
+        "health"
+      ],
+      "headline": "Snooze, and\nGloop droops",
+      "accent": "droops"
+    },
+    {
+      "id": "05-wake-up-with-friends",
+      "args": [
+        "-buddiesSample",
+        "-buddiesClub"
+      ],
+      "headline": "Wake up\nwith friends",
+      "accent": "friends"
+    },
+    {
+      "id": "06-scan-your-mug",
+      "args": [
+        "-storeShot",
+        "itemScan"
+      ],
+      "headline": "Scan your mug\nto stop it",
+      "accent": "mug"
+    },
+    {
+      "id": "07-evolve-gloop",
+      "args": [
+        "-storeShot",
+        "evolution"
+      ],
+      "headline": "Evolve Gloop\nto King",
+      "accent": "King"
+    },
+    {
+      "id": "08-widgets",
+      "args": [
+        "-storeShot",
+        "widgets"
+      ],
+      "headline": "Your streak on\nyour Home Screen",
+      "accent": "Home Screen"
+    },
+    {
+      "id": "09-own-sounds",
+      "args": [
+        "-soundPicker"
+      ],
+      "headline": "Wake up to\nyour own sound",
+      "accent": "own sound"
+    },
+    {
+      "id": "10-make-it-yours",
+      "args": [
+        "-storeShot",
+        "appearance"
+      ],
+      "headline": "Make Gloop\nyours",
+      "accent": "yours"
+    }
+  ]
+}
