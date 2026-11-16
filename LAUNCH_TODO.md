@@ -48,7 +48,7 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 ### App & products
 - [ ] Create the app record — bundle ID `be.gloop.app`.
 - [ ] Create subscription group **"Earn It Pro"** with the subscriptions from
-      `Front-end/Config/Pricing.json` — **same product IDs**:
+      `Shared/Config/Pricing.json` — **same product IDs**:
   - [ ] `be.gloop.app.pro.weekly` (1 week)
   - [ ] `be.gloop.app.pro.monthly` (1 month)
   - [ ] `be.gloop.app.pro.quarterly` (3 months)
@@ -57,7 +57,7 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
         **introductory offer: free trial, 3 days**.
 - [ ] Create `be.gloop.app.pro.lifetime` as a **non-consumable** in-app purchase.
 - [ ] Keep `Pricing.json` prices in sync with App Store Connect (then run
-      `python3 Front-end/scripts/generate_storekit.py`).
+      `python3 iOS/scripts/generate_storekit.py`).
 
 ### Testing
 - [ ] Users and Access › Sandbox → create a **sandbox tester**.
@@ -73,14 +73,14 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 ### Sign in with Apple (needs the paid program)
 - [ ] Enable the Sign in with Apple capability for `be.gloop.app`.
 - [ ] Create a Services ID + Sign in with Apple key, paste them in Supabase › Providers › **Apple**.
-- [ ] Keep `"apple"` in `Front-end/Config/Auth.json` → `providers`.
+- [ ] Keep `"apple"` in `Shared/Config/Auth.json` → `providers`.
 
 ### Settings › Help & feedback
-- [ ] Set `supportEmail` in `Front-end/Config/Auth.json` (the Contact support row stays hidden while empty).
-- [ ] Add `"shareURL"` to `Front-end/Config/Auth.json` once there's a website or App Store page
+- [ ] Set `supportEmail` in `Shared/Config/Auth.json` (the Contact support row stays hidden while empty).
+- [ ] Add `"shareURL"` to `Shared/Config/Auth.json` once there's a website or App Store page
       (`https://apps.apple.com/app/id<APP_ID>`). Until then there is no link: Settings › Share Earn It and
       Help › Share are hidden, and the onboarding invite sends the message without a link.
-- [ ] Add your Supabase user UUID to `Front-end/Config/Developer.json` so the 7-tap developer tools
+- [ ] Add your Supabase user UUID to `Shared/Config/Developer.json` so the 7-tap developer tools
       unlock on TestFlight builds (copy it in Settings › Developer tools › Info).
 
 ### Buddies
@@ -94,7 +94,7 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 
 ### Onboarding
 - [ ] Apply `Backend/supabase/migrations/20261116000000_profile_onboarding.sql` (SQL Editor).
-- [ ] `Front-end/Config/SocialProof.json`: add stats / reviews only when they're real and current (reviews with permission). Never placeholders.
+- [ ] `Shared/Config/SocialProof.json`: add stats / reviews only when they're real and current (reviews with permission). Never placeholders.
 - [ ] App Privacy labels: age range + "where did you hear about us" are collected (linked to the account when signed in).
 
 ### App name
@@ -105,25 +105,25 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 - [ ] In-app purchase display names in App Store Connect: "Gloop Pro – Yearly" etc. (match `Config/Gloop.storekit`).
 
 ### Telemetry
-- [ ] TelemetryDeck account + app "Gloop"; App ID into `Front-end/Config/Telemetry.json` (see docs/Telemetry.md).
+- [ ] TelemetryDeck account + app "Gloop"; App ID into `Shared/Config/Telemetry.json` (see docs/Telemetry.md).
 - [ ] Build the insights listed in docs/Telemetry.md (onboarding funnel, quit screens, revenue by paywall source, retention).
 - [ ] Privacy policy: "anonymous usage statistics via TelemetryDeck (EU), opt-out in Settings › Privacy".
 - [ ] App Privacy label: Usage Data › Product Interaction (+ Diagnostics if you add crash data) — not linked to you, not used for tracking. No ATT prompt needed.
 
 ### Legal (Privacy Policy, Terms, Health & Safety, Community Guidelines)
-- [ ] Fill in `Front-end/Config/Legal.json`: legal form, enterprise number (KBO), registered address, privacy + support email
-      (shown as "[to be completed]" in the app until then). Also set `supportEmail` in `Config/Auth.json`.
-- [ ] Re-run `python3 Front-end/scripts/export_legal.py` and host `docs/legal/` (e.g. GitHub Pages); put the Privacy Policy
+- [ ] Fill in `Shared/Config/Legal.json`: legal form, enterprise number (KBO), registered address, privacy + support email
+      (shown as "[to be completed]" in the app until then). Also set `supportEmail` in `Shared/Config/Auth.json`.
+- [ ] Re-run `python3 iOS/scripts/export_legal.py` and host `docs/legal/` (e.g. GitHub Pages); put the Privacy Policy
       URL in App Store Connect (required) and optionally the Terms URL (or use Apple's standard EULA).
 - [ ] Recommended: have a lawyer review the documents once before launch.
 - [ ] Process: check Buddies reports daily (24 h promise in Terms + Community Guidelines); answer data requests within 1 month.
 
 ### App Store listing (see docs/AppStore.md)
-- [ ] Copy `Front-end/fastlane/metadata/{en-US,en-GB}` into App Store Connect (or `fastlane deliver` once set up): name, subtitle, keywords, promotional text, description, release notes.
-- [ ] Upload the 10 screenshots per size from `Front-end/fastlane/screenshots/` (re-run `scripts/screenshots/make.sh` first).
+- [ ] Copy `iOS/fastlane/metadata/{en-US,en-GB}` into App Store Connect (or `fastlane deliver` once set up): name, subtitle, keywords, promotional text, description, release notes.
+- [ ] Upload the 10 screenshots per size from `iOS/fastlane/screenshots/` (re-run `scripts/screenshots/make.sh` first).
 - [ ] Categories Lifestyle + Productivity, age rating questionnaire (UGC → 12+), copyright, App Privacy answers as listed in docs/AppStore.md.
 - [ ] Replace the placeholder URLs in `privacy_url.txt` / `support_url.txt` / `marketing_url.txt`.
-- [ ] Add a `Config/WhatsNew.json` entry for every release (What's New sheet).
+- [ ] Add a `Shared/Config/WhatsNew.json` entry for every release (What's New sheet).
 
 ### Submission
 - [ ] App privacy labels (email, user ID, purchases; no tracking).
@@ -145,9 +145,9 @@ Do these before submitting version 1.0.0 for App Store review.
 
 - [ ] **Change the contact email.** `joren.a@hotmail.com` is used as privacy + support email during TestFlight.
       Before the App Store release, switch to a dedicated address (e.g. `support@<your-domain>`):
-  - [ ] `Front-end/Config/Legal.json` → `privacyEmail`, `supportEmail`
-  - [ ] `Front-end/Config/Auth.json` → `supportEmail` (Help › Contact support)
-  - [ ] Run `python3 Front-end/scripts/export_legal.py` (updates `docs/legal/`)
+  - [ ] `Shared/Config/Legal.json` → `privacyEmail`, `supportEmail`
+  - [ ] `Shared/Config/Auth.json` → `supportEmail` (Help › Contact support)
+  - [ ] Run `python3 iOS/scripts/export_legal.py` (updates `docs/legal/`)
   - [ ] Update the Privacy Policy Gist (below) with the new `docs/legal/privacy.md`
   - [ ] App Store Connect: App Review contact email, support URL / email, TestFlight feedback email
 - [ ] **Complete the legal details** in `Legal.json`: full address (street + number, postcode, Peer),
@@ -158,3 +158,18 @@ Do these before submitting version 1.0.0 for App Store review.
   - [ ] Paste the Gist URL in App Store Connect › App Information › Privacy Policy URL.
   - [ ] Terms: use Apple's standard EULA (no URL needed), or add a second Gist file with `docs/legal/terms.md`.
 
+
+## Google Play (Android)
+
+Roadmap and details: `docs/Android/PlayStore.md`.
+
+- [ ] Android Studio first launch: **Standard** setup (installs the SDK in `~/Library/Android/sdk`),
+      then Device Manager › create a Pixel emulator (latest Android version).
+- [ ] Request a free **D-U-N-S number** for JA-Solutions (dnb.com) → needed for an Organization account.
+- [ ] Create the **Google Play Console** account ($25 one-time), type **Organization**, and verify your identity.
+- [ ] **Payments profile** with the same bank account (to sell subscriptions).
+- [ ] Create the app "Gloop: Your Wake-Up Buddy" (free, with in-app purchases), Play App Signing on.
+- [ ] Copy `Android/secrets.properties.example` → `Android/secrets.properties` with the same Supabase URL +
+      **publishable** key as `iOS/Config/Supabase.xcconfig` (when accounts get ported, phase 4).
+- [ ] Later (phase 3): products in Monetize › Products, as in the Play Billing table of `docs/Android/PlayStore.md`.
+- [ ] Later (phase 5): Data safety, content rating, permission declarations (exact alarm, full-screen intent), store listing.

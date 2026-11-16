@@ -1,0 +1,18 @@
+# Gradle / build output
+.gradle/
+.kotlin/
+build/
+# Machine-specific: Android SDK path (Android Studio writes it)
+local.properties
+# Secrets: Supabase URL + publishable key, signing
+secrets.properties
+keystore.properties
+*.jks
+*.keystore
+# Android Studio
+.idea/
+!.idea/codeStyles/
+*.iml
+captures/
+.externalNativeBuild/
+.cxx/

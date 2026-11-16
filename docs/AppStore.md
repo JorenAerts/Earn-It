@@ -1,6 +1,6 @@
 # App Store listing & growth
 
-Everything for the App Store page lives in `Front-end/fastlane/` (fastlane `deliver` layout, so it can
+Everything for the App Store page lives in `iOS/fastlane/` (fastlane `deliver` layout, so it can
 be uploaded automatically later, or copied by hand into App Store Connect).
 
 ## Listing (en-US + en-GB)
@@ -36,12 +36,12 @@ Revisit keywords every 4–6 weeks using App Store Connect › App Analytics ›
   - Usage Data › Product Interaction (TelemetryDeck): **not** linked, analytics.
   - Purchases: handled by Apple (not collected by us beyond entitlement).
   - Tracking: **No**.
-- **Subscriptions:** group "Gloop Pro" with the product IDs from `Config/Pricing.json`; display names
+- **Subscriptions:** group "Gloop Pro" with the product IDs from `Shared/Config/Pricing.json`; display names
   "Gloop Pro – Yearly" etc.; 3-day free trial as introductory offer on each subscription.
 
 ## Screenshots
-`Front-end/scripts/screenshots/make.sh` generates all 10 shots from the real app (DEBUG demo scenes)
-in 6.9" (1320×2868) and 6.5" (1284×2778) for en-US and en-GB → `Front-end/fastlane/screenshots/`.
+`iOS/scripts/screenshots/make.sh` generates all 10 shots from the real app (DEBUG demo scenes)
+in 6.9" (1320×2868) and 6.5" (1284×2778) for en-US and en-GB → `iOS/fastlane/screenshots/`.
 Review them in `docs/screenshots.html`. Headlines, order and scenes: `scripts/screenshots/scenes.json`.
 Re-run after any UI change.
 
@@ -66,7 +66,7 @@ Ideas to A/B test later (Product Page Optimization in App Store Connect): Gloop-
   (3rd/10th first-ring morning, 7/30/100-day streak, evolution), on the success screen after 2.5 s;
   never after a fail-safe, never in the first 3 days, max once per 60 days and per version
   (Apple caps at 3/year anyway). Telemetry `Rate.prompted`.
-- **What's New sheet**: once per version after an update, from `Config/WhatsNew.json`
+- **What's New sheet**: once per version after an update, from `Shared/Config/WhatsNew.json`
   (add an entry for every release). Telemetry `WhatsNew.shown`.
 - **Share streak card**: 1080×1920 image (Gloop at your stage + streak + stickers) from the success
   screen and Progress tab. Telemetry `Share.streakCard`. Add the store link once `shareURL` exists.

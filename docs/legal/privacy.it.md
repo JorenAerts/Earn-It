@@ -6,7 +6,7 @@ Questa informativa spiega quali dati usa Gloop, perché, dove vanno e quali sono
 
 ## Chi siamo
 
-Gloop è realizzata da JA-Solutions (Eenmanszaak, numero d’impresa 1029912049), Hoevestraat, Peer, Belgio. Siamo il titolare del trattamento dei dati personali qui descritti.
+Gloop è realizzata da JA-Solutions (Eenmanszaak, numero d’impresa 1029.912.049), Hoevestraat 17,3990 Peer, Belgio. Siamo il titolare del trattamento dei dati personali qui descritti.
 
 Domande o richieste sui tuoi dati: joren.a@hotmail.com
 
@@ -105,6 +105,6 @@ Possiamo aggiornare questa informativa quando Gloop cambia. La data in alto indi
 
 ## Contatti
 
-JA-Solutions, Hoevestraat, Peer, Belgio
+JA-Solutions, Hoevestraat 17,3990 Peer, Belgio
 Privacy: joren.a@hotmail.com
 Assistenza: joren.a@hotmail.com

@@ -92,5 +92,5 @@ Si applica la legge belga. Come consumatore mantieni anche la tutela delle norme
 
 ## 15. Contatti
 
-JA-Solutions (Eenmanszaak, numero d’impresa 1029912049), Hoevestraat, Peer, Belgio
+JA-Solutions (Eenmanszaak, numero d’impresa 1029.912.049), Hoevestraat 17,3990 Peer, Belgio
 Assistenza: joren.a@hotmail.com
