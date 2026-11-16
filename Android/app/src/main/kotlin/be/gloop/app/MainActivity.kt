@@ -14,6 +14,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import be.gloop.app.camera.ReferenceStore
 import be.gloop.app.mission.MissionActivity
+import be.gloop.app.onboarding.OnboardingScreen
+import be.gloop.app.onboarding.OnboardingStore
 import be.gloop.app.ui.EditorScreen
 import be.gloop.app.ui.GloopTheme
 import be.gloop.app.ui.HomeScreen
@@ -27,10 +29,17 @@ class MainActivity : ComponentActivity() {
         setContent {
             GloopTheme {
                 Surface(Modifier.fillMaxSize()) {
+                    val onboarding = remember { OnboardingStore(this@MainActivity) }
+                    var onboarded by remember { mutableStateOf(!onboarding.needsOnboarding(controller.plans.value.isNotEmpty())) }
                     // null = Home; Editing(plan == null) = new alarm.
                     var editing by remember { mutableStateOf<Editing?>(null) }
+                    if (!onboarded) {
+                        OnboardingScreen(controller, onboarding, onFinish = { onboarded = true })
+                        return@Surface
+                    }
                     when (val e = editing) {
-                        null -> HomeScreen(controller, onEdit = { editing = Editing(it) })
+                        null -> HomeScreen(controller, onEdit = { editing = Editing(it) },
+                            onReplayOnboarding = { onboarding.reset(); onboarded = false })
                         else -> EditorScreen(e.plan, onSave = {
                             controller.save(it)
                             editing = null
