@@ -6,7 +6,7 @@ Cette politique explique quelles données Gloop utilise, pourquoi, où elles von
 
 ## Qui nous sommes
 
-Gloop est développé par JA-Solutions (Eenmanszaak, numéro d’entreprise 1029912049), Hoevestraat, Peer, Belgique. Nous sommes le responsable du traitement des données personnelles décrites ici.
+Gloop est développé par JA-Solutions (Eenmanszaak, numéro d’entreprise 1029.912.049), Hoevestraat 17,3990 Peer, Belgique. Nous sommes le responsable du traitement des données personnelles décrites ici.
 
 Questions ou demandes concernant tes données : joren.a@hotmail.com
 
@@ -105,6 +105,6 @@ Nous pouvons mettre à jour cette politique lorsque Gloop évolue. La date en ha
 
 ## Contact
 
-JA-Solutions, Hoevestraat, Peer, Belgique
+JA-Solutions, Hoevestraat 17,3990 Peer, Belgique
 Confidentialité : joren.a@hotmail.com
 Assistance : joren.a@hotmail.com

@@ -6,7 +6,7 @@ Dit beleid legt uit welke gegevens Gloop gebruikt, waarom, waar ze naartoe gaan 
 
 ## Wie we zijn
 
-Gloop wordt gemaakt door JA-Solutions (Eenmanszaak, ondernemingsnummer 1029912049), Hoevestraat, Peer, België. Wij zijn de verwerkingsverantwoordelijke voor de persoonsgegevens die hier worden beschreven.
+Gloop wordt gemaakt door JA-Solutions (Eenmanszaak, ondernemingsnummer 1029.912.049), Hoevestraat 17,3990 Peer, België. Wij zijn de verwerkingsverantwoordelijke voor de persoonsgegevens die hier worden beschreven.
 
 Vragen of verzoeken over je gegevens: joren.a@hotmail.com
 
@@ -105,6 +105,6 @@ We kunnen dit beleid bijwerken als Gloop verandert. De datum bovenaan toont de n
 
 ## Contact
 
-JA-Solutions, Hoevestraat, Peer, België
+JA-Solutions, Hoevestraat 17,3990 Peer, België
 Privacy: joren.a@hotmail.com
 Ondersteuning: joren.a@hotmail.com

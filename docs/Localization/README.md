@@ -5,7 +5,7 @@ Settings › Look & feel › Language. "Automatic" follows the iPhone's language
 otherwise English. Switching is instant (no restart).
 
 ## How it works
-- **One catalog:** `Front-end/App/Localizable.xcstrings` (Bundle.main) holds every string from the app
+- **One catalog:** `iOS/App/Localizable.xcstrings` (Bundle.main) holds every string from the app
   and all packages. Keys are the English text. The widget extension compiles the same file.
 - **SwiftUI literals** (`Text("…")`, `Button("…")`, `.navigationTitle("…")`) follow
   `.environment(\.locale)`, set at the root by `LanguageEnvironment` (also right-to-left for ar/he).
@@ -16,15 +16,15 @@ otherwise English. Switching is instant (no restart).
   title), reschedules coach notifications and reloads widgets. It also sets `AppleLanguages`, so iOS
   texts (permission prompts) follow from the next launch.
 - **Dates/times:** `date.localized(...)` instead of `date.formatted(...)` in strings.
-- **Content files:** `Config/Translations/{CoachLines,Help,WhatsNew}.<code>.json` and
-  `Config/Legal/<doc>.<code>.md` (+ `"<key>.<code>"` values in `Config/Legal.json`). Missing parts fall
+- **Content files:** `Shared/Config/Translations/{CoachLines,Help,WhatsNew}.<code>.json` and
+  `Shared/Config/Legal/<doc>.<code>.md` (+ `"<key>.<code>"` values in `Shared/Config/Legal.json`). Missing parts fall
   back to English. Translated legal documents say the English version applies, with "Read in English".
 - **Not translated:** telemetry, developer tools (`shouldTranslate: false`), stored values
   (`Rank.englishTitle` in Buddies reports).
 
 ## Workflow
 ```sh
-cd Front-end
+cd iOS
 python3 scripts/l10n/extract.py --report   # build with string extraction, merge keys into the catalog,
                                            # list UI-looking literals that are NOT translatable
 # translate: scripts/l10n/translations/<code>.json  ({"English key": "…" | {"one": …, "other": …}})
@@ -49,8 +49,8 @@ python3 scripts/l10n/apply.py -v           # merge into the catalog, check place
 ### Adding one of the remaining languages
 Per language (see `fr` as the example):
 1. `scripts/l10n/translations/<code>.json` — every key in the catalog (plural forms for the keys that have them in `nl.json`).
-2. `Config/Translations/{CoachLines,Help,WhatsNew}.<code>.json`.
-3. `Config/Legal/{privacy,terms,health-safety,community}.<code>.md` (or a shared base, e.g. `pt` for pt-BR + pt-PT) + `"country.<code>"` / `"effectiveDate.<code>"` in `Config/Legal.json`.
+2. `Shared/Config/Translations/{CoachLines,Help,WhatsNew}.<code>.json`.
+3. `Shared/Config/Legal/{privacy,terms,health-safety,community}.<code>.md` (or a shared base, e.g. `pt` for pt-BR + pt-PT) + `"country.<code>"` / `"effectiveDate.<code>"` in `Shared/Config/Legal.json`.
 4. Info.plist texts in `scripts/l10n/infoplist.json`.
 5. `python3 scripts/l10n/apply.py <code>`, add the code to `CFBundleLocalizations` (app + widget, `project.yml`), `xcodegen generate`, run the tests.
 Arabic/Hebrew: check the hand-drawn layouts (chart, comparison) in right-to-left.

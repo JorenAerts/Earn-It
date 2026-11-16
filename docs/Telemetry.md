@@ -1,12 +1,12 @@
 # Telemetry (TelemetryDeck)
 
 Anonymous usage statistics to see where people drop off, how they decide on the paywall, and
-whether they keep getting up with Gloop. Code: `Front-end/Packages/Telemetry` (catalog in
+whether they keep getting up with Gloop. Code: `iOS/Packages/Telemetry` (catalog in
 `TelemetryEvent.swift`), hooks in `Features`.
 
 ## Setup (once)
 1. Create an account at telemetrydeck.com → **New app** "Gloop".
-2. Copy the **App ID** into `Front-end/Config/Telemetry.json` → `"appID": "…"`. Empty = nothing is sent.
+2. Copy the **App ID** into `Shared/Config/Telemetry.json` → `"appID": "…"`. Empty = nothing is sent.
    Also set `"namespace"` to your organisation's namespace (Organisation settings; ours: `com.jasolutions`).
    **Without the right namespace the signals are accepted but never show up in the dashboard.**
 3. Run from Xcode → Settings › tap Version 7× → Developer tools → **Send test signal**.
