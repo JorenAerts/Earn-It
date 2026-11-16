@@ -25,6 +25,7 @@ field, giving ~200 characters for the US; verify with App Store Connect's search
 Revisit keywords every 4–6 weeks using App Store Connect › App Analytics › Sources (search terms).
 
 ## App Store Connect settings
+- **Privacy Policy URL:** https://gist.github.com/JorenAerts/3460dc0a39ace79cf4ab6e54f2b76a01 (public Gist; update it whenever `docs/legal/privacy.md` changes, the link stays the same). Terms: Apple's standard EULA.
 - **Primary category:** Lifestyle. **Secondary:** Productivity.
 - **Age rating:** answer "Yes" to user-generated content (Buddies) with reporting/blocking → 12+.
 - **Copyright:** `© 2026 JA-Solutions`.

@@ -1,5 +1,5 @@
 {
   "releases": [
-    {"version": "1.0", "items": ["Des réveils qui sonnent jusqu’à ce que tu termines ta mission", "Missions : calcul, secouer, scanner un code, scanner ton objet", "Gloop le slime : il évolue, collectionne des stickers et vit dans tes widgets", "Tes propres sons et des morceaux Apple Music", "Mettre tous les réveils en pause pour des vacances"]}
+    {"version": "1.0.0", "items": ["Des réveils qui sonnent jusqu’à ce que tu termines ta mission", "Missions : calcul, secouer, scanner un code, scanner ton objet", "Gloop le slime : il évolue, collectionne des stickers et vit dans tes widgets", "Tes propres sons et des morceaux Apple Music", "Mettre tous les réveils en pause pour des vacances"]}
   ]
 }

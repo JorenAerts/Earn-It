@@ -92,5 +92,5 @@ Het Belgische recht is van toepassing. Als consument behoud je ook de beschermin
 
 ## 15. Contact
 
-JA-Solutions ([to be completed], ondernemingsnummer [to be completed]), [to be completed], België
-Ondersteuning: [to be completed]
+JA-Solutions (Eenmanszaak, ondernemingsnummer 1029912049), Hoevestraat, Peer, België
+Ondersteuning: joren.a@hotmail.com

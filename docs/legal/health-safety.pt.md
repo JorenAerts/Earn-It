@@ -45,4 +45,4 @@ Quando partilhar uma foto da manhã no Buddies, certifique-se de que só aparece
 
 ## Perguntas
 
-[to be completed]
+joren.a@hotmail.com

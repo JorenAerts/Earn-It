@@ -39,7 +39,7 @@ Buddies, c’est se motiver les uns les autres à se lever. Ces règles le garde
 
 ## Contestation
 
-Si tu penses que nous nous sommes trompés, écris à [to be completed] et explique-nous ce qui s’est passé. Nous réexaminerons la situation.
+Si tu penses que nous nous sommes trompés, écris à joren.a@hotmail.com et explique-nous ce qui s’est passé. Nous réexaminerons la situation.
 
 ## Besoin d’aide ?
 

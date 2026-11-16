@@ -56,8 +56,7 @@ struct MissionStep: View {
         }
         .sheet(item: $unlocking, onDismiss: unlockSheetClosed) { unlock in
             if let paywall {
-                PaywallView(store: paywall.store, mode: .sheet, source: .lockedMission, accountToken: paywall.accountToken,
-                            termsURL: paywall.termsURL, privacyURL: paywall.privacyURL, unlocking: unlock) { unlocking = nil }
+                PaywallView(store: paywall.store, mode: .sheet, source: .lockedMission, accountToken: paywall.accountToken, unlocking: unlock) { unlocking = nil }
             }
         }
     }
@@ -289,8 +288,7 @@ struct SoundStep: View {
         .onDisappear { preview.stop() }
         .sheet(item: $unlocking, onDismiss: unlockSheetClosed) { unlock in
             if let paywall {
-                PaywallView(store: paywall.store, mode: .sheet, source: .lockedSound, accountToken: paywall.accountToken,
-                            termsURL: paywall.termsURL, privacyURL: paywall.privacyURL, unlocking: unlock,
+                PaywallView(store: paywall.store, mode: .sheet, source: .lockedSound, accountToken: paywall.accountToken, unlocking: unlock,
                             onDecline: {
                                 declined = true
                                 unlocking = nil

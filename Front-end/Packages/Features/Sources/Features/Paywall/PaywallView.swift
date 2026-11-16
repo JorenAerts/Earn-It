@@ -20,8 +20,6 @@ struct PaywallView: View {
     /// Where it was opened from (analytics: conversion per source).
     var source: PaywallSource = .other
     let accountToken: UUID?
-    let termsURL: URL
-    let privacyURL: URL
     /// Opened for this locked mission or sound (onboarding): specific headline and a
     /// "Not now, use Math / Classic Beep" way out.
     var unlocking: PaywallUnlock? = nil
@@ -425,13 +423,10 @@ struct PaywallSheet: View {
     let store: StoreService
     var source: PaywallSource = .other
     let accountToken: UUID?
-    let termsURL: URL
-    let privacyURL: URL
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        PaywallView(store: store, mode: .sheet, source: source, accountToken: accountToken,
-                    termsURL: termsURL, privacyURL: privacyURL) { dismiss() }
+        PaywallView(store: store, mode: .sheet, source: source, accountToken: accountToken) { dismiss() }
     }
 }
 

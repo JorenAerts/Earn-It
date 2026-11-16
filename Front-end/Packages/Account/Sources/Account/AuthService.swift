@@ -33,8 +33,6 @@ public struct AuthConfig: Codable, Sendable, Equatable {
     public let emailPassword: Bool
     public let providers: [AuthProvider]
     public let redirectURL: URL
-    public let termsURL: URL
-    public let privacyURL: URL
     /// Help & feedback › Contact support. Optional: hidden when missing.
     public let supportEmail: String?
     /// Help & feedback › Share Gloop (website / App Store page).
@@ -50,24 +48,20 @@ public struct AuthConfig: Codable, Sendable, Equatable {
 
     public static let fallback = AuthConfig(
         emailPassword: true, providers: [.apple, .google],
-        redirectURL: URL(string: "gloop://auth-callback")!,
-        termsURL: URL(string: "https://example.com/terms")!,
-        privacyURL: URL(string: "https://example.com/privacy")!
+        redirectURL: URL(string: "gloop://auth-callback")!
     )
 
-    public init(emailPassword: Bool, providers: [AuthProvider], redirectURL: URL, termsURL: URL, privacyURL: URL,
+    public init(emailPassword: Bool, providers: [AuthProvider], redirectURL: URL,
                 supportEmail: String? = nil, shareURL: URL? = nil) {
         self.emailPassword = emailPassword
         self.providers = providers
         self.redirectURL = redirectURL
-        self.termsURL = termsURL
-        self.privacyURL = privacyURL
         self.supportEmail = supportEmail
         self.shareURL = shareURL
     }
 
     private enum CodingKeys: String, CodingKey {
-        case emailPassword, providers, redirectURL, termsURL, privacyURL, supportEmail, shareURL
+        case emailPassword, providers, redirectURL, supportEmail, shareURL
     }
 
     /// Unknown provider names in the JSON are ignored instead of breaking login.
@@ -77,8 +71,6 @@ public struct AuthConfig: Codable, Sendable, Equatable {
         let names = try c.decodeIfPresent([String].self, forKey: .providers) ?? []
         providers = names.compactMap(AuthProvider.init(rawValue:))
         redirectURL = try c.decode(URL.self, forKey: .redirectURL)
-        termsURL = try c.decode(URL.self, forKey: .termsURL)
-        privacyURL = try c.decode(URL.self, forKey: .privacyURL)
         let email = try c.decodeIfPresent(String.self, forKey: .supportEmail)?.trimmingCharacters(in: .whitespaces)
         supportEmail = (email?.isEmpty ?? true) ? nil : email
         shareURL = try c.decodeIfPresent(URL.self, forKey: .shareURL)

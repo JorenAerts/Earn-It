@@ -10,7 +10,7 @@ import Testing
     }
 
     @Test func unknownProvidersAreIgnored() throws {
-        let json = #"{"emailPassword":true,"providers":["google","myspace","apple"],"redirectURL":"gloop://auth-callback","termsURL":"https://e.com/t","privacyURL":"https://e.com/p"}"#
+        let json = #"{"emailPassword":true,"providers":["google","myspace","apple"],"redirectURL":"gloop://auth-callback"}"#
         let config = try JSONDecoder().decode(AuthConfig.self, from: Data(json.utf8))
         #expect(config.providers == [.google, .apple])
     }

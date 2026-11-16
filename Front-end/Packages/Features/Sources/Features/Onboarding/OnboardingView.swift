@@ -161,7 +161,6 @@ struct OnboardingView: View {
             SummaryStep(answers: progress.answers, onNext: advance)
         case .paywall:
             PaywallView(store: store, mode: .onboarding, source: .onboarding, accountToken: auth.user?.id,
-                        termsURL: auth.config.termsURL, privacyURL: auth.config.privacyURL,
                         onFinish: advance)
         }
     }

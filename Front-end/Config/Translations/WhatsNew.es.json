@@ -1,5 +1,5 @@
 {
   "releases": [
-    {"version": "1.0", "items": ["Alarmas que suenan hasta que completas tu misión", "Misiones: matemáticas, agitar, escanear un código, escanear tu objeto", "Gloop el slime: evoluciona, colecciona pegatinas y vive en tus widgets", "Tus propios sonidos y canciones de Apple Music", "Pausar todas las alarmas en vacaciones"]}
+    {"version": "1.0.0", "items": ["Alarmas que suenan hasta que completas tu misión", "Misiones: matemáticas, agitar, escanear un código, escanear tu objeto", "Gloop el slime: evoluciona, colecciona pegatinas y vive en tus widgets", "Tus propios sonidos y canciones de Apple Music", "Pausar todas las alarmas en vacaciones"]}
   ]
 }
