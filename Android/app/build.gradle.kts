@@ -3,6 +3,7 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 // Supabase config from the git-ignored secrets.properties (see secrets.properties.example).
@@ -27,6 +28,11 @@ android {
         versionName = "1.0.0"
         buildConfigField("String", "SUPABASE_URL", "\"${secret("SUPABASE_URL")}\"")
         buildConfigField("String", "SUPABASE_PUBLISHABLE_KEY", "\"${secret("SUPABASE_PUBLISHABLE_KEY")}\"")
+    }
+
+    androidResources {
+        // The embedder model is memory-mapped by MediaPipe: keep it uncompressed.
+        noCompress += "tflite"
     }
 
     sourceSets {
@@ -57,6 +63,17 @@ dependencies {
     implementation(project(":core"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
+    implementation(libs.lifecycle.runtime.compose)
+    // Camera missions: CameraX + on-device recognition (nothing leaves the phone).
+    implementation(libs.camera.core)
+    implementation(libs.camera.camera2)
+    implementation(libs.camera.lifecycle)
+    implementation(libs.camera.view)
+    implementation(libs.mlkit.barcode)      // QR / barcodes (bundled model)
+    implementation(libs.mlkit.labeling)     // sky (bundled model)
+    implementation(libs.mlkit.objects)      // finds the item in the frame (like iOS foreground cut-out)
+    implementation(libs.mediapipe.vision)   // item / bed embeddings (assets/models/mobilenet_v3_large.tflite)
+    implementation(libs.zxing.core)         // printable wake-up code
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)

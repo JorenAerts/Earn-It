@@ -1,0 +1,12 @@
+{
+  "perm_notifications_reason": "Serve per mostrare la sveglia e la tua missione.",
+  "perm_exact_title": "Sveglie e promemoria",
+  "perm_exact_reason": "Permette a Gloop di suonare all’ora esatta.",
+  "perm_fullscreen_title": "Sveglia a schermo intero",
+  "perm_fullscreen_reason": "Mostra la tua missione sopra la schermata di blocco quando suona la sveglia.",
+  "perm_battery_title": "Ottimizzazione batteria",
+  "perm_battery_reason": "Alcuni telefoni chiudono le app per risparmiare batteria. Lascia Gloop attivo così la sveglia suona sempre.",
+  "missions_order_hint": "Da fare in quest’ordine quando suona la sveglia.",
+  "channel_alarms_description": "La sveglia che suona e la tua missione.",
+  "mission_done": "Missione compiuta"
+}

@@ -10,12 +10,13 @@ together with their test cases.
 | # | Phase | What | Done when |
 |---|---|---|---|
 | 1 | **Foundation** ✅ | Repo layout (`iOS/` · `Android/` · `Shared/`), Gradle project, `:core` + `:app`, shared assets, first port (`PricingCatalog`) | `:core:test` green, app shows the plans from `Pricing.json` |
-| 2 | **MVP** | Alarms: `AlarmManager.setAlarmClock` (exact, shows in the status bar), full-screen alarm activity over the lock screen (`USE_FULL_SCREEN_INTENT`, `showWhenLocked`/`turnScreenOn`), ringing sound in a foreground service until the mission is done (Android allows a ring with no Stop button, so the re-ring loop is simpler than on iOS), reschedule after reboot (`RECEIVE_BOOT_COMPLETED`) and time changes. Missions Math, Shake, Memory, Quiz, Typing, QR. Onboarding, success screen (confetti, tip), Progress (XP, ranks, stickers, streak), Settings, Gloop the slime (Compose Canvas port of `SlimeRenderer`), 8 languages | A full morning works on a real phone, including after a reboot |
+| 2a | **Alarms + missions** ✅ | Exact alarms (`setAlarmClock`), full-screen mission over the lock screen, ringing in a foreground service until every mission is done (no Stop button), fail-safe after `maxReArms × reArmMinutes`, reboot/update restore. Home (alarms, permissions, test ring), editor (time, days, label, missions, sound with preview), missions Math, Shake, Memory, Quiz, Typing, success screen (streak + morning tip), 8 languages from the iOS catalog | Emulator: rings over the lock screen, can't be escaped, stops after the missions, resumes after an app update |
+| 2b | **Onboarding + Progress + Settings** | Onboarding, Progress tab (XP, ranks, stickers), Settings, Gloop the slime (Compose Canvas port of `SlimeRenderer`), confetti, coach lines | A new user is guided from install to a first alarm |
 | 3 | **Play Billing** | Google Play Billing Library: the plans from `Pricing.json`, 3-day trial, restore, the same free tier (`FeatureGate`) | Test purchase on the internal track |
-| 4 | **Extra** | Camera missions with CameraX + ML Kit (torch/auto-torch like iOS), Supabase accounts (Google/email) + Buddies, Glance widgets, own sounds, TelemetryDeck (Android SDK, same app ID) | Feature parity with iOS 1.0 |
+| 4 | **Extra** | ✅ Camera missions (QR, item, sky, bed, colour hunt; CameraX + ML Kit + MediaPipe, flashlight with auto). Still open: Supabase accounts (Google/email) + Buddies, Glance widgets, own sounds, TelemetryDeck (Android SDK, same app ID) | Feature parity with iOS 1.0 |
 | 5 | **Release** | Store listing, screenshots, Data safety, review | Live on Google Play |
 
-### Porting order (phase 2)
+### Porting order (phase 2, 2a done)
 1. `:core`: models (`AlarmPlan`, `MissionConfig`, `SessionState`), `ReArmPolicy`, `StreakCalculator`, `XPRules`, `Rank`, `MedalRules`, `SlimeVitality`, `MoodEngine`, `CoachLines`, mission logic (`MathProblem`, `MemoryGame`, `QuizSession`, `TypingCheck`). Port the Swift tests with them.
 2. `:app`: storage (DataStore with the same `gloop.*` keys/JSON), alarm engine, mission screens, the rest of the UI.
 3. **UI strings:** one source of truth. A script generates `Android/app/src/main/res/values*/strings.xml` from `iOS/App/Localizable.xcstrings`, so the 8 languages carry over without translating again.
@@ -50,7 +51,7 @@ When phase 3 starts, add the Google ids to `Pricing.json` (e.g. `"play": {"produ
 4. **App signing:** keep **Play App Signing** on. We create an **upload key** (`upload.jks`, never in git; the password goes in `Android/keystore.properties`). Back it up in a password manager.
 5. **App content** (Policy › App content):
    - Privacy policy URL: the Gist (as for Apple).
-   - **Data safety:** mirror `iOS/App/PrivacyInfo.xcprivacy` + `Shared/Config/Legal/privacy.md` (email, name, user ID, photos, user content, app interactions; no data sold; encrypted in transit; deletion in the app).
+   - **Data safety:** camera frames are analysed on the phone only; item/bed scans are stored on the phone as numbers + a thumbnail (same as iOS). Mirror `iOS/App/PrivacyInfo.xcprivacy` + `Shared/Config/Legal/privacy.md` (email, name, user ID, photos, user content, app interactions; no data sold; encrypted in transit; deletion in the app).
    - Ads: no. Content rating questionnaire (IARC). Target audience: 13+ (as the iOS age rating and Buddies require).
    - **Permission declarations:** exact alarm (`USE_EXACT_ALARM`, "alarm clock app"), full-screen intent (alarm), foreground service type (media playback for the ringing alarm), camera.
 6. **Store listing:** short description (80 characters), full description (4000), icon 512×512, feature graphic 1024×500, at least 2 phone screenshots. Reuse the texts from `iOS/fastlane/metadata`.

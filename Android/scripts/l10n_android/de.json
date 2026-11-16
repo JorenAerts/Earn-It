@@ -1,0 +1,12 @@
+{
+  "perm_notifications_reason": "Nötig, um den Alarm und deine Mission anzuzeigen.",
+  "perm_exact_title": "Wecker und Erinnerungen",
+  "perm_exact_reason": "Damit Gloop pünktlich auf die Minute klingelt.",
+  "perm_fullscreen_title": "Alarm im Vollbild",
+  "perm_fullscreen_reason": "Zeigt deine Mission auf dem Sperrbildschirm, wenn der Alarm klingelt.",
+  "perm_battery_title": "Akku-Optimierung",
+  "perm_battery_reason": "Manche Handys beenden Apps, um Akku zu sparen. Lass Gloop aktiv, damit dein Alarm immer klingelt.",
+  "missions_order_hint": "In dieser Reihenfolge zu erledigen, wenn der Alarm klingelt.",
+  "channel_alarms_description": "Der klingelnde Alarm und deine Mission.",
+  "mission_done": "Mission erfüllt"
+}
