@@ -16,7 +16,7 @@ Folgendes wird nur auf deinem Gerät gespeichert und nie an uns gesendet:
 
 - Deine Wecker (Zeiten, Tage, Bezeichnungen, Missionen, Töne) sowie dein Weckverlauf, Serien, Stufen und Sticker.
 - Deine eigenen Wecktöne: importiertes Audio und Aufnahmen, die du mit dem Mikrofon machst.
-- Gegenstand-Scans für die Mission „Gegenstand scannen“: ein freigestelltes Bild des Gegenstands und ein mathematischer „Feature Print“, mit dem er erkannt wird. Registrierte Codes für die Mission „Code scannen“.
+- Gegenstand-Scans für die Mission „Gegenstand scannen“: ein freigestelltes Bild des Gegenstands und ein mathematischer „Feature Print“, mit dem er erkannt wird. Registrierte Codes für die Mission „Code scannen“. Fotos deines gemachten Betts für die Mission „Gemachtes Bett“, genauso gespeichert. Kamerabilder für die Missionen „Foto vom Himmel“ und „Farbenjagd“ werden sofort ausgewertet und nie gespeichert.
 - Deine Einstellungen: Darstellung, App-Symbol, Ton des Coaches, Erinnerungszeit, pausierte Wecker.
 
 Kamera und Mikrofon werden nur für die Funktion verwendet, die du startest (Scannen, Aufnehmen, das Morgenfoto), und auf deinem iPhone verarbeitet. Erinnerungen sind lokale Mitteilungen, die auf deinem Gerät erstellt werden.

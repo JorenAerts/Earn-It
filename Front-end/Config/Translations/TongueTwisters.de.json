@@ -1,0 +1,5 @@
+{
+  "easy": ["Fischers Fritz fischt", "Blaukraut bleibt Blaukraut", "Zehn Ziegen ziehen", "Kleine Kinder können keine", "Brautkleid bleibt Brautkleid", "Bürsten mit schwarzen Borsten"],
+  "medium": ["Fischers Fritz fischt frische Fische", "Blaukraut bleibt Blaukraut und Brautkleid bleibt Brautkleid", "Zwischen zwei Zwetschgenzweigen zwitschern zwei Schwalben", "Der Cottbuser Postkutscher putzt den Cottbuser Postkutschkasten", "Wenn hinter Fliegen Fliegen fliegen", "Schnecken erschrecken, wenn sie Schnecken an der Schnecke schlecken"],
+  "hard": ["Fischers Fritz fischt frische Fische, frische Fische fischt Fischers Fritz", "Zehn zahme Ziegen zogen zehn Zentner Zucker zum Zoo", "Wenn hinter Fliegen Fliegen fliegen, fliegen Fliegen Fliegen hinterher", "Der dicke Dachdecker deckt dir dein Dach, drum dank dem dicken Dachdecker", "Brautkleid bleibt Brautkleid und Blaukraut bleibt Blaukraut, das weiß jede Braut", "Esel essen Nesseln nicht, Nesseln essen Esel nicht"]
+}

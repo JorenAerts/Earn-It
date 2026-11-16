@@ -85,6 +85,39 @@ import Testing
         #expect(plan.isReady)
     }
 
+    @Test func lockedMissionBecomesMathOnTheFreePlan() {
+        var answers = OnboardingAnswers()
+        answers.missions = [MissionConfig(kind: .shake, target: 40)]
+        #expect(answers.firstAlarm(gate: FeatureGate(isPro: false)).missions.map(\.kind) == [.math])
+        #expect(answers.firstAlarm(gate: FeatureGate(isPro: true)).missions.map(\.kind) == [.shake], "trial started")
+        #expect(answers.firstAlarm().missions.map(\.kind) == [.shake], "no gate = unchanged")
+        answers.missions = [MissionConfig(kind: .math, difficulty: .hard)]
+        #expect(answers.firstAlarm(gate: FeatureGate(isPro: false)).missions[0].difficulty == .hard, "free missions keep their setup")
+    }
+
+    @Test func lockedSoundBecomesClassicOnTheFreePlan() {
+        var answers = OnboardingAnswers()
+        answers.sound = .builtIn(.chime)
+        #expect(answers.firstAlarm(gate: FeatureGate(isPro: false)).sound == .classic)
+        #expect(answers.firstAlarm(gate: FeatureGate(isPro: true)).sound == .builtIn(.chime), "trial started")
+        answers.sound = .builtIn(BonusUnlocks.inviteSound)
+        #expect(answers.firstAlarm(gate: FeatureGate(isPro: false)).sound == .classic, "invite skipped")
+        #expect(answers.firstAlarm(gate: FeatureGate(isPro: false, bonusSounds: [BonusUnlocks.inviteSound])).sound
+                == .builtIn(BonusUnlocks.inviteSound), "friend invited")
+    }
+
+    @Test func continueAsksForTheTrialOnlyForLockedSounds() {
+        let free = FeatureGate(isPro: false), pro = FeatureGate(isPro: true)
+        var answers = OnboardingAnswers()
+        answers.sound = .classic
+        #expect(!answers.soundNeedsPaywall(gate: free))
+        answers.sound = .builtIn(.chime)
+        #expect(answers.soundNeedsPaywall(gate: free))
+        #expect(!answers.soundNeedsPaywall(gate: pro))
+        answers.sound = .builtIn(BonusUnlocks.inviteSound)
+        #expect(!answers.soundNeedsPaywall(gate: free), "the invite step unlocks it for free")
+    }
+
     @Test func suggestionWhenNothingChosen() {
         var answers = OnboardingAnswers()
         #expect(answers.suggestedMissions == [.math])

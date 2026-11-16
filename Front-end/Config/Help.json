@@ -22,6 +22,14 @@
       "answer": "Scan the item again in good light, from the angles you'll see it in the morning, and hold it fully in view. Still stuck? After 2 minutes you can switch to the backup mission."
     },
     {
+      "question": "Can I do the sky mission when it's dark or raining?",
+      "answer": "Yes. Day, night, clouds and rain all count, as long as the camera sees the real sky through a window or outside. Can't see it at all? Tap \"Can't see the sky? Do another mission\" and you get another mission right away."
+    },
+    {
+      "question": "Scanning something in the dark?",
+      "answer": "Tap the flashlight button in the top-right corner of the camera: Auto, On or Off. On Auto, Gloop switches the flashlight on by itself when it's too dark to scan. It works for every camera mission except the sky."
+    },
+    {
       "question": "How do streaks, XP and stickers work?",
       "answer": "Every morning you finish a mission adds a day to your streak and earns XP: more on the first ring, less for each re-ring, plus a streak bonus. XP evolves Gloop from a tiny Droplet all the way to King Gloop, with a new accessory at every stage. Days without an alarm, or paused days, don't break your streak. Stickers are collected for milestones like your first squish or a flawless week."
     },

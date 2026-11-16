@@ -127,5 +127,48 @@
   "Your %lld-day streak is on the line.": {
     "one": "Your %lld-day streak is on the line.",
     "other": "Your %lld-day streak is on the line."
-  }
+  },
+  "%lld colors": {
+    "one": "%lld color",
+    "other": "%lld colors"
+  },
+  "%lld correct answers": {
+    "one": "%lld correct answer",
+    "other": "%lld correct answers"
+  },
+  "%lld tongue twisters": {
+    "one": "%lld tongue twister",
+    "other": "%lld tongue twisters"
+  },
+  "%lld tongue twisters · %@": {
+    "one": "%lld tongue twister · %@",
+    "other": "%lld tongue twisters · %@"
+  },
+  "Answer %lld %@ questions correctly.": {
+    "one": "Answer %lld %@ question correctly.",
+    "other": "Answer %lld %@ questions correctly."
+  },
+  "Find %lld things in the colors Gloop asks for.": {
+    "one": "Find %lld thing in the color Gloop asks for.",
+    "other": "Find %lld things in the colors Gloop asks for."
+  },
+  "Morning tip": "Morning tip",
+  "Quote of the morning": "Quote of the morning",
+  "Type %lld tongue twisters without a mistake.": {
+    "one": "Type %lld tongue twister without a mistake.",
+    "other": "Type %lld tongue twisters without a mistake."
+  },
+  "%@ is a Pro mission": "%@ is a Pro mission",
+  "Not now, use Math": "Not now, use Math",
+  "PRO missions come with a free trial. Tap one to try it, or keep Math on the free plan.": "PRO missions come with a free trial. Tap one to try it, or keep Math on the free plan.",
+  "Try it free: %@, with every other mission and sound. Cancel anytime.": "Try it free: %@, with every other mission and sound. Cancel anytime.",
+  "Unlock it with Gloop Pro, together with every other mission and sound.": "Unlock it with Gloop Pro, together with every other mission and sound.",
+  "%@ is a Pro sound": "%@ is a Pro sound",
+  "%@ is a Pro sound. Continue to try it free, or pick Classic Beep.": "%@ is a Pro sound. Continue to try it free, or pick Classic Beep.",
+  "Not now, use Classic Beep": "Not now, use Classic Beep",
+  "Auto": "Auto",
+  "Flashlight: %@": "Flashlight: %@",
+  "It's dark: flashlight on": "It's dark: flashlight on",
+  "On": "On",
+  "Turn on the camera for Gloop to scan your code.": "Turn on the camera for Gloop to scan your code."
 }

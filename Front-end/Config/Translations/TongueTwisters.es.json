@@ -1,0 +1,5 @@
+{
+  "easy": ["Tres tristes tigres", "Pablito clavó un clavito", "Erre con erre cigarro", "Como poco coco como", "Pepe Pecas pica papas", "Rápido ruedan los carros"],
+  "medium": ["Tres tristes tigres tragaban trigo en un trigal", "Pablito clavó un clavito, ¿qué clavito clavó Pablito?", "Erre con erre cigarro, erre con erre barril", "Pepe Pecas pica papas con un pico", "Como poco coco como, poco coco compro", "El perro de San Roque no tiene rabo"],
+  "hard": ["Tres tristes tigres tragaban trigo en un trigal en tres tristes trastos", "El perro de San Roque no tiene rabo porque Ramón Ramírez se lo ha robado", "Erre con erre cigarro, erre con erre barril, rápido ruedan los carros cargados de azúcar del ferrocarril", "El cielo está enladrillado, quién lo desenladrillará", "Si el caracol tuviera cara como tiene el caracol, fuera cara, fuera col", "Pancha plancha con cuatro planchas, ¿con cuántas planchas plancha Pancha?"]
+}

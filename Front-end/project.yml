@@ -76,6 +76,12 @@ targets:
       - path: Config/Translations
         type: folder
         buildPhase: resources
+      - path: Config/Quiz.json
+        buildPhase: resources
+      - path: Config/TongueTwisters.json
+        buildPhase: resources
+      - path: Config/MorningTips.json
+        buildPhase: resources
     dependencies:
       - package: Core
       - package: Coach

@@ -31,6 +31,12 @@ public enum MissionRegistry {
         case .shake: ShakeMission(config: config)
         case .qr: QRMission(config: config)
         case .object: ObjectMission(config: config)
+        case .quiz: QuizMission(config: config)
+        case .memory: MemoryMission(config: config)
+        case .typing: TypingMission(config: config)
+        case .sky: SkyMission(config: config)
+        case .bed: BedMission(config: config)
+        case .colorHunt: ColorHuntMission(config: config)
         }
     }
 
@@ -40,6 +46,12 @@ public enum MissionRegistry {
         case .shake: ShakeMission.makeSetupView(config: config)
         case .qr: QRMission.makeSetupView(config: config)
         case .object: ObjectMission.makeSetupView(config: config)
+        case .quiz: QuizMission.makeSetupView(config: config)
+        case .memory: MemoryMission.makeSetupView(config: config)
+        case .typing: TypingMission.makeSetupView(config: config)
+        case .sky: SkyMission.makeSetupView(config: config)
+        case .bed: BedMission.makeSetupView(config: config)
+        case .colorHunt: ColorHuntMission.makeSetupView(config: config)
         }
     }
 }

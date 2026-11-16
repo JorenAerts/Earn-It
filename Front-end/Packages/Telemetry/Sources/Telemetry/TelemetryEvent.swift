@@ -207,6 +207,8 @@ public enum TelemetryAction: Equatable, Sendable {
     case whatsNewShown(version: String)
     case shareStreak(streak: Int)
     case languageChanged(from: String, to: String, automatic: Bool, source: String)
+    /// Camera mission flashlight: a manual change (`auto` false, `mode` = new mode) or Auto turning it on.
+    case flashlight(mode: String, auto: Bool, mission: String)
 
     var name: String {
         switch self {
@@ -237,6 +239,7 @@ public enum TelemetryAction: Equatable, Sendable {
         case .whatsNewShown: "WhatsNew.shown"
         case .shareStreak: "Share.streakCard"
         case .languageChanged: "Language.changed"
+        case .flashlight: "Camera.flashlight"
         }
     }
 
@@ -258,6 +261,7 @@ public enum TelemetryAction: Equatable, Sendable {
         case .shareStreak(let streak): ["streak": "\(streak)"]
         case .languageChanged(let from, let to, let automatic, let source):
             ["from": from, "to": to, "automatic": "\(automatic)", "source": source]
+        case .flashlight(let mode, let auto, let mission): ["mode": mode, "auto": "\(auto)", "mission": mission]
         default: [:]
         }
     }

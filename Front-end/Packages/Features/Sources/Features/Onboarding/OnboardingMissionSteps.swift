@@ -12,33 +12,71 @@ import UIKit
 
 struct MissionStep: View {
     @Binding var answers: OnboardingAnswers
-    let gate: FeatureGate
+    /// Read live (not a captured gate), so a trial started from the sheet unlocks right away.
+    let store: StoreService
     let onNext: () -> Void
+    @Environment(\.paywall) private var paywall
+    /// A locked mission the user tapped: the paywall is open for it.
+    @State private var unlocking: PaywallUnlock?
+    /// Same as `unlocking`, but survives until the sheet's onDismiss has run.
+    @State private var pending: MissionKind?
 
-    private var selected: MissionKind { answers.chosenMissions.first?.kind ?? answers.suggestedMission }
+    private var selected: MissionKind { answers.chosenMissions.first?.kind ?? .math }
 
     var body: some View {
         OnboardingPage(title: L10n.tr("Pick a mission to wake you up"), subtitle: L10n.tr("You'll do this to turn off your alarm.")) {
             VStack(spacing: 12) {
-                ForEach(MissionKind.allCases) { kind in
+                ForEach(MissionKind.onboardingKinds) { kind in
                     ChoiceCard(title: kind.displayName,
                                subtitle: kind == answers.suggestedMission ? L10n.tr("Suggested for you · \(kind.estimatedDuration)") : kind.tagline,
                                symbol: kind.symbol,
                                selected: selected == kind,
-                               badge: gate.isLocked(kind) ? "PRO" : nil) {
-                        withAnimation(.snappy) { select(kind) }
+                               badge: store.gate.isLocked(kind) ? "PRO" : nil) {
+                        tapped(kind)
                     }
                 }
             }
-            if MissionKind.allCases.contains(where: gate.isLocked) {
-                Text("PRO missions are included in the free trial at the end. On the free plan your alarm uses Math.")
+            if MissionKind.onboardingKinds.contains(where: store.gate.isLocked) {
+                Text("PRO missions come with a free trial. Tap one to try it, or keep Math on the free plan.")
                     .font(.footnote).foregroundStyle(.secondary)
             }
+            Text("More missions, like memory match and tongue twisters, are waiting in the app.")
+                .font(.footnote).foregroundStyle(.secondary)
             CoachBubble(line: OnboardingPersonalization.coachReaction(to: .mission, answers: answers) ?? "")
         } footer: {
             PrimaryButton(title: L10n.tr("Continue"), action: onNext)
         }
-        .onAppear { if answers.missions == nil { select(answers.suggestedMission) } }
+        .onAppear {
+            // Pre-select the suggestion only when it's usable; a free user starts on Math.
+            if answers.missions == nil {
+                select(store.gate.isLocked(answers.suggestedMission) ? .math : answers.suggestedMission)
+            } else if store.gate.isLocked(selected) {
+                select(.math)  // e.g. back from a later step after the trial ended
+            }
+        }
+        .sheet(item: $unlocking, onDismiss: unlockSheetClosed) { unlock in
+            if let paywall {
+                PaywallView(store: paywall.store, mode: .sheet, source: .lockedMission, accountToken: paywall.accountToken,
+                            termsURL: paywall.termsURL, privacyURL: paywall.privacyURL, unlocking: unlock) { unlocking = nil }
+            }
+        }
+    }
+
+    /// Free missions select straight away; a PRO one opens the trial paywall first.
+    private func tapped(_ kind: MissionKind) {
+        if store.gate.isLocked(kind) {
+            pending = kind
+            unlocking = .mission(kind)
+        } else {
+            withAnimation(.snappy) { select(kind) }
+        }
+    }
+
+    /// Trial started → keep the tapped mission. "Not now" / closed → Math.
+    private func unlockSheetClosed() {
+        guard let kind = pending else { return }
+        pending = nil
+        withAnimation(.snappy) { select(store.gate.isLocked(kind) ? .math : kind) }
     }
 
     private func select(_ kind: MissionKind) {
@@ -67,7 +105,19 @@ struct MissionSetupStep: View {
                 mathSetup
             case .shake:
                 countCard(label: L10n.tr("Shakes"), range: kind.targetRange ?? 5...200, step: kind.targetStep)
-            case .qr, .object:
+            case .quiz:
+                VStack(spacing: 12) {
+                    QuizTopicGrid(topic: config.quizTopic)
+                    countCard(label: L10n.tr("Correct answers"), range: kind.targetRange ?? 1...10, step: 1)
+                }
+            case .memory, .typing:
+                VStack(spacing: 12) {
+                    difficultyCards
+                    if kind == .typing {
+                        countCard(label: L10n.tr("Tongue twisters"), range: kind.targetRange ?? 1...5, step: 1)
+                    }
+                }
+            case .qr, .object, .sky, .bed, .colorHunt:
                 if let setup = MissionRegistry.setupView(for: config) {
                     setup
                         .padding(16)
@@ -94,6 +144,10 @@ struct MissionSetupStep: View {
         case .shake: L10n.tr("How hard should you shake?")
         case .qr: L10n.tr("Register your code")
         case .object: L10n.tr("Scan your item")
+        case .quiz: L10n.tr("Pick your quiz")
+        case .memory: L10n.tr("How big is the board?")
+        case .typing: L10n.tr("Set up your tongue twisters")
+        case .sky, .bed, .colorHunt: kind.displayName
         }
     }
 
@@ -103,10 +157,21 @@ struct MissionSetupStep: View {
         case .shake: L10n.tr("More shakes, more awake.")
         case .qr: L10n.tr("Print or pick any code and stick it somewhere out of bed, like the bathroom.")
         case .object: L10n.tr("Something that's not in your bedroom: your toothbrush, coffee mug or shoes.")
+        case .quiz: L10n.tr("Pick a topic and how many right answers it takes.")
+        case .memory: L10n.tr("More pairs, more brain power.")
+        case .typing: L10n.tr("Longer twisters on harder levels.")
+        case .sky, .bed, .colorHunt: kind.tagline
         }
     }
 
     private var mathSetup: some View {
+        VStack(spacing: 12) {
+            difficultyCards
+            countCard(label: L10n.tr("Problems in a row"), range: MissionKind.math.targetRange ?? 1...20, step: 1)
+        }
+    }
+
+    private var difficultyCards: some View {
         VStack(spacing: 12) {
             ForEach(MissionDifficulty.allCases) { level in
                 let on = config.wrappedValue.difficulty == level
@@ -127,15 +192,26 @@ struct MissionSetupStep: View {
                 .accessibilityAddTraits(on ? .isSelected : [])
                 .accessibilityHint("Example: \(example(level))")
             }
-            countCard(label: L10n.tr("Problems in a row"), range: MissionKind.math.targetRange ?? 1...20, step: 1)
         }
     }
 
     private func example(_ level: MissionDifficulty) -> String {
-        switch level {
-        case .easy: "5 + 9"
-        case .medium: "5 × 8 + 7"
-        case .hard: "17 × 9 − 46"
+        var c = config.wrappedValue
+        c.difficulty = level
+        switch c.kind {
+        case .memory: return L10n.tr("\(c.memoryPairs) pairs")
+        case .typing:
+            switch level {
+            case .easy: return L10n.tr("Short")
+            case .medium: return L10n.tr("Medium length")
+            case .hard: return L10n.tr("Long")
+            }
+        default:
+            switch level {
+            case .easy: return "5 + 9"
+            case .medium: return "5 × 8 + 7"
+            case .hard: return "17 × 9 − 46"
+            }
         }
     }
 
@@ -170,9 +246,17 @@ struct MissionSetupStep: View {
 
 struct SoundStep: View {
     @Binding var answers: OnboardingAnswers
-    let gate: FeatureGate
+    /// Read live (not a captured gate), so a trial started from the sheet unlocks right away.
+    let store: StoreService
     let onNext: () -> Void
     @State private var preview = SoundPreview()
+    @Environment(\.paywall) private var paywall
+    /// The locked sound the paywall is open for (after Continue).
+    @State private var unlocking: PaywallUnlock?
+    /// "Not now, use Classic Beep" was tapped (vs. closing the sheet).
+    @State private var declined = false
+
+    private var gate: FeatureGate { store.gate }
 
     var body: some View {
         OnboardingPage(title: L10n.tr("Pick your alarm sound"), subtitle: L10n.tr("Tap to hear it. You can add your own sounds later.")) {
@@ -191,12 +275,52 @@ struct SoundStep: View {
                 }
             }
         } footer: {
-            PrimaryButton(title: L10n.tr("Continue")) {
-                preview.stop()
-                onNext()
+            if answers.soundNeedsPaywall(gate: gate), case .builtIn(let sound) = answers.sound {
+                Label(L10n.tr("\(sound.displayName) is a Pro sound. Continue to try it free, or pick Classic Beep."),
+                      systemImage: "lock.fill")
+                    .font(.footnote).foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .transition(.opacity)
+            }
+            PrimaryButton(title: L10n.tr("Continue"), action: continueTapped)
+        }
+        .animation(.snappy, value: answers.sound)
+        .onDisappear { preview.stop() }
+        .sheet(item: $unlocking, onDismiss: unlockSheetClosed) { unlock in
+            if let paywall {
+                PaywallView(store: paywall.store, mode: .sheet, source: .lockedSound, accountToken: paywall.accountToken,
+                            termsURL: paywall.termsURL, privacyURL: paywall.privacyURL, unlocking: unlock,
+                            onDecline: {
+                                declined = true
+                                unlocking = nil
+                            }) { unlocking = nil }
             }
         }
-        .onDisappear { preview.stop() }
+    }
+
+    /// Previews are free; a PRO sound only asks for the trial when the user moves on with it.
+    /// Rise & Conquer goes on to the invite step, which unlocks it for free.
+    private func continueTapped() {
+        preview.stop()
+        if answers.soundNeedsPaywall(gate: gate), case .builtIn(let sound) = answers.sound {
+            declined = false
+            unlocking = .sound(sound)
+        } else {
+            onNext()
+        }
+    }
+
+    /// Trial started → keep the sound and move on. "Not now" → Classic Beep and move on.
+    /// Closed (X / swipe) → stay here with Classic Beep selected, so Continue doesn't loop.
+    private func unlockSheetClosed() {
+        if !gate.isLocked(answers.sound) {
+            onNext()
+        } else {
+            answers.sound = .classic
+            if declined { onNext() }
+        }
+        declined = false
     }
 
     private func row(_ sound: AlarmSound) -> some View {
@@ -310,4 +434,29 @@ struct ShareSheet: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ controller: UIActivityViewController, context: Context) {}
+}
+
+/// Quiz topics as tappable tiles (onboarding).
+struct QuizTopicGrid: View {
+    @Binding var topic: QuizTopic
+
+    var body: some View {
+        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+            ForEach(QuizTopic.allCases) { t in
+                let on = t == topic
+                Button { withAnimation(.snappy) { topic = t } } label: {
+                    Label(t.title, systemImage: t.symbol)
+                        .font(.subheadline.weight(.semibold))
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(14)
+                        .background(on ? Color.orange.opacity(0.14) : Color(.secondarySystemGroupedBackground), in: .rect(cornerRadius: 16))
+                        .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(on ? Color.orange : .clear, lineWidth: 2.5))
+                        .contentShape(.rect)
+                }
+                .buttonStyle(PressableStyle())
+                .foregroundStyle(.primary)
+                .accessibilityAddTraits(on ? .isSelected : [])
+            }
+        }
+    }
 }

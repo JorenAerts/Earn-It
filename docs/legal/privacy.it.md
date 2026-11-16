@@ -16,7 +16,7 @@ Quanto segue è conservato solo sul tuo dispositivo e non ci viene mai inviato:
 
 - Le tue sveglie (orari, giorni, etichette, missioni, suoni) e lo storico dei risvegli, serie, stadi e adesivi.
 - I tuoi suoni della sveglia: audio importato e registrazioni fatte con il microfono.
-- Le scansioni degli oggetti per la missione «Scansiona il tuo oggetto»: un’immagine scontornata dell’oggetto e un’«impronta» matematica usata per riconoscerlo. I codici registrati per la missione «Scansiona un codice».
+- Le scansioni degli oggetti per la missione «Scansiona il tuo oggetto»: un’immagine scontornata dell’oggetto e un’«impronta» matematica usata per riconoscerlo. I codici registrati per la missione «Scansiona un codice». Le foto del letto rifatto per la missione «Letto rifatto», conservate allo stesso modo. Le immagini della fotocamera per le missioni «Foto del cielo» e «Caccia ai colori» vengono analizzate sul momento e mai conservate.
 - Le tue impostazioni: aspetto, icona dell’app, tono del coach, orario del promemoria, sveglie in pausa.
 
 Fotocamera e microfono sono usati solo per la funzione che avvii (scansione, registrazione, foto del mattino) e vengono elaborati sul tuo iPhone. I promemoria sono notifiche locali create sul tuo dispositivo.

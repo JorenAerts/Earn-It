@@ -1,13 +1,48 @@
 {
   "faq": [
-    {"question": "Pourquoi le réveil continue-t-il de sonner ?", "answer": "C’est le principe : le réveil ne s’arrête pour de bon que lorsque tu termines ta mission. Appuyer sur X le met en silence quelques minutes (ton délai avant nouvelle sonnerie), puis il sonne à nouveau. Après la limite de sécurité, il abandonne, pour que tu ne restes jamais bloqué."},
-    {"question": "Est-ce qu’il sonne si mon téléphone est en silencieux ou en mode de concentration ?", "answer": "Oui. Gloop utilise les alarmes d’iOS, qui sonnent malgré le mode silencieux et les modes de concentration, tant que les Alarmes sont autorisées dans Réglages › Autorisations."},
-    {"question": "Que se passe-t-il si je force la fermeture de l’app ?", "answer": "Le réveil sonne quand même, ainsi que les nouvelles sonneries : elles sont programmées dans iOS. Le son entre les deux ne joue que si l’app est ouverte, donc l’ouvrir te mène le plus vite à ta mission."},
-    {"question": "Puis-je me réveiller avec un morceau Spotify ?", "answer": "Non. iOS ne permet pas aux apps d’utiliser des morceaux Spotify comme réveil. Tu peux choisir un morceau Apple Music (joué pendant ta mission), importer ton propre fichier audio ou enregistrer un message."},
-    {"question": "Mon objet n’est pas reconnu.", "answer": "Scanne à nouveau l’objet avec une bonne lumière, sous les angles où tu le verras le matin, et garde-le entièrement dans le cadre. Toujours bloqué ? Après 2 minutes, tu peux passer à la mission de secours."},
-    {"question": "Comment fonctionnent les séries, les XP et les stickers ?", "answer": "Chaque matin où tu termines une mission ajoute un jour à ta série et te rapporte des XP : plus à la première sonnerie, moins pour chaque nouvelle sonnerie, plus un bonus de série. Les XP font évoluer Gloop d’une petite Gouttelette jusqu’au Roi Gloop, avec un nouvel accessoire à chaque stade. Les jours sans réveil ou en pause ne brisent pas ta série. Les stickers se collectionnent pour des étapes comme ton premier écrasement ou une semaine parfaite."},
-    {"question": "Comment mettre mes réveils en pause pour des vacances ?", "answer": "Réglages › Mettre tous les réveils en pause. Choisis la durée ; tes réveils reviennent tout seuls ensuite."},
-    {"question": "Comment résilier mon abonnement ?", "answer": "Réglages › Gloop Pro › Gérer l’abonnement, ou dans les Réglages d’iOS › ton nom › Abonnements. Supprimer ton compte ne résilie pas un abonnement."},
-    {"question": "Quelles données Gloop collecte-t-il ?", "answer": "Des statistiques d’utilisation anonymes (écrans et fonctions utilisés, déroulement de l’accueil et des matins) via TelemetryDeck dans l’UE, avec un identifiant aléatoire non lié à ton compte. Jamais ton nom, ton e-mail, les noms de tes réveils, tes photos ni ce que tu tapes. Désactive-les à tout moment dans Réglages › Confidentialité. Tes réveils, sons et scans d’objets restent sur ton iPhone ; avec un compte, ton profil et tes données Buddies sont stockés chez Supabase dans l’UE."}
+    {
+      "question": "Pourquoi le réveil continue-t-il de sonner ?",
+      "answer": "C’est le principe : le réveil ne s’arrête pour de bon que lorsque tu termines ta mission. Appuyer sur X le met en silence quelques minutes (ton délai avant nouvelle sonnerie), puis il sonne à nouveau. Après la limite de sécurité, il abandonne, pour que tu ne restes jamais bloqué."
+    },
+    {
+      "question": "Est-ce qu’il sonne si mon téléphone est en silencieux ou en mode de concentration ?",
+      "answer": "Oui. Gloop utilise les alarmes d’iOS, qui sonnent malgré le mode silencieux et les modes de concentration, tant que les Alarmes sont autorisées dans Réglages › Autorisations."
+    },
+    {
+      "question": "Que se passe-t-il si je force la fermeture de l’app ?",
+      "answer": "Le réveil sonne quand même, ainsi que les nouvelles sonneries : elles sont programmées dans iOS. Le son entre les deux ne joue que si l’app est ouverte, donc l’ouvrir te mène le plus vite à ta mission."
+    },
+    {
+      "question": "Puis-je me réveiller avec un morceau Spotify ?",
+      "answer": "Non. iOS ne permet pas aux apps d’utiliser des morceaux Spotify comme réveil. Tu peux choisir un morceau Apple Music (joué pendant ta mission), importer ton propre fichier audio ou enregistrer un message."
+    },
+    {
+      "question": "Mon objet n’est pas reconnu.",
+      "answer": "Scanne à nouveau l’objet avec une bonne lumière, sous les angles où tu le verras le matin, et garde-le entièrement dans le cadre. Toujours bloqué ? Après 2 minutes, tu peux passer à la mission de secours."
+    },
+    {
+      "question": "Puis-je faire la mission ciel quand il fait nuit ou qu’il pleut ?",
+      "answer": "Oui. Jour, nuit, nuages et pluie comptent, tant que l’appareil photo voit le vrai ciel par une fenêtre ou dehors. Tu ne le vois pas du tout ? Touche « Tu ne vois pas le ciel ? Fais une autre mission » et tu reçois tout de suite une autre mission."
+    },
+    {
+      "question": "Scanner quelque chose dans le noir ?",
+      "answer": "Touche le bouton lampe torche en haut à droite de la caméra : Auto, Activé ou Désactivé. En Auto, Gloop allume la lampe tout seul quand il fait trop sombre pour scanner. Ça marche pour toutes les missions caméra, sauf le ciel."
+    },
+    {
+      "question": "Comment fonctionnent les séries, les XP et les stickers ?",
+      "answer": "Chaque matin où tu termines une mission ajoute un jour à ta série et te rapporte des XP : plus à la première sonnerie, moins pour chaque nouvelle sonnerie, plus un bonus de série. Les XP font évoluer Gloop d’une petite Gouttelette jusqu’au Roi Gloop, avec un nouvel accessoire à chaque stade. Les jours sans réveil ou en pause ne brisent pas ta série. Les stickers se collectionnent pour des étapes comme ton premier écrasement ou une semaine parfaite."
+    },
+    {
+      "question": "Comment mettre mes réveils en pause pour des vacances ?",
+      "answer": "Réglages › Mettre tous les réveils en pause. Choisis la durée ; tes réveils reviennent tout seuls ensuite."
+    },
+    {
+      "question": "Comment résilier mon abonnement ?",
+      "answer": "Réglages › Gloop Pro › Gérer l’abonnement, ou dans les Réglages d’iOS › ton nom › Abonnements. Supprimer ton compte ne résilie pas un abonnement."
+    },
+    {
+      "question": "Quelles données Gloop collecte-t-il ?",
+      "answer": "Des statistiques d’utilisation anonymes (écrans et fonctions utilisés, déroulement de l’accueil et des matins) via TelemetryDeck dans l’UE, avec un identifiant aléatoire non lié à ton compte. Jamais ton nom, ton e-mail, les noms de tes réveils, tes photos ni ce que tu tapes. Désactive-les à tout moment dans Réglages › Confidentialité. Tes réveils, sons et scans d’objets restent sur ton iPhone ; avec un compte, ton profil et tes données Buddies sont stockés chez Supabase dans l’UE."
+    }
   ]
 }

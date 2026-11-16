@@ -1,13 +1,48 @@
 {
   "faq": [
-    {"question": "¿Por qué la alarma sigue sonando?", "answer": "Esa es la idea: la alarma solo se detiene del todo cuando terminas tu misión. Al pulsar X se silencia unos minutos (tu tiempo de repetición) y luego vuelve a sonar. Tras el límite de seguridad se rinde, para que nunca te quedes atascado."},
-    {"question": "¿Suena si el móvil está en silencio o en un modo de concentración?", "answer": "Sí. Gloop usa las alarmas de iOS, que suenan aunque estén activos el modo silencio o un modo de concentración, siempre que Alarmas esté permitido en Ajustes › Permisos."},
-    {"question": "¿Qué pasa si fuerzo el cierre de la app?", "answer": "La alarma sigue sonando, y las repeticiones también: están programadas en iOS. El sonido entre medias solo suena mientras la app está abierta, así que abrirla es la forma más rápida de llegar a tu misión."},
-    {"question": "¿Puedo despertarme con una canción de Spotify?", "answer": "No. iOS no deja que las apps usen canciones de Spotify como alarma. Puedes elegir una canción de Apple Music (suena durante la misión), importar tu propio archivo de audio o grabar un mensaje."},
-    {"question": "Mi objeto no se reconoce.", "answer": "Vuelve a escanear el objeto con buena luz, desde los ángulos en los que lo verás por la mañana, y mantenlo entero en el encuadre. ¿Sigue sin funcionar? Tras 2 minutos puedes cambiar a la misión de reserva."},
-    {"question": "¿Cómo funcionan las rachas, los XP y las pegatinas?", "answer": "Cada mañana en que completas una misión suma un día a tu racha y gana XP: más si te levantas a la primera, menos por cada repetición, más un bonus de racha. Los XP hacen evolucionar a Gloop desde una pequeña Gotita hasta el Rey Gloop, con un accesorio nuevo en cada etapa. Los días sin alarma o en pausa no rompen tu racha. Las pegatinas se coleccionan por hitos como tu primer apretón o una semana perfecta."},
-    {"question": "¿Cómo pauso las alarmas en vacaciones?", "answer": "Ajustes › Pausar todas las alarmas. Elige cuánto tiempo; después tus alarmas vuelven solas."},
-    {"question": "¿Cómo cancelo mi suscripción?", "answer": "Ajustes › Gloop Pro › Gestionar suscripción, o en los Ajustes de iOS › tu nombre › Suscripciones. Eliminar tu cuenta no cancela una suscripción."},
-    {"question": "¿Qué datos recopila Gloop?", "answer": "Estadísticas de uso anónimas (qué pantallas y funciones se usan, cómo van la bienvenida y las mañanas) mediante TelemetryDeck en la UE, con un ID aleatorio no vinculado a tu cuenta. Nunca tu nombre, correo, nombres de alarmas, fotos ni lo que escribes. Desactívalo cuando quieras en Ajustes › Privacidad. Tus alarmas, sonidos y escaneos de objetos se quedan en tu iPhone; con una cuenta, tu perfil y tus datos de Buddies se guardan en Supabase, en la UE."}
+    {
+      "question": "¿Por qué la alarma sigue sonando?",
+      "answer": "Esa es la idea: la alarma solo se detiene del todo cuando terminas tu misión. Al pulsar X se silencia unos minutos (tu tiempo de repetición) y luego vuelve a sonar. Tras el límite de seguridad se rinde, para que nunca te quedes atascado."
+    },
+    {
+      "question": "¿Suena si el móvil está en silencio o en un modo de concentración?",
+      "answer": "Sí. Gloop usa las alarmas de iOS, que suenan aunque estén activos el modo silencio o un modo de concentración, siempre que Alarmas esté permitido en Ajustes › Permisos."
+    },
+    {
+      "question": "¿Qué pasa si fuerzo el cierre de la app?",
+      "answer": "La alarma sigue sonando, y las repeticiones también: están programadas en iOS. El sonido entre medias solo suena mientras la app está abierta, así que abrirla es la forma más rápida de llegar a tu misión."
+    },
+    {
+      "question": "¿Puedo despertarme con una canción de Spotify?",
+      "answer": "No. iOS no deja que las apps usen canciones de Spotify como alarma. Puedes elegir una canción de Apple Music (suena durante la misión), importar tu propio archivo de audio o grabar un mensaje."
+    },
+    {
+      "question": "Mi objeto no se reconoce.",
+      "answer": "Vuelve a escanear el objeto con buena luz, desde los ángulos en los que lo verás por la mañana, y mantenlo entero en el encuadre. ¿Sigue sin funcionar? Tras 2 minutos puedes cambiar a la misión de reserva."
+    },
+    {
+      "question": "¿Puedo hacer la misión del cielo si es de noche o llueve?",
+      "answer": "Sí. Día, noche, nubes y lluvia valen, siempre que la cámara vea el cielo de verdad por una ventana o fuera. ¿No lo ves en absoluto? Toca «¿No ves el cielo? Haz otra misión» y tendrás otra misión al momento."
+    },
+    {
+      "question": "¿Escanear algo a oscuras?",
+      "answer": "Toca el botón de la linterna arriba a la derecha de la cámara: Auto, Activado o Desactivado. En Auto, Gloop enciende la linterna por sí solo cuando está demasiado oscuro para escanear. Funciona en todas las misiones con cámara, menos la del cielo."
+    },
+    {
+      "question": "¿Cómo funcionan las rachas, los XP y las pegatinas?",
+      "answer": "Cada mañana en que completas una misión suma un día a tu racha y gana XP: más si te levantas a la primera, menos por cada repetición, más un bonus de racha. Los XP hacen evolucionar a Gloop desde una pequeña Gotita hasta el Rey Gloop, con un accesorio nuevo en cada etapa. Los días sin alarma o en pausa no rompen tu racha. Las pegatinas se coleccionan por hitos como tu primer apretón o una semana perfecta."
+    },
+    {
+      "question": "¿Cómo pauso las alarmas en vacaciones?",
+      "answer": "Ajustes › Pausar todas las alarmas. Elige cuánto tiempo; después tus alarmas vuelven solas."
+    },
+    {
+      "question": "¿Cómo cancelo mi suscripción?",
+      "answer": "Ajustes › Gloop Pro › Gestionar suscripción, o en los Ajustes de iOS › tu nombre › Suscripciones. Eliminar tu cuenta no cancela una suscripción."
+    },
+    {
+      "question": "¿Qué datos recopila Gloop?",
+      "answer": "Estadísticas de uso anónimas (qué pantallas y funciones se usan, cómo van la bienvenida y las mañanas) mediante TelemetryDeck en la UE, con un ID aleatorio no vinculado a tu cuenta. Nunca tu nombre, correo, nombres de alarmas, fotos ni lo que escribes. Desactívalo cuando quieras en Ajustes › Privacidad. Tus alarmas, sonidos y escaneos de objetos se quedan en tu iPhone; con una cuenta, tu perfil y tus datos de Buddies se guardan en Supabase, en la UE."
+    }
   ]
 }

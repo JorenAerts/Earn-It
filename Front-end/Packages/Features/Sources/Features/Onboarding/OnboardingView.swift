@@ -146,11 +146,11 @@ struct OnboardingView: View {
         case .permissions:
             PermissionsStep(answers: progress.answers, onNext: advance)
         case .mission:
-            MissionStep(answers: answers, gate: store.gate, onNext: advance)
+            MissionStep(answers: answers, store: store, onNext: advance)
         case .missionSetup:
             MissionSetupStep(answers: answers, onNext: advance)
         case .sound:
-            SoundStep(answers: answers, gate: store.gate, onNext: advance)
+            SoundStep(answers: answers, store: store, onNext: advance)
         case .inviteFriend:
             InviteFriendStep(store: store, answers: answers, link: auth.config.shareURL, onNext: advance)
         case .account:
@@ -171,7 +171,10 @@ struct OnboardingView: View {
     /// Creates (or, when replaying, updates) the first alarm and applies the personal settings.
     private func applyAnswers() async {
         let answers = progress.answers
-        let plan = answers.firstAlarm()
+        // Never save a mission the user can't use (no trial started): free plan = Math.
+        let plan = answers.firstAlarm(gate: store.gate)
+        progress.answers.missions = plan.missions
+        progress.answers.sound = plan.sound
         await coordinator.save(plan)
         progress.answers.createdPlanID = plan.id
 

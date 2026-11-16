@@ -85,6 +85,9 @@ struct ObjectScanSetupView: View {
                 ViewfinderCorners().padding(28)
                 if model.busy { ProgressView().tint(.white).scaleEffect(1.4) }
             }
+            .overlay(alignment: .topTrailing) {
+                if model.cameraReady { TorchButton(controller: model.torch) }
+            }
             .aspectRatio(3 / 4, contentMode: .fit)
             .frame(maxHeight: 440)
             .clipShape(.rect(cornerRadius: 24))
@@ -130,7 +133,7 @@ struct ObjectScanSetupView: View {
             .disabled(!model.cameraReady || model.busy)
             .accessibilityLabel("Take shot")
 
-            #if DEBUG
+            #if DEBUG && targetEnvironment(simulator)
             Button("Simulate scan (no camera)") {
                 if let id = model.simulateFinish() {
                     config.payload = id
@@ -211,9 +214,12 @@ final class ScanSetupModel {
     private(set) var busy = false
     private(set) var problem: String?
     @ObservationIgnored let camera = CameraFeed()
+    let torch: TorchController
     @ObservationIgnored private var prints: [VNFeaturePrintObservation] = []
 
     private let prompts = [L10n.tr("Front of the item"), L10n.tr("Walk a bit to the left"), L10n.tr("Now to the right"), L10n.tr("The other side"), L10n.tr("From above")]
+
+    init() { torch = TorchController(camera: camera, mission: "objectSetup") }
 
     var prompt: String { prompts[min(shots.count, prompts.count - 1)] }
 
@@ -229,13 +235,17 @@ final class ScanSetupModel {
         case .running:
             cameraReady = true
             cameraMessage = nil
+            torch.activate()
         case .denied: cameraMessage = L10n.tr("Allow camera access in Settings to scan your item.")
         case .unavailable: cameraMessage = L10n.tr("No camera available.")
         default: cameraMessage = L10n.tr("The camera couldn't start. Close other apps that use the camera and try again.")
         }
     }
 
-    func stop() { camera.stop() }
+    func stop() {
+        torch.reset()
+        camera.stop()
+    }
 
     /// Analyses the current frame. Returns true when the shot was accepted.
     func capture() async -> Bool {
@@ -262,6 +272,7 @@ final class ScanSetupModel {
     /// Saves the reference. Returns its id.
     func finish() -> String? {
         let threshold = ObjectMatchPolicy.threshold(pairwiseDistances: ObjectVision.pairwiseDistances(prints))
+        torch.reset()
         camera.stop()
         do {
             return try ObjectReferenceStore.shared.save(prints: prints, threshold: threshold, thumbnail: shots.first)

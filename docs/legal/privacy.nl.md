@@ -16,7 +16,7 @@ Het volgende wordt alleen op je toestel bewaard en nooit naar ons gestuurd:
 
 - Je wekkers (tijden, dagen, labels, missies, geluiden) en je wekgeschiedenis, reeksen, fases en stickers.
 - Je eigen wekgeluiden: geïmporteerde audio en opnames die je met de microfoon maakt.
-- Voorwerpscans voor de missie "Scan je voorwerp": een uitgeknipte afbeelding van het voorwerp en een wiskundige "feature print" om het te herkennen. Geregistreerde codes voor de missie "Scan een code".
+- Voorwerpscans voor de missie "Scan je voorwerp": een uitgeknipte afbeelding van het voorwerp en een wiskundige "feature print" om het te herkennen. Geregistreerde codes voor de missie "Scan een code". Foto's van je opgemaakte bed voor de missie "Opgemaakt bed", op dezelfde manier bewaard. Camerabeelden voor de missies "Foto van de lucht" en "Kleurenjacht" worden meteen geanalyseerd en nooit bewaard.
 - Je instellingen: weergave, app-icoon, toon van de coach, tijd van de herinnering, gepauzeerde wekkers.
 
 De camera en microfoon worden alleen gebruikt voor de functie die je start (scannen, opnemen, de ochtendfoto) en worden op je iPhone verwerkt. Herinneringen zijn lokale meldingen die op je toestel worden aangemaakt.

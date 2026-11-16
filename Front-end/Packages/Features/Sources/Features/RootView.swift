@@ -60,6 +60,10 @@ public struct RootView: View {
         }
         // Screenshot helper: -settings opens on the Settings tab.
         if CommandLine.arguments.contains("-settings") { _tab = State(initialValue: .settings) }
+        #if DEBUG
+        // Screenshot / regression helper: -successScreen opens the mission-done screen (same cover as a real morning).
+        if CommandLine.arguments.contains("-successScreen") { _showSuccess = State(initialValue: true) }
+        #endif
     }
 
     public var body: some View {
@@ -98,8 +102,12 @@ public struct RootView: View {
                 MissionPickerView(gate: store.gate) { _ in }
             } else if CommandLine.arguments.contains("-missionRunner") {
                 // Screenshot helper: -missionRunner (object step without a scan, then math)
-                MissionRunnerView(missions: [MissionConfig(kind: .object, payload: "none", label: L10n.tr("Toothbrush")),
-                                             MissionConfig(kind: .math)],
+                // Screenshot helper: -missionRunner [kind] (e.g. sky, colorHunt, quiz); default = item scan + math.
+                let i = CommandLine.arguments.firstIndex(of: "-missionRunner")!
+                let kind = CommandLine.arguments.dropFirst(i + 1).first.flatMap(MissionKind.init(rawValue:))
+                MissionRunnerView(missions: kind.map { [MissionConfig(kind: $0)] }
+                                  ?? [MissionConfig(kind: .object, payload: "none", label: L10n.tr("Toothbrush")),
+                                      MissionConfig(kind: .math)],
                                   reArmCount: 2, reArmMinutes: 2,
                                   coachState: CoachState(mood: .angry, context: .reRing, anger: 0.4),
                                   coachLine: L10n.tr("Ring 2, private. My patience has a snooze limit too.")) {}
@@ -133,8 +141,16 @@ public struct RootView: View {
         // A new language redraws every screen (model texts are resolved when a view is built).
         // Tab, sheets and the language picker live above this, so they stay put.
         .id(language.current.code)
+        // Mission done. Must stay *inside* the environment modifiers below: a presented view only
+        // inherits what is applied outside its presentation modifier. SuccessView reads BuddiesModel,
+        // and without it SwiftUI traps, which closed the app after every mission.
+        .fullScreenCover(isPresented: $showSuccess, onDismiss: { ratingMoment = nil }) {
+            SuccessView(coordinator: coordinator, ratingMoment: ratingMoment) { showSuccess = false }
+                .environment(buddies)
+                .modifier(LanguageEnvironment(language: language.current))
+                .trackScreen("Success")
+        }
         .animation(.default, value: coordinator.needsMission)
-        .paywallSheet(isPresented: $showPaywallFromWidget, source: .widget)
         .permissionPrompt()
         .environment(buddies)
         .preferredColorScheme(AppearanceSettings.shared.preference.colorScheme)
@@ -147,6 +163,7 @@ public struct RootView: View {
         .environment(\.paywall, PaywallContext(store: store, accountToken: auth.user?.id,
                                                termsURL: auth.config.termsURL,
                                                privacyURL: auth.config.privacyURL))
+        .paywallSheet(isPresented: $showPaywallFromWidget, source: .widget)  // after \.paywall, or it opens empty
         // Free tier: once StoreKit has answered, bring alarms within the free limits.
         .onChange(of: store.entitlement) {
             enforceTier()
@@ -184,7 +201,7 @@ public struct RootView: View {
         .onChange(of: coordinator.plans) {
             refreshCoachNotifications()
             // Delete item scans that no alarm uses anymore.
-            let inUse = Set(coordinator.plans.flatMap(\.missions).filter { $0.kind == .object }.compactMap(\.payload))
+            let inUse = Set(coordinator.plans.flatMap(\.missions).filter { $0.kind == .object || $0.kind == .bed }.compactMap(\.payload))
             ObjectReferenceStore.shared.prune(keeping: inUse)
         }
         .onChange(of: coordinator.session) { refreshCoachNotifications() }
@@ -231,15 +248,12 @@ public struct RootView: View {
             default: break
             }
         }
-        .fullScreenCover(isPresented: $showSuccess, onDismiss: { ratingMoment = nil }) {
-            SuccessView(coordinator: coordinator, ratingMoment: ratingMoment) { showSuccess = false }
-                .trackScreen("Success")
-        }
         .sheet(item: $whatsNew) { release in
             WhatsNewSheet(release: release) {
                 GrowthStore.shared.markWhatsNewSeen(release.version)
                 whatsNew = nil
             }
+            .modifier(LanguageEnvironment(language: language.current))
         }
         .task(id: onboarded) { checkWhatsNew() }
     }
@@ -350,6 +364,8 @@ struct SuccessView: View {
     @Query private var logs: [DayLog]
     @Environment(BuddiesModel.self) private var buddies
     @State private var sharing = false
+    @State private var landed = false
+    @State private var tip = MorningTips.pick(from: MorningTips.load(), day: .now)
 
     var body: some View {
         let streak = StreakCalculator.currentStreak(completedDays: logs.compactMap(\.missionCompletedAt), today: .now)
@@ -359,6 +375,8 @@ struct SuccessView: View {
           ScrollView {
            VStack(spacing: 20) {
             CoachAvatarView(state: state, size: 170)
+                .scaleEffect(landed ? 1 : 0.3)
+                .opacity(landed ? 1 : 0)
                 .padding(.top, 32)
             Text(coach.line(for: state, coordinator: coordinator, logs: logs))
                 .font(.title3.weight(.semibold))
@@ -373,7 +391,10 @@ struct SuccessView: View {
                 .transition(.scale.combined(with: .opacity))
             } else {
                 Text("You earned it.").font(.largeTitle.bold())
+                    .scaleEffect(landed ? 1 : 0.6)
+                    .opacity(landed ? 1 : 0)
             }
+            if let tip { MorningTipCard(tip: tip).opacity(landed ? 1 : 0) }
             if report.xpGained > 0 {
                 VStack(spacing: 6) {
                     Text("+\(report.xpGained) XP").font(.headline).foregroundStyle(.orange).monospacedDigit()
@@ -420,6 +441,11 @@ struct SuccessView: View {
             }
             .padding(.bottom, 24)
         }
+        .overlay { ConfettiBurst().ignoresSafeArea() }
+        .sensoryFeedback(.success, trigger: landed)
+        .onAppear {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.55).delay(0.1)) { landed = true }
+        }
         .sheet(isPresented: $sharing) { ShareMorningView() }
         .task {
             // Happy moment: Apple's rating prompt, after the celebration has landed.
@@ -430,6 +456,31 @@ struct SuccessView: View {
             GrowthStore.shared.didPromptRating(version: GrowthStore.appVersion)
             Telemetry.shared.send(.action(.ratingPrompted(reason: ratingMoment.reason)))
         }
+    }
+}
+
+/// Today's tip or quote on the success screen (`MorningTips`, same one all day).
+struct MorningTipCard: View {
+    let tip: MorningTip
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label(tip.kind == .quote ? "Quote of the morning" : "Morning tip",
+                  systemImage: tip.kind == .quote ? "quote.opening" : "lightbulb.fill")
+                .font(.caption.weight(.heavy))
+                .textCase(.uppercase)
+                .foregroundStyle(.orange)
+            Text(tip.kind == .quote ? "“\(tip.text)”" : tip.text)
+                .font(tip.kind == .quote ? .body.italic() : .body)
+                .fixedSize(horizontal: false, vertical: true)
+            if let author = tip.author, tip.kind == .quote {
+                Text("— \(author)").font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
+            }
+        }
+        .frame(maxWidth: 420, alignment: .leading)
+        .padding(16)
+        .background(Color.orange.opacity(0.1), in: .rect(cornerRadius: 18))
+        .accessibilityElement(children: .combine)
     }
 }
 

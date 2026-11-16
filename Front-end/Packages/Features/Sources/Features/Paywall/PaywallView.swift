@@ -1,3 +1,4 @@
+import Core
 import Localization
 import Purchases
 import StoreKit
@@ -21,6 +22,11 @@ struct PaywallView: View {
     let accountToken: UUID?
     let termsURL: URL
     let privacyURL: URL
+    /// Opened for this locked mission or sound (onboarding): specific headline and a
+    /// "Not now, use Math / Classic Beep" way out.
+    var unlocking: PaywallUnlock? = nil
+    /// "Not now" tapped (falls back to `onFinish`), so callers can tell it apart from closing.
+    var onDecline: (() -> Void)? = nil
     /// Called after a successful purchase/restore, or when the user continues/closes.
     let onFinish: () -> Void
 
@@ -86,7 +92,7 @@ struct PaywallView: View {
     private var hero: some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 10) {
-                Image(systemName: "sun.max.fill")
+                Image(systemName: unlocking?.symbol ?? "sun.max.fill")
                     .font(.system(size: 40))
                     .foregroundStyle(.orange)
                 Text("PRO")
@@ -98,16 +104,25 @@ struct PaywallView: View {
             .padding(.top, mode == .sheet ? 24 : 8)
             Text(headline)
                 .font(.largeTitle.bold())
-            Text("Get up on time, every time — with every mission and alarm you need.")
+            Text(subheadline)
                 .foregroundStyle(.secondary)
         }
     }
 
     private var headline: String {
+        if let unlocking { return unlocking.headline }
         if store.isEligibleForTrial, let trial = trialText(for: anySubscription) {
             return L10n.tr("Try Gloop Pro — \(trial)")
         }
         return L10n.tr("Unlock Gloop Pro")
+    }
+
+    private var subheadline: String {
+        guard unlocking != nil else { return L10n.tr("Get up on time, every time — with every mission and alarm you need.") }
+        if store.isEligibleForTrial, let trial = trialText(for: anySubscription) {
+            return L10n.tr("Try it free: \(trial), with every other mission and sound. Cancel anytime.")
+        }
+        return L10n.tr("Unlock it with Gloop Pro, together with every other mission and sound.")
     }
 
     private var features: some View {
@@ -185,6 +200,9 @@ struct PaywallView: View {
 
         if mode == .onboarding {
             Button("Continue with free version", action: onFinish)
+                .foregroundStyle(.secondary)
+        } else if let unlocking {
+            Button(unlocking.declineTitle, action: onDecline ?? onFinish)
                 .foregroundStyle(.secondary)
         }
 
@@ -369,6 +387,36 @@ private struct PlanCard: View {
         }
         .buttonStyle(.plain)
         .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
+}
+
+/// What a paywall was opened to unlock, from onboarding's mission and sound steps.
+enum PaywallUnlock: Hashable, Identifiable {
+    case mission(MissionKind)
+    case sound(AlarmSound)
+
+    var id: Self { self }
+
+    var symbol: String {
+        switch self {
+        case .mission(let kind): kind.symbol
+        case .sound: "speaker.wave.3.fill"
+        }
+    }
+
+    var headline: String {
+        switch self {
+        case .mission(let kind): L10n.tr("\(kind.displayName) is a Pro mission")
+        case .sound(let sound): L10n.tr("\(sound.displayName) is a Pro sound")
+        }
+    }
+
+    /// The free fallback the user gets when they say no.
+    var declineTitle: String {
+        switch self {
+        case .mission: L10n.tr("Not now, use Math")
+        case .sound: L10n.tr("Not now, use Classic Beep")
+        }
     }
 }
 

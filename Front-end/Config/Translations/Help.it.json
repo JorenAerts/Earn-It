@@ -1,13 +1,48 @@
 {
   "faq": [
-    {"question": "Perché la sveglia continua a suonare?", "answer": "È proprio questo il punto: la sveglia si ferma davvero solo quando completi la missione. Premendo X la silenzi per qualche minuto (il tempo prima del nuovo squillo), poi suona di nuovo. Dopo il limite di sicurezza si arrende, così non resti mai bloccato."},
-    {"question": "Suona se il telefono è in silenzioso o in Full immersion?", "answer": "Sì. Gloop usa le sveglie di iOS, che suonano anche in modalità silenziosa e con Full immersion, purché le Sveglie siano consentite in Impostazioni › Autorizzazioni."},
-    {"question": "Cosa succede se chiudo l’app forzatamente?", "answer": "La sveglia suona comunque, e anche i nuovi squilli: sono programmati in iOS. Il suono nel mezzo funziona solo con l’app aperta, quindi aprirla è il modo più veloce per arrivare alla missione."},
-    {"question": "Posso svegliarmi con un brano di Spotify?", "answer": "No. iOS non permette alle app di usare brani di Spotify come sveglia. Puoi scegliere un brano di Apple Music (suona durante la missione), importare un tuo file audio o registrare un messaggio."},
-    {"question": "Il mio oggetto non viene riconosciuto.", "answer": "Scansiona di nuovo l’oggetto con una buona luce, dalle angolazioni da cui lo vedrai al mattino, e tienilo tutto nell’inquadratura. Ancora niente? Dopo 2 minuti puoi passare alla missione di riserva."},
-    {"question": "Come funzionano serie, XP e adesivi?", "answer": "Ogni mattina in cui completi una missione aggiunge un giorno alla tua serie e fa guadagnare XP: di più al primo squillo, meno per ogni nuovo squillo, più un bonus serie. Gli XP fanno evolvere Gloop da piccola Gocciolina fino a Re Gloop, con un nuovo accessorio a ogni stadio. I giorni senza sveglia o in pausa non interrompono la serie. Gli adesivi si collezionano per traguardi come la tua prima strizzata o una settimana perfetta."},
-    {"question": "Come metto in pausa le sveglie per una vacanza?", "answer": "Impostazioni › Metti in pausa tutte le sveglie. Scegli per quanto tempo; dopo le sveglie tornano da sole."},
-    {"question": "Come annullo l’abbonamento?", "answer": "Impostazioni › Gloop Pro › Gestisci abbonamento, oppure nelle Impostazioni di iOS › il tuo nome › Abbonamenti. Eliminare l’account non annulla un abbonamento."},
-    {"question": "Quali dati raccoglie Gloop?", "answer": "Statistiche d’uso anonime (quali schermate e funzioni vengono usate, come vanno l’introduzione e le mattine) tramite TelemetryDeck nell’UE, con un ID casuale non collegato al tuo account. Mai il tuo nome, la tua email, i nomi delle sveglie, le foto o ciò che scrivi. Disattivale quando vuoi in Impostazioni › Privacy. Sveglie, suoni e scansioni degli oggetti restano sul tuo iPhone; con un account, profilo e dati di Buddies sono salvati su Supabase nell’UE."}
+    {
+      "question": "Perché la sveglia continua a suonare?",
+      "answer": "È proprio questo il punto: la sveglia si ferma davvero solo quando completi la missione. Premendo X la silenzi per qualche minuto (il tempo prima del nuovo squillo), poi suona di nuovo. Dopo il limite di sicurezza si arrende, così non resti mai bloccato."
+    },
+    {
+      "question": "Suona se il telefono è in silenzioso o in Full immersion?",
+      "answer": "Sì. Gloop usa le sveglie di iOS, che suonano anche in modalità silenziosa e con Full immersion, purché le Sveglie siano consentite in Impostazioni › Autorizzazioni."
+    },
+    {
+      "question": "Cosa succede se chiudo l’app forzatamente?",
+      "answer": "La sveglia suona comunque, e anche i nuovi squilli: sono programmati in iOS. Il suono nel mezzo funziona solo con l’app aperta, quindi aprirla è il modo più veloce per arrivare alla missione."
+    },
+    {
+      "question": "Posso svegliarmi con un brano di Spotify?",
+      "answer": "No. iOS non permette alle app di usare brani di Spotify come sveglia. Puoi scegliere un brano di Apple Music (suona durante la missione), importare un tuo file audio o registrare un messaggio."
+    },
+    {
+      "question": "Il mio oggetto non viene riconosciuto.",
+      "answer": "Scansiona di nuovo l’oggetto con una buona luce, dalle angolazioni da cui lo vedrai al mattino, e tienilo tutto nell’inquadratura. Ancora niente? Dopo 2 minuti puoi passare alla missione di riserva."
+    },
+    {
+      "question": "Posso fare la missione del cielo se è buio o piove?",
+      "answer": "Sì. Giorno, notte, nuvole e pioggia valgono tutti, purché la fotocamera veda il cielo vero da una finestra o all’aperto. Non lo vedi proprio? Tocca «Non vedi il cielo? Fai un’altra missione» e ne avrai subito un’altra."
+    },
+    {
+      "question": "Scansionare qualcosa al buio?",
+      "answer": "Tocca il pulsante della torcia in alto a destra nella fotocamera: Auto, Attivato o Disattivato. In Auto, Gloop accende la torcia da solo quando è troppo buio per scansionare. Funziona in tutte le missioni con fotocamera, tranne il cielo."
+    },
+    {
+      "question": "Come funzionano serie, XP e adesivi?",
+      "answer": "Ogni mattina in cui completi una missione aggiunge un giorno alla tua serie e fa guadagnare XP: di più al primo squillo, meno per ogni nuovo squillo, più un bonus serie. Gli XP fanno evolvere Gloop da piccola Gocciolina fino a Re Gloop, con un nuovo accessorio a ogni stadio. I giorni senza sveglia o in pausa non interrompono la serie. Gli adesivi si collezionano per traguardi come la tua prima strizzata o una settimana perfetta."
+    },
+    {
+      "question": "Come metto in pausa le sveglie per una vacanza?",
+      "answer": "Impostazioni › Metti in pausa tutte le sveglie. Scegli per quanto tempo; dopo le sveglie tornano da sole."
+    },
+    {
+      "question": "Come annullo l’abbonamento?",
+      "answer": "Impostazioni › Gloop Pro › Gestisci abbonamento, oppure nelle Impostazioni di iOS › il tuo nome › Abbonamenti. Eliminare l’account non annulla un abbonamento."
+    },
+    {
+      "question": "Quali dati raccoglie Gloop?",
+      "answer": "Statistiche d’uso anonime (quali schermate e funzioni vengono usate, come vanno l’introduzione e le mattine) tramite TelemetryDeck nell’UE, con un ID casuale non collegato al tuo account. Mai il tuo nome, la tua email, i nomi delle sveglie, le foto o ciò che scrivi. Disattivale quando vuoi in Impostazioni › Privacy. Sveglie, suoni e scansioni degli oggetti restano sul tuo iPhone; con un account, profilo e dati di Buddies sono salvati su Supabase nell’UE."
+    }
   ]
 }

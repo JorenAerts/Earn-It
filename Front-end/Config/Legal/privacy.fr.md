@@ -16,7 +16,7 @@ Les éléments suivants sont stockés uniquement sur ton appareil et ne nous son
 
 - Tes réveils (heures, jours, libellés, missions, sons) ainsi que ton historique de réveil, tes séries, stades et stickers.
 - Tes propres sons de réveil : l’audio importé et les enregistrements que tu fais avec le micro.
-- Les scans d’objets pour la mission « Scanner ton objet » : une image détourée de l’objet et une « empreinte » mathématique servant à le reconnaître. Les codes enregistrés pour la mission « Scanner un code ».
+- Les scans d’objets pour la mission « Scanner ton objet » : une image détourée de l’objet et une « empreinte » mathématique servant à le reconnaître. Les codes enregistrés pour la mission « Scanner un code ». Les photos de ton lit fait pour la mission « Lit fait », conservées de la même façon. Les images de la caméra pour les missions « Photo du ciel » et « Chasse aux couleurs » sont analysées sur le moment et jamais conservées.
 - Tes réglages : apparence, icône de l’app, ton du coach, heure du rappel, réveils en pause.
 
 L’appareil photo et le micro ne sont utilisés que pour la fonction que tu lances (scan, enregistrement, photo du matin) et sont traités sur ton iPhone. Les rappels sont des notifications locales créées sur ton appareil.

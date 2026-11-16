@@ -8,8 +8,26 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
     case shake
     case qr
     case object
+    case quiz
+    case memory
+    case typing
+    case sky
+    case bed
+    case colorHunt
 
     public var id: String { rawValue }
+
+    /// The missions offered in onboarding (the rest is in the app's mission picker).
+    public static let onboardingKinds: [MissionKind] = [.math, .shake, .qr, .object, .quiz]
+
+    /// Folder in the mission picker (filter chips).
+    public var category: MissionCategory {
+        switch self {
+        case .math, .quiz, .memory, .typing: .brain
+        case .shake: .body
+        case .qr, .object, .sky, .bed, .colorHunt: .outOfBed
+        }
+    }
 
     public var displayName: String {
         switch self {
@@ -17,6 +35,12 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .shake: L10n.tr("Shake the phone")
         case .qr: L10n.tr("Scan a code")
         case .object: L10n.tr("Scan your item")
+        case .quiz: L10n.tr("Quiz")
+        case .memory: L10n.tr("Memory match")
+        case .typing: L10n.tr("Tongue twister")
+        case .sky: L10n.tr("Photo of the sky")
+        case .bed: L10n.tr("Made-up bed")
+        case .colorHunt: L10n.tr("Color hunt")
         }
     }
 
@@ -27,6 +51,12 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .shake: L10n.tr("Shake It")
         case .qr: L10n.tr("Scan Code")
         case .object: L10n.tr("Scan Item")
+        case .quiz: L10n.tr("Quiz")
+        case .memory: L10n.tr("Memory")
+        case .typing: L10n.tr("Type It")
+        case .sky: L10n.tr("Find the Sky")
+        case .bed: L10n.tr("Make Your Bed")
+        case .colorHunt: L10n.tr("Color Hunt")
         }
     }
 
@@ -37,6 +67,12 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .shake: "iphone.radiowaves.left.and.right"
         case .qr: "qrcode.viewfinder"
         case .object: "camera.viewfinder"
+        case .quiz: "questionmark.bubble.fill"
+        case .memory: "square.grid.3x3.fill"
+        case .typing: "keyboard.fill"
+        case .sky: "cloud.sun.fill"
+        case .bed: "bed.double.fill"
+        case .colorHunt: "paintpalette.fill"
         }
     }
 
@@ -47,6 +83,12 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .shake: L10n.tr("Shake your phone hard. Wakes up your body.")
         case .qr: L10n.tr("Scan a code you stuck in another room.")
         case .object: L10n.tr("Scan an item you pick, like your toothbrush or coffee cup.")
+        case .quiz: L10n.tr("Answer trivia questions on a topic you pick.")
+        case .memory: L10n.tr("Flip cards and find all the pairs.")
+        case .typing: L10n.tr("Type a tongue twister without a single mistake.")
+        case .sky: L10n.tr("Point the camera at the sky, through a window or outside.")
+        case .bed: L10n.tr("Make your bed and show it to the camera.")
+        case .colorHunt: L10n.tr("Find something in a random color and show it to the camera.")
         }
     }
 
@@ -55,11 +97,15 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         switch self {
         case .math: L10n.tr("~1 min")
         case .shake: L10n.tr("~30 s")
-        case .qr, .object: L10n.tr("~1 min")
+        case .qr, .object, .quiz, .memory, .typing, .bed, .colorHunt: L10n.tr("~1 min")
+        case .sky: L10n.tr("~30 s")
         }
     }
 
-    public var needsCamera: Bool { self == .qr || self == .object }
+    public var needsCamera: Bool { [.qr, .object, .sky, .bed, .colorHunt].contains(self) }
+
+    /// Camera missions with a flashlight button. Not the sky: a flashlight can't light it up.
+    public var usesTorch: Bool { needsCamera && self != .sky }
 
     /// Has to be set up before the alarm can use it (register a code / scan an item).
     public var needsSetup: Bool { needsPayload }
@@ -67,8 +113,8 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
     /// After this long on the mission screen, offer a backup mission ("Can't find it?").
     public var backupAfter: TimeInterval? {
         switch self {
-        case .object: 120
-        case .math, .shake, .qr: nil
+        case .object, .bed, .colorHunt: 120
+        case .math, .shake, .qr, .quiz, .memory, .typing, .sky: nil
         }
     }
 
@@ -79,6 +125,11 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .shake: L10n.tr("\(n) shakes")
         case .qr: L10n.tr("\(n) codes")
         case .object: L10n.tr("\(n) items")
+        case .quiz: L10n.tr("\(n) correct answers")
+        case .memory: L10n.tr("\(n) pairs")
+        case .typing: L10n.tr("\(n) tongue twisters")
+        case .colorHunt: L10n.tr("\(n) colors")
+        case .sky, .bed: L10n.tr("\(n) items")
         }
     }
 
@@ -87,6 +138,11 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         case .math: 3
         case .shake: 30
         case .qr, .object: 1
+        case .quiz: 3
+        case .memory: 6
+        case .typing: 2
+        case .sky, .bed: 1
+        case .colorHunt: 2
         }
     }
 
@@ -95,7 +151,11 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         switch self {
         case .math: 1...20
         case .shake: 5...200
-        case .qr, .object: nil
+        case .qr, .object, .memory: nil
+        case .quiz: 1...10
+        case .typing: 1...5
+        case .colorHunt: 1...3
+        case .sky, .bed: nil
         }
     }
 
@@ -103,19 +163,80 @@ public enum MissionKind: String, Codable, CaseIterable, Sendable, Identifiable {
         switch self {
         case .math: 1
         case .shake: 5
-        case .qr, .object: 1
+        case .qr, .object, .quiz, .memory, .typing, .sky, .bed, .colorHunt: 1
         }
     }
 
     public var usesDifficulty: Bool {
         switch self {
-        case .math, .shake: true
-        case .qr, .object: false
+        case .math, .shake, .memory, .typing: true
+        case .qr, .object, .quiz, .sky, .bed, .colorHunt: false
         }
     }
 
     /// Needs something registered at setup (the QR code / the scanned item).
-    public var needsPayload: Bool { self == .qr || self == .object }
+    public var needsPayload: Bool { self == .qr || self == .object || self == .bed }
+}
+
+/// Folders in the mission picker.
+public enum MissionCategory: String, CaseIterable, Sendable, Identifiable {
+    case brain, body, outOfBed, mindset
+
+    public var id: String { rawValue }
+
+    public var title: String {
+        switch self {
+        case .brain: L10n.tr("Brain")
+        case .body: L10n.tr("Body")
+        case .outOfBed: L10n.tr("Out of bed")
+        case .mindset: L10n.tr("Mindset")
+        }
+    }
+
+    public var symbol: String {
+        switch self {
+        case .brain: "brain.head.profile"
+        case .body: "figure.run"
+        case .outOfBed: "bed.double.fill"
+        case .mindset: "sparkles"
+        }
+    }
+
+    /// Kinds in this folder, in picker order.
+    public var kinds: [MissionKind] { MissionKind.allCases.filter { $0.category == self } }
+}
+
+/// Quiz topics (20 questions each in `Config/Quiz.json`, translated per language).
+public enum QuizTopic: String, Codable, CaseIterable, Sendable, Identifiable {
+    case general, geography, science, animals, history, sports, moviesMusic, food
+
+    public var id: String { rawValue }
+
+    public var title: String {
+        switch self {
+        case .general: L10n.tr("General knowledge")
+        case .geography: L10n.tr("Geography")
+        case .science: L10n.tr("Science")
+        case .animals: L10n.tr("Animals")
+        case .history: L10n.tr("History")
+        case .sports: L10n.tr("Sports")
+        case .moviesMusic: L10n.tr("Movies & music")
+        case .food: L10n.tr("Food")
+        }
+    }
+
+    public var symbol: String {
+        switch self {
+        case .general: "lightbulb.fill"
+        case .geography: "globe.europe.africa.fill"
+        case .science: "atom"
+        case .animals: "pawprint.fill"
+        case .history: "building.columns.fill"
+        case .sports: "sportscourt.fill"
+        case .moviesMusic: "film.fill"
+        case .food: "fork.knife"
+        }
+    }
 }
 
 public enum MissionDifficulty: String, Codable, CaseIterable, Sendable, Identifiable {
@@ -161,6 +282,27 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
         case .object:
             if let label, !label.isEmpty { L10n.tr("Find your \(L10n.inSentence(label)) and point the camera at it.") }
             else { L10n.tr("Find your item and point the camera at it.") }
+        case .quiz: L10n.tr("Answer \(target) \(quizTopic.title) questions correctly.")
+        case .memory: L10n.tr("Find all \(memoryPairs) pairs.")
+        case .typing: L10n.tr("Type \(target) tongue twisters without a mistake.")
+        case .sky: L10n.tr("Go to a window or outside and point the camera at the sky.")
+        case .bed: L10n.tr("Make your bed, then stand at the foot of it and point the camera at it.")
+        case .colorHunt: L10n.tr("Find \(target) things in the colors Gloop asks for.")
+        }
+    }
+
+    /// Quiz: the topic is stored in `payload` (default General knowledge).
+    public var quizTopic: QuizTopic {
+        get { payload.flatMap(QuizTopic.init(rawValue:)) ?? .general }
+        set { payload = newValue.rawValue }
+    }
+
+    /// Memory: pairs on the board, from the difficulty.
+    public var memoryPairs: Int {
+        switch difficulty {
+        case .easy: 6
+        case .medium: 8
+        case .hard: 10
         }
     }
 
@@ -182,6 +324,12 @@ public struct MissionConfig: Codable, Hashable, Sendable, Identifiable {
         case .object: isReady ? (label ?? L10n.tr("Item scanned")) : L10n.tr("No item scanned yet")
         case .math: L10n.tr("\(target) problems · \(difficulty.title)")
         case .shake: L10n.tr("\(target) shakes · \(difficulty.title)")
+        case .quiz: L10n.tr("\(quizTopic.title) · \(target) correct")
+        case .memory: L10n.tr("\(memoryPairs) pairs · \(difficulty.title)")
+        case .typing: L10n.tr("\(target) tongue twisters · \(difficulty.title)")
+        case .sky: L10n.tr("Any sky: day, night, clouds or rain")
+        case .bed: isReady ? L10n.tr("Bed scanned") : L10n.tr("No bed scanned yet")
+        case .colorHunt: L10n.tr("\(target) colors")
         }
     }
 }
