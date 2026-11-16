@@ -10,8 +10,6 @@ import Telemetry
 struct PaywallContext {
     let store: StoreService
     let accountToken: UUID?
-    let termsURL: URL
-    let privacyURL: URL
 
     @MainActor var gate: FeatureGate { store.gate }
 }
@@ -35,8 +33,7 @@ private struct PaywallSheetModifier: ViewModifier {
     func body(content: Content) -> some View {
         content.sheet(isPresented: $isPresented) {
             if let paywall {
-                PaywallSheet(store: paywall.store, source: source, accountToken: paywall.accountToken,
-                             termsURL: paywall.termsURL, privacyURL: paywall.privacyURL)
+                PaywallSheet(store: paywall.store, source: source, accountToken: paywall.accountToken)
             }
         }
     }

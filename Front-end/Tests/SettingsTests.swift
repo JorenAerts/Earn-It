@@ -240,10 +240,10 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
     }
 
     @Test func authConfigDecodesWithoutNewFields() throws {
-        let json = #"{"redirectURL":"gloop://auth-callback","termsURL":"https://a.b/t","privacyURL":"https://a.b/p"}"#
+        let json = #"{"redirectURL":"gloop://auth-callback"}"#
         let config = try JSONDecoder().decode(AuthConfig.self, from: Data(json.utf8))
         #expect(config.supportEmail == nil && config.shareURL == nil)
-        let blank = #"{"redirectURL":"gloop://x","termsURL":"https://a.b/t","privacyURL":"https://a.b/p","supportEmail":" "}"#
+        let blank = #"{"redirectURL":"gloop://x","supportEmail":" "}"#
         #expect(try JSONDecoder().decode(AuthConfig.self, from: Data(blank.utf8)).supportEmail == nil)
     }
 

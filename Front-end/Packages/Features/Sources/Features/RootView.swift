@@ -160,9 +160,7 @@ public struct RootView: View {
         }
         .onChange(of: language.current) { languageChanged() }
         .modifier(LanguageEnvironment(language: language.current))
-        .environment(\.paywall, PaywallContext(store: store, accountToken: auth.user?.id,
-                                               termsURL: auth.config.termsURL,
-                                               privacyURL: auth.config.privacyURL))
+        .environment(\.paywall, PaywallContext(store: store, accountToken: auth.user?.id))
         .paywallSheet(isPresented: $showPaywallFromWidget, source: .widget)  // after \.paywall, or it opens empty
         // Free tier: once StoreKit has answered, bring alarms within the free limits.
         .onChange(of: store.entitlement) {

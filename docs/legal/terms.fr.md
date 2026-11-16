@@ -92,5 +92,5 @@ Le droit belge s’applique. En tant que consommateur, tu conserves aussi la pro
 
 ## 15. Contact
 
-JA-Solutions ([to be completed], numéro d’entreprise [to be completed]), [to be completed], Belgique
-Assistance : [to be completed]
+JA-Solutions (Eenmanszaak, numéro d’entreprise 1029912049), Hoevestraat, Peer, Belgique
+Assistance : joren.a@hotmail.com

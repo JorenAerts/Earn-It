@@ -6,9 +6,9 @@ Dit beleid legt uit welke gegevens Gloop gebruikt, waarom, waar ze naartoe gaan 
 
 ## Wie we zijn
 
-Gloop wordt gemaakt door JA-Solutions ([to be completed], ondernemingsnummer [to be completed]), [to be completed], België. Wij zijn de verwerkingsverantwoordelijke voor de persoonsgegevens die hier worden beschreven.
+Gloop wordt gemaakt door JA-Solutions (Eenmanszaak, ondernemingsnummer 1029912049), Hoevestraat, Peer, België. Wij zijn de verwerkingsverantwoordelijke voor de persoonsgegevens die hier worden beschreven.
 
-Vragen of verzoeken over je gegevens: [to be completed]
+Vragen of verzoeken over je gegevens: joren.a@hotmail.com
 
 ## Gegevens die op je iPhone blijven
 
@@ -87,7 +87,7 @@ Volgens de AVG heb je het recht om je gegevens in te zien, te verbeteren, te lat
 
 - **Verwijder je account** rechtstreeks in de app: Instellingen › je profiel › Account verwijderen. Dit verwijdert je account, profiel, clubs waarvan je eigenaar bent (of draagt ze over aan een ander lid), lidmaatschappen, ochtendresultaten, reacties en foto's.
 - **Stop de statistieken** in Instellingen › Privacy.
-- Voor al het andere mail je naar [to be completed]. We antwoorden binnen een maand.
+- Voor al het andere mail je naar joren.a@hotmail.com. We antwoorden binnen een maand.
 
 Je kunt ook een klacht indienen bij de Belgische Gegevensbeschermingsautoriteit, www.gegevensbeschermingsautoriteit.be, of bij de toezichthouder in je eigen EU-land.
 
@@ -105,6 +105,6 @@ We kunnen dit beleid bijwerken als Gloop verandert. De datum bovenaan toont de n
 
 ## Contact
 
-JA-Solutions, [to be completed], België
-Privacy: [to be completed]
-Ondersteuning: [to be completed]
+JA-Solutions, Hoevestraat, Peer, België
+Privacy: joren.a@hotmail.com
+Ondersteuning: joren.a@hotmail.com

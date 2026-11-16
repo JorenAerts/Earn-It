@@ -13,9 +13,9 @@ currently placeholders (`https://example.com/...`).
       (Apple), on-device alarms; no tracking/ads. Mention account deletion in the app.
 - [ ] Write **Terms of Use** — or use Apple's standard EULA:
       `https://www.apple.com/legal/internet-services/itunes/dev/stdeula/`
-- [ ] Host both on a public URL (e.g. your website, Notion public page, GitHub Pages).
-- [ ] Put the URLs in `Front-end/Config/Auth.json` → `termsURL`, `privacyURL`
-      (used by the paywall and Settings › About).
+- [x] Shown in the app itself (Settings › About, paywall, sign-up, onboarding); no website links in the app.
+- [ ] App Store Connect still requires a **Privacy Policy URL** field (Apple rule, can't be skipped).
+      → [x] Public Gist (same text as `docs/legal/privacy.md`): https://gist.github.com/JorenAerts/3460dc0a39ace79cf4ab6e54f2b76a01
 - [ ] Add both links in App Store Connect (App Information › Privacy Policy URL; Terms link in
       the app description or as custom EULA).
 
@@ -41,8 +41,8 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 
 ### Account & agreements
 - [ ] Enrol in the **Apple Developer Program** (€99/year).
-- [ ] Update `Front-end/Config/Local.xcconfig` with the new paid **Team ID**.
-- [ ] Register App Group `group.be.gloop.app` (Xcode › Signing & Capabilities does it automatically) and add `GLOOP_DEVICE_APP_GROUPS = YES` to `Local.xcconfig` so the home-screen widgets get live data on device.
+- [x] Paid team = same Team ID `8QP9V26LXL` (now Individual, not free); App Group on (`GLOOP_DEVICE_APP_GROUPS = YES`).
+- [x] Register App Group `group.be.gloop.app` (Xcode › Signing & Capabilities does it automatically) and add `GLOOP_DEVICE_APP_GROUPS = YES` to `Local.xcconfig` so the home-screen widgets get live data on device.
 - [ ] App Store Connect › Business: accept the **Paid Applications Agreement**, add bank + tax info.
 
 ### App & products
@@ -138,3 +138,23 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 ## Languages (remaining)
 - Translate the remaining 26 languages + App Store listing per language — steps and list in `docs/Localization/README.md`.
 - Have a native speaker review at least Dutch, French, German, Spanish, Portuguese (incl. the legal documents) before launch; then set `"_reviewed": true` in their translation file.
+
+## From TestFlight to the App Store
+
+Do these before submitting version 1.0.0 for App Store review.
+
+- [ ] **Change the contact email.** `joren.a@hotmail.com` is used as privacy + support email during TestFlight.
+      Before the App Store release, switch to a dedicated address (e.g. `support@<your-domain>`):
+  - [ ] `Front-end/Config/Legal.json` → `privacyEmail`, `supportEmail`
+  - [ ] `Front-end/Config/Auth.json` → `supportEmail` (Help › Contact support)
+  - [ ] Run `python3 Front-end/scripts/export_legal.py` (updates `docs/legal/`)
+  - [ ] Update the Privacy Policy Gist (below) with the new `docs/legal/privacy.md`
+  - [ ] App Store Connect: App Review contact email, support URL / email, TestFlight feedback email
+- [ ] **Complete the legal details** in `Legal.json`: full address (street + number, postcode, Peer),
+      enterprise number as `1029.912.049`, legal form translated per language if wanted.
+- [ ] **Privacy Policy URL** (required field in App Store Connect › App Information):
+  - [x] Public Gist created: https://gist.github.com/JorenAerts/3460dc0a39ace79cf4ab6e54f2b76a01
+  - [ ] After the email/address change: Gist › Edit › paste the new `docs/legal/privacy.md` (the link stays the same).
+  - [ ] Paste the Gist URL in App Store Connect › App Information › Privacy Policy URL.
+  - [ ] Terms: use Apple's standard EULA (no URL needed), or add a second Gist file with `docs/legal/terms.md`.
+

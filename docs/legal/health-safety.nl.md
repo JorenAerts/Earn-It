@@ -45,4 +45,4 @@ Als je in Buddies een ochtendfoto deelt, zorg dan dat alleen jij erop staat en d
 
 ## Vragen
 
-[to be completed]
+joren.a@hotmail.com

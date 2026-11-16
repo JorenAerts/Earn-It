@@ -45,4 +45,4 @@ When you share a morning photo in Buddies, make sure only you are in it, and tha
 
 ## Questions
 
-[to be completed]
+joren.a@hotmail.com

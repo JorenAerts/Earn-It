@@ -2,7 +2,7 @@
   "_help": "Help & feedback › What's new. Newest first.",
   "releases": [
     {
-      "version": "1.0",
+      "version": "1.0.0",
       "items": [
         "Alarms that keep ringing until you finish your mission",
         "Missions: math, shake, scan a code, scan your item",

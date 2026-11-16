@@ -6,9 +6,9 @@ Esta política explica qué datos usa Gloop, por qué, adónde van y cuáles son
 
 ## Quiénes somos
 
-Gloop lo desarrolla JA-Solutions ([to be completed], número de empresa [to be completed]), [to be completed], Bélgica. Somos el responsable del tratamiento de los datos personales descritos aquí.
+Gloop lo desarrolla JA-Solutions (Eenmanszaak, número de empresa 1029912049), Hoevestraat, Peer, Bélgica. Somos el responsable del tratamiento de los datos personales descritos aquí.
 
-Preguntas o solicitudes sobre tus datos: [to be completed]
+Preguntas o solicitudes sobre tus datos: joren.a@hotmail.com
 
 ## Datos que se quedan en tu iPhone
 
@@ -87,7 +87,7 @@ Según el RGPD, tienes derecho a acceder a tus datos, rectificarlos, suprimirlos
 
 - **Elimina tu cuenta** directamente en la app: Ajustes › tu perfil › Eliminar cuenta. Así se eliminan tu cuenta, tu perfil, los clubs de los que eres propietario (o se ceden a otro miembro), tus membresías, resultados matutinos, reacciones y fotos.
 - **Detén las estadísticas** en Ajustes › Privacidad.
-- Para todo lo demás, escribe a [to be completed]. Respondemos en el plazo de un mes.
+- Para todo lo demás, escribe a joren.a@hotmail.com. Respondemos en el plazo de un mes.
 
 También puedes presentar una reclamación ante la Autoridad de Protección de Datos de Bélgica (Gegevensbeschermingsautoriteit / Autorité de protection des données), www.dataprotectionauthority.be, o ante la autoridad de tu propio país de la UE.
 
@@ -105,6 +105,6 @@ Podemos actualizar esta política cuando Gloop cambie. La fecha de arriba indica
 
 ## Contacto
 
-JA-Solutions, [to be completed], Bélgica
-Privacidad: [to be completed]
-Soporte: [to be completed]
+JA-Solutions, Hoevestraat, Peer, Bélgica
+Privacidad: joren.a@hotmail.com
+Soporte: joren.a@hotmail.com
