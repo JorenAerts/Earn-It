@@ -1,13 +1,48 @@
 {
   "faq": [
-    {"question": "Porque é que o alarme continua a tocar?", "answer": "É essa a ideia: o alarme só para de vez quando concluir a missão. Tocar no X silencia-o durante alguns minutos (o seu tempo de repetição) e depois volta a tocar. Após o limite de segurança desiste, para nunca ficar preso."},
-    {"question": "Toca com o telemóvel em silêncio ou em Foco?", "answer": "Sim. O Gloop usa os alarmes do iOS, que tocam mesmo em silêncio e em Foco, desde que os Alarmes estejam permitidos em Definições › Permissões."},
-    {"question": "O que acontece se forçar o fecho da app?", "answer": "O alarme toca na mesma, tal como as repetições: estão agendadas no iOS. O som entre elas só toca com a app aberta, por isso abrir a app é a forma mais rápida de chegar à missão."},
-    {"question": "Posso acordar com uma música do Spotify?", "answer": "Não. O iOS não deixa as apps usarem músicas do Spotify como alarme. Pode escolher uma música do Apple Music (toca durante a missão), importar o seu próprio ficheiro de áudio ou gravar uma mensagem."},
-    {"question": "O meu objeto não é reconhecido.", "answer": "Digitalize o objeto outra vez com boa luz, a partir dos ângulos em que o vai ver de manhã, e mantenha-o inteiro no enquadramento. Continua sem resultar? Após 2 minutos pode mudar para a missão de reserva."},
-    {"question": "Como funcionam as sequências, o XP e os autocolantes?", "answer": "Cada manhã em que conclui uma missão soma um dia à sequência e dá XP: mais à primeira, menos por cada repetição, mais um bónus de sequência. O XP faz o Gloop evoluir de uma Gotinha até ao Rei Gloop, com um acessório novo em cada estágio. Dias sem alarme ou em pausa não quebram a sequência. Os autocolantes colecionam-se por marcos como o seu primeiro aperto ou uma semana perfeita."},
-    {"question": "Como ponho os alarmes em pausa nas férias?", "answer": "Definições › Pausar todos os alarmes. Escolha durante quanto tempo; depois os alarmes voltam sozinhos."},
-    {"question": "Como cancelo a subscrição?", "answer": "Definições › Gloop Pro › Gerir subscrição, ou nas Definições do iOS › o seu nome › Subscrições. Apagar a conta não cancela uma subscrição."},
-    {"question": "Que dados recolhe o Gloop?", "answer": "Estatísticas de utilização anónimas (que ecrãs e funções são usados, como correm a introdução e as manhãs) através da TelemetryDeck na UE, com um ID aleatório não associado à sua conta. Nunca o seu nome, e-mail, nomes de alarmes, fotos ou o que escreve. Desative quando quiser em Definições › Privacidade. Os seus alarmes, sons e digitalizações ficam no seu iPhone; com uma conta, o seu perfil e os seus dados do Buddies ficam na Supabase, na UE."}
+    {
+      "question": "Porque é que o alarme continua a tocar?",
+      "answer": "É essa a ideia: o alarme só para de vez quando concluir a missão. Tocar no X silencia-o durante alguns minutos (o seu tempo de repetição) e depois volta a tocar. Após o limite de segurança desiste, para nunca ficar preso."
+    },
+    {
+      "question": "Toca com o telemóvel em silêncio ou em Foco?",
+      "answer": "Sim. O Gloop usa os alarmes do iOS, que tocam mesmo em silêncio e em Foco, desde que os Alarmes estejam permitidos em Definições › Permissões."
+    },
+    {
+      "question": "O que acontece se forçar o fecho da app?",
+      "answer": "O alarme toca na mesma, tal como as repetições: estão agendadas no iOS. O som entre elas só toca com a app aberta, por isso abrir a app é a forma mais rápida de chegar à missão."
+    },
+    {
+      "question": "Posso acordar com uma música do Spotify?",
+      "answer": "Não. O iOS não deixa as apps usarem músicas do Spotify como alarme. Pode escolher uma música do Apple Music (toca durante a missão), importar o seu próprio ficheiro de áudio ou gravar uma mensagem."
+    },
+    {
+      "question": "O meu objeto não é reconhecido.",
+      "answer": "Digitalize o objeto outra vez com boa luz, a partir dos ângulos em que o vai ver de manhã, e mantenha-o inteiro no enquadramento. Continua sem resultar? Após 2 minutos pode mudar para a missão de reserva."
+    },
+    {
+      "question": "Posso fazer a missão do céu quando está escuro ou a chover?",
+      "answer": "Sim. Dia, noite, nuvens e chuva contam, desde que a câmara veja o céu verdadeiro por uma janela ou lá fora. Não consegue ver nada? Toque em «Não consegue ver o céu? Faça outra missão» e recebe logo outra missão."
+    },
+    {
+      "question": "Ler algo no escuro?",
+      "answer": "Toque no botão da lanterna no canto superior direito da câmara: Auto, Ativado ou Desativado. No Auto, o Gloop liga a lanterna sozinho quando está demasiado escuro para ler. Funciona em todas as missões com câmara, exceto a do céu."
+    },
+    {
+      "question": "Como funcionam as sequências, o XP e os autocolantes?",
+      "answer": "Cada manhã em que conclui uma missão soma um dia à sequência e dá XP: mais à primeira, menos por cada repetição, mais um bónus de sequência. O XP faz o Gloop evoluir de uma Gotinha até ao Rei Gloop, com um acessório novo em cada estágio. Dias sem alarme ou em pausa não quebram a sequência. Os autocolantes colecionam-se por marcos como o seu primeiro aperto ou uma semana perfeita."
+    },
+    {
+      "question": "Como ponho os alarmes em pausa nas férias?",
+      "answer": "Definições › Pausar todos os alarmes. Escolha durante quanto tempo; depois os alarmes voltam sozinhos."
+    },
+    {
+      "question": "Como cancelo a subscrição?",
+      "answer": "Definições › Gloop Pro › Gerir subscrição, ou nas Definições do iOS › o seu nome › Subscrições. Apagar a conta não cancela uma subscrição."
+    },
+    {
+      "question": "Que dados recolhe o Gloop?",
+      "answer": "Estatísticas de utilização anónimas (que ecrãs e funções são usados, como correm a introdução e as manhãs) através da TelemetryDeck na UE, com um ID aleatório não associado à sua conta. Nunca o seu nome, e-mail, nomes de alarmes, fotos ou o que escreve. Desative quando quiser em Definições › Privacidade. Os seus alarmes, sons e digitalizações ficam no seu iPhone; com uma conta, o seu perfil e os seus dados do Buddies ficam na Supabase, na UE."
+    }
   ]
 }

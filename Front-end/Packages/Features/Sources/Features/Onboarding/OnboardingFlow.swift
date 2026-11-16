@@ -1,6 +1,7 @@
 import Core
 import Foundation
 import Localization
+import Purchases
 
 // MARK: - Answers
 
@@ -225,8 +226,12 @@ public struct OnboardingAnswers: Codable, Hashable, Sendable {
     }
 
     /// The first alarm, built from the answers.
-    public func firstAlarm() -> AlarmPlan {
+    /// With a `gate`, what the user can't use (free plan, no trial) becomes free: missions → Math,
+    /// sound → Classic Beep (e.g. Rise & Conquer when the invite was skipped).
+    public func firstAlarm(gate: FeatureGate? = nil) -> AlarmPlan {
         let ready = chosenMissions.filter(\.isReady)
+            .map { gate?.isLocked($0.kind) == true ? MissionConfig(kind: .math) : $0 }
+        let sound = gate?.isLocked(sound) == true ? SoundChoice.classic : sound
         return AlarmPlan(id: createdPlanID ?? UUID(), label: L10n.tr("Wake up"), sound: sound, hour: hour, minute: minute,
                          weekdays: weekdays, missions: ready.isEmpty ? [MissionConfig(kind: .math)] : ready,
                          reArmMinutes: OnboardingPersonalization.reArmMinutes(getUpTime),
@@ -234,6 +239,13 @@ public struct OnboardingAnswers: Codable, Hashable, Sendable {
     }
 
     public var timeText: String { String(format: "%02d:%02d", hour, minute) }
+
+    /// Continue on the sound step asks for the trial: a locked built-in sound, except the invite
+    /// sound (the next step unlocks that one for free).
+    public func soundNeedsPaywall(gate: FeatureGate) -> Bool {
+        guard case .builtIn(let s) = sound else { return false }
+        return gate.isLocked(s) && s != BonusUnlocks.inviteSound
+    }
 }
 
 // MARK: - Steps

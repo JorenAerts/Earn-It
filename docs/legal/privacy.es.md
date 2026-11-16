@@ -16,7 +16,7 @@ Lo siguiente se guarda solo en tu dispositivo y nunca se nos envía:
 
 - Tus alarmas (horas, días, etiquetas, misiones, sonidos) y tu historial de despertares, rachas, etapas y pegatinas.
 - Tus propios sonidos de alarma: audio importado y grabaciones que haces con el micrófono.
-- Los escaneos de objetos para la misión «Escanear tu objeto»: una imagen recortada del objeto y una «huella» matemática para reconocerlo. Los códigos registrados para la misión «Escanear un código».
+- Los escaneos de objetos para la misión «Escanear tu objeto»: una imagen recortada del objeto y una «huella» matemática para reconocerlo. Los códigos registrados para la misión «Escanear un código». Las fotos de tu cama hecha para la misión «Cama hecha», guardadas de la misma forma. Las imágenes de la cámara de las misiones «Foto del cielo» y «Caza de colores» se analizan al momento y nunca se guardan.
 - Tus ajustes: apariencia, icono de la app, tono del coach, hora del recordatorio, alarmas en pausa.
 
 La cámara y el micrófono solo se usan para la función que inicias (escanear, grabar, la foto matutina) y se procesan en tu iPhone. Los recordatorios son notificaciones locales creadas en tu dispositivo.

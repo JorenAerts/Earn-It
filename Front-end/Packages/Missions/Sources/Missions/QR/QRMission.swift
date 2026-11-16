@@ -29,7 +29,6 @@ struct QRMissionView: View {
     let onComplete: @MainActor (MissionResult) -> Void
     @State private var wrongCode = false
     @State private var finished = false
-    @State private var cameraChecked = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -37,46 +36,23 @@ struct QRMissionView: View {
             Text("Go to where you stuck it and point the camera at it.")
                 .font(.subheadline).foregroundStyle(.secondary).multilineTextAlignment(.center)
 
-            Group {
-                if CodeScannerView.isAvailable && cameraChecked {
-                    CodeScannerView(onCode: handle)
-                } else if cameraChecked {
-                    VStack(spacing: 12) {
-                        ContentUnavailableView("Camera is off", systemImage: "camera.fill",
-                                               description: Text("Turn on the camera for Gloop to scan your code, or do the backup mission."))
-                        HStack {
-                            Button("Open Settings") { PermissionCenter.shared.openSettings(.camera) }
-                                .buttonStyle(.bordered)
-                            Button("Backup mission") { onComplete(.needsBackup) }
-                                .buttonStyle(.borderedProminent)
-                        }
-                    }
-                } else {
-                    ProgressView()
-                }
-            }
-            .frame(maxWidth: .infinity)
-            .frame(minHeight: 240, maxHeight: 420)
-            .clipShape(.rect(cornerRadius: 20))
+            CodeScannerView(mission: MissionKind.qr.rawValue, onCode: handle) { onComplete(.needsBackup) }
+                .aspectRatio(3 / 4, contentMode: .fit)
+                .clipShape(.rect(cornerRadius: 24))
+                .frame(maxHeight: 420)
+                .frame(maxWidth: .infinity)
 
             Text(wrongCode ? L10n.tr("That's not your registered code.") : " ")
                 .font(.footnote.weight(.semibold))
                 .foregroundStyle(.red)
 
-            #if DEBUG
+            #if DEBUG && targetEnvironment(simulator)
             Button("Simulate correct scan") { handle(expected ?? "") }
                 .buttonStyle(.bordered)
             #endif
         }
         .padding(24)
         .sensoryFeedback(.error, trigger: wrongCode) { _, new in new }
-        .task {
-            // The scanner reports "unavailable" until camera access is granted: ask first.
-            if PermissionCenter.shared.status(.camera) == .notDetermined {
-                await PermissionCenter.shared.request(.camera)
-            }
-            cameraChecked = true
-        }
     }
 
     private func handle(_ payload: String) {
@@ -138,16 +114,14 @@ private struct RegisterByScanView: View {
             VStack(spacing: 16) {
                 Text("Scan any QR code or barcode in another room — a sticker, a product, a printed code. You'll need to scan this same code to stop your alarm.")
                     .font(.subheadline).foregroundStyle(.secondary)
-                if CodeScannerView.isAvailable {
-                    CodeScannerView { payload in
-                        config.payload = payload
-                        dismiss()
-                    }
-                    .clipShape(.rect(cornerRadius: 20))
-                } else {
-                    ContentUnavailableView("Camera unavailable", systemImage: "camera.fill",
-                                           description: Text("Allow camera access in Settings, or create a printable code instead."))
+                CodeScannerView(mission: "qrSetup") { payload in
+                    config.payload = payload
+                    dismiss()
                 }
+                .aspectRatio(3 / 4, contentMode: .fit)
+                .clipShape(.rect(cornerRadius: 24))
+                .frame(maxWidth: .infinity)
+                Spacer(minLength: 0)
             }
             .padding()
             .navigationTitle("Register code")

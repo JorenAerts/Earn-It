@@ -16,7 +16,7 @@ The following is stored only on your device and is never sent to us:
 
 - Your alarms (times, days, labels, missions, sounds) and your wake-up history, streaks, stages and stickers.
 - Your own alarm sounds: imported audio and recordings you make with the microphone.
-- Item scans for the "Scan your item" mission: a cut-out picture of the item and a mathematical "feature print" used to recognise it. Registered codes for the "Scan a code" mission.
+- Item scans for the "Scan your item" mission: a cut-out picture of the item and a mathematical "feature print" used to recognise it. Registered codes for the "Scan a code" mission. Photos of your made bed for the "Made-up bed" mission, stored the same way. Camera frames for the "Photo of the sky" and "Color hunt" missions are analysed on the spot and never stored.
 - Your settings: appearance, app icon, coach tone, reminder time, paused alarms.
 
 The camera and microphone are only used for the feature you start (scanning, recording, the morning photo) and are processed on your iPhone. Reminders are local notifications created on your device.

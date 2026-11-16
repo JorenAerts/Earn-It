@@ -14,18 +14,30 @@ struct MissionPickerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var showPaywall = false
     @State private var path: [MissionKind] = []
+    /// nil = All.
+    @State private var category: MissionCategory?
 
     var body: some View {
         NavigationStack(path: $path) {
             ScrollView {
-                VStack(spacing: 12) {
-                    ForEach(MissionKind.allCases) { kind in
-                        Button {
-                            if gate.isLocked(kind) { showPaywall = true } else { path.append(kind) }
-                        } label: {
-                            MissionKindCard(kind: kind, locked: gate.isLocked(kind))
+                VStack(alignment: .leading, spacing: 12) {
+                    CategoryChips(selection: $category)
+                    ForEach(category.map { [$0] } ?? MissionCategory.allCases) { folder in
+                        if !folder.kinds.isEmpty {
+                            if category == nil {
+                                Label(folder.title, systemImage: folder.symbol)
+                                    .font(.subheadline.weight(.semibold)).foregroundStyle(.secondary)
+                                    .padding(.top, 6).padding(.leading, 4)
+                            }
+                            ForEach(folder.kinds) { kind in
+                                Button {
+                                    if gate.isLocked(kind) { showPaywall = true } else { path.append(kind) }
+                                } label: {
+                                    MissionKindCard(kind: kind, locked: gate.isLocked(kind))
+                                }
+                                .buttonStyle(.plain)
+                            }
                         }
-                        .buttonStyle(.plain)
                     }
                 }
                 .padding(16)
@@ -42,6 +54,35 @@ struct MissionPickerView: View {
             }
         }
         .paywallSheet(isPresented: $showPaywall, source: .lockedMission)
+    }
+}
+
+/// Folder filter: All · Brain · Body · Out of bed · Mindset (empty folders are hidden).
+struct CategoryChips: View {
+    @Binding var selection: MissionCategory?
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                chip(L10n.tr("All"), symbol: "square.grid.2x2.fill", selected: selection == nil) { selection = nil }
+                ForEach(MissionCategory.allCases.filter { !$0.kinds.isEmpty }) { folder in
+                    chip(folder.title, symbol: folder.symbol, selected: selection == folder) { selection = folder }
+                }
+            }
+        }
+        .scrollClipDisabled()
+    }
+
+    private func chip(_ title: String, symbol: String, selected: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: { withAnimation(.snappy) { action() } }) {
+            Label(title, systemImage: symbol)
+                .font(.subheadline.weight(.semibold))
+                .padding(.horizontal, 12).padding(.vertical, 8)
+                .background(selected ? Color.orange : Color(.secondarySystemGroupedBackground), in: .capsule)
+                .foregroundStyle(selected ? Color.white : Color.primary)
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }
 

@@ -1,13 +1,48 @@
 {
   "faq": [
-    {"question": "Warum klingelt der Wecker immer wieder?", "answer": "Genau darum geht es: Der Wecker hört erst endgültig auf, wenn du deine Mission abschließt. Mit X schaltest du ihn für ein paar Minuten stumm (deine Zeit bis zum erneuten Klingeln), dann klingelt er wieder. Nach dem Sicherheitslimit gibt er auf, damit du nie festhängst."},
-    {"question": "Klingelt er, wenn mein Handy stumm ist oder ein Fokus aktiv ist?", "answer": "Ja. Gloop nutzt iOS-Wecker, die trotz Stummmodus und Fokus klingeln, solange Wecker unter Einstellungen › Berechtigungen erlaubt sind."},
-    {"question": "Was passiert, wenn ich die App zwangsweise beende?", "answer": "Der Wecker klingelt trotzdem, ebenso das erneute Klingeln: Es ist bei iOS geplant. Der Ton dazwischen spielt nur, solange die App läuft, also kommst du am schnellsten zu deiner Mission, wenn du sie öffnest."},
-    {"question": "Kann ich mit einem Spotify-Song aufwachen?", "answer": "Nein. iOS erlaubt Apps nicht, Spotify-Songs als Wecker abzuspielen. Du kannst einen Apple-Music-Song wählen (läuft während deiner Mission), eine eigene Audiodatei importieren oder eine Nachricht aufnehmen."},
-    {"question": "Mein Gegenstand wird nicht erkannt.", "answer": "Scanne den Gegenstand erneut bei gutem Licht, aus den Winkeln, in denen du ihn morgens siehst, und halte ihn ganz im Bild. Klappt es immer noch nicht? Nach 2 Minuten kannst du zur Ersatzmission wechseln."},
-    {"question": "Wie funktionieren Serien, XP und Sticker?", "answer": "Jeder Morgen, an dem du eine Mission abschließt, verlängert deine Serie um einen Tag und bringt XP: mehr beim ersten Klingeln, weniger für jedes erneute Klingeln, plus Serienbonus. Mit XP entwickelt sich Gloop vom kleinen Tröpfchen bis zum König Gloop, mit einem neuen Accessoire auf jeder Stufe. Tage ohne Wecker oder pausierte Tage brechen deine Serie nicht. Sticker sammelst du für Meilensteine wie deinen ersten Quetscher oder eine makellose Woche."},
-    {"question": "Wie pausiere ich Wecker für den Urlaub?", "answer": "Einstellungen › Alle Wecker pausieren. Wähle, wie lange; deine Wecker kommen danach von selbst zurück."},
-    {"question": "Wie kündige ich mein Abo?", "answer": "Einstellungen › Gloop Pro › Abo verwalten oder in den iOS-Einstellungen › dein Name › Abonnements. Das Löschen deines Kontos kündigt kein Abo."},
-    {"question": "Welche Daten erfasst Gloop?", "answer": "Anonyme Nutzungsstatistiken (welche Bildschirme und Funktionen genutzt werden, wie Einführung und Morgen laufen) über TelemetryDeck in der EU, mit einer zufälligen ID, die nicht mit deinem Konto verknüpft ist. Nie dein Name, deine E-Mail, Weckernamen, Fotos oder was du tippst. Schalte das jederzeit unter Einstellungen › Datenschutz aus. Deine Wecker, Töne und Gegenstand-Scans bleiben auf deinem iPhone; mit Konto werden dein Profil und deine Buddies-Daten bei Supabase in der EU gespeichert."}
+    {
+      "question": "Warum klingelt der Wecker immer wieder?",
+      "answer": "Genau darum geht es: Der Wecker hört erst endgültig auf, wenn du deine Mission abschließt. Mit X schaltest du ihn für ein paar Minuten stumm (deine Zeit bis zum erneuten Klingeln), dann klingelt er wieder. Nach dem Sicherheitslimit gibt er auf, damit du nie festhängst."
+    },
+    {
+      "question": "Klingelt er, wenn mein Handy stumm ist oder ein Fokus aktiv ist?",
+      "answer": "Ja. Gloop nutzt iOS-Wecker, die trotz Stummmodus und Fokus klingeln, solange Wecker unter Einstellungen › Berechtigungen erlaubt sind."
+    },
+    {
+      "question": "Was passiert, wenn ich die App zwangsweise beende?",
+      "answer": "Der Wecker klingelt trotzdem, ebenso das erneute Klingeln: Es ist bei iOS geplant. Der Ton dazwischen spielt nur, solange die App läuft, also kommst du am schnellsten zu deiner Mission, wenn du sie öffnest."
+    },
+    {
+      "question": "Kann ich mit einem Spotify-Song aufwachen?",
+      "answer": "Nein. iOS erlaubt Apps nicht, Spotify-Songs als Wecker abzuspielen. Du kannst einen Apple-Music-Song wählen (läuft während deiner Mission), eine eigene Audiodatei importieren oder eine Nachricht aufnehmen."
+    },
+    {
+      "question": "Mein Gegenstand wird nicht erkannt.",
+      "answer": "Scanne den Gegenstand erneut bei gutem Licht, aus den Winkeln, in denen du ihn morgens siehst, und halte ihn ganz im Bild. Klappt es immer noch nicht? Nach 2 Minuten kannst du zur Ersatzmission wechseln."
+    },
+    {
+      "question": "Geht die Himmel-Mission auch im Dunkeln oder bei Regen?",
+      "answer": "Ja. Tag, Nacht, Wolken und Regen zählen alle, solange die Kamera den echten Himmel durchs Fenster oder draußen sieht. Siehst du ihn gar nicht? Tippe auf „Kein Himmel zu sehen? Mach eine andere Mission“ und du bekommst sofort eine andere Mission."
+    },
+    {
+      "question": "Im Dunkeln scannen?",
+      "answer": "Tippe auf die Taschenlampen-Taste oben rechts in der Kamera: Auto, Ein oder Aus. Auf Auto schaltet Gloop die Taschenlampe selbst ein, wenn es zum Scannen zu dunkel ist. Das klappt bei jeder Kamera-Mission außer dem Himmel."
+    },
+    {
+      "question": "Wie funktionieren Serien, XP und Sticker?",
+      "answer": "Jeder Morgen, an dem du eine Mission abschließt, verlängert deine Serie um einen Tag und bringt XP: mehr beim ersten Klingeln, weniger für jedes erneute Klingeln, plus Serienbonus. Mit XP entwickelt sich Gloop vom kleinen Tröpfchen bis zum König Gloop, mit einem neuen Accessoire auf jeder Stufe. Tage ohne Wecker oder pausierte Tage brechen deine Serie nicht. Sticker sammelst du für Meilensteine wie deinen ersten Quetscher oder eine makellose Woche."
+    },
+    {
+      "question": "Wie pausiere ich Wecker für den Urlaub?",
+      "answer": "Einstellungen › Alle Wecker pausieren. Wähle, wie lange; deine Wecker kommen danach von selbst zurück."
+    },
+    {
+      "question": "Wie kündige ich mein Abo?",
+      "answer": "Einstellungen › Gloop Pro › Abo verwalten oder in den iOS-Einstellungen › dein Name › Abonnements. Das Löschen deines Kontos kündigt kein Abo."
+    },
+    {
+      "question": "Welche Daten erfasst Gloop?",
+      "answer": "Anonyme Nutzungsstatistiken (welche Bildschirme und Funktionen genutzt werden, wie Einführung und Morgen laufen) über TelemetryDeck in der EU, mit einer zufälligen ID, die nicht mit deinem Konto verknüpft ist. Nie dein Name, deine E-Mail, Weckernamen, Fotos oder was du tippst. Schalte das jederzeit unter Einstellungen › Datenschutz aus. Deine Wecker, Töne und Gegenstand-Scans bleiben auf deinem iPhone; mit Konto werden dein Profil und deine Buddies-Daten bei Supabase in der EU gespeichert."
+    }
   ]
 }

@@ -1,0 +1,32 @@
+{
+  "easy": [
+    "Red lorry, yellow lorry",
+    "Toy boat, toy boat, toy boat",
+    "Fresh fried fish",
+    "Good blood, bad blood",
+    "Six sticky skeletons",
+    "Black back bat",
+    "Fred fed Ted bread",
+    "Big black bug"
+  ],
+  "medium": [
+    "She sells seashells by the seashore",
+    "How can a clam cram in a clean cream can",
+    "Fuzzy Wuzzy was a bear, Fuzzy Wuzzy had no hair",
+    "I scream, you scream, we all scream for ice cream",
+    "A big black bug bit a big black bear",
+    "Four fine fresh fish for you",
+    "Lesser leather never weathered wetter weather better",
+    "Silly Sally swiftly shooed seven silly sheep"
+  ],
+  "hard": [
+    "Peter Piper picked a peck of pickled peppers, a peck of pickled peppers Peter Piper picked",
+    "How much wood would a woodchuck chuck if a woodchuck could chuck wood",
+    "Betty Botter bought some butter, but she said the butter's bitter",
+    "If two witches were watching two watches, which witch would watch which watch",
+    "I saw Susie sitting in a shoeshine shop, where she sits she shines and where she shines she sits",
+    "Can you can a can as a canner can can a can",
+    "The thirty-three thieves thought that they thrilled the throne throughout Thursday",
+    "Wayne went to Wales to watch walruses, but the walruses would not wait for Wayne"
+  ]
+}

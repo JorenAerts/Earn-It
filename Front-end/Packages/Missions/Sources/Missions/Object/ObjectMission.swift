@@ -43,6 +43,9 @@ final class ObjectRecognizer {
     private(set) var threshold: Float = ObjectMatchPolicy.minimumThreshold
     @ObservationIgnored let camera = CameraFeed()
     @ObservationIgnored var onMatched: (() -> Void)?
+    let torch: TorchController
+
+    init() { torch = TorchController(camera: camera, mission: MissionKind.object.rawValue) }
 
     func start(referenceID: String?) async {
         guard let id = referenceID, let reference = ObjectReferenceStore.shared.load(id) else {
@@ -72,6 +75,7 @@ final class ObjectRecognizer {
             switch await camera.start() {
             case .running:
                 status = .scanning
+                torch.activate()
                 return
             case .denied:
                 status = .cameraDenied
@@ -93,15 +97,22 @@ final class ObjectRecognizer {
         await startCamera()
     }
 
-    func stop() { camera.stop() }
+    func stop() {
+        torch.reset()
+        camera.stop()
+    }
 
     private func record(_ distance: Float?) {
         guard status == .scanning else { return }
         lastDistance = distance
         objectInView = distance != nil
+        CameraLog.values(String(format: "item d %@ · max %.2f · streak %d",
+                                distance.map { String(format: "%.2f", $0) } ?? "–", threshold, tracker.streak),
+                         brightness: torch.lastBrightness)
         tracker.record(distance: distance, threshold: threshold)
         if tracker.isComplete {
             status = .done
+            torch.reset()
             camera.stop()
             onMatched?()
         }
@@ -136,6 +147,9 @@ struct ObjectMissionView: View {
                     .padding(28)
                 statusOverlay
             }
+            .overlay(alignment: .topTrailing) {
+                if recognizer.status == .scanning { TorchButton(controller: recognizer.torch) }
+            }
             .aspectRatio(3 / 4, contentMode: .fit)
             .frame(maxHeight: 420)
             .clipShape(.rect(cornerRadius: 24))
@@ -157,16 +171,8 @@ struct ObjectMissionView: View {
             }
             .padding(.horizontal, 4)
 
-            #if DEBUG
-            HStack {
-                Text(recognizer.lastDistance.map { String(format: "d %.2f", $0) } ?? "d –")
-                Text(String(format: "max %.2f", recognizer.threshold))
-                Text("streak \(recognizer.tracker.streak)")
-                Spacer()
-                Button("Simulate match") { recognizer.simulateMatch() }.buttonStyle(.bordered).controlSize(.small)
-            }
-            .font(.caption.monospacedDigit())
-            .foregroundStyle(.secondary)
+            #if DEBUG && targetEnvironment(simulator)
+            Button("Simulate match") { recognizer.simulateMatch() }.buttonStyle(.bordered).controlSize(.small)
             #endif
         }
         .padding(.horizontal, 20)

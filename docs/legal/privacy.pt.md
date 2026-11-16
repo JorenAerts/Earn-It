@@ -16,7 +16,7 @@ O seguinte é guardado apenas no seu dispositivo e nunca nos é enviado:
 
 - Os seus alarmes (horas, dias, etiquetas, missões, sons) e o seu histórico de despertares, sequências, estágios e autocolantes.
 - Os seus próprios sons de alarme: áudio importado e gravações feitas com o microfone.
-- Digitalizações de objetos para a missão «Digitalizar o seu objeto»: uma imagem recortada do objeto e uma «impressão» matemática usada para o reconhecer. Os códigos registados para a missão «Digitalizar um código».
+- Digitalizações de objetos para a missão «Digitalizar o seu objeto»: uma imagem recortada do objeto e uma «impressão» matemática usada para o reconhecer. Os códigos registados para a missão «Digitalizar um código». As fotos da sua cama feita para a missão «Cama feita», guardadas da mesma forma. As imagens da câmara das missões «Foto do céu» e «Caça às cores» são analisadas no momento e nunca guardadas.
 - As suas definições: aparência, ícone da app, tom do coach, hora do lembrete, alarmes em pausa.
 
 A câmara e o microfone são usados apenas para a função que inicia (digitalizar, gravar, a foto da manhã) e são processados no seu iPhone. Os lembretes são notificações locais criadas no seu dispositivo.

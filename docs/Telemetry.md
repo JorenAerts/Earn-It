@@ -56,6 +56,7 @@ whether they keep getting up with Gloop. Code: `Front-end/Packages/Telemetry` (c
 | Buddies.* | clubCreated(public), joined(via), photoPosted(clubCount), photoSkipped, reacted, reported(kind), blocked |
 | Sound.* | imported, recorded, appleMusicPicked |
 | Appearance.changed / Icon.changed | mode / icon |
+| Camera.flashlight | mode (auto/on/off), auto (true = Auto switched it on in the dark), mission (qr, object, bed, colorHunt, objectSetup, bedSetup, qrSetup) |
 | Coach.toneChanged / Reminders.toggled | tone / on |
 | Help.opened / faqOpened | question (index in Help.json) |
 | Rate.requested, Account.signedOut, Account.deleted, Permission.denied(kind), Telemetry.test | |

@@ -1,0 +1,5 @@
+{
+  "easy": ["Três pratos de trigo", "O rato roeu a roupa", "Um tigre, dois tigres", "Bagre branco", "Sabiá sabe assobiar", "Pinga a pipa"],
+  "medium": ["O rato roeu a roupa do rei de Roma", "Três pratos de trigo para três tigres tristes", "O sabiá não sabia que o sábio sabia assobiar", "Num ninho de mafagafos há sete mafagafinhos", "Quem a paca cara compra, paca cara pagará", "Bagre branco, branco bagre"],
+  "hard": ["O rato roeu a roupa do rei de Roma e a rainha com raiva resolveu remendar", "Num ninho de mafagafos há sete mafagafinhos, quem os desmafagafizar bom desmafagafizador será", "O peito do pé de Pedro é preto, quem disser que o peito do pé de Pedro é preto tem o peito do pé mais preto", "Se o Papa papasse papa, se o Papa papasse pão, o Papa tudo papava", "Três tigres tristes para três pratos de trigo, três pratos de trigo para três tigres tristes", "A aranha arranha a rã, a rã arranha a aranha"]
+}

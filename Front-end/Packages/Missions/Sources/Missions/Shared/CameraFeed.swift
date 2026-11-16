@@ -1,10 +1,13 @@
 import AVFoundation
+import ImageIO
 import SwiftUI
 import UIKit
 
-/// Back-camera feed for missions that analyse frames themselves (the item scan).
-/// Frames are delivered on a private serial queue, throttled to `interval`.
-final class CameraFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, @unchecked Sendable {
+/// Back-camera feed for the camera missions. Frames are delivered on a private serial queue,
+/// throttled to `interval`. Also: flashlight control, scene brightness (for auto flashlight) and,
+/// when `codeTypes` is set before `start()`, QR/barcode payloads.
+final class CameraFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate,
+                        @unchecked Sendable {
     /// `.unavailable` = the device has no usable camera. `.paused` = the camera exists but couldn't
     /// start right now (app not fully in the foreground yet, opened from the Lock Screen, another app
     /// using it, interruption) — callers retry instead of telling the user there's no camera.
@@ -21,6 +24,21 @@ final class CameraFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, 
     var onFrame: (@Sendable (CVPixelBuffer) -> Void)?
     /// `true` when iOS interrupts the session, `false` when the interruption ends.
     var onInterruption: (@Sendable (Bool) -> Void)?
+    /// Scene brightness (EXIF BrightnessValue, roughly −5 pitch dark … 10 sunlight), about twice a second.
+    var onBrightness: (@Sendable (Double) -> Void)?
+    /// Codes to recognise (set before `start()`); payloads go to `onCodes` on the camera queue.
+    var codeTypes: [AVMetadataObject.ObjectType] = []
+    var onCodes: (@Sendable ([String]) -> Void)?
+
+    /// Only touched on `queue`.
+    private var device: AVCaptureDevice?
+    private var lastBrightness: CFTimeInterval = 0
+
+    /// Whether this camera has a usable flashlight (no: iPad, Simulator).
+    static var hasTorch: Bool {
+        guard let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back) else { return false }
+        return device.hasTorch
+    }
 
     override init() {
         super.init()
@@ -57,7 +75,26 @@ final class CameraFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, 
     }
 
     func stop() {
-        queue.async { [self] in if session.isRunning { session.stopRunning() } }
+        queue.async { [self] in
+            applyTorch(false)
+            if session.isRunning { session.stopRunning() }
+        }
+    }
+
+    /// Flashlight on/off. Ignored when the camera isn't running or has no torch.
+    func setTorch(_ on: Bool) {
+        queue.async { [self] in applyTorch(on) }
+    }
+
+    private func applyTorch(_ on: Bool) {
+        guard let device, device.hasTorch, session.isRunning || !on else { return }
+        guard (device.torchMode == .on) != on, (try? device.lockForConfiguration()) != nil else { return }
+        defer { device.unlockForConfiguration() }
+        if on, device.isTorchAvailable {
+            try? device.setTorchModeOn(level: 0.6)  // bright enough, less glare and heat than full power
+        } else {
+            device.torchMode = .off
+        }
     }
 
     /// The most recent frame (for "take this shot" during setup).
@@ -73,21 +110,48 @@ final class CameraFeed: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate, 
         if let device = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .back),
            let input = try? AVCaptureDeviceInput(device: device), session.canAddInput(input) {
             session.addInput(input)
+            self.device = device
+            // Codes are often scanned up close: let the lens focus near.
+            if !codeTypes.isEmpty, device.isAutoFocusRangeRestrictionSupported, (try? device.lockForConfiguration()) != nil {
+                device.autoFocusRangeRestriction = .near
+                device.unlockForConfiguration()
+            }
         }
         let output = AVCaptureVideoDataOutput()
         output.alwaysDiscardsLateVideoFrames = true
         output.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: kCVPixelFormatType_32BGRA]
         output.setSampleBufferDelegate(self, queue: queue)
         if session.canAddOutput(output) { session.addOutput(output) }
+        if !codeTypes.isEmpty {
+            let metadata = AVCaptureMetadataOutput()
+            if session.canAddOutput(metadata) {
+                session.addOutput(metadata)
+                metadata.setMetadataObjectsDelegate(self, queue: queue)
+                metadata.metadataObjectTypes = codeTypes.filter(metadata.availableMetadataObjectTypes.contains)
+            }
+        }
         session.commitConfiguration()
+    }
+
+    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject],
+                        from connection: AVCaptureConnection) {
+        let payloads = metadataObjects.compactMap { ($0 as? AVMetadataMachineReadableCodeObject)?.stringValue }
+        if !payloads.isEmpty { onCodes?(payloads) }
     }
 
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         guard let buffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+        let now = CACurrentMediaTime()
+        if let onBrightness, now - lastBrightness >= 0.5,
+           let attachments = CMCopyDictionaryOfAttachments(allocator: nil, target: sampleBuffer,
+                                                           attachmentMode: kCMAttachmentMode_ShouldPropagate) as? [String: Any],
+           let value = CameraBrightness.value(fromAttachments: attachments) {
+            lastBrightness = now
+            onBrightness(value)
+        }
         lock.lock()
         latest = buffer
         lock.unlock()
-        let now = CACurrentMediaTime()
         guard now - lastDelivery >= interval else { return }
         lastDelivery = now
         onFrame?(buffer)
