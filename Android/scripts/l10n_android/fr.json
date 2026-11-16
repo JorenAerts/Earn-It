@@ -1,0 +1,12 @@
+{
+  "perm_notifications_reason": "Nécessaire pour afficher l’alarme et ta mission.",
+  "perm_exact_title": "Alarmes et rappels",
+  "perm_exact_reason": "Permet à Gloop de sonner à l’heure exacte.",
+  "perm_fullscreen_title": "Alarme en plein écran",
+  "perm_fullscreen_reason": "Affiche ta mission sur l’écran de verrouillage quand l’alarme sonne.",
+  "perm_battery_title": "Optimisation de la batterie",
+  "perm_battery_reason": "Certains téléphones arrêtent les apps pour économiser la batterie. Laisse Gloop actif pour que ton alarme sonne toujours.",
+  "missions_order_hint": "À faire dans cet ordre quand l’alarme sonne.",
+  "channel_alarms_description": "L’alarme qui sonne et ta mission.",
+  "mission_done": "Mission accomplie"
+}

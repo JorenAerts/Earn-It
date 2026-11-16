@@ -1,0 +1,12 @@
+{
+  "perm_notifications_reason": "Necessário para mostrar o alarme e sua missão.",
+  "perm_exact_title": "Alarmes e lembretes",
+  "perm_exact_reason": "Permite que o Gloop toque no horário exato.",
+  "perm_fullscreen_title": "Alarme em tela cheia",
+  "perm_fullscreen_reason": "Mostra sua missão sobre a tela de bloqueio quando o alarme toca.",
+  "perm_battery_title": "Otimização de bateria",
+  "perm_battery_reason": "Alguns celulares fecham apps para economizar bateria. Deixe o Gloop ativo para seu alarme sempre tocar.",
+  "missions_order_hint": "Feitas nesta ordem quando o alarme tocar.",
+  "channel_alarms_description": "O alarme tocando e sua missão.",
+  "mission_done": "Missão cumprida"
+}

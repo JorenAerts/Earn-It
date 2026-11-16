@@ -1,65 +1,54 @@
 package be.gloop.app
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawingPadding
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
+import be.gloop.app.camera.ReferenceStore
+import be.gloop.app.mission.MissionActivity
+import be.gloop.app.ui.EditorScreen
 import be.gloop.app.ui.GloopTheme
-import be.gloop.core.pricing.PricingCatalog
+import be.gloop.app.ui.HomeScreen
+import be.gloop.core.model.AlarmPlan
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val controller = GloopApplication.controller(this)
         setContent {
             GloopTheme {
-                Surface(Modifier.fillMaxSize()) { FoundationScreen() }
-            }
-        }
-    }
-}
-
-/** Placeholder until the real screens are ported: proves Shared/Config → :core → UI works. */
-@Composable
-private fun FoundationScreen() {
-    val context = LocalContext.current
-    val catalog: PricingCatalog = remember { SharedContent.pricing(context) }
-    Column(
-        Modifier.fillMaxSize().safeDrawingPadding().padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-    ) {
-        Text("Gloop", style = MaterialTheme.typography.displaySmall, fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary)
-        Text("Android foundation. Plans read from Shared/Config/Pricing.json:",
-            style = MaterialTheme.typography.bodyMedium)
-        Spacer(Modifier.height(4.dp))
-        for (plan in catalog.plans) {
-            Card(Modifier.fillMaxWidth()) {
-                Row(Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(plan.title + (if (plan.key == catalog.defaultSelection) "  ★" else ""), fontWeight = FontWeight.SemiBold)
-                    Text("€" + plan.price.toPlainString())
+                Surface(Modifier.fillMaxSize()) {
+                    // null = Home; Editing(plan == null) = new alarm.
+                    var editing by remember { mutableStateOf<Editing?>(null) }
+                    when (val e = editing) {
+                        null -> HomeScreen(controller, onEdit = { editing = Editing(it) })
+                        else -> EditorScreen(e.plan, onSave = {
+                            controller.save(it)
+                            editing = null
+                            ReferenceStore(this@MainActivity).prune(controller.plans.value.flatMap { p -> p.missions.mapNotNull { m -> m.payload } }.toSet())
+                        }, onCancel = { editing = null })
+                    }
                 }
             }
         }
-        Text("${catalog.trialDays}-day free trial", style = MaterialTheme.typography.bodySmall)
     }
+
+    override fun onResume() {
+        super.onResume()
+        // Like iOS: while a mission is due, the app opens straight into it.
+        val controller = GloopApplication.controller(this)
+        controller.reloadSession()
+        if (controller.needsMission) startActivity(Intent(this, MissionActivity::class.java))
+    }
+
+    private data class Editing(val plan: AlarmPlan?)
 }

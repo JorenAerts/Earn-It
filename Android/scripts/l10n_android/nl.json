@@ -1,0 +1,12 @@
+{
+  "perm_notifications_reason": "Nodig om het alarm en je missie te tonen.",
+  "perm_exact_title": "Wekkers en herinneringen",
+  "perm_exact_reason": "Zo kan Gloop op het exacte tijdstip afgaan.",
+  "perm_fullscreen_title": "Alarm op volledig scherm",
+  "perm_fullscreen_reason": "Toont je missie over het vergrendelscherm als het alarm afgaat.",
+  "perm_battery_title": "Batterijoptimalisatie",
+  "perm_battery_reason": "Sommige telefoons stoppen apps om batterij te sparen. Laat Gloop actief blijven, zodat je alarm altijd afgaat.",
+  "missions_order_hint": "In deze volgorde te doen als het alarm afgaat.",
+  "channel_alarms_description": "Het afgaande alarm en je missie.",
+  "mission_done": "Missie voltooid"
+}
