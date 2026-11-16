@@ -8,5 +8,15 @@
   "perm_battery_reason": "Alcuni telefoni chiudono le app per risparmiare batteria. Lascia Gloop attivo così la sveglia suona sempre.",
   "missions_order_hint": "Da fare in quest’ordine quando suona la sveglia.",
   "channel_alarms_description": "La sveglia che suona e la tua missione.",
-  "mission_done": "Missione compiuta"
+  "mission_done": "Missione compiuta",
+  "heard_play": "Google Play",
+  "ob_perm_body": "Gloop ne ha bisogno perché la sveglia suoni in orario e mostri la tua missione sulla schermata di blocco.",
+  "ob_perm_mock_title": "Consentire a Gloop di inviarti notifiche?",
+  "ob_perm_dont_allow": "Non consentire",
+  "quote_1": "\"Ogni snooze mi fa afflosciare un po’ di più. Dico solo.\"",
+  "quote_2": "\"Prima i piedi per terra. Pensare viene dopo.\"",
+  "quote_3": "\"Nessuno si è mai pentito di alzarsi in orario. Io meno che mai.\"",
+  "quote_4": "\"Una missione, e la mattina è tua. E io posso rimbalzare.\"",
+  "coach_name_love": "%1$s! Mi piace. Saremo una gran squadra.",
+  "replay_onboarding": "Rifai l’introduzione"
 }

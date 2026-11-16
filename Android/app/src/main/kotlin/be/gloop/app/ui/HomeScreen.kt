@@ -56,7 +56,7 @@ import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(controller: AlarmController, onEdit: (AlarmPlan?) -> Unit) {
+fun HomeScreen(controller: AlarmController, onEdit: (AlarmPlan?) -> Unit, onReplayOnboarding: () -> Unit = {}) {
     val context = LocalContext.current
     val plans by controller.plans.collectAsState()
     val dayLog by controller.dayLog.collectAsState()
@@ -95,6 +95,11 @@ fun HomeScreen(controller: AlarmController, onEdit: (AlarmPlan?) -> Unit) {
                                 menuOpen = false
                                 (plans.firstOrNull { it.isEnabled } ?: plans.firstOrNull())?.let { controller.testRing(it.id) }
                             },
+                        )
+                        // Developer tool (debug builds only), like iOS Settings › Developer › Replay onboarding.
+                        if (be.gloop.app.BuildConfig.DEBUG) DropdownMenuItem(
+                            text = { Text(stringResource(R.string.replay_onboarding)) },
+                            onClick = { menuOpen = false; onReplayOnboarding() },
                         )
                     }
                 },

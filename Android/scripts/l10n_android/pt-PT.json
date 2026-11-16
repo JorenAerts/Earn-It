@@ -8,5 +8,15 @@
   "perm_battery_reason": "Alguns telemóveis fecham apps para poupar bateria. Deixa o Gloop ativo para que o teu alarme toque sempre.",
   "missions_order_hint": "Feitas por esta ordem quando o alarme tocar.",
   "channel_alarms_description": "O alarme a tocar e a tua missão.",
-  "mission_done": "Missão cumprida"
+  "mission_done": "Missão cumprida",
+  "heard_play": "Google Play",
+  "ob_perm_body": "O Gloop precisa disto para o teu alarme tocar a horas e mostrar a tua missão sobre o ecrã de bloqueio.",
+  "ob_perm_mock_title": "Permitir que o Gloop te envie notificações?",
+  "ob_perm_dont_allow": "Não permitir",
+  "quote_1": "\"Cada snooze deixa-me um pouco mais mole. Só para saberes.\"",
+  "quote_2": "\"Primeiro os pés no chão. Pensar vem depois.\"",
+  "quote_3": "\"Ninguém se arrependeu de se levantar a horas. Muito menos eu.\"",
+  "quote_4": "\"Uma missão, e a manhã é tua. E eu posso saltitar.\"",
+  "coach_name_love": "%1$s! Adoro. Vamos ser uma grande equipa.",
+  "replay_onboarding": "Repetir a introdução"
 }

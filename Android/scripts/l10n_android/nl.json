@@ -8,5 +8,15 @@
   "perm_battery_reason": "Sommige telefoons stoppen apps om batterij te sparen. Laat Gloop actief blijven, zodat je alarm altijd afgaat.",
   "missions_order_hint": "In deze volgorde te doen als het alarm afgaat.",
   "channel_alarms_description": "Het afgaande alarm en je missie.",
-  "mission_done": "Missie voltooid"
+  "mission_done": "Missie voltooid",
+  "heard_play": "Google Play",
+  "ob_perm_body": "Gloop heeft deze nodig zodat je alarm op tijd afgaat en je missie over het vergrendelscherm toont.",
+  "ob_perm_mock_title": "Gloop toestaan je meldingen te sturen?",
+  "ob_perm_dont_allow": "Niet toestaan",
+  "quote_1": "\"Elke snooze maakt me een beetje slapper. Ik zeg het maar.\"",
+  "quote_2": "\"Eerst je voeten op de grond. Nadenken komt later.\"",
+  "quote_3": "\"Niemand heeft ooit spijt gehad van op tijd opstaan. Ik al helemaal niet.\"",
+  "quote_4": "\"Eén missie, en de ochtend is van jou. En ik mag stuiteren.\"",
+  "coach_name_love": "%1$s! Leuk. We worden een topteam.",
+  "replay_onboarding": "Onboarding opnieuw doen"
 }
