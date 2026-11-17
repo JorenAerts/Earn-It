@@ -13,6 +13,7 @@ import Testing
         #expect(EntitlementOverride.apply(pro, forceFree: true) == .free)
         #expect(EntitlementOverride.apply(pro, forceFree: false) == pro)
         #expect(EntitlementOverride.apply(.trial(renewsAt: nil), forceFree: true) == .free)
+        #expect(EntitlementOverride.apply(pro, forceFree: true, onlyTestPurchases: false) == pro, "a real purchase is never hidden")
     }
 
     @Test func bestPurchasePrefersLifetimeThenLatestExpiry() {
@@ -34,7 +35,7 @@ import Testing
                                          expiresAt: .now.addingTimeInterval(86_400), isSandbox: true)
             let text = RestoreMessage.text(purchases: [sandbox], catalog: catalog)
             #expect(text.hasPrefix("Purchases restored: Yearly, renews "))
-            #expect(text.contains("TestFlight test purchase"))
+            #expect(text.contains("TestFlight test purchase") && text.contains("Test as Free plan"))
         }
     }
 

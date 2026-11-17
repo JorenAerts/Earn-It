@@ -19,7 +19,15 @@ public final class StoreService {
     /// Developer tools › "Test as Free plan" (see `EntitlementOverride`).
     public private(set) var forceFree: Bool
     /// What the app uses: the StoreKit entitlement, unless the free-plan test switch is on.
-    public var entitlement: EntitlementState { EntitlementOverride.apply(storeEntitlement, forceFree: forceFree) }
+    public var entitlement: EntitlementState {
+        EntitlementOverride.apply(storeEntitlement, forceFree: forceFree, onlyTestPurchases: !activePurchases.contains { !$0.isSandbox })
+    }
+
+    /// The Pro the user has comes from TestFlight / sandbox test purchases only: they may switch to
+    /// the free plan to test it (Settings › Gloop Pro). Never true for App Store customers.
+    public var canTestAsFree: Bool {
+        !activePurchases.isEmpty && activePurchases.allSatisfy(\.isSandbox)
+    }
     /// Purchases StoreKit currently grants (restore message, diagnostics).
     public private(set) var activePurchases: [ActivePurchase] = []
     /// The user can still get the free trial (once per Apple ID per subscription group).

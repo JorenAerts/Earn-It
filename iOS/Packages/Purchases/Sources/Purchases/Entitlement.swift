@@ -71,13 +71,15 @@ public final class EntitlementCache: @unchecked Sendable {
     }
 }
 
-/// Developer tools › "Test as Free plan": shows the free tier while a (TestFlight) purchase is
-/// still active, so the free experience can be tested. Never set for normal users.
+/// "Test as Free plan" (Gloop Pro page while the purchase is a TestFlight test purchase, and
+/// Developer tools): shows the free tier while that test purchase stays active.
 public enum EntitlementOverride {
     public static let defaultsKey = "gloop.debug.forceFree"
 
-    public static func apply(_ state: EntitlementState, forceFree: Bool) -> EntitlementState {
-        forceFree ? .free : state
+    /// `onlyTestPurchases`: every active purchase is a TestFlight / sandbox one. A real App Store
+    /// purchase is never hidden, so the switch can't take Pro away from a paying customer.
+    public static func apply(_ state: EntitlementState, forceFree: Bool, onlyTestPurchases: Bool = true) -> EntitlementState {
+        forceFree && onlyTestPurchases ? .free : state
     }
 }
 

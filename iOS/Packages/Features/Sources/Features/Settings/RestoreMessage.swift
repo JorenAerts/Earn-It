@@ -17,7 +17,7 @@ enum RestoreMessage {
             text = L10n.tr("Purchases restored: \(plan), yours for good.")
         }
         if best.isSandbox {
-            text += " " + L10n.tr("This is a TestFlight test purchase. To test the free plan again, cancel it in Manage subscription.")
+            text += " " + L10n.tr("This is a TestFlight test purchase. To try the free plan, turn on “Test as Free plan” above.")
         }
         return text
     }

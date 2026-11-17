@@ -41685,7 +41685,50 @@
     },
     "Test as Free plan" : {
       "extractionState" : "manual",
-      "shouldTranslate" : false
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Als kostenloser Plan testen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Probar como plan gratuito"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tester l’offre gratuite"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Prova come piano gratuito"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Test als gratis plan"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Testar como plano gratuito"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Testar como plano gratuito"
+          }
+        }
+      }
     },
     "Test recognition" : {
       "extractionState" : "manual",
@@ -41781,6 +41824,53 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Teste: tocar em 10 segundos"
+          }
+        }
+      }
+    },
+    "TestFlight only. Your test purchase stays; Gloop acts like the free plan until you turn this off." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nur in TestFlight. Dein Testkauf bleibt; Gloop verhält sich wie der kostenlose Plan, bis du das ausschaltest."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Solo en TestFlight. Tu compra de prueba se mantiene; Gloop funciona como el plan gratuito hasta que lo desactives."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "TestFlight uniquement. Ton achat de test est conservé ; Gloop se comporte comme l’offre gratuite jusqu’à ce que tu désactives ceci."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Solo in TestFlight. Il tuo acquisto di prova resta; Gloop si comporta come il piano gratuito finché non lo disattivi."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Alleen in TestFlight. Je testaankoop blijft; Gloop doet alsof je het gratis plan hebt tot je dit uitzet."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Só no TestFlight. Sua compra de teste continua; o Gloop funciona como o plano gratuito até você desativar isto."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Só no TestFlight. A tua compra de teste mantém-se; o Gloop funciona como o plano gratuito até desativares isto."
           }
         }
       }
@@ -43289,49 +43379,49 @@
         }
       }
     },
-    "This is a TestFlight test purchase. To test the free plan again, cancel it in Manage subscription." : {
+    "This is a TestFlight test purchase. To try the free plan, turn on “Test as Free plan” above." : {
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Das ist ein TestFlight-Testkauf. Um den kostenlosen Plan wieder zu testen, kündige ihn unter „Abo verwalten“."
+            "value" : "Das ist ein TestFlight-Testkauf. Um den kostenlosen Plan auszuprobieren, schalte oben „Als kostenloser Plan testen“ ein."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Es una compra de prueba de TestFlight. Para volver a probar el plan gratuito, cancélala en Gestionar suscripción."
+            "value" : "Es una compra de prueba de TestFlight. Para probar el plan gratuito, activa «Probar como plan gratuito» arriba."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Il s’agit d’un achat de test TestFlight. Pour tester à nouveau l’offre gratuite, résilie-le dans Gérer l’abonnement."
+            "value" : "Il s’agit d’un achat de test TestFlight. Pour essayer l’offre gratuite, active « Tester l’offre gratuite » ci-dessus."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "È un acquisto di prova TestFlight. Per testare di nuovo il piano gratuito, annullalo in Gestisci abbonamento."
+            "value" : "È un acquisto di prova TestFlight. Per provare il piano gratuito, attiva «Prova come piano gratuito» qui sopra."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Dit is een TestFlight-testaankoop. Wil je het gratis plan opnieuw testen, zeg ze dan op via Abonnement beheren."
+            "value" : "Dit is een TestFlight-testaankoop. Wil je het gratis plan proberen, zet dan “Test als gratis plan” hierboven aan."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Esta é uma compra de teste do TestFlight. Para testar o plano gratuito de novo, cancele em Gerenciar assinatura."
+            "value" : "Esta é uma compra de teste do TestFlight. Para experimentar o plano gratuito, ative “Testar como plano gratuito” acima."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Esta é uma compra de teste do TestFlight. Para voltares a testar o plano gratuito, cancela-a em Gerir subscrição."
+            "value" : "Esta é uma compra de teste do TestFlight. Para experimentares o plano gratuito, ativa “Testar como plano gratuito” acima."
           }
         }
       }

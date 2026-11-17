@@ -1149,7 +1149,9 @@
   "Turn on the camera for Gloop to scan your code.": "Zet de camera aan voor Gloop om je code te scannen.",
   "Purchases restored: %@, renews %@.": "Aankopen hersteld: %@, verlengt op %@.",
   "Purchases restored: %@, yours for good.": "Aankopen hersteld: %@, voorgoed van jou.",
-  "This is a TestFlight test purchase. To test the free plan again, cancel it in Manage subscription.": "Dit is een TestFlight-testaankoop. Wil je het gratis plan opnieuw testen, zeg ze dan op via Abonnement beheren.",
   "Couldn't load photo": "Foto kon niet laden",
-  "Loading…": "Laden…"
+  "Loading…": "Laden…",
+  "This is a TestFlight test purchase. To try the free plan, turn on “Test as Free plan” above.": "Dit is een TestFlight-testaankoop. Wil je het gratis plan proberen, zet dan “Test als gratis plan” hierboven aan.",
+  "Test as Free plan": "Test als gratis plan",
+  "TestFlight only. Your test purchase stays; Gloop acts like the free plan until you turn this off.": "Alleen in TestFlight. Je testaankoop blijft; Gloop doet alsof je het gratis plan hebt tot je dit uitzet."
 }
