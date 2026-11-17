@@ -6882,6 +6882,10 @@
         }
       }
     },
+    "Active purchases" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
     "Add a club" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -13445,6 +13449,14 @@
         }
       }
     },
+    "Copied" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
+    "Copy report" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
     "Correct answers" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -13723,6 +13735,53 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Não foi possível apagar a conta: %@"
+          }
+        }
+      }
+    },
+    "Couldn't load photo" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Foto konnte nicht geladen werden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se pudo cargar la foto"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de charger la photo"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossibile caricare la foto"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Foto kon niet laden"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Não foi possível carregar a foto"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Não foi possível carregar a foto"
           }
         }
       }
@@ -23739,6 +23798,53 @@
         }
       }
     },
+    "Loading…" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Wird geladen…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cargando…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Chargement…"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Caricamento…"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Laden…"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Carregando…"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "A carregar…"
+          }
+        }
+      }
+    },
     "Lock developer tools" : {
       "extractionState" : "manual",
       "shouldTranslate" : false
@@ -31636,6 +31742,10 @@
         }
       }
     },
+    "Products (App Store Connect)" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
     "Profile" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -32161,49 +32271,96 @@
         }
       }
     },
-    "Purchases restored." : {
+    "Purchases restored: %@, renews %@." : {
       "extractionState" : "manual",
       "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Aankopen hersteld."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Achats restaurés."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Käufe wiederhergestellt."
+            "value" : "Käufe wiederhergestellt: %@, verlängert sich am %@."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Compras restauradas."
+            "value" : "Compras restauradas: %@, se renueva el %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Achats restaurés : %@, renouvellement le %@."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Acquisti ripristinati."
+            "value" : "Acquisti ripristinati: %@, si rinnova il %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aankopen hersteld: %@, verlengt op %@."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Compras restauradas."
+            "value" : "Compras restauradas: %@, renova em %@."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Compras restauradas."
+            "value" : "Compras restauradas: %@, renova a %@."
+          }
+        }
+      }
+    },
+    "Purchases restored: %@, yours for good." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Käufe wiederhergestellt: %@, für immer deins."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Compras restauradas: %@, tuyo para siempre."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Achats restaurés : %@, à toi pour de bon."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Acquisti ripristinati: %@, tuo per sempre."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Aankopen hersteld: %@, voorgoed van jou."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Compras restauradas: %@, seu para sempre."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Compras restauradas: %@, teu para sempre."
           }
         }
       }
@@ -40370,6 +40527,14 @@
       "extractionState" : "manual",
       "shouldTranslate" : false
     },
+    "Store diagnostics" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
+    "Storefront" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
+    },
     "Streak" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -41517,6 +41682,10 @@
           }
         }
       }
+    },
+    "Test as Free plan" : {
+      "extractionState" : "manual",
+      "shouldTranslate" : false
     },
     "Test recognition" : {
       "extractionState" : "manual",
@@ -43116,6 +43285,53 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Este ficheiro não pode ser usado. Músicas protegidas (como downloads do Apple Music) não podem ser importadas."
+          }
+        }
+      }
+    },
+    "This is a TestFlight test purchase. To test the free plan again, cancel it in Manage subscription." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Das ist ein TestFlight-Testkauf. Um den kostenlosen Plan wieder zu testen, kündige ihn unter „Abo verwalten“."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Es una compra de prueba de TestFlight. Para volver a probar el plan gratuito, cancélala en Gestionar suscripción."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Il s’agit d’un achat de test TestFlight. Pour tester à nouveau l’offre gratuite, résilie-le dans Gérer l’abonnement."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "È un acquisto di prova TestFlight. Per testare di nuovo il piano gratuito, annullalo in Gestisci abbonamento."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Dit is een TestFlight-testaankoop. Wil je het gratis plan opnieuw testen, zeg ze dan op via Abonnement beheren."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Esta é uma compra de teste do TestFlight. Para testar o plano gratuito de novo, cancele em Gerenciar assinatura."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Esta é uma compra de teste do TestFlight. Para voltares a testar o plano gratuito, cancela-a em Gerir subscrição."
           }
         }
       }
@@ -52011,53 +52227,6 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "vermelho"
-          }
-        }
-      }
-    },
-    "streak %lld" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "reeks %lld"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "série %lld"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Serie %lld"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "racha %lld"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "serie %lld"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "sequência %lld"
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "sequência %lld"
           }
         }
       }

@@ -82,7 +82,7 @@ public final class AlarmKitScheduler: AlarmScheduling {
             try AlarmManager.shared.stop(id: id)
             log.info("stopped \(id, privacy: .public)")
         } catch {
-            log.debug("stop \(id, privacy: .public) failed: \(error.localizedDescription, privacy: .public)")
+            log.notice("stop \(id, privacy: .public) failed: \(error.localizedDescription, privacy: .public)")
         }
     }
 
@@ -91,7 +91,7 @@ public final class AlarmKitScheduler: AlarmScheduling {
             try AlarmManager.shared.cancel(id: id)
             log.info("cancelled \(id, privacy: .public)")
         } catch {
-            log.debug("cancel \(id, privacy: .public) failed: \(error.localizedDescription, privacy: .public)")
+            log.notice("cancel \(id, privacy: .public) failed: \(error.localizedDescription, privacy: .public)")
         }
     }
 

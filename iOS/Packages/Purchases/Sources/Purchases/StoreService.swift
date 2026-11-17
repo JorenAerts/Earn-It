@@ -14,7 +14,14 @@ private let log = Logger(subsystem: "be.gloop.app", category: "store")
 public final class StoreService {
     public let catalog: PricingCatalog
     public private(set) var products: [Product] = []
-    public private(set) var entitlement: EntitlementState
+    /// What StoreKit says the user has.
+    public private(set) var storeEntitlement: EntitlementState
+    /// Developer tools › "Test as Free plan" (see `EntitlementOverride`).
+    public private(set) var forceFree: Bool
+    /// What the app uses: the StoreKit entitlement, unless the free-plan test switch is on.
+    public var entitlement: EntitlementState { EntitlementOverride.apply(storeEntitlement, forceFree: forceFree) }
+    /// Purchases StoreKit currently grants (restore message, diagnostics).
+    public private(set) var activePurchases: [ActivePurchase] = []
     /// The user can still get the free trial (once per Apple ID per subscription group).
     public private(set) var isEligibleForTrial = true
     public private(set) var isLoading = false
@@ -26,13 +33,23 @@ public final class StoreService {
     public private(set) var bonusSounds: Set<AlarmSound>
 
     @ObservationIgnored private let cache: EntitlementCache
+    @ObservationIgnored private let defaults: UserDefaults
     @ObservationIgnored private var updatesTask: Task<Void, Never>?
 
-    public init(catalog: PricingCatalog, cache: EntitlementCache = EntitlementCache()) {
+    public init(catalog: PricingCatalog, cache: EntitlementCache = EntitlementCache(), defaults: UserDefaults = .standard) {
         self.catalog = catalog
         self.cache = cache
-        self.entitlement = cache.load()
+        self.defaults = defaults
+        self.storeEntitlement = cache.load()
+        self.forceFree = defaults.bool(forKey: EntitlementOverride.defaultsKey)
         self.bonusSounds = BonusUnlocks.sounds()
+    }
+
+    /// Developer tools: test the free plan while a purchase is active (off again when developer mode locks).
+    public func setForceFree(_ on: Bool) {
+        forceFree = on
+        defaults.set(on, forKey: EntitlementOverride.defaultsKey)
+        log.notice("test as free plan: \(on)")
     }
 
     public var gate: FeatureGate { FeatureGate(entitlement, bonusSounds: bonusSounds) }
@@ -69,6 +86,7 @@ public final class StoreService {
                 isEligibleForTrial = await subscription.isEligibleForIntroOffer
             }
             errorMessage = products.isEmpty ? L10n.tr("Plans are unavailable right now.") : nil
+            if let warning = await diagnostics().pricingWarning { log.error("\(warning, privacy: .public)") }
         } catch {
             errorMessage = L10n.tr("Couldn't load plans: \(error.localizedDescription)")
         }
@@ -121,23 +139,43 @@ public final class StoreService {
 
     public func refreshEntitlement() async {
         var infos: [TransactionInfo] = []
+        var purchases: [ActivePurchase] = []
         for await result in Transaction.currentEntitlements {
             guard case .verified(let t) = result, catalog.productIDs.contains(t.productID) else { continue }
+            let isTrial = t.offer?.paymentMode == .freeTrial
             infos.append(TransactionInfo(productID: t.productID,
                                          expiresAt: t.expirationDate,
-                                         isTrial: t.offer?.paymentMode == .freeTrial,
+                                         isTrial: isTrial,
                                          isRevoked: t.revocationDate != nil))
+            if t.revocationDate == nil {
+                purchases.append(ActivePurchase(productID: t.productID, purchasedAt: t.purchaseDate, expiresAt: t.expirationDate,
+                                                isTrial: isTrial, isSandbox: t.environment != .production))
+            }
         }
         let state = EntitlementResolver.resolve(infos, now: Date())
-        if state != entitlement { log.notice("entitlement \(String(describing: state), privacy: .public)") }
-        entitlement = state
+        if state != storeEntitlement { log.notice("entitlement \(String(describing: state), privacy: .public)") }
+        storeEntitlement = state
+        activePurchases = purchases
         cache.save(state)
         hasLoadedEntitlement = true
+    }
+
+    /// Developer tools › Store diagnostics: storefront, products with App Store Connect prices, purchases.
+    public func diagnostics() async -> StoreDiagnostics {
+        let storefront = await Storefront.current
+        let lines = products.map { p in
+            StoreDiagnostics.ProductLine(
+                id: p.id, displayPrice: p.displayPrice, price: p.price, currency: p.priceFormatStyle.currencyCode,
+                period: p.subscription.map { "\($0.subscriptionPeriod.value) \($0.subscriptionPeriod.unit)" },
+                introOffer: p.subscription?.introductoryOffer.map { "\($0.paymentMode.rawValue) \($0.period.value) \($0.period.unit)" })
+        }
+        let place = storefront.map { "\($0.countryCode) (\($0.id))" } ?? "unknown"
+        return StoreDiagnostics(storefront: place, products: lines, purchases: activePurchases, trialEligible: isEligibleForTrial)
     }
 
     /// Developer tools: forget the cached entitlement (StoreKit stays the source of truth).
     public func debugResetCache() {
         cache.save(.free)
-        entitlement = .free
+        storeEntitlement = .free
     }
 }

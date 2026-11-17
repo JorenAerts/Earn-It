@@ -143,6 +143,8 @@ struct SettingsView: View {
         .trackScreen("Settings")
             .task { await permissions.refresh() }
             .onChange(of: auth.user?.id, initial: true) { _, id in developer.validate(userID: id) }
+            // The free-plan test switch never outlives developer mode.
+            .onChange(of: developer.isOn, initial: true) { _, on in if !on, store.forceFree { store.setForceFree(false) } }
         }
     }
 

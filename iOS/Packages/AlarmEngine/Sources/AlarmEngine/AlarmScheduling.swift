@@ -54,15 +54,36 @@ public final class FakeScheduler: AlarmScheduling {
     public private(set) var cancelled: [UUID] = []
     /// Alarms currently ringing (tests set this).
     public var alerting: Set<UUID> = []
+    /// Behave like AlarmKit: scheduling an id it already holds throws ("duplicate ID").
+    public var rejectDuplicates = false
+    /// Make the next N schedule calls for an id throw (the alarm is not added).
+    public var failNext: [UUID: Int] = [:]
+    /// How often each id was (attempted to be) scheduled.
+    public private(set) var scheduleCalls: [UUID: Int] = [:]
+
+    public struct FakeError: Error {}
 
     public init() {}
 
+    /// Shared checks for every schedule call. Yields first, like the real (asynchronous) AlarmKit.
+    private func attempt(_ id: UUID) async throws {
+        scheduleCalls[id, default: 0] += 1
+        await Task.yield()
+        if let n = failNext[id], n > 0 {
+            failNext[id] = n - 1
+            throw FakeError()
+        }
+        if rejectDuplicates, mainPlans[id] != nil || oneOffs[id] != nil { throw FakeError() }
+    }
+
     public func requestAuthorization() async -> AlarmAuthorization { authorization }
     public func scheduleMain(_ plan: AlarmPlan) async throws {
+        try await attempt(plan.id)
         mainPlans[plan.id] = plan
         sounds[plan.id] = plan.sound
     }
     public func scheduleOneOff(id: UUID, at date: Date, title: String, sound: SoundChoice) async throws {
+        try await attempt(id)
         oneOffs[id] = (date, title)
         sounds[id] = sound
     }

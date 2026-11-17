@@ -66,6 +66,8 @@ struct DeveloperView: View {
 
             Section("Store & onboarding") {
                 Button("Show paywall") { showPaywall = true }
+                Toggle("Test as Free plan", isOn: Binding(get: { store.forceFree }, set: { store.setForceFree($0) }))
+                NavigationLink("Store diagnostics") { StoreDiagnosticsView(store: store) }
                 Button("Reset cached plan status") { store.debugResetCache() }
                 Button("Replay onboarding", action: onReplayOnboarding)
             }
@@ -151,4 +153,55 @@ struct DebugSection: View {
     }
 
     private func refresh() { alarms = coordinator.debugScheduledAlarms() }
+}
+
+
+/// Storefront, App Store Connect prices and active purchases, as StoreKit reports them on this
+/// device (developer tools; not translated). Copy shares the text.
+struct StoreDiagnosticsView: View {
+    let store: StoreService
+    @State private var report: StoreDiagnostics?
+    @State private var copied = false
+
+    var body: some View {
+        List {
+            if let report {
+                Section("Storefront") { Text(verbatim: report.storefront) }
+                if let warning = report.pricingWarning {
+                    Section { Text(verbatim: "⚠️ " + warning).foregroundStyle(.orange) }
+                }
+                Section("Products (App Store Connect)") {
+                    if report.products.isEmpty { Text(verbatim: "None loaded") }
+                    ForEach(report.products, id: \.id) { p in
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(verbatim: p.id).font(.caption.monospaced())
+                            Text(verbatim: "\(p.displayPrice)  ·  \(p.price) \(p.currency)" + (p.period.map { "  ·  \($0)" } ?? ""))
+                            if let intro = p.introOffer { Text(verbatim: "Intro: \(intro)").font(.caption).foregroundStyle(.secondary) }
+                        }
+                    }
+                }
+                Section("Active purchases") {
+                    if report.purchases.isEmpty { Text(verbatim: "None") }
+                    ForEach(report.purchases, id: \.self) { p in
+                        Text(verbatim: p.productID + (p.expiresAt.map { " · until \($0.formatted(date: .abbreviated, time: .shortened))" } ?? " · lifetime")
+                             + (p.isSandbox ? " · TestFlight/sandbox" : ""))
+                    }
+                }
+                Section {
+                    Button(copied ? "Copied" : "Copy report") {
+                        UIPasteboard.general.string = report.text
+                        copied = true
+                    }
+                }
+            } else {
+                ProgressView()
+            }
+        }
+        .navigationTitle(Text(verbatim: "Store diagnostics"))
+        .task {
+            await store.loadProducts()
+            await store.refreshEntitlement()
+            report = await store.diagnostics()
+        }
+    }
 }

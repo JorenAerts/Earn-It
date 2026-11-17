@@ -106,7 +106,8 @@ struct ClubView: View {
             CreateClubView(existing: club)
         }
         .sheet(item: $viewing) { post in
-            PhotoViewer(post: post, url: post.imagePath.flatMap { imageURLs[$0] }) { emoji in react(post, emoji) }
+            PhotoViewer(post: post, url: post.imagePath.flatMap { imageURLs[$0] },
+                        reloadURL: { await signedURL(for: post) }) { emoji in react(post, emoji) }
         }
         .sheet(item: $reportTarget) { target in
             ReportSheet(target: target) { await load() }
@@ -331,6 +332,14 @@ struct ClubView: View {
         }
     }
 
+    /// A fresh signed link for one photo (the viewer's "Try again"); nil when access is refused.
+    private func signedURL(for post: MorningPost) async -> URL? {
+        guard let path = post.imagePath,
+              let url = try? await model.service.imageURLs([path])[path] else { return nil }
+        imageURLs[path] = url
+        return url
+    }
+
     private func react(_ post: MorningPost, _ emoji: String?) {
         run { try await model.service.react(to: post.id, emoji: emoji) }
         if emoji != nil { Telemetry.shared.send(.action(.reacted)) }
@@ -413,10 +422,12 @@ struct PhotoTile: View {
                     }
                     .foregroundStyle(.orange)
                 } else if let url {
-                    AsyncImage(url: url) { image in
-                        image.resizable().scaledToFill()
-                    } placeholder: {
-                        ProgressView()
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image): image.resizable().scaledToFill()
+                        case .failure: Image(systemName: "photo").foregroundStyle(.secondary)
+                        default: ProgressView()
+                        }
                     }
                 } else {
                     Image(systemName: "photo").foregroundStyle(.secondary)
@@ -444,8 +455,11 @@ struct PhotoTile: View {
 
 struct PhotoViewer: View {
     let post: MorningPost
-    let url: URL?
+    @State var url: URL?
+    /// Signs the photo link again ("Try again"); nil = still not allowed / not found.
+    let reloadURL: () async -> URL?
     let onReact: (String?) -> Void
+    @State private var retrying = false
     @State private var mine: String?
     @Environment(\.dismiss) private var dismiss
 
@@ -460,10 +474,20 @@ struct PhotoViewer: View {
                 Spacer()
                 Button("Done") { dismiss() }
             }
-            AsyncImage(url: url) { image in
-                image.resizable().scaledToFit()
-            } placeholder: {
-                ProgressView().frame(maxWidth: .infinity, minHeight: 300)
+            // Never an endless spinner: no link or a failed download shows a retry.
+            Group {
+                if let url {
+                    AsyncImage(url: url) { phase in
+                        switch phase {
+                        case .success(let image): image.resizable().scaledToFit()
+                        case .failure: unavailable
+                        default: ProgressView().frame(maxWidth: .infinity, minHeight: 300)
+                        }
+                    }
+                    .id(url)
+                } else {
+                    unavailable
+                }
             }
             .clipShape(.rect(cornerRadius: 20))
             if !post.isMe {
@@ -660,5 +684,24 @@ struct ReportSheet: View {
                 await onDone()
             }
         }
+    }
+}
+
+extension PhotoViewer {
+    fileprivate var unavailable: some View {
+        VStack(spacing: 12) {
+            Image(systemName: "photo").font(.largeTitle).foregroundStyle(.secondary)
+            Text("Couldn't load photo").font(.headline)
+            Button(retrying ? L10n.tr("Loading…") : L10n.tr("Try again")) {
+                retrying = true
+                Task {
+                    url = await reloadURL()
+                    retrying = false
+                }
+            }
+            .buttonStyle(.bordered)
+            .disabled(retrying)
+        }
+        .frame(maxWidth: .infinity, minHeight: 300)
     }
 }

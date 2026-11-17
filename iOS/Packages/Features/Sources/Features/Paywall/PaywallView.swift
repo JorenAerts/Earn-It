@@ -44,6 +44,11 @@ struct PaywallView: View {
             } else {
                 OnboardingPage {
                     VStack(alignment: .leading, spacing: 22) {
+                        if store.forceFree {
+                            // Developer tools › Test as Free plan (developers only, not translated).
+                            Text(verbatim: "Test mode: Free plan. Your purchase is still active.")
+                                .font(.footnote.weight(.semibold)).foregroundStyle(.orange)
+                        }
                         hero
                         features
                         plansSection

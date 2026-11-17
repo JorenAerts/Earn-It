@@ -17,6 +17,7 @@ supabase/
   migrations/*_buddies.sql            clubs, members, wake reports, morning photos (bucket `morning`),
                                       reactions, blocks, reports + RPCs; delete_own_account hands clubs over
   migrations/*_profile_onboarding.sql profiles.onboarding jsonb (age range, where they heard of us, …)
+  migrations/*_morning_photo_access.sql buddies can open each other's morning photos (storage read check via security-definer can_see_image)
   functions/cleanup-morning-posts     hourly: deletes photos older than 24 h + files of deleted users
 ```
 
