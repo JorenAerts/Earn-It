@@ -1149,7 +1149,9 @@
   "Turn on the camera for Gloop to scan your code.": "Ative a câmera para o Gloop escanear seu código.",
   "Purchases restored: %@, renews %@.": "Compras restauradas: %@, renova em %@.",
   "Purchases restored: %@, yours for good.": "Compras restauradas: %@, seu para sempre.",
-  "This is a TestFlight test purchase. To test the free plan again, cancel it in Manage subscription.": "Esta é uma compra de teste do TestFlight. Para testar o plano gratuito de novo, cancele em Gerenciar assinatura.",
   "Couldn't load photo": "Não foi possível carregar a foto",
-  "Loading…": "Carregando…"
+  "Loading…": "Carregando…",
+  "This is a TestFlight test purchase. To try the free plan, turn on “Test as Free plan” above.": "Esta é uma compra de teste do TestFlight. Para experimentar o plano gratuito, ative “Testar como plano gratuito” acima.",
+  "Test as Free plan": "Testar como plano gratuito",
+  "TestFlight only. Your test purchase stays; Gloop acts like the free plan until you turn this off.": "Só no TestFlight. Sua compra de teste continua; o Gloop funciona como o plano gratuito até você desativar isto."
 }

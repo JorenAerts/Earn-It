@@ -26,9 +26,14 @@ struct SubscriptionSettingsView: View {
 
     var body: some View {
         List {
-            if store.forceFree {
-                // Developer tools › Test as Free plan (developers only, not translated).
-                Section { Text(verbatim: "Test mode: Free plan (Developer tools). Your purchase is still active.").foregroundStyle(.orange) }
+            if store.canTestAsFree || store.forceFree {
+                // TestFlight testers only: their Pro is a test purchase (a Lifetime one can't be cancelled).
+                Section {
+                    Toggle("Test as Free plan", isOn: Binding(get: { store.forceFree }, set: { store.setForceFree($0) }))
+                        .tint(.orange)
+                } footer: {
+                    Text("TestFlight only. Your test purchase stays; Gloop acts like the free plan until you turn this off.")
+                }
             }
             Section {
                 LabeledContent("Plan") {
