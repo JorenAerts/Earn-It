@@ -603,7 +603,6 @@
   "Public-domain compositions, performed by Gloop's own sound generator.": "Composities uit het publieke domein, uitgevoerd door Gloops eigen geluidsgenerator.",
   "Purchase failed: %@": "Aankoop mislukt: %@",
   "Purchase pending approval.": "Aankoop wacht op goedkeuring.",
-  "Purchases restored.": "Aankopen hersteld.",
   "QR code": "QR-code",
   "QR code for the invite link": "QR-code voor de uitnodigingslink",
   "Quiet time that's all yours": "Rustige tijd helemaal voor jou",
@@ -1147,5 +1146,10 @@
   "Flashlight: %@": "Zaklamp: %@",
   "It's dark: flashlight on": "Het is donker: zaklamp aan",
   "On": "Aan",
-  "Turn on the camera for Gloop to scan your code.": "Zet de camera aan voor Gloop om je code te scannen."
+  "Turn on the camera for Gloop to scan your code.": "Zet de camera aan voor Gloop om je code te scannen.",
+  "Purchases restored: %@, renews %@.": "Aankopen hersteld: %@, verlengt op %@.",
+  "Purchases restored: %@, yours for good.": "Aankopen hersteld: %@, voorgoed van jou.",
+  "This is a TestFlight test purchase. To test the free plan again, cancel it in Manage subscription.": "Dit is een TestFlight-testaankoop. Wil je het gratis plan opnieuw testen, zeg ze dan op via Abonnement beheren.",
+  "Couldn't load photo": "Foto kon niet laden",
+  "Loading…": "Laden…"
 }

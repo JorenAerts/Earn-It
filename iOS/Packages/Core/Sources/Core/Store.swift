@@ -13,6 +13,7 @@ public final class KeyValueStore: @unchecked Sendable {
         static let session = "gloop.session"
         static let owners = "gloop.alarmOwners"
         static let pause = "gloop.pause"
+        static let signatures = "gloop.alarmSignatures"
     }
 
     public init(defaults: UserDefaults = .standard) {
@@ -41,6 +42,16 @@ public final class KeyValueStore: @unchecked Sendable {
 
     public func saveOwners(_ owners: [UUID: UUID]) {
         save(owners, Key.owners)
+    }
+
+    /// Per alarm: what was last scheduled in AlarmKit (see `ReschedulePolicy.signature`), so
+    /// unchanged alarms aren't cancelled and re-added on every launch.
+    public func loadAlarmSignatures() -> [UUID: String] {
+        load(Key.signatures) ?? [:]
+    }
+
+    public func saveAlarmSignatures(_ signatures: [UUID: String]) {
+        save(signatures, Key.signatures)
     }
 
     /// Test / migration helper: write a plan in the pre-multi-alarm format.

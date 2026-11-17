@@ -603,7 +603,6 @@
   "Public-domain compositions, performed by Gloop's own sound generator.": "Composições em domínio público, tocadas pelo gerador de som do próprio Gloop.",
   "Purchase failed: %@": "A compra falhou: %@",
   "Purchase pending approval.": "Compra aguardando aprovação.",
-  "Purchases restored.": "Compras restauradas.",
   "QR code": "Código QR",
   "QR code for the invite link": "Código QR do link de convite",
   "Quiet time that's all yours": "Um tempo tranquilo só seu",
@@ -1147,5 +1146,10 @@
   "Flashlight: %@": "Lanterna: %@",
   "It's dark: flashlight on": "Está escuro: lanterna ligada",
   "On": "Ativado",
-  "Turn on the camera for Gloop to scan your code.": "Ative a câmera para o Gloop escanear seu código."
+  "Turn on the camera for Gloop to scan your code.": "Ative a câmera para o Gloop escanear seu código.",
+  "Purchases restored: %@, renews %@.": "Compras restauradas: %@, renova em %@.",
+  "Purchases restored: %@, yours for good.": "Compras restauradas: %@, seu para sempre.",
+  "This is a TestFlight test purchase. To test the free plan again, cancel it in Manage subscription.": "Esta é uma compra de teste do TestFlight. Para testar o plano gratuito de novo, cancele em Gerenciar assinatura.",
+  "Couldn't load photo": "Não foi possível carregar a foto",
+  "Loading…": "Carregando…"
 }

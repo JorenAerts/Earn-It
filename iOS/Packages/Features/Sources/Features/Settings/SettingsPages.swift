@@ -26,6 +26,10 @@ struct SubscriptionSettingsView: View {
 
     var body: some View {
         List {
+            if store.forceFree {
+                // Developer tools › Test as Free plan (developers only, not translated).
+                Section { Text(verbatim: "Test mode: Free plan (Developer tools). Your purchase is still active.").foregroundStyle(.orange) }
+            }
             Section {
                 LabeledContent("Plan") {
                     HStack(spacing: 6) {
@@ -52,7 +56,7 @@ struct SubscriptionSettingsView: View {
                     busy = true
                     Task {
                         await store.restore()
-                        message = store.entitlement.isPro ? L10n.tr("Purchases restored.") : L10n.tr("No purchases found for this Apple ID.")
+                        message = RestoreMessage.text(purchases: store.activePurchases, catalog: store.catalog)
                         busy = false
                     }
                 }

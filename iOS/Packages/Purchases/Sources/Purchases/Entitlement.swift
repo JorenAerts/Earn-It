@@ -70,3 +70,37 @@ public final class EntitlementCache: @unchecked Sendable {
         if let data = try? JSONEncoder().encode(state) { defaults.set(data, forKey: key) }
     }
 }
+
+/// Developer tools › "Test as Free plan": shows the free tier while a (TestFlight) purchase is
+/// still active, so the free experience can be tested. Never set for normal users.
+public enum EntitlementOverride {
+    public static let defaultsKey = "gloop.debug.forceFree"
+
+    public static func apply(_ state: EntitlementState, forceFree: Bool) -> EntitlementState {
+        forceFree ? .free : state
+    }
+}
+
+/// A purchase StoreKit currently grants (for the restore message and diagnostics).
+public struct ActivePurchase: Hashable, Sendable {
+    public let productID: String
+    public let purchasedAt: Date
+    /// nil = lifetime.
+    public let expiresAt: Date?
+    public let isTrial: Bool
+    /// Made in TestFlight / Xcode / sandbox (not a real payment).
+    public let isSandbox: Bool
+
+    public init(productID: String, purchasedAt: Date, expiresAt: Date?, isTrial: Bool = false, isSandbox: Bool = false) {
+        self.productID = productID
+        self.purchasedAt = purchasedAt
+        self.expiresAt = expiresAt
+        self.isTrial = isTrial
+        self.isSandbox = isSandbox
+    }
+
+    /// The purchase that decides the plan: lifetime first, then the latest expiry.
+    public static func best(_ purchases: [ActivePurchase]) -> ActivePurchase? {
+        purchases.first { $0.expiresAt == nil } ?? purchases.max { ($0.expiresAt ?? .distantPast) < ($1.expiresAt ?? .distantPast) }
+    }
+}

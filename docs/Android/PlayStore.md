@@ -27,7 +27,7 @@ together with their test cases.
 - **Exact-alarm permission:** use `USE_EXACT_ALARM`, which is granted automatically for alarm-clock apps but needs a Play Console declaration. `SCHEDULE_EXACT_ALARM` would ask the user.
 - **Notifications** (Android 13+) and **full-screen intent** (Android 14+) need runtime checks, like `PermissionCenter` on iOS.
 - **Help/FAQ** (`Shared/Config/Help.json`) mentions iOS settings paths. Android needs its own answers; add platform-specific FAQ entries when porting Settings.
-- **Pro is per store** for now: buying on iPhone does not unlock Android. Sharing Pro across platforms (via the Supabase account, or RevenueCat) is a later decision.
+- **Pro is per store** for now: buying on iPhone does not unlock Android. **Decided (17 Nov 2026): add account-linked Pro in phase 3 (Play Billing)**: a Supabase `entitlements` table keyed by user, an Edge Function for App Store Server Notifications v2 + Google Play RTDN, and both apps union store + account entitlements. iOS purchases already carry the Supabase user id as `appAccountToken`. Until then the Apple ID / Google account is the source of truth.
 
 ## Play Billing mapping
 Google groups subscriptions differently from Apple. Proposed:

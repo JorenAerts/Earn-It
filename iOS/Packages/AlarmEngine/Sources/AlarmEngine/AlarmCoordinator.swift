@@ -35,13 +35,22 @@ public final class AlarmCoordinator {
     private let scheduler: any AlarmScheduling
     private let sound: any AlarmSounding
     private let now: @Sendable () -> Date
+    /// Part of each alarm's signature: an app update re-registers alarms once (new layout / sound).
+    private let appVersion: String
+    /// The scheduling pass in progress. Passes run one after another: AlarmKit refuses a second
+    /// schedule of an id that a concurrent pass just added ("duplicate ID").
+    @ObservationIgnored private var pass: Task<Void, Never>?
+    /// Pause before retrying a failed schedule (tests use zero).
+    @ObservationIgnored public var retryDelay: Duration = .milliseconds(500)
 
     public init(store: KeyValueStore, scheduler: any AlarmScheduling, sound: any AlarmSounding,
-                now: @escaping @Sendable () -> Date = { Date() }) {
+                now: @escaping @Sendable () -> Date = { Date() },
+                appVersion: String = AlarmCoordinator.bundleVersion) {
         self.store = store
         self.scheduler = scheduler
         self.sound = sound
         self.now = now
+        self.appVersion = appVersion
         self.plans = store.loadPlans()
         self.session = store.loadSession()
         self.pause = store.loadPause()
@@ -119,14 +128,14 @@ public final class AlarmCoordinator {
     public func pauseAll(_ newPause: AlarmPause) async {
         pause = newPause
         store.savePause(newPause)
-        await rescheduleAll()
+        await serialized { await self.rescheduleAll() }
         log.notice("alarms paused until \(newPause.until?.description ?? "resumed", privacy: .public)")
     }
 
     public func resumeAll() async {
         pause = nil
         store.savePause(nil)
-        await rescheduleAll()
+        await serialized { await self.rescheduleAll() }
         log.notice("alarms resumed")
     }
 
@@ -146,7 +155,7 @@ public final class AlarmCoordinator {
             plans.append(plan)
         }
         store.savePlans(plans)
-        await schedule(plan)
+        await serialized { await self.schedule(plan, force: true) }
     }
 
     public func setEnabled(_ enabled: Bool, for id: UUID) async {
@@ -160,6 +169,7 @@ public final class AlarmCoordinator {
         scheduler.cancel(id: id)
         plans.removeAll { $0.id == id }
         store.savePlans(plans)
+        setSignature(nil, for: id)
     }
 
     /// Re-register enabled alarms so they pick up the current alarm layout / sound after an app
@@ -169,7 +179,11 @@ public final class AlarmCoordinator {
             pause = nil
             store.savePause(nil)
         }
-        await rescheduleAll()
+        await serialized {
+            await self.rescheduleAll()
+            self.cancelOrphans()
+            self.clearErrorIfAllPresent()
+        }
     }
 
     /// Repeating alarms that AlarmKit no longer holds (e.g. the one-off "first ring after a pause"
@@ -177,34 +191,136 @@ public final class AlarmCoordinator {
     public func restoreMissingAlarms() async {
         await resumeIfPauseExpired()
         guard activePause == nil else { return }
-        let known = Set(scheduler.scheduledAlarms().map(\.id))
-        for plan in plans where plan.isEnabled && !plan.weekdays.isEmpty && !known.contains(plan.id) {
-            await schedule(plan)
+        await serialized {
+            // Checked inside the pass: a pass that just ran may have added them already.
+            let known = Set(self.scheduler.scheduledAlarms().map(\.id))
+            for plan in self.plans where plan.isEnabled && !plan.weekdays.isEmpty && !known.contains(plan.id) {
+                await self.schedule(plan, force: true)
+            }
+            self.clearErrorIfAllPresent()
         }
+    }
+
+    /// Runs scheduling work one pass at a time, in call order. Never call it from inside a pass.
+    private func serialized(_ work: @escaping @MainActor () async -> Void) async {
+        let previous = pass
+        let task = Task { @MainActor in
+            await previous?.value
+            await work()
+        }
+        pass = task
+        await task.value
     }
 
     private func rescheduleAll() async {
-        let busy = Set(scheduler.scheduledAlarms().filter { $0.isAlerting || $0.isCountingDown }.map(\.id))
+        let alarms = scheduler.scheduledAlarms()
+        let busy = Set(alarms.filter { $0.isAlerting || $0.isCountingDown }.map(\.id))
         for plan in plans where plan.isEnabled && !busy.contains(plan.id) {
-            await schedule(plan)
+            await schedule(plan, force: false)
         }
     }
 
-    private func schedule(_ plan: AlarmPlan) async {
-        scheduler.cancel(id: plan.id)
-        guard plan.isEnabled else { return }
-        do {
-            if let pause = activePause {
-                // Paused: only the first ring after the pause, as a one-off with the plan's id.
-                guard let first = PausePolicy.firstRing(of: plan, after: pause) else { return }
-                try await scheduler.scheduleOneOff(id: plan.id, at: first, title: plan.alarmTitle, sound: plan.sound)
-            } else {
-                try await scheduler.scheduleMain(plan)
-            }
-            lastError = nil
-        } catch {
-            lastError = L10n.tr("Could not schedule alarm: \(error.localizedDescription)")
+    /// (Re)registers `plan` in AlarmKit. Without `force`, an alarm that AlarmKit already holds
+    /// with the same signature is left alone.
+    private func schedule(_ plan: AlarmPlan, force: Bool) async {
+        let signature = signature(for: plan)
+        let alarms = scheduler.scheduledAlarms()
+        let present = alarms.contains { $0.id == plan.id }
+        let busy = alarms.contains { $0.id == plan.id && ($0.isAlerting || $0.isCountingDown) }
+        if !plan.isEnabled {
+            scheduler.cancel(id: plan.id)
+            setSignature(nil, for: plan.id)
+            return
         }
+        let decision = ReschedulePolicy.decide(enabled: true, busy: busy && !force, present: present,
+                                               signatureMatches: store.loadAlarmSignatures()[plan.id] == signature, force: force)
+        guard decision == .schedule else {
+            log.info("alarm \(plan.id, privacy: .public) unchanged, kept")
+            return
+        }
+        if present { scheduler.cancel(id: plan.id) }  // replace; nothing to cancel otherwise
+        do {
+            try await register(plan)
+            succeeded(plan, signature)
+        } catch {
+            // AlarmKit may already hold the id (e.g. it refused a duplicate): that's scheduled.
+            if scheduler.scheduledAlarms().contains(where: { $0.id == plan.id }) {
+                log.notice("alarm \(plan.id, privacy: .public): \(Self.describe(error), privacy: .public), but it is scheduled")
+                succeeded(plan, signature)
+                return
+            }
+            log.error("alarm \(plan.id, privacy: .public) failed: \(Self.describe(error), privacy: .public); retrying")
+            try? await Task.sleep(for: retryDelay)
+            if scheduler.scheduledAlarms().contains(where: { $0.id == plan.id }) { scheduler.cancel(id: plan.id) }
+            do {
+                try await register(plan)
+                succeeded(plan, signature)
+            } catch {
+                if scheduler.scheduledAlarms().contains(where: { $0.id == plan.id }) {
+                    succeeded(plan, signature)
+                } else {
+                    log.error("alarm \(plan.id, privacy: .public) failed again: \(Self.describe(error), privacy: .public)")
+                    lastError = L10n.tr("Could not schedule alarm: \(error.localizedDescription)")
+                }
+            }
+        }
+    }
+
+    private func register(_ plan: AlarmPlan) async throws {
+        if let pause = activePause {
+            // Paused: only the first ring after the pause, as a one-off with the plan's id.
+            guard let first = PausePolicy.firstRing(of: plan, after: pause) else { return }
+            try await scheduler.scheduleOneOff(id: plan.id, at: first, title: plan.alarmTitle, sound: plan.sound)
+        } else {
+            try await scheduler.scheduleMain(plan)
+        }
+    }
+
+    private func succeeded(_ plan: AlarmPlan, _ signature: String) {
+        setSignature(signature, for: plan.id)
+        lastError = nil
+        log.info("alarm \(plan.id, privacy: .public) scheduled")
+    }
+
+    private func signature(for plan: AlarmPlan) -> String {
+        let pause = activePause
+        return ReschedulePolicy.signature(for: plan, pauseFirstRing: pause.flatMap { PausePolicy.firstRing(of: plan, after: $0) },
+                                          paused: pause != nil, appVersion: appVersion)
+    }
+
+    private func setSignature(_ signature: String?, for id: UUID) {
+        var all = store.loadAlarmSignatures()
+        all[id] = signature
+        store.saveAlarmSignatures(all)
+    }
+
+    /// Removes idle AlarmKit alarms that no alarm, follow-up or test ring owns (left behind by
+    /// earlier versions), so each alarm rings once, under its own id.
+    private func cancelOrphans() {
+        var known = Set(plans.map(\.id)).union(store.loadOwners().keys)
+        known.formUnion(session?.followUpIDs ?? [])
+        for id in ReschedulePolicy.orphans(scheduler.scheduledAlarms(), known: known) {
+            log.notice("orphan alarm \(id, privacy: .public) cancelled")
+            scheduler.cancel(id: id)
+        }
+    }
+
+    /// A scheduling error that has since been resolved shouldn't stay on Home.
+    private func clearErrorIfAllPresent() {
+        guard lastError != nil, activePause == nil else { return }
+        let present = Set(scheduler.scheduledAlarms().map(\.id))
+        if plans.filter({ $0.isEnabled }).allSatisfy({ present.contains($0.id) }) { lastError = nil }
+    }
+
+    static func describe(_ error: Error) -> String {
+        let ns = error as NSError
+        return "\(ns.domain) \(ns.code): \(error)"
+    }
+
+    /// "1.0.0 (2)" from the app bundle.
+    public static var bundleVersion: String {
+        let info = Bundle.main.infoDictionary
+        return "\(info?["CFBundleShortVersionString"] as? String ?? "?") (\(info?["CFBundleVersion"] as? String ?? "?"))"
     }
 
     // MARK: Ringing loop
