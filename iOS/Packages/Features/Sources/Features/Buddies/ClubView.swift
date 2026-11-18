@@ -38,6 +38,8 @@ struct ClubView: View {
     @State private var reportTarget: ReportTarget?
     @State private var confirm: Confirm?
     @State private var viewing: MorningPost?
+    /// Report / block chosen inside the photo viewer: runs once the viewer has closed (no sheet on a sheet).
+    @State private var pendingSafety: (action: PhotoViewer.SafetyAction, post: MorningPost)?
 
     struct ReportTarget: Identifiable {
         let kind: ReportKind
@@ -47,13 +49,14 @@ struct ClubView: View {
     }
 
     enum Confirm: Identifiable {
-        case leave, delete, remove(MemberToday), newCode
+        case leave, delete, remove(MemberToday), newCode, block(userID: UUID, name: String)
         var id: String {
             switch self {
             case .leave: "leave"
             case .delete: "delete"
             case .remove(let m): "remove-\(m.userID)"
             case .newCode: "code"
+            case .block(let userID, _): "block-\(userID)"
             }
         }
     }
@@ -105,9 +108,14 @@ struct ClubView: View {
         .sheet(isPresented: $editing, onDismiss: { Task { await model.refresh(signedIn: true) } }) {
             CreateClubView(existing: club)
         }
-        .sheet(item: $viewing) { post in
+        .sheet(item: $viewing, onDismiss: runPendingSafety) { post in
             PhotoViewer(post: post, url: post.imagePath.flatMap { imageURLs[$0] },
-                        reloadURL: { await signedURL(for: post) }) { emoji in react(post, emoji) }
+                        reloadURL: { await signedURL(for: post) },
+                        onReact: { emoji in react(post, emoji) },
+                        onSafety: { action in
+                            pendingSafety = (action, post)
+                            viewing = nil
+                        })
         }
         .sheet(item: $reportTarget) { target in
             ReportSheet(target: target) { await load() }
@@ -125,6 +133,11 @@ struct ClubView: View {
                 }
             case .newCode:
                 Button("Make a new code") { run { _ = try await model.service.regenerateInvite(clubID) } }
+            case .block(let userID, let name):
+                Button("Block \(name)", role: .destructive) {
+                    run { try await model.service.block(userID) }
+                    Telemetry.shared.send(.action(.blocked))
+                }
             }
         } message: { item in
             switch item {
@@ -132,6 +145,7 @@ struct ClubView: View {
             case .delete: Text("The club, its ranking and photos are deleted for everyone.")
             case .remove: Text("They can only come back with a new invite.")
             case .newCode: Text("The old code and link stop working.")
+            case .block: Text("You can unblock them in Settings › Buddies.")
             }
         }
     }
@@ -142,6 +156,7 @@ struct ClubView: View {
         case .delete: L10n.tr("Delete this club?")
         case .remove: L10n.tr("Remove member?")
         case .newCode: L10n.tr("New invite code?")
+        case .block(_, let name): L10n.tr("Block \(name)?")
         case nil: ""
         }
     }
@@ -199,7 +214,10 @@ struct ClubView: View {
 
         Section {
             ForEach(sortedMembers) { member in
-                MemberTodayRow(member: member)
+                HStack {
+                    MemberTodayRow(member: member)
+                    safetyButton(userID: member.userID, name: member.displayName, isMe: member.isMe)
+                }
                     .contextMenu { safetyMenu(userID: member.userID, name: member.displayName, isMe: member.isMe, post: nil) }
             }
         } header: {
@@ -238,7 +256,10 @@ struct ClubView: View {
         }
         Section {
             ForEach(ranked) { entry in
-                LeaderboardRowView(entry: entry)
+                HStack {
+                    LeaderboardRowView(entry: entry)
+                    safetyButton(userID: entry.row.userID, name: entry.row.displayName, isMe: entry.row.isMe)
+                }
                     .contextMenu { safetyMenu(userID: entry.row.userID, name: entry.row.displayName, isMe: entry.row.isMe, post: nil) }
             }
         }
@@ -262,6 +283,7 @@ struct ClubView: View {
                     if member.role == .owner {
                         Text("Owner").font(.caption.weight(.semibold)).foregroundStyle(.orange)
                     }
+                    safetyButton(userID: member.userID, name: member.displayName, isMe: member.isMe)
                 }
                 .swipeActions {
                     if club.isOwner && !member.isMe {
@@ -305,9 +327,34 @@ struct ClubView: View {
                 reportTarget = ReportTarget(kind: .user, id: userID, userID: userID, name: buddyName(name))
             }
             Button("Block \(buddyName(name))", systemImage: "hand.raised", role: .destructive) {
-                run { try await model.service.block(userID) }
-                Telemetry.shared.send(.action(.blocked))
+                confirm = .block(userID: userID, name: buddyName(name))
             }
+        }
+    }
+
+    /// Visible way to the same report / block actions as the long-press menu (App Review 1.2).
+    @ViewBuilder
+    private func safetyButton(userID: UUID, name: String?, isMe: Bool) -> some View {
+        if !isMe {
+            Menu {
+                safetyMenu(userID: userID, name: name, isMe: isMe, post: nil)
+            } label: {
+                Image(systemName: "ellipsis.circle").foregroundStyle(.secondary)
+            }
+            .buttonStyle(.borderless)
+            .accessibilityLabel("Report or block \(buddyName(name))")
+        }
+    }
+
+    private func runPendingSafety() {
+        guard let pending = pendingSafety else { return }
+        pendingSafety = nil
+        let (action, post) = pending
+        let name = buddyName(post.displayName)
+        switch action {
+        case .reportPhoto: reportTarget = ReportTarget(kind: .post, id: post.id, userID: post.userID, name: name)
+        case .reportUser: reportTarget = ReportTarget(kind: .user, id: post.userID, userID: post.userID, name: name)
+        case .block: confirm = .block(userID: post.userID, name: name)
         }
     }
 
@@ -459,6 +506,9 @@ struct PhotoViewer: View {
     /// Signs the photo link again ("Try again"); nil = still not allowed / not found.
     let reloadURL: () async -> URL?
     let onReact: (String?) -> Void
+    /// Report / block from the full-size photo; ClubView runs it after the viewer closes.
+    var onSafety: ((SafetyAction) -> Void)?
+    enum SafetyAction { case reportPhoto, reportUser, block }
     @State private var retrying = false
     @State private var mine: String?
     @Environment(\.dismiss) private var dismiss
@@ -472,6 +522,16 @@ struct PhotoViewer: View {
                     Text(post.createdAt.localized(date: .omitted, time: .shortened)).font(.caption).foregroundStyle(.secondary)
                 }
                 Spacer()
+                if !post.isMe, let onSafety {
+                    Menu {
+                        Button("Report photo", systemImage: "flag") { onSafety(.reportPhoto) }
+                        Button("Report \(buddyName(post.displayName))", systemImage: "exclamationmark.bubble") { onSafety(.reportUser) }
+                        Button("Block \(buddyName(post.displayName))", systemImage: "hand.raised", role: .destructive) { onSafety(.block) }
+                    } label: {
+                        Image(systemName: "ellipsis.circle").font(.title3)
+                    }
+                    .accessibilityLabel("Report or block")
+                }
                 Button("Done") { dismiss() }
             }
             // Never an endless spinner: no link or a failed download shows a retry.

@@ -217,7 +217,10 @@ public struct RootView: View {
                 switch event {
                 case .rang: Telemetry.shared.send(.alarmRang)
                 case .stopped(let attempt): Telemetry.shared.send(.alarmStopped(attempt: attempt))
-                case .failSafe(let rings): Telemetry.shared.send(.morningFailSafe(rings: rings))
+                case .failSafe(let rings):
+                    Telemetry.shared.send(.morningFailSafe(rings: rings))
+                    if let session = coordinator.session { logCycle(session) }  // Progress shows fail-safe days
+                    refreshCoachNotifications()
                 }
             }
             Telemetry.shared.sessionStarted(source: coordinator.needsMission ? .alarm : .cold)
@@ -314,18 +317,22 @@ public struct RootView: View {
         }
     }
 
-    private func completeMission() {
-        let session = coordinator.missionSucceeded()
+    /// Stores a finished ring cycle in its day's log (`DayLogRule`: first completed cycle wins).
+    private func logCycle(_ session: SessionState) {
         let day = session.day
         let existing = try? modelContext.fetch(FetchDescriptor<DayLog>(predicate: #Predicate { $0.day == day })).first
+        guard let values = DayLogRule.merge(existing: existing?.values, cycle: session) else { return }
         if let existing {
-            existing.missionCompletedAt = session.missionCompletedAt
-            existing.firstEndedAt = session.firstEndedAt
-            existing.reArmCount = session.reArmCount
+            existing.apply(values)
         } else {
-            modelContext.insert(DayLog(session: session))
+            modelContext.insert(DayLog(values))
         }
         try? modelContext.save()
+    }
+
+    private func completeMission() {
+        let session = coordinator.missionSucceeded()
+        logCycle(session)
         refreshCoachNotifications()
         reportToBuddies(session)
         reportMorningTelemetry(session)

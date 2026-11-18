@@ -20,6 +20,8 @@ struct SoundPickerView: View {
     @State private var recording = false
     @State private var showPaywall = false
     @State private var renaming: CustomSound?
+    /// Deleting an own sound is permanent and changes every alarm that uses it: ask first.
+    @State private var deleting: CustomSound?
     @State private var newName = ""
     @State private var importError: String?
 
@@ -44,16 +46,14 @@ struct SoundPickerView: View {
                     row(sound.choice, title: sound.name,
                         subtitle: "\(sound.source == .recorded ? "Recording" : "Imported") · \(Int(sound.duration.rounded())) s",
                         locked: gate.isLocked(sound.choice))
-                        .swipeActions {
-                            Button("Delete", role: .destructive) {
-                                if selection == sound.choice { selection = .classic }
-                                mySounds.delete(sound.id)
-                            }
-                            Button("Rename") {
-                                newName = sound.name
-                                renaming = sound
-                            }
-                            .tint(.orange)
+                        .swipeActions(allowsFullSwipe: false) {
+                            Button("Delete", role: .destructive) { deleting = sound }
+                            Button("Rename") { startRename(sound) }
+                                .tint(.orange)
+                        }
+                        .contextMenu {
+                            Button("Rename", systemImage: "pencil") { startRename(sound) }
+                            Button("Delete", systemImage: "trash", role: .destructive) { deleting = sound }
                         }
                 }
                 ownSoundButton(L10n.tr("Import a file"), symbol: "square.and.arrow.down") { importing = true }
@@ -116,6 +116,17 @@ struct SoundPickerView: View {
         .sheet(isPresented: $recording) {
             RecordSoundView { sound in selection = sound.choice }
         }
+        .confirmationDialog(deleting.map { L10n.tr("Delete \"\($0.name)\"?") } ?? "",
+                            isPresented: Binding(get: { deleting != nil }, set: { if !$0 { deleting = nil } }),
+                            titleVisibility: .visible, presenting: deleting) { sound in
+            Button("Delete", role: .destructive) {
+                if selection == sound.choice { selection = .classic }
+                mySounds.delete(sound.id)
+                deleting = nil
+            }
+        } message: { _ in
+            Text("Alarms that use this sound switch to Classic Beep.")
+        }
         .alert("Rename sound", isPresented: Binding(get: { renaming != nil }, set: { if !$0 { renaming = nil } })) {
             TextField("Name", text: $newName)
             Button("Save") {
@@ -169,6 +180,11 @@ struct SoundPickerView: View {
     }
 
     /// Copy the picked file out of its security scope, then open the trim screen.
+    private func startRename(_ sound: CustomSound) {
+        newName = sound.name
+        renaming = sound
+    }
+
     private func importFile(_ url: URL) {
         let scoped = url.startAccessingSecurityScopedResource()
         defer { if scoped { url.stopAccessingSecurityScopedResource() } }
