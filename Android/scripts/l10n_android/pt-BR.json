@@ -10,13 +10,8 @@
   "channel_alarms_description": "O alarme tocando e sua missão.",
   "mission_done": "Missão cumprida",
   "heard_play": "Google Play",
-  "ob_perm_body": "O Gloop precisa disso para seu alarme tocar na hora e mostrar sua missão sobre a tela de bloqueio.",
+  "ob_perm_body": "O Gloop precisa disso para seu alarme tocar na hora e sua missão aparecer na tela de bloqueio.",
   "ob_perm_mock_title": "Permitir que o Gloop envie notificações?",
   "ob_perm_dont_allow": "Não permitir",
-  "quote_1": "\"Cada soneca me deixa um pouco mais murcho. Só dizendo.\"",
-  "quote_2": "\"Primeiro os pés no chão. Pensar vem depois.\"",
-  "quote_3": "\"Ninguém nunca se arrependeu de acordar na hora. Muito menos eu.\"",
-  "quote_4": "\"Uma missão, e a manhã é sua. E eu posso pular.\"",
-  "coach_name_love": "%1$s! Adorei. Vamos ser um ótimo time.",
   "replay_onboarding": "Refazer a introdução"
 }

@@ -305,7 +305,7 @@ struct AlarmComparison: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("A normal alarm needs four alarms five minutes apart. Gloop needs one alarm with a mission.")
+        .accessibilityLabel("A normal alarm takes four alarms, five minutes apart. Gloop takes one alarm and a mission.")
     }
 
     private func column<C: View>(title: String, tint: Color, @ViewBuilder content: () -> C) -> some View {
@@ -390,7 +390,7 @@ struct WeekdayCircles: View {
                     .background(on ? AnyShapeStyle(Color.orange) : AnyShapeStyle(.clear), in: .circle)
                     .overlay(Circle().strokeBorder(on ? Color.orange : Color.secondary.opacity(0.4), lineWidth: 2))
                     .foregroundStyle(on ? .white : .secondary)
-                    .accessibilityLabel(cal.weekdaySymbols[day - 1] + (on ? ", alarm" : ""))
+                    .accessibilityLabel(on ? L10n.tr("\(cal.weekdaySymbols[day - 1]), alarm on") : cal.weekdaySymbols[day - 1])
             }
         }
     }
@@ -420,12 +420,13 @@ struct QuoteCarousel: View {
     let proof: SocialProof
     @State private var index = 0
 
-    static let coachQuotes = [
-        "\"Every snooze makes me a little droopier. Just saying.\"",
-        "\"Feet on the floor first. Thinking comes later.\"",
-        "\"Nobody ever regretted getting up on time. Especially not me.\"",
-        "\"One mission, then the morning is yours. And I get to bounce.\"",
-    ]
+    /// Gloop's own lines (already in a speech card next to Gloop, so no quote marks: those differ per language).
+    static var coachQuotes: [String] {
+        [L10n.tr("Every snooze makes me a little droopier. Just saying."),
+         L10n.tr("Feet on the floor first. Thinking comes later."),
+         L10n.tr("Nobody ever regretted getting up on time. Especially not me."),
+         L10n.tr("One mission, then the morning is yours. And I get to bounce.")]
+    }
 
     private var items: [(title: String, text: String, stars: Int)] {
         if !proof.reviews.isEmpty { return proof.reviews.map { ($0.name, $0.text, $0.stars) } }

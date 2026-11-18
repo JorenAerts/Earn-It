@@ -59,20 +59,20 @@ public enum OnboardingPersonalization {
         switch goal {
         case .workout: L10n.tr("You're up. Go train.")
         case .quietTime: L10n.tr("You're up. Coffee's yours.")
-        case .getAhead: L10n.tr("You're up, and ahead.")
-        default: L10n.tr("You're up. Glad you set it.")
+        case .getAhead: L10n.tr("You're up and ahead of the day.")
+        default: L10n.tr("You're up. The day is yours.")
         }
     }
 
     /// Gloop reacting to an answer (speech bubble). nil = stay quiet.
     public static func coachReaction(to step: OnboardingStep, answers: OnboardingAnswers) -> String? {
         let name = answers.name.trimmingCharacters(in: .whitespaces)
-        let who = name.isEmpty ? "friend" : name
+        let who = name.isEmpty ? L10n.tr("friend") : name
         switch step {
         case .welcome:
             return L10n.tr("Hi, I'm \(CoachIdentity.name)! I get droopy when you snooze, so let's not.")
         case .name:
-            return name.isEmpty ? L10n.tr("What should I call you?") : "\(name)! Love it. We're going to be a great team."
+            return name.isEmpty ? L10n.tr("What should I call you?") : L10n.tr("\(name)! Love it. We're going to be a great team.")
         case .ageRange:
             return L10n.tr("Just so I know who I'm waking up.")
         case .heardFrom:
@@ -90,7 +90,7 @@ public enum OnboardingPersonalization {
             case .under10: return L10n.tr("Not bad! Let's make it zero.")
             case .tenTo30: return L10n.tr("That's a whole episode of lying around. Noted.")
             case .thirtyTo60: return L10n.tr("An hour?! I'm melting just hearing that.")
-            case .overHour: return L10n.tr("Over an hour. Okay, short re-rings for you, \(who).")
+            case .overHour: return L10n.tr("Over an hour? Okay, I'll ring again sooner for you, \(who).")
             case nil: return nil
             }
         case .struggles:

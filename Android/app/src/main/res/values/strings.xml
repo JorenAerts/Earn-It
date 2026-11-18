@@ -263,7 +263,7 @@
     <!-- Onboarding -->
     <string name="ob_point_ring">An alarm that keeps ringing until you\'re up</string>
     <string name="ob_point_mission">A quick mission proves you\'re awake</string>
-    <string name="ob_point_streaks">Streaks, evolutions and buddies keep you going</string>
+    <string name="ob_point_streaks">Streaks, evolutions and buddies keep you motivated</string>
     <string name="ob_welcome_title">Waking up,\nearned.</string>
     <string name="ob_get_started">Get started</string>
     <string name="ob_consent">By continuing you accept the [Terms](gloop-legal://terms) and [Privacy Policy](gloop-legal://privacy).</string>
@@ -272,7 +272,7 @@
     <string name="ob_continue">Continue</string>
     <string name="ob_skip">Skip</string>
     <string name="ob_name_title">What should %1$s call you?</string>
-    <string name="ob_name_subtitle">Your first name or a nickname. Used in your coach\'s lines and your profile.</string>
+    <string name="ob_name_subtitle">Your first name or a nickname. Gloop uses it to talk to you and on your profile.</string>
     <string name="ob_name_hint">Your name</string>
     <string name="ob_age_title">What\'s your age range?</string>
     <string name="ob_age_subtitle">Helps us build Gloop for people like you.</string>
@@ -288,7 +288,7 @@
     <string name="reaction_backup">I have a backup alarm</string>
     <string name="reaction_early">Ugh, why so early?</string>
     <string name="ob_why_title">Gloop gets you out of bed and wide awake</string>
-    <string name="ob_why_body">Snoozing drops you back into sleep you can\'t finish, so every extra ring tends to leave you groggier. One alarm and a short mission gets your brain and body going at once.</string>
+    <string name="ob_why_body">Snoozing drops you back into sleep you can\'t finish, so every extra ring tends to leave you groggier. One alarm and a short mission get your brain and body going at once.</string>
     <string name="chart_energy">Morning energy</string>
     <string name="chart_groggy">GROGGY ZONE</string>
     <string name="chart_snooze_cycle">Snooze cycle</string>
@@ -297,6 +297,9 @@
     <string name="ob_getup_title">How much time until you actually get up?</string>
     <string name="getup_under10">Under 10 minutes</string>
     <string name="getup_over_hour">Over an hour</string>
+    <string name="getup_10_30">10–30 minutes</string>
+    <string name="getup_30_60">30–60 minutes</string>
+    <string name="name_fallback">friend</string>
     <string name="ob_struggles_title">What keeps you in bed after your alarm?</string>
     <string name="ob_struggles_subtitle">Pick everything that sounds like you.</string>
     <string name="struggle_phone">Scrolling my phone</string>
@@ -333,7 +336,7 @@
     <string name="ob_more_missions">More missions, like memory match and tongue twisters, are waiting in the app.</string>
     <string name="duration_1min">~1 min</string>
     <string name="duration_30s">~30 s</string>
-    <string name="setup_math_title">Set up your math</string>
+    <string name="setup_math_title">Set up your math problems</string>
     <string name="setup_shake_title">How hard should you shake?</string>
     <string name="setup_qr_title">Register your code</string>
     <string name="setup_quiz_title">Pick your quiz</string>
@@ -341,7 +344,7 @@
     <string name="setup_typing_title">Set up your tongue twisters</string>
     <string name="setup_math_sub">Pick how hard the problems are, and how many you\'ll solve.</string>
     <string name="setup_shake_sub">More shakes, more awake.</string>
-    <string name="setup_qr_sub">Print or pick any code and stick it somewhere out of bed, like the bathroom.</string>
+    <string name="setup_qr_sub">Print a code or use one you already have, and stick it far from your bed, like in the bathroom.</string>
     <string name="setup_object_sub">Something that\'s not in your bedroom: your toothbrush, coffee mug or shoes.</string>
     <string name="setup_quiz_sub">Pick a topic and how many right answers it takes.</string>
     <string name="setup_memory_sub">More pairs, more brain power.</string>
@@ -361,10 +364,10 @@
     <string name="build_sound">Adding your alarm sound</string>
     <string name="build_waking">Waking up %1$s</string>
     <string name="build_title">Getting your mornings ready</string>
-    <string name="quote_1">"Every snooze makes me a little droopier. Just saying."</string>
-    <string name="quote_2">"Feet on the floor first. Thinking comes later."</string>
-    <string name="quote_3">"Nobody ever regretted getting up on time. Especially not me."</string>
-    <string name="quote_4">"One mission, then the morning is yours. And I get to bounce."</string>
+    <string name="quote_1">Every snooze makes me a little droopier. Just saying.</string>
+    <string name="quote_2">Feet on the floor first. Thinking comes later.</string>
+    <string name="quote_3">Nobody ever regretted getting up on time. Especially not me.</string>
+    <string name="quote_4">One mission, then the morning is yours. And I get to bounce.</string>
     <string name="sum_when">You\'ll be up at</string>
     <string name="sum_today">Today, you\'ll be up at</string>
     <string name="sum_tomorrow">Tomorrow, you\'ll be up at</string>
@@ -385,7 +388,7 @@
     <string name="line_goal_none">Your mornings, earned</string>
     <string name="line_finish_train">You\'re up. Go train.</string>
     <string name="line_finish_coffee">You\'re up. Coffee\'s yours.</string>
-    <string name="line_finish_ahead">You\'re up, and ahead.</string>
+    <string name="line_finish_ahead">You\'re up and ahead of the day.</string>
     <string name="coach_welcome">Hi, I\'m %1$s! I get droopy when you snooze, so let\'s not.</string>
     <string name="coach_name_ask">What should I call you?</string>
     <string name="coach_name_love">%1$s! Love it. We\'re going to be a great team.</string>
@@ -399,7 +402,7 @@
     <string name="coach_under10">Not bad! Let\'s make it zero.</string>
     <string name="coach_10_30">That\'s a whole episode of lying around. Noted.</string>
     <string name="coach_30_60">An hour?! I\'m melting just hearing that.</string>
-    <string name="coach_over_hour">Over an hour. Okay, short re-rings for you, %1$s.</string>
+    <string name="coach_over_hour">Over an hour? Okay, I\'ll ring again sooner for you, %1$s.</string>
     <string name="coach_snooze">The snooze button is not your friend. I am.</string>
     <string name="coach_phone">Phone down, feet on the floor. Deal?</string>
     <string name="coach_sleep">You won\'t sleep through me. I keep coming back.</string>
@@ -422,7 +425,7 @@
 
     <!-- Success -->
     <string name="mission_done">Mission done</string>
-    <string name="youre_up">You\'re up. Glad you set it.</string>
+    <string name="youre_up">You\'re up. The day is yours.</string>
     <string name="streak_first">Your first finished mission starts your streak.</string>
     <string name="tip_of_the_morning">Morning tip</string>
     <string name="quote_of_the_morning">Quote of the morning</string>

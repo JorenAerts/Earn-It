@@ -9,6 +9,7 @@ import be.gloop.core.onboarding.GetUpTime
 import be.gloop.core.onboarding.HeardFrom
 import be.gloop.core.onboarding.MorningGoal
 import be.gloop.core.onboarding.MorningStruggle
+import be.gloop.core.onboarding.OnboardingPersonalization
 import be.gloop.core.onboarding.OnboardingPersonalization.CoachLine
 import be.gloop.core.onboarding.OnboardingPersonalization.Line
 
@@ -53,7 +54,8 @@ fun Context.text(line: Line, args: List<String> = emptyList()): String {
         Line.FINISH_AHEAD -> R.string.line_finish_ahead
         Line.FINISH_DEFAULT -> R.string.youre_up
     }
-    return if (args.isEmpty()) getString(res) else getString(res, *args.toTypedArray())
+    val shown = args.map { if (it == OnboardingPersonalization.FALLBACK_NAME) getString(R.string.name_fallback) else it }
+    return if (shown.isEmpty()) getString(res) else getString(res, *shown.toTypedArray())
 }
 
 fun AgeRange.icon() = when (this) {
@@ -77,8 +79,8 @@ fun AlarmReaction.label(c: Context) = c.getString(when (this) {
 fun AlarmReaction.icon() = when (this) { AlarmReaction.IM_UP -> "⚡"; AlarmReaction.FIVE_MORE -> "💤"; AlarmReaction.BACKUP_ALARM -> "⏰"; AlarmReaction.WHY_SO_EARLY -> "❓" }
 
 fun GetUpTime.label(c: Context) = when (this) {
-    GetUpTime.UNDER_10 -> c.getString(R.string.getup_under10); GetUpTime.TEN_TO_30 -> "10–30 min"
-    GetUpTime.THIRTY_TO_60 -> "30–60 min"; GetUpTime.OVER_HOUR -> c.getString(R.string.getup_over_hour)
+    GetUpTime.UNDER_10 -> c.getString(R.string.getup_under10); GetUpTime.TEN_TO_30 -> c.getString(R.string.getup_10_30)
+    GetUpTime.THIRTY_TO_60 -> c.getString(R.string.getup_30_60); GetUpTime.OVER_HOUR -> c.getString(R.string.getup_over_hour)
 }
 fun GetUpTime.icon() = when (this) { GetUpTime.UNDER_10 -> "🟢"; GetUpTime.TEN_TO_30 -> "🟡"; GetUpTime.THIRTY_TO_60 -> "🟠"; GetUpTime.OVER_HOUR -> "🔴" }
 

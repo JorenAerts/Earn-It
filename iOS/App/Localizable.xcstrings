@@ -60,7 +60,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "« Gloop » souhaite utiliser les alarmes"
+            "value" : "« Gloop » souhaite utiliser les alarmes"
           }
         },
         "de" : {
@@ -379,7 +379,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "%@ a évolué en %@ !"
+            "value" : "%@ a évolué en %@ !"
           }
         },
         "de" : {
@@ -1047,6 +1047,53 @@
         }
       }
     },
+    "%@! Love it. We're going to be a great team." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@! Schöner Name. Wir zwei werden ein super Team."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "¡%@! Me encanta. Vamos a ser un gran equipo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@ ! J’adore. On va faire une super équipe."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@! Che bel nome. Faremo una squadra fantastica."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@! Mooie naam. Wij worden een topteam."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@! Adorei. A gente vai formar um ótimo time."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@! Adoro. Vamos formar uma ótima equipa."
+          }
+        }
+      }
+    },
     "%@'s health" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1090,6 +1137,53 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Saúde do %@"
+          }
+        }
+      }
+    },
+    "%@, alarm on" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@, Wecker an"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@, alarma activada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@, réveil activé"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@, sveglia attiva"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@, wekker aan"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@, alarme ativado"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "%@, alarme ativado"
           }
         }
       }
@@ -1288,7 +1382,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "%@. Ich bin da und hüpfe."
+            "value" : "%@. Ich bin da und hüpfe schon."
           }
         },
         "es" : {
@@ -1312,7 +1406,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "%@. Ik ben er, stuiterend."
+            "value" : "%@. Ik sta al te stuiteren."
           }
         },
         "pt-BR" : {
@@ -4231,13 +4325,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "needs_review",
-                  "value" : "%lld Schüttler"
+                  "value" : "%lld-mal schütteln"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "needs_review",
-                  "value" : "%lld Schüttler"
+                  "value" : "%lld-mal schütteln"
                 }
               }
             }
@@ -4380,13 +4474,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "needs_review",
-                  "value" : "%lld Schüttler · %@"
+                  "value" : "%lld-mal schütteln · %@"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "needs_review",
-                  "value" : "%lld Schüttler · %@"
+                  "value" : "%lld-mal schütteln · %@"
                 }
               }
             }
@@ -6314,6 +6408,53 @@
         }
       }
     },
+    "10–30 minutes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "10–30 Minuten"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "10–30 minutos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "10 à 30 minutes"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "10–30 minuti"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "10–30 minuten"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "10–30 minutos"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "10–30 minutos"
+          }
+        }
+      }
+    },
     "3-day streak." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6408,6 +6549,53 @@
         }
       }
     },
+    "30–60 minutes" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "30–60 Minuten"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "30–60 minutos"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "30 à 60 minutes"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "30–60 minuti"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "30–60 minuten"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "30–60 minutos"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "30–60 minutos"
+          }
+        }
+      }
+    },
     "7-day streak." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6461,13 +6649,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Een reserve voor je reserve? Je hebt nu alleen mij nodig."
+            "value" : "Een reserve voor je reservewekker? Je hebt nu alleen mij nog nodig."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Un réveil de secours pour ton réveil de secours ? Tu n’as besoin que de moi."
+            "value" : "Un réveil de secours pour ton réveil de secours ? Tu n’as besoin que de moi."
           }
         },
         "de" : {
@@ -6497,7 +6685,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Um alarme reserva para seu alarme reserva? Agora você só precisa de mim."
+            "value" : "Um alarme de reserva para o seu alarme de reserva? Agora só precisa de mim."
           }
         }
       }
@@ -6520,7 +6708,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ein Vorsprung für deinen Tag"
+            "value" : "Mit Vorsprung in den Tag"
           }
         },
         "es" : {
@@ -6549,49 +6737,49 @@
         }
       }
     },
-    "A normal alarm needs four alarms five minutes apart. Gloop needs one alarm with a mission." : {
+    "A normal alarm takes four alarms, five minutes apart. Gloop takes one alarm and a mission." : {
       "extractionState" : "manual",
       "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Een gewone wekker heeft vier alarmen met vijf minuten ertussen nodig. Gloop heeft één wekker met een missie nodig."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Un réveil classique, c’est quatre alarmes à cinq minutes d’intervalle. Avec Gloop, une seule alarme avec une mission suffit."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ein normaler Wecker braucht vier Alarme im Abstand von fünf Minuten. Gloop braucht einen Wecker mit einer Mission."
+            "value" : "Mit einem normalen Wecker stellst du vier Alarme im Abstand von fünf Minuten. Mit Gloop reichen ein Wecker und eine Mission."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Un despertador normal necesita cuatro alarmas separadas por cinco minutos. Gloop necesita una alarma con una misión."
+            "value" : "Con un despertador normal pones cuatro alarmas separadas por cinco minutos. Con Gloop basta una alarma y una misión."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Avec un réveil classique, il faut quatre alarmes à cinq minutes d’intervalle. Avec Gloop, une alarme et une mission suffisent."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Una sveglia normale ha bisogno di quattro allarmi a cinque minuti l’uno dall’altro. A Gloop ne basta uno con una missione."
+            "value" : "Con una sveglia normale ne imposti quattro, a cinque minuti l’una dall’altra. Con Gloop bastano una sveglia e una missione."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Met een gewone wekker zet je er vier, met vijf minuten ertussen. Met Gloop is het één wekker en een missie."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Um despertador comum precisa de quatro alarmes com cinco minutos de intervalo. O Gloop precisa de um alarme com uma missão."
+            "value" : "Com um despertador comum, você precisa de quatro alarmes com cinco minutos de intervalo. Com o Gloop, basta um alarme e uma missão."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Um despertador comum precisa de quatro alarmes com cinco minutos de intervalo. O Gloop precisa de um alarme com uma missão."
+            "value" : "Com um despertador normal, precisa de quatro alarmes com cinco minutos de intervalo. Com o Gloop, basta um alarme e uma missão."
           }
         }
       }
@@ -7321,7 +7509,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Le réveil de %@ a été désactivé (version gratuite : 1 réveil)."
+            "value" : "Le réveil de %@ a été désactivé (version gratuite : 1 réveil)."
           }
         },
         "de" : {
@@ -7503,7 +7691,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Wekker gaat"
+            "value" : "Wekker gaat af"
           }
         },
         "fr" : {
@@ -7556,7 +7744,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Les sons de réveil peuvent durer jusqu’à 30 secondes ; l’extrait se répète tant que le réveil sonne. N’utilise que de l’audio dont tu as les droits."
+            "value" : "Les sons de réveil peuvent durer jusqu’à 30 secondes ; l’extrait se répète tant que le réveil sonne. N’utilise que de l’audio dont tu as les droits."
           }
         },
         "de" : {
@@ -7789,7 +7977,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Wekkers gaan af door de stille modus en Focus heen. Meldingen brengen de avondherinneringen van %@."
+            "value" : "Wekkers gaan ook af in de stille modus en met Focus. Via meldingen krijg je de avondherinneringen van %@."
           }
         },
         "fr" : {
@@ -8083,7 +8271,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Toutes les couleurs trouvées !"
+            "value" : "Toutes les couleurs trouvées !"
           }
         },
         "it" : {
@@ -8459,7 +8647,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Presque : lisse la couette et les oreillers."
+            "value" : "Presque : lisse la couette et les oreillers."
           }
         },
         "it" : {
@@ -8500,7 +8688,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Tu as déjà un compte ?"
+            "value" : "Tu as déjà un compte ?"
           }
         },
         "de" : {
@@ -8530,7 +8718,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Já tnuma conta?"
+            "value" : "Já tem uma conta?"
           }
         }
       }
@@ -8588,7 +8776,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Een wekker die blijft gaan tot je op bent"
+            "value" : "Een wekker die blijft afgaan tot je echt op bent"
           }
         },
         "fr" : {
@@ -8600,7 +8788,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ein Wecker, der klingelt, bis du aufstehst"
+            "value" : "Ein Wecker, der so lange klingelt, bis du wirklich aufstehst"
           }
         },
         "es" : {
@@ -8624,7 +8812,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Um alarme que toca até você levantar"
+            "value" : "Um alarme que toca até se levantar"
           }
         }
       }
@@ -8641,13 +8829,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Une heure ?! Rien que d’y penser, je fonds."
+            "value" : "Une heure ?! Rien que d’y penser, je fonds."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Eine Stunde?! Ich schmelze schon beim Zuhören."
+            "value" : "Eine Stunde?! Ich schmelze schon, wenn ich das höre."
           }
         },
         "es" : {
@@ -8978,13 +9166,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "needs_review",
-                  "value" : "Réponds correctement à %lld question sur : %@."
+                  "value" : "Réponds correctement à %lld question sur : %@."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "needs_review",
-                  "value" : "Réponds correctement à %lld questions sur : %@."
+                  "value" : "Réponds correctement à %lld questions sur : %@."
                 }
               }
             }
@@ -9129,7 +9317,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "N’importe quel ciel : jour, nuit, nuages ou pluie"
+            "value" : "N’importe quel ciel : jour, nuit, nuages ou pluie"
           }
         },
         "it" : {
@@ -9503,7 +9691,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Gloop n’a pas accès à Apple Music : impossible de chercher ou de lire des morceaux."
+            "value" : "Gloop n’a pas accès à Apple Music : impossible de chercher ou de lire des morceaux."
           }
         },
         "de" : {
@@ -9797,7 +9985,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Wach, kein Zombie"
+            "value" : "Wach statt Zombie"
           }
         },
         "es" : {
@@ -9821,7 +10009,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Acordado, não um zumbi"
+            "value" : "Acordado, não um zombie"
           }
         }
       }
@@ -10073,7 +10261,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Reprise le %@. Premier réveil : %@."
+            "value" : "Reprise le %@. Premier réveil : %@."
           }
         },
         "de" : {
@@ -10255,7 +10443,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Altijd op tijd"
+            "value" : "Altijd op tijd zijn"
           }
         },
         "fr" : {
@@ -10267,7 +10455,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Pünktlich, jedes Mal"
+            "value" : "Immer pünktlich sein"
           }
         },
         "es" : {
@@ -10302,7 +10490,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Omdat de dag op je wacht, %@. Ik maak het de moeite waard."
+            "value" : "Omdat de dag op je wacht, %@. Ik zorg dat het de moeite waard is."
           }
         },
         "fr" : {
@@ -10338,7 +10526,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Porque o dia está à tua espera, %@. Vou fazer valer a pena."
+            "value" : "Porque o dia está à sua espera, %@. Vou fazer valer a pena."
           }
         }
       }
@@ -10596,7 +10784,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Bloquer %@ ?"
+            "value" : "Bloquer %@ ?"
           }
         },
         "it" : {
@@ -10937,7 +11125,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Hoofd"
+            "value" : "Brein"
           }
         },
         "pt-BR" : {
@@ -10966,7 +11154,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "La pause est finie ! Je reviens demain, prêt à rebondir."
+            "value" : "La pause est finie ! Je reviens demain, prêt à rebondir."
           }
         },
         "de" : {
@@ -11107,7 +11295,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Buddies, c’est se motiver les uns les autres. Quelques règles pour que ça reste ainsi :"
+            "value" : "Buddies, c’est se motiver les uns les autres. Quelques règles pour que ça reste ainsi :"
           }
         },
         "de" : {
@@ -11722,7 +11910,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Introuvable ? Fais une mission de secours"
+            "value" : "Introuvable ? Fais une mission de secours"
           }
         },
         "de" : {
@@ -11775,7 +11963,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Tu ne vois pas le ciel ? Fais une autre mission"
+            "value" : "Tu ne vois pas le ciel ? Fais une autre mission"
           }
         },
         "it" : {
@@ -12004,13 +12192,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Graphique : en répétant l’alarme, ton énergie reste dans une zone pâteuse ; te lever à la première sonnerie la fait monter régulièrement."
+            "value" : "Graphique : en répétant l’alarme, ton énergie reste dans une zone vaseuse ; te lever à la première sonnerie la fait monter régulièrement."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Diagramm: Beim Schlummern bleibt deine Energie in einer müden Zone; beim Aufstehen beim ersten Klingeln steigt sie stetig an."
+            "value" : "Diagramm: Beim Schlummern bleibt deine Energie in der Döszone; wenn du beim ersten Klingeln aufstehst, steigt sie stetig an."
           }
         },
         "es" : {
@@ -12022,19 +12210,19 @@
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Grafico: posticipando, la tua energia resta in una zona di intontimento; alzarti al primo squillo la fa salire in modo costante."
+            "value" : "Grafico: rimandando la sveglia, la tua energia resta nella zona di intontimento; alzarti al primo squillo la fa salire in modo costante."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Gráfico: soneca mantém sua energia numa zona de moleza; levantar no primeiro alarme faz ela subir sem parar."
+            "value" : "Gráfico: com a soneca, sua energia fica numa zona de moleza; levantar no primeiro alarme a faz subir sem parar."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Gráfico: snooze mantém a sua energia numa zona de moleza; levantar no primeiro alarme faz ela subir sem parar."
+            "value" : "Gráfico: com o snooze, a sua energia fica numa zona de moleza; levantar-se ao primeiro alarme fá-la subir de forma constante."
           }
         }
       }
@@ -12045,7 +12233,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Kijk in je inbox voor een herstellink."
+            "value" : "Check je inbox: we hebben je een link gestuurd om je wachtwoord opnieuw in te stellen."
           }
         },
         "fr" : {
@@ -12081,7 +12269,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Confira seu e-mail para o link de redefinição."
+            "value" : "Veja o seu e-mail: enviámos uma ligação para repor a palavra-passe."
           }
         }
       }
@@ -13314,7 +13502,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ga verder"
+            "value" : "Doorgaan"
           }
         },
         "fr" : {
@@ -13408,7 +13596,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ga verder met %@"
+            "value" : "Doorgaan met %@"
           }
         },
         "fr" : {
@@ -13455,7 +13643,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ga verder met de gratis versie"
+            "value" : "Doorgaan met de gratis versie"
           }
         },
         "fr" : {
@@ -13502,7 +13690,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ga verder zonder account"
+            "value" : "Doorgaan zonder account"
           }
         },
         "fr" : {
@@ -13610,7 +13798,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Impossible de reprogrammer : %@"
+            "value" : "Impossible de reprogrammer : %@"
           }
         },
         "de" : {
@@ -13657,7 +13845,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Impossible de programmer le réveil : %@"
+            "value" : "Impossible de programmer le réveil : %@"
           }
         },
         "de" : {
@@ -13704,7 +13892,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Impossible de programmer le réveil test : %@"
+            "value" : "Impossible de programmer le réveil test : %@"
           }
         },
         "de" : {
@@ -13751,7 +13939,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Impossible de changer l’icône : %@"
+            "value" : "Impossible de changer l’icône : %@"
           }
         },
         "de" : {
@@ -13798,7 +13986,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Impossible de supprimer le compte : %@"
+            "value" : "Impossible de supprimer le compte : %@"
           }
         },
         "de" : {
@@ -13892,7 +14080,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Impossible de charger les offres : %@"
+            "value" : "Impossible de charger les offres : %@"
           }
         },
         "de" : {
@@ -13986,7 +14174,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Impossible d’ouvrir le fichier : %@"
+            "value" : "Impossible d’ouvrir le fichier : %@"
           }
         },
         "de" : {
@@ -14127,7 +14315,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Impossible d’enregistrer le scan : %@"
+            "value" : "Impossible d’enregistrer le scan : %@"
           }
         },
         "de" : {
@@ -14174,7 +14362,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Impossible de lancer l’enregistrement : %@"
+            "value" : "Impossible de lancer l’enregistrement : %@"
           }
         },
         "de" : {
@@ -14356,7 +14544,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Maak een nieuw account"
+            "value" : "Maak een nieuw account aan"
           }
         },
         "fr" : {
@@ -14544,7 +14732,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Maak je account"
+            "value" : "Maak een account aan"
           }
         },
         "fr" : {
@@ -14842,7 +15030,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Jour, nuit, nuages ou pluie : tous les ciels comptent."
+            "value" : "Jour, nuit, nuages ou pluie : tous les ciels comptent."
           }
         },
         "it" : {
@@ -14983,7 +15171,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Supprimer « %@ » ?"
+            "value" : "Supprimer « %@ » ?"
           }
         },
         "it" : {
@@ -15165,7 +15353,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Supprimer ce réveil ?"
+            "value" : "Supprimer ce réveil ?"
           }
         },
         "de" : {
@@ -15212,7 +15400,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Supprimer ce club ?"
+            "value" : "Supprimer ce club ?"
           }
         },
         "de" : {
@@ -15259,7 +15447,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Supprimer ton compte ?"
+            "value" : "Supprimer ton compte ?"
           }
         },
         "de" : {
@@ -15598,7 +15786,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Abandonner les modifications ?"
+            "value" : "Abandonner les modifications ?"
           }
         },
         "it" : {
@@ -16583,7 +16771,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Toutes les missions : secouer, scanner un code, scanner ton objet"
+            "value" : "Toutes les missions : secouer, scanner un code, scanner ton objet"
           }
         },
         "de" : {
@@ -16665,6 +16853,53 @@
         }
       }
     },
+    "Every snooze makes me a little droopier. Just saying." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Mit jedem Schlummern sacke ich ein bisschen mehr zusammen. Nur so als Info."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cada vez que pospones, me desinflo un poco más. Ahí lo dejo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "À chaque répétition, je m’affaisse un peu plus. Je dis ça, je dis rien."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ogni volta che rimandi, mi affloscio un po’ di più. Lo dico e basta."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Bij elke snooze zak ik een beetje meer in. Zeg ik maar even."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cada soneca me deixa um pouco mais murcho. Só avisando."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Cada snooze deixa-me um pouco mais murcho. Fica o aviso."
+          }
+        }
+      }
+    },
     "Everything new" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -16728,7 +16963,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Exemple : %@"
+            "value" : "Exemple : %@"
           }
         },
         "de" : {
@@ -16775,7 +17010,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sécurité pour ne jamais rester bloqué : après la limite, le réveil s’arrête pour de bon et la journée ne compte pas pour ta série."
+            "value" : "Sécurité pour ne jamais rester bloqué : après la limite, le réveil s’arrête pour de bon et la journée ne compte pas pour ta série."
           }
         },
         "de" : {
@@ -16910,43 +17145,43 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Voel je wakker, geen zombie"
+            "value" : "Me wakker voelen, geen zombie"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Te sentir réveillé, pas zombie"
+            "value" : "Me sentir réveillé, pas comme un zombie"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Wach fühlen, kein Zombie"
+            "value" : "Mich wach fühlen, nicht wie ein Zombie"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sentirte despierto, no un zombi"
+            "value" : "Sentirme despierto, no como un zombi"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sentirti sveglio, non uno zombie"
+            "value" : "Sentirmi sveglio, non uno zombie"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Se sentir acordado, não um zumbi"
+            "value" : "Me sentir acordado, e não um zumbi"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Se sentir acordado, não um zumbi"
+            "value" : "Sentir-me acordado, não um zombie"
           }
         }
       }
@@ -16957,7 +17192,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Me lang suf voelen"
+            "value" : "Nog lang suf blijven"
           }
         },
         "fr" : {
@@ -16969,7 +17204,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ewig benommen sein"
+            "value" : "Ewig nicht richtig wach werden"
           }
         },
         "es" : {
@@ -16993,7 +17228,54 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ficar grogue por muito tempo"
+            "value" : "Demorar uma eternidade a despertar"
+          }
+        }
+      }
+    },
+    "Feet on the floor first. Thinking comes later." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erst die Füße auf den Boden. Denken kommt später."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Primero los pies en el suelo. Ya pensarás luego."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "D’abord les pieds par terre. On réfléchira après."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Prima i piedi a terra. A pensare ci pensi dopo."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eerst je voeten op de grond. Nadenken komt later."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Primeiro os pés no chão. Pensar fica pra depois."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Primeiro os pés no chão. Pensar fica para depois."
           }
         }
       }
@@ -17028,7 +17310,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Meno"
+            "value" : "Di meno"
           }
         },
         "pt-BR" : {
@@ -17488,37 +17770,37 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Trouve ton %@ et pointe l’appareil photo dessus."
+            "value" : "Trouve « %@ » et pointe l’appareil photo dessus."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Finde deinen %@ und richte die Kamera darauf."
+            "value" : "Finde „%@“ und richte die Kamera darauf."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Encuentra tu %@ y apunta la cámara hacia él."
+            "value" : "Busca «%@» y apúntale con la cámara."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Trova il tuo %@ e inquadralo con la fotocamera."
+            "value" : "Trova «%@» e inquadralo con la fotocamera."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Encontre seu %@ e aponte a câmera para ele."
+            "value" : "Encontre “%@” e aponte a câmera para lá."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Encontre o seu %@ e aponte a câmara para ele."
+            "value" : "Encontre “%@” e aponte a câmara para lá."
           }
         }
       }
@@ -17952,7 +18234,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Vijf minuutjes. Tuurlijk. Zo eindig ik als plasje."
+            "value" : "Vijf minuutjes. Tuurlijk. Zo eindig ik als een plasje."
           }
         },
         "fr" : {
@@ -17964,7 +18246,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Fünf Minuten. Klar. So ende ich als Pfütze."
+            "value" : "Fünf Minuten. Klar. Und so ende ich als Pfütze."
           }
         },
         "es" : {
@@ -17988,7 +18270,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Cinco minutos. Claro. É assim que eu viro uma poça."
+            "value" : "Cinco minutos. Claro. É assim que acabo numa poça."
           }
         }
       }
@@ -18017,7 +18299,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Lampe torche : %@"
+            "value" : "Lampe torche : %@"
           }
         },
         "it" : {
@@ -18250,7 +18532,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Mot de passe oublié ?"
+            "value" : "Mot de passe oublié ?"
           }
         },
         "de" : {
@@ -18720,13 +19002,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "ZONE PÂTEUSE"
+            "value" : "ZONE VASEUSE"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "MÜDE ZONE"
+            "value" : "DÖSZONE"
           }
         },
         "es" : {
@@ -18996,7 +19278,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Voorsprong op mijn dag"
+            "value" : "Een voorsprong op mijn dag"
           }
         },
         "fr" : {
@@ -19008,7 +19290,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Vorsprung für meinen Tag"
+            "value" : "Mit Vorsprung in den Tag starten"
           }
         },
         "es" : {
@@ -19032,7 +19314,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sair na frente no meu dia"
+            "value" : "Adiantar-me no meu dia"
           }
         }
       }
@@ -19167,13 +19449,13 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "De pé na hora, sempre — com todas as missões e alarmes que você precisa."
+            "value" : "De pé na hora, sempre — com todas as missões e alarmes de que você precisa."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "A pé na hora, sempre — com todas as missões e alarmes que você precisa."
+            "value" : "A pé a horas, sempre — com todas as missões e alarmes de que precisa."
           }
         }
       }
@@ -19231,13 +19513,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Je ochtenden worden klaargezet"
+            "value" : "We zetten je ochtenden klaar"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Préparation de tes matins"
+            "value" : "On prépare tes matins"
           }
         },
         "de" : {
@@ -19433,7 +19715,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Contente que tu m’aies trouvé !"
+            "value" : "Ravi que tu m’aies trouvé !"
           }
         },
         "de" : {
@@ -19445,13 +19727,13 @@
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "¡Qué bien que me encontraras!"
+            "value" : "¡Qué bien que me hayas encontrado!"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Che bello che mi hai trovato!"
+            "value" : "Che bello che tu mi abbia trovato!"
           }
         },
         "pt-BR" : {
@@ -19568,7 +19850,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Gloop krijgt je uit bed en klaarwakker"
+            "value" : "Gloop haalt je uit bed en maakt je klaarwakker"
           }
         },
         "fr" : {
@@ -19604,7 +19886,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "O Gloop tira você da cama bem acordado"
+            "value" : "O Gloop tira-o da cama bem acordado"
           }
         }
       }
@@ -20168,7 +20450,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Vá até o seu código e digitalize."
+            "value" : "Vá até ao seu código e digitalize-o."
           }
         }
       }
@@ -20238,7 +20520,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Bonjour, le ciel !"
+            "value" : "Bonjour, le ciel !"
           }
         },
         "it" : {
@@ -20279,7 +20561,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Une invitation ? Saisis le code à 8 caractères."
+            "value" : "Une invitation ? Saisis le code à 8 caractères."
           }
         },
         "de" : {
@@ -20373,7 +20655,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Réussi !"
+            "value" : "Réussi !"
           }
         },
         "de" : {
@@ -20450,7 +20732,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Entendi. Vou escolher uma missão que faça você se mexer."
+            "value" : "Entendido. Vou escolher uma missão que o ponha a mexer."
           }
         }
       }
@@ -20708,7 +20990,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ruhige Zeit für mich"
+            "value" : "Ruhige Zeit für mich haben"
           }
         },
         "es" : {
@@ -20873,7 +21155,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ajuda nós a criar o Gloop para pessoas como você."
+            "value" : "Ajuda-nos a fazer o Gloop para pessoas como si."
           }
         }
       }
@@ -20890,7 +21172,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ça nous aide à voir quels écrans et fonctions marchent et où les gens bloquent, pour améliorer Gloop. Anonyme : un identifiant aléatoire non lié à ton compte, et jamais ton nom, ton e-mail, les noms de tes réveils, tes photos ou ce que tu tapes. Le désactiver l’arrête immédiatement et oublie l’identifiant."
+            "value" : "Ça nous aide à voir quels écrans et fonctions marchent et où les gens bloquent, pour améliorer Gloop. Anonyme : un identifiant aléatoire non lié à ton compte, et jamais ton nom, ton e-mail, les noms de tes réveils, tes photos ou ce que tu tapes. Le désactiver l’arrête immédiatement et oublie l’identifiant."
           }
         },
         "de" : {
@@ -20920,7 +21202,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ajuda nós a ver quais ecrãs e recursos funcionam e onde as pessoas travam, para melhorar o Gloop. Anônimo: um ID aleatório que não está ligado à a sua conta, e nunca seu nome, e-mail, nomes de alarmes, fotos ou o que você digita. Desativar interrompe na hora e esquece o ID."
+            "value" : "Ajuda-nos a ver que ecrãs e funcionalidades funcionam e onde as pessoas ficam bloqueadas, para melhorarmos o Gloop. É anónimo: um ID aleatório que não está ligado à sua conta, e nunca o seu nome, e-mail, nomes de alarmes, fotos ou o que escreve. Ao desativar, para de imediato e o ID é esquecido."
           }
         }
       }
@@ -20931,19 +21213,19 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Hoi, ik ben %@! Ik word slap als je snoozet, dus laten we dat niet doen."
+            "value" : "Hoi, ik ben %@! Als je snoozet, zak ik in elkaar. Dus liever niet."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Salut, je suis %@ ! Je m’affaisse quand tu repousses l’alarme, alors évitons ça."
+            "value" : "Salut, je suis %@ ! Je m’affaisse quand tu repousses l’alarme, alors évitons ça."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Hi, ich bin %@! Ich werde schlapp, wenn du schlummerst, also lass es lieber."
+            "value" : "Hi, ich bin %@! Wenn du schlummerst, werde ich schlapp. Also lieber nicht."
           }
         },
         "es" : {
@@ -20955,7 +21237,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ciao, sono %@! Mi affloscio quando posticipi, quindi evitiamo."
+            "value" : "Ciao, sono %@! Mi affloscio quando rimandi la sveglia, quindi meglio di no."
           }
         },
         "pt-BR" : {
@@ -21096,7 +21378,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Premere posticipa"
+            "value" : "Premere Posponi"
           }
         },
         "pt-BR" : {
@@ -21108,7 +21390,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Apertar snooze"
+            "value" : "Carregar no snooze"
           }
         }
       }
@@ -21178,7 +21460,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Quelle taille de plateau ?"
+            "value" : "Quelle taille de plateau ?"
           }
         },
         "it" : {
@@ -21266,7 +21548,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "À quelle force secouer ?"
+            "value" : "À quelle force secouer ?"
           }
         },
         "de" : {
@@ -21360,7 +21642,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Comment se passent les matins : sonneries, missions, séries"
+            "value" : "Comment se passent les matins : sonneries, missions, séries"
           }
         },
         "de" : {
@@ -21401,13 +21683,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Hoeveel tijd duurt het voor je echt opstaat?"
+            "value" : "Hoe lang duurt het voordat je echt opstaat?"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Combien de temps avant de vraiment te lever ?"
+            "value" : "Combien de temps avant de vraiment te lever ?"
           }
         },
         "de" : {
@@ -21437,7 +21719,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Quanto tempo até você realmente levantar?"
+            "value" : "Quanto tempo demora a levantar-se de verdade?"
           }
         }
       }
@@ -21783,7 +22065,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "J’utilise Gloop : un réveil qui sonne jusqu’à ce que je sois vraiment sorti du lit. Tu veux être mon pote de réveil ?"
+            "value" : "J’utilise Gloop : un réveil qui sonne jusqu’à ce que je sois vraiment sorti du lit. Tu veux être mon pote de réveil ?"
           }
         },
         "de" : {
@@ -21813,7 +22095,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Estou a usar o Gloop: um alarme que toca até eu sair mesmo da cama. Quer ser o meu parceiro de despertar?"
+            "value" : "Estou a usar o Gloop: um alarme que toca até eu sair mesmo da cama. Queres ser o meu parceiro de despertar?"
           }
         }
       }
@@ -21830,7 +22112,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "J’utilise Gloop : un réveil qui sonne jusqu’à ce que je sois vraiment levé. Essaie !"
+            "value" : "J’utilise Gloop : un réveil qui sonne jusqu’à ce que je sois vraiment levé. Essaie !"
           }
         },
         "de" : {
@@ -22359,7 +22641,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Il fait sombre : lampe allumée"
+            "value" : "Il fait sombre : lampe allumée"
           }
         },
         "it" : {
@@ -22400,7 +22682,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Il est à toi, gratuitement, pour toujours. Tu veux l’utiliser comme réveil ?"
+            "value" : "Il est à toi, gratuitement, pour toujours. Tu veux l’utiliser comme réveil ?"
           }
         },
         "de" : {
@@ -22430,7 +22712,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "É o seu, grátis, para sempre. Quer usar como alarme?"
+            "value" : "É seu, grátis, para sempre. Quer usá-lo como alarme?"
           }
         }
       }
@@ -22729,7 +23011,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Rejoins mon club de réveil « %@ » sur Gloop ! Code : %@ — ou touche %@"
+            "value" : "Rejoins mon club de réveil « %@ » sur Gloop ! Code : %@ — ou touche %@"
           }
         },
         "de" : {
@@ -23170,7 +23452,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Tieni il mio suono"
+            "value" : "Tengo il mio suono"
           }
         },
         "pt-BR" : {
@@ -23182,7 +23464,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Manter meu som"
+            "value" : "Manter o meu som"
           }
         }
       }
@@ -23334,43 +23616,43 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ken je iemand die zich verslaapt? Stuur hem of haar Gloop en krijg Rise & Conquer, een koperfanfare die niet in de gratis versie zit."
+            "value" : "Ken je iemand die zich vaak verslaapt? Stuur Gloop door en krijg Rise & Conquer, een koperfanfare die niet in de gratis versie zit."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Tu connais quelqu’un qui ne se réveille jamais ? Envoie-lui Gloop et obtiens Rise & Conquer, une fanfare de cuivres absente de la version gratuite."
+            "value" : "Tu connais quelqu’un qui a du mal à se lever ? Envoie-lui Gloop et reçois Rise & Conquer, une fanfare de cuivres absente de la version gratuite."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Kennst du jemanden, der verschläft? Schick ihm Gloop und hol dir Rise & Conquer, eine Blechbläser-Fanfare, die es in der Gratisversion nicht gibt."
+            "value" : "Kennst du jemanden, der oft verschläft? Schick ihm Gloop und hol dir Rise & Conquer, eine Blechbläser-Fanfare, die es in der Gratisversion nicht gibt."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "¿Conoces a alguien que se duerme? Envíale Gloop y consigue Rise & Conquer, una fanfarria de metales que no está en el plan gratuito."
+            "value" : "¿Conoces a alguien que siempre se queda dormido? Envíale Gloop y consigue Rise & Conquer, una fanfarria de metales que no está en el plan gratuito."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Conosci qualcuno che dorme troppo? Mandagli Gloop e ottieni Rise & Conquer, una fanfara di ottoni non inclusa nel piano gratuito."
+            "value" : "Conosci qualcuno che dorme sempre troppo? Mandagli Gloop e ottieni Rise & Conquer, una fanfara di ottoni non inclusa nel piano gratuito."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Conhece alguém que perde a hora? Mande o Gloop e ganhe Rise & Conquer, uma fanfarra de metais que não está no plano gratuito."
+            "value" : "Conhece alguém que vive perdendo a hora? Mande o Gloop e ganhe Rise & Conquer, uma fanfarra de metais que não está no plano gratuito."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Conhece alguém que perde a hora? Mande o Gloop e ganhe Rise & Conquer, uma fanfarra de metais que não está no plano gratuito."
+            "value" : "Conhece alguém que adormece sempre? Envie-lhe o Gloop e ganhe Rise & Conquer, uma fanfarra de metais que não está no plano gratuito."
           }
         }
       }
@@ -23481,7 +23763,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Langue : %@"
+            "value" : "Langue : %@"
           }
         },
         "de" : {
@@ -23622,7 +23904,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Quitter ce club ?"
+            "value" : "Quitter ce club ?"
           }
         },
         "de" : {
@@ -23669,7 +23951,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Durée : %lld s"
+            "value" : "Durée : %lld s"
           }
         },
         "de" : {
@@ -23710,7 +23992,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Tijd om je uit bed te krijgen"
+            "value" : "Wij krijgen je uit bed"
           }
         },
         "fr" : {
@@ -23810,7 +24092,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Accès à vie — merci !"
+            "value" : "Accès à vie — merci !"
           }
         },
         "de" : {
@@ -23951,7 +24233,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Les Activités en direct sont désactivées : le compte à rebours de la prochaine sonnerie ne s’affichera pas sur l’écran verrouillé."
+            "value" : "Les Activités en direct sont désactivées : le compte à rebours de la prochaine sonnerie ne s’affichera pas sur l’écran verrouillé."
           }
         },
         "de" : {
@@ -23992,7 +24274,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "%@ laden"
+            "value" : "%@ klaarzetten"
           }
         },
         "fr" : {
@@ -24654,19 +24936,19 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Zorg dat je wekker van %@ afgaat"
+            "value" : "Zorg dat je wekker van %@ echt afgaat"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Assure-toi que ton réveil de %@ sonne"
+            "value" : "Pour que ton réveil de %@ sonne vraiment"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sorge dafür, dass dein Wecker um %@ klingelt"
+            "value" : "Damit dein Wecker um %@ auch wirklich klingelt"
           }
         },
         "es" : {
@@ -25861,7 +26143,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Altro"
+            "value" : "Di più"
           }
         },
         "pt-BR" : {
@@ -26025,7 +26307,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Meer schudden, wakkerder."
+            "value" : "Hoe meer je schudt, hoe wakkerder je wordt."
           }
         },
         "fr" : {
@@ -26037,7 +26319,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Mehr Schütteln, wacher."
+            "value" : "Je mehr du schüttelst, desto wacher wirst du."
           }
         },
         "es" : {
@@ -26049,7 +26331,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Più scosse, più sveglio."
+            "value" : "Più scuoti, più ti svegli."
           }
         },
         "pt-BR" : {
@@ -26313,7 +26595,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Uniquement des têtes du matin : pas de nudité, de violence ni rien que tu ne montrerais pas à la mère d’un ami."
+            "value" : "Uniquement des têtes du matin : pas de nudité, de violence ni rien que tu ne montrerais pas à la mère d’un ami."
           }
         },
         "de" : {
@@ -26926,7 +27208,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Bien ! Lit fait."
+            "value" : "Bien ! Lit fait."
           }
         },
         "it" : {
@@ -27108,7 +27390,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Nouveau code d’invitation ?"
+            "value" : "Nouveau code d’invitation ?"
           }
         },
         "de" : {
@@ -27155,7 +27437,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Nouveau sticker !"
+            "value" : "Nouveau sticker !"
           }
         },
         "de" : {
@@ -27202,7 +27484,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Nouveaux stickers !"
+            "value" : "Nouveaux stickers !"
           }
         },
         "de" : {
@@ -27760,7 +28042,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Geen stapel wekkers meer. Eén wekker die niet opgeeft."
+            "value" : "Geen rij wekkers meer. Eén wekker die niet opgeeft."
           }
         },
         "fr" : {
@@ -27989,6 +28271,53 @@
         }
       }
     },
+    "Nobody ever regretted getting up on time. Especially not me." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Pünktlich aufstehen hat noch niemand bereut. Ich schon gar nicht."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nadie se ha arrepentido nunca de levantarse a tiempo. Y yo menos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Personne n’a jamais regretté de s’être levé à l’heure. Surtout pas moi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nessuno si è mai pentito di alzarsi in orario. Io meno di tutti."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Niemand heeft ooit spijt gehad van op tijd opstaan. Ik al helemaal niet."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ninguém nunca se arrependeu de levantar na hora. Muito menos eu."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Nunca ninguém se arrependeu de se levantar a horas. Muito menos eu."
+          }
+        }
+      }
+    },
     "Normal alarm" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -28089,25 +28418,25 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Niet slecht! Laten we er nul van maken."
+            "value" : "Niet slecht! Nu nog naar nul."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Pas mal ! Visons zéro."
+            "value" : "Pas mal ! Visons zéro."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Nicht schlecht! Jetzt auf null."
+            "value" : "Nicht schlecht! Jetzt noch auf null."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "¡No está mal! Vamos a por cero."
+            "value" : "¡No está mal! Ahora, a por el cero."
           }
         },
         "it" : {
@@ -28125,7 +28454,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Nada mal! Vamos zerar."
+            "value" : "Nada mal! Agora, vamos chegar ao zero."
           }
         }
       }
@@ -28624,7 +28953,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Désactivé : tes clubs voient seulement que tu es debout, pas à quelle heure. Les points et la série comptent toujours."
+            "value" : "Désactivé : tes clubs voient seulement que tu es debout, pas à quelle heure. Les points et la série comptent toujours."
           }
         },
         "de" : {
@@ -28812,7 +29141,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Voortgang introductie"
+            "value" : "Voortgang van de introductie"
           }
         },
         "fr" : {
@@ -28990,6 +29319,53 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "De primeira"
+          }
+        }
+      }
+    },
+    "One mission, then the morning is yours. And I get to bounce." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eine Mission, dann gehört der Morgen dir. Und ich darf hüpfen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Una misión y la mañana es tuya. Y yo, a botar."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Une mission, et la matinée est à toi. Et moi, je rebondis."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Una missione, e la mattina è tua. E io posso rimbalzare."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Eén missie en de ochtend is van jou. En ik mag stuiteren."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Uma missão e a manhã é sua. E eu fico quicando."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Uma missão e a manhã é sua. E eu fico a saltitar."
           }
         }
       }
@@ -29188,13 +29564,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ooh, een ochtendmens. Ik vind je nu al leuk."
+            "value" : "Ooh, een ochtendmens. Jou mag ik nu al."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Oh, quelqu’un du matin. Je t’aime déjà bien."
+            "value" : "Oh, tu es du matin ! Je t’aime déjà bien."
           }
         },
         "de" : {
@@ -29206,7 +29582,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Oh, alguien madrugador. Ya me caes bien."
+            "value" : "¡Uy, eres madrugador! Ya me caes bien."
           }
         },
         "it" : {
@@ -29459,7 +29835,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Opcional — protege o seu progresso e libera recursos com amigos depois."
+            "value" : "Opcional — guarda o seu progresso e, mais tarde, desbloqueia funcionalidades com amigos."
           }
         }
       }
@@ -29605,49 +29981,49 @@
         }
       }
     },
-    "Over an hour. Okay, short re-rings for you, %@." : {
+    "Over an hour? Okay, I'll ring again sooner for you, %@." : {
       "extractionState" : "manual",
       "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Meer dan een uur. Oké, korte herhalingen voor jou, %@."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Plus d’une heure. D’accord, nouvelles sonneries rapprochées pour toi, %@."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Über eine Stunde. Okay, kurze Abstände für dich, %@."
+            "value" : "Über eine Stunde? Okay, dann klingle ich bei dir schneller wieder, %@."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Más de una hora. Vale, repeticiones cortas para ti, %@."
+            "value" : "¿Más de una hora? Vale, contigo volveré a sonar antes, %@."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Plus d’une heure ? D’accord, je resonnerai plus vite pour toi, %@."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Più di un’ora. Ok, nuovi squilli ravvicinati per te, %@."
+            "value" : "Più di un’ora? Ok, con te tornerò a suonare prima, %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Meer dan een uur? Oké, dan ga ik voor jou sneller opnieuw af, %@."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Mais de uma hora. Tá, repetições curtas para você, %@."
+            "value" : "Mais de uma hora? Tá, com você eu volto a tocar mais rápido, %@."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Mais de uma hora. Está bem, repetições curtas para você, %@."
+            "value" : "Mais de uma hora? Está bem, para si vou voltar a tocar mais depressa, %@."
           }
         }
       }
@@ -29782,7 +30158,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "PRO-missies komen met een gratis proefperiode. Tik er een aan om te proberen, of hou Rekenen op het gratis abonnement."
+            "value" : "PRO-missies kun je gratis uitproberen. Tik er een aan, of blijf bij Rekenen met het gratis abonnement."
           }
         },
         "pt-BR" : {
@@ -30191,7 +30567,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Téléphone posé, pieds par terre. Marché conclu ?"
+            "value" : "Téléphone posé, pieds par terre. Marché conclu ?"
           }
         },
         "de" : {
@@ -30379,7 +30755,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Choisis un autre nom : les clubs publics doivent être agréables pour tout le monde."
+            "value" : "Choisis un autre nom : les clubs publics doivent être agréables pour tout le monde."
           }
         },
         "de" : {
@@ -30526,7 +30902,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Wähle alles, was zu dir passt."
+            "value" : "Wähle alles, was auf dich zutrifft."
           }
         },
         "es" : {
@@ -30550,7 +30926,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Escolha tudo que tem a ver com você."
+            "value" : "Escolha tudo o que se aplica a si."
           }
         }
       }
@@ -30644,7 +31020,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Escolha algo que você não consiga ignorar."
+            "value" : "Escolha algo que não consiga ignorar."
           }
         }
       }
@@ -30738,7 +31114,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Escolha seu som de alarme"
+            "value" : "Escolha o seu som de alarme"
           }
         }
       }
@@ -31452,49 +31828,49 @@
       "extractionState" : "manual",
       "shouldTranslate" : false
     },
-    "Print or pick any code and stick it somewhere out of bed, like the bathroom." : {
+    "Print a code or use one you already have, and stick it far from your bed, like in the bathroom." : {
       "extractionState" : "manual",
       "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Druk een code af of kies er een en plak hem ergens buiten je bed, bijvoorbeeld in de badkamer."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Imprime ou choisis un code et colle-le loin de ton lit, par exemple dans la salle de bain."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Druck einen Code aus oder nimm irgendeinen und kleb ihn weit weg vom Bett, zum Beispiel ins Bad."
+            "value" : "Druck einen Code aus oder nimm einen, den du schon hast, und kleb ihn weit weg vom Bett, zum Beispiel ins Bad."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Imprime o elige cualquier código y pégalo lejos de la cama, por ejemplo en el baño."
+            "value" : "Imprime un código o usa uno que ya tengas, y pégalo lejos de la cama, por ejemplo en el baño."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Imprime un code ou utilise-en un que tu as déjà, et colle-le loin de ton lit, par exemple dans la salle de bain."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Stampa o scegli un codice e attaccalo lontano dal letto, per esempio in bagno."
+            "value" : "Stampa un codice o usane uno che hai già, e attaccalo lontano dal letto, per esempio in bagno."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Druk een code af of gebruik er een die je al hebt, en plak hem ver van je bed, bijvoorbeeld in de badkamer."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Imprima ou escolha qualquer código e cole longe da cama, como no banheiro."
+            "value" : "Imprima um código ou use um que você já tem e cole longe da cama, por exemplo no banheiro."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Imprima ou escolha qualquer código e cole longe da cama, como no casa de banho."
+            "value" : "Imprima um código ou use um que já tenha e cole-o longe da cama, por exemplo na casa de banho."
           }
         }
       }
@@ -32471,7 +32847,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Échec de l’achat : %@"
+            "value" : "Échec de l’achat : %@"
           }
         },
         "de" : {
@@ -32571,7 +32947,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Achats restaurés : %@, renouvellement le %@."
+            "value" : "Achats restaurés : %@, renouvellement le %@."
           }
         },
         "it" : {
@@ -32618,7 +32994,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Achats restaurés : %@, à toi pour de bon."
+            "value" : "Achats restaurés : %@, à toi pour de bon."
           }
         },
         "it" : {
@@ -32783,7 +33159,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Um tempo tranquilo só o seu"
+            "value" : "Um tempo tranquilo só para si"
           }
         }
       }
@@ -33374,7 +33750,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Reconnu !"
+            "value" : "Reconnu !"
           }
         },
         "de" : {
@@ -34083,7 +34459,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Retirer ce membre ?"
+            "value" : "Retirer ce membre ?"
           }
         },
         "de" : {
@@ -34894,7 +35270,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Échec de la restauration : %@"
+            "value" : "Échec de la restauration : %@"
           }
         },
         "de" : {
@@ -35319,7 +35695,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Gaat door tot je op bent"
+            "value" : "Blijft afgaan tot je op bent"
           }
         },
         "fr" : {
@@ -35331,7 +35707,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Klingelt, bis du wach bist"
+            "value" : "Klingelt, bis du aufstehst"
           }
         },
         "es" : {
@@ -35355,7 +35731,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Toca até você levantar"
+            "value" : "Toca até se levantar"
           }
         }
       }
@@ -35419,7 +35795,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Rise & Conquer débloqué !"
+            "value" : "Rise & Conquer débloqué !"
           }
         },
         "de" : {
@@ -35919,7 +36295,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Digitalize um código em outro divisão, abane até acordar, e tem mais por vir."
+            "value" : "Digitalize um código noutra divisão, abane até acordar, e há mais a caminho."
           }
         }
       }
@@ -35966,7 +36342,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Digitalize um código que você colou em outro divisão."
+            "value" : "Digitalize um código que colou noutra divisão."
           }
         }
       }
@@ -36060,7 +36436,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Digitalize um objeto à a sua escolha, como sua escova de dentes ou chávena de café."
+            "value" : "Digitalize um objeto à sua escolha, como a escova de dentes ou a chávena de café."
           }
         }
       }
@@ -36500,7 +36876,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Faire défiler mon téléphone"
+            "value" : "Scroller sur mon téléphone"
           }
         },
         "de" : {
@@ -36530,7 +36906,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Fazer scroll no telemóvel"
+            "value" : "Andar a fazer scroll no telemóvel"
           }
         }
       }
@@ -36820,26 +37196,14 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Configurar depois (use Matemática por enquanto)"
+            "value" : "Configurar depois (Matemática por agora)"
           }
         }
       }
     },
-    "Set up your math" : {
+    "Set up your math problems" : {
       "extractionState" : "manual",
       "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Stel je sommen in"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Configure tes calculs"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -36852,10 +37216,22 @@
             "value" : "Configura tus operaciones"
           }
         },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Configure tes calculs"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Configura i tuoi calcoli"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stel je sommen in"
           }
         },
         "pt-BR" : {
@@ -36925,13 +37301,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Je wekker van %@ instellen"
+            "value" : "Je wekker voor %@ instellen"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Réglage de ton réveil de %@"
+            "value" : "Réglage de ton réveil à %@"
           }
         },
         "de" : {
@@ -37403,7 +37779,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Keer schudden"
+            "value" : "Aantal keer schudden"
           }
         },
         "fr" : {
@@ -37415,7 +37791,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Schüttler"
+            "value" : "Wie oft schütteln"
           }
         },
         "es" : {
@@ -38680,7 +39056,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sla over"
+            "value" : "Overslaan"
           }
         },
         "fr" : {
@@ -38716,7 +39092,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Pular"
+            "value" : "Saltar"
           }
         }
       }
@@ -38774,13 +39150,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Door wekkers heen slapen"
+            "value" : "Door mijn wekker heen slapen"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ne pas entendre les réveils"
+            "value" : "Ne pas entendre mon réveil"
           }
         },
         "de" : {
@@ -38810,7 +39186,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Dormir com o alarme a tocar"
+            "value" : "Não ouvir o alarme"
           }
         }
       }
@@ -38878,13 +39254,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Cycle de répétition"
+            "value" : "Cycle de répétitions"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Schlummerkreislauf"
+            "value" : "Schlummerschleife"
           }
         },
         "es" : {
@@ -38896,7 +39272,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ciclo del posticipa"
+            "value" : "Ciclo di rinvii"
           }
         },
         "pt-BR" : {
@@ -38908,7 +39284,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ciclo da snooze"
+            "value" : "Ciclo do snooze"
           }
         }
       }
@@ -38925,7 +39301,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Répéter l’alarme"
+            "value" : "Répétitions"
           }
         },
         "de" : {
@@ -38943,7 +39319,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Posticipare"
+            "value" : "Rinvii"
           }
         },
         "pt-BR" : {
@@ -38960,37 +39336,37 @@
         }
       }
     },
-    "Snoozing drops you back into sleep you can't finish, so every extra ring tends to leave you groggier. One alarm and a short mission gets your brain and body going at once." : {
+    "Snoozing drops you back into sleep you can't finish, so every extra ring tends to leave you groggier. One alarm and a short mission get your brain and body going at once." : {
       "extractionState" : "manual",
       "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Door te snoozen val je terug in slaap die je niet kunt afmaken, dus je wordt meestal suffer van elke extra keer. Eén wekker en een korte missie krijgen je hoofd en lichaam meteen op gang."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Répéter l’alarme te replonge dans un sommeil que tu ne peux pas finir, alors chaque sonnerie de plus te laisse souvent plus groggy. Un seul réveil et une courte mission mettent ton cerveau et ton corps en route d’un coup."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Beim Schlummern fällst du zurück in Schlaf, den du nicht beenden kannst, deshalb macht dich jedes weitere Klingeln eher noch benommener. Ein Wecker und eine kurze Mission bringen Kopf und Körper auf einmal in Gang."
+            "value" : "Beim Schlummern fällst du in einen Schlaf zurück, den du nicht zu Ende bringen kannst. Deshalb macht dich jedes weitere Klingeln eher noch benommener. Ein Wecker und eine kurze Mission bringen Kopf und Körper auf einmal in Schwung."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Posponer te devuelve a un sueño que no puedes terminar, así que cada alarma extra suele dejarte más atontado. Una sola alarma y una misión corta ponen en marcha cerebro y cuerpo a la vez."
+            "value" : "Al posponer vuelves a un sueño que no puedes terminar, así que cada alarma extra suele dejarte más atontado. Una sola alarma y una misión corta ponen en marcha cerebro y cuerpo a la vez."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Répéter l’alarme te replonge dans un sommeil que tu ne peux pas finir : chaque sonnerie de plus te rend souvent plus vaseux. Une seule alarme et une courte mission mettent ton cerveau et ton corps en route d’un coup."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Posticipando ricadi in un sonno che non puoi finire, quindi ogni squillo in più tende a lasciarti più intontito. Una sveglia e una breve missione mettono in moto cervello e corpo insieme."
+            "value" : "Rimandando la sveglia ricadi in un sonno che non puoi finire, così ogni squillo in più tende a lasciarti più intontito. Una sveglia e una breve missione mettono in moto cervello e corpo insieme."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Als je snoozet, val je terug in een slaap die je niet kunt afmaken. Daardoor word je van elke extra keer meestal juist suffer. Eén wekker en een korte missie krijgen je hoofd en lijf meteen op gang."
           }
         },
         "pt-BR" : {
@@ -39002,7 +39378,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "A snooze joga você de volta num sono que não dá para terminar, então cada toque extra costuma deixar você mais grogue. Um alarme e uma missão curta ligam cérebro e corpo de uma vez."
+            "value" : "O snooze devolve-o a um sono que não consegue terminar, por isso cada toque extra costuma deixá-lo mais ensonado. Um alarme e uma missão curta põem o cérebro e o corpo a funcionar de uma vez."
           }
         }
       }
@@ -39013,7 +39389,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Zodat je wekker afgaat door de stille modus en Focus heen."
+            "value" : "Zodat je wekker ook afgaat in de stille modus en met Focus."
           }
         },
         "fr" : {
@@ -39049,7 +39425,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Para seu alarme tocar mesmo no modo silencioso e em Foco."
+            "value" : "Para que o seu alarme toque mesmo no modo silencioso e em Foco."
           }
         }
       }
@@ -39356,7 +39732,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Quelque chose qui n’est pas dans ta chambre : ta brosse à dents, ta tasse à café ou tes chaussures."
+            "value" : "Quelque chose qui n’est pas dans ta chambre : ta brosse à dents, ta tasse à café ou tes chaussures."
           }
         },
         "de" : {
@@ -39386,7 +39762,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Algo que não está no seu quarto: a sua escova de dentes, caneca de café ou sapatilhas."
+            "value" : "Algo que não esteja no seu quarto: a escova de dentes, a caneca de café ou os sapatos."
           }
         }
       }
@@ -40020,7 +40396,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Gratis-Test starten"
+            "value" : "Gratis testen"
           }
         },
         "es" : {
@@ -40484,7 +40860,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "État : %@"
+            "value" : "État : %@"
           }
         },
         "de" : {
@@ -41144,13 +41520,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "needs_review",
-                  "value" : "Série : %lld jour"
+                  "value" : "Série : %lld jour"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "needs_review",
-                  "value" : "Série : %lld jours"
+                  "value" : "Série : %lld jours"
                 }
               }
             }
@@ -41248,49 +41624,49 @@
         }
       }
     },
-    "Streaks, evolutions and buddies keep you going" : {
+    "Streaks, evolutions and buddies keep you motivated" : {
       "extractionState" : "manual",
       "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Reeksen, evoluties en buddies houden je gaande"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Séries, évolutions et buddies te motivent"
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Serien, Entwicklungen und Buddies halten dich dran"
+            "value" : "Serien, Entwicklungen und Buddies halten dich motiviert"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Rachas, evoluciones y buddies te mantienen en marcha"
+            "value" : "Rachas, evoluciones y buddies te mantienen motivado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Séries, évolutions et buddies te gardent motivé"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Serie, evoluzioni e buddies ti tengono in carreggiata"
+            "value" : "Serie, evoluzioni e buddies ti danno la carica"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Reeksen, evoluties en buddies houden je gemotiveerd"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sequências, evoluções e buddies mantêm você firme"
+            "value" : "Sequências, evoluções e buddies mantêm você motivado"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sequências, evoluções e buddies mantêm você firme"
+            "value" : "Sequências, evoluções e buddies mantêm-no motivado"
           }
         }
       }
@@ -41431,7 +41807,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sugerido para você · %@"
+            "value" : "Sugerido para si · %@"
           }
         }
       }
@@ -41815,7 +42191,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Toque para ouvir. Você pode adicionar os seus próprios sons depois."
+            "value" : "Toque para ouvir. Pode adicionar os seus próprios sons mais tarde."
           }
         }
       }
@@ -42169,7 +42545,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Test : sonner dans 10 secondes"
+            "value" : "Test : sonner dans 10 secondes"
           }
         },
         "de" : {
@@ -42222,7 +42598,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "TestFlight uniquement. Ton achat de test est conservé ; Gloop se comporte comme l’offre gratuite jusqu’à ce que tu désactives ceci."
+            "value" : "TestFlight uniquement. Ton achat de test est conservé ; Gloop se comporte comme l’offre gratuite jusqu’à ce que tu désactives ceci."
           }
         },
         "it" : {
@@ -42293,7 +42669,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Mandar mensagem para um amigo"
+            "value" : "Enviar mensagem a um amigo"
           }
         }
       }
@@ -42504,13 +42880,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Eine ganze Folge lang liegen geblieben. Notiert."
+            "value" : "Das ist eine ganze Serienfolge im Bett. Notiert."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Un episodio entero tumbado. Anotado."
+            "value" : "Eso es un episodio entero sin salir de la cama. Anotado."
           }
         },
         "it" : {
@@ -42528,7 +42904,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Um episódio inteiro de enrolação. Anotado."
+            "value" : "Um episódio inteiro na cama. Anotado."
           }
         }
       }
@@ -42539,7 +42915,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Dat is ongeveer %@ uur terug, elke week."
+            "value" : "Zo win je elke week zo'n %@ uur terug."
           }
         },
         "fr" : {
@@ -42551,31 +42927,31 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Das sind etwa %@ Stunde jede Woche zurück."
+            "value" : "So gewinnst du jede Woche etwa %@ Stunde zurück."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Eso es aproximadamente %@ hora recuperada cada semana."
+            "value" : "Recuperas alrededor de %@ hora cada semana."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sono circa %@ ora recuperata ogni settimana."
+            "value" : "Recuperi circa %@ ora ogni settimana."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Isso é cerca de %@ hora de volta toda semana."
+            "value" : "Isso dá cerca de %@ hora a mais toda semana."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Isso é cerca de %@ hora de volta todas as semanas."
+            "value" : "É cerca de %@ hora recuperada por semana."
           }
         }
       }
@@ -42586,43 +42962,43 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Dat is ongeveer %@ uur terug, elke week."
+            "value" : "Zo win je elke week zo'n %@ uur terug."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ça fait environ %@ heures de gagnées chaque semaine."
+            "value" : "Ça te fait environ %@ heures de gagnées chaque semaine."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Das sind etwa %@ Stunden jede Woche zurück."
+            "value" : "So gewinnst du jede Woche etwa %@ Stunden zurück."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Eso son unas %@ horas recuperadas cada semana."
+            "value" : "Recuperas unas %@ horas cada semana."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sono circa %@ ore recuperate ogni settimana."
+            "value" : "Recuperi circa %@ ore ogni settimana."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Isso são cerca de %@ horas de volta toda semana."
+            "value" : "Isso dá umas %@ horas a mais toda semana."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Isso são cerca de %@ horas de volta todas as semanas."
+            "value" : "São cerca de %@ horas recuperadas por semana."
           }
         }
       }
@@ -43338,7 +43714,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "De snoozeknop is niet je vriend. Ik wel."
+            "value" : "De snoozeknop is je vriend niet. Ik wel."
           }
         },
         "fr" : {
@@ -43362,7 +43738,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Il tasto posticipa non è tuo amico. Io sì."
+            "value" : "Il tasto Posponi non è tuo amico. Io sì."
           }
         },
         "pt-BR" : {
@@ -43374,7 +43750,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "O botão snooze não é o seu amigo. Eu sou."
+            "value" : "O snooze não é seu amigo. Eu sou."
           }
         }
       }
@@ -43656,7 +44032,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Este dispositivo não tnuma câmara que o Gloop possa usar."
+            "value" : "Este dispositivo não tem uma câmara que o Gloop possa usar."
           }
         }
       }
@@ -43773,7 +44149,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Il s’agit d’un achat de test TestFlight. Pour essayer l’offre gratuite, active « Tester l’offre gratuite » ci-dessus."
+            "value" : "Il s’agit d’un achat de test TestFlight. Pour essayer l’offre gratuite, active « Tester l’offre gratuite » ci-dessus."
           }
         },
         "it" : {
@@ -43855,7 +44231,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Dit is het enige wat me stopt. Kies verstandig."
+            "value" : "Dit is het enige wat mij stopt. Kies goed."
           }
         },
         "fr" : {
@@ -44049,7 +44425,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Astuce : pose-le sur une surface unie, bien éclairée. Tu prendras 5 photos en tournant autour."
+            "value" : "Astuce : pose-le sur une surface unie, bien éclairée. Tu prendras 5 photos en tournant autour."
           }
         },
         "de" : {
@@ -44801,7 +45177,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Les traductions sont faites avec soin, mais ne sont peut-être pas encore parfaites. Tu as repéré une erreur ? Dis-le-nous via Aide et commentaires."
+            "value" : "Les traductions sont faites avec soin, mais ne sont peut-être pas encore parfaites. Tu as repéré une erreur ? Dis-le-nous via Aide et commentaires."
           }
         },
         "de" : {
@@ -45142,7 +45518,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Essaie gratuitement : %@, avec toutes les autres missions et sonneries. Résiliable à tout moment."
+            "value" : "Essaie gratuitement : %@, avec toutes les autres missions et sonneries. Résiliable à tout moment."
           }
         },
         "it" : {
@@ -45424,7 +45800,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Tu as désactivé quelque chose ? « Ouvrir Réglages » t’amène à la page de Gloop dans les Réglages d’iOS ; reviens ensuite et tout se met à jour ici."
+            "value" : "Tu as désactivé quelque chose ? « Ouvrir Réglages » t’amène à la page de Gloop dans les Réglages d’iOS ; reviens ensuite et tout se met à jour ici."
           }
         },
         "de" : {
@@ -45761,13 +46137,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Pff, pourquoi si tôt ?"
+            "value" : "Pff, pourquoi si tôt ?"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Ugh, warum so früh?"
+            "value" : "Boah, warum so früh?"
           }
         },
         "es" : {
@@ -45791,7 +46167,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Argh, por que tão cedo?"
+            "value" : "Argh, porquê tão cedo?"
           }
         }
       }
@@ -46143,7 +46519,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Freischalten durch Einladen eines Freundes"
+            "value" : "Freischalten, indem du einen Freund einlädst"
           }
         },
         "es" : {
@@ -47199,19 +47575,19 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Word wakker"
+            "value" : "Opstaan"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Se réveiller"
+            "value" : "Réveil"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Aufwachen"
+            "value" : "Aufstehen"
           }
         },
         "es" : {
@@ -47376,7 +47752,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Horário de acordar"
+            "value" : "Hora de acordar"
           }
         }
       }
@@ -47705,7 +48081,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Nós escreve a mensagem para você."
+            "value" : "Nós escrevemos a mensagem por si."
           }
         }
       }
@@ -47846,7 +48222,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Dias úteis, fins de semana, dias de ginásio — cada um com sua configuração."
+            "value" : "Dias úteis, fins de semana, dias de ginásio — cada um com a sua configuração."
           }
         }
       }
@@ -47998,13 +48374,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Wat gaat er door je hoofd als je wekker gaat?"
+            "value" : "Wat gaat er door je hoofd als je wekker afgaat?"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Qu’est-ce qui te passe par la tête quand ton réveil sonne ?"
+            "value" : "Qu’est-ce qui te passe par la tête quand ton réveil sonne ?"
           }
         },
         "de" : {
@@ -48051,7 +48427,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Qu’est-ce qui te retient au lit après ton réveil ?"
+            "value" : "Qu’est-ce qui te retient au lit après ton réveil ?"
           }
         },
         "de" : {
@@ -48081,7 +48457,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "O que prende você na cama depois do alarme?"
+            "value" : "O que o prende na cama depois do alarme?"
           }
         }
       }
@@ -48098,7 +48474,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Comment %@ doit-il t’appeler ?"
+            "value" : "Comment %@ doit-il t’appeler ?"
           }
         },
         "de" : {
@@ -48128,7 +48504,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Como o %@ deve chamar você?"
+            "value" : "Como lhe deve chamar o %@?"
           }
         }
       }
@@ -48145,7 +48521,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Comment dois-je t’appeler ?"
+            "value" : "Comment dois-je t’appeler ?"
           }
         },
         "de" : {
@@ -48175,7 +48551,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Como devo chamar você?"
+            "value" : "Como lhe devo chamar?"
           }
         }
       }
@@ -48192,7 +48568,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "À quelle heure veux-tu être debout ?"
+            "value" : "À quelle heure veux-tu être debout ?"
           }
         },
         "de" : {
@@ -48222,7 +48598,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Que horas você quer estar a pé?"
+            "value" : "A que horas quer estar a pé?"
           }
         }
       }
@@ -48233,13 +48609,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Wat zou je doen met die tijd?"
+            "value" : "Wat zou je doen met die gewonnen tijd?"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Que ferais-tu de ce temps récupéré ?"
+            "value" : "Que ferais-tu de ce temps récupéré ?"
           }
         },
         "de" : {
@@ -48269,7 +48645,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "O que você faria com esse tempo de volta?"
+            "value" : "O que faria com esse tempo recuperado?"
           }
         }
       }
@@ -48333,7 +48709,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "De quoi s’agit-il ? (facultatif)"
+            "value" : "De quoi s’agit-il ? (facultatif)"
           }
         },
         "de" : {
@@ -48427,7 +48803,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Quelle est la récompense, %@ ?"
+            "value" : "Quelle est la récompense, %@ ?"
           }
         },
         "de" : {
@@ -48474,7 +48850,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Quel est le problème ?"
+            "value" : "Quel est le problème ?"
           }
         },
         "de" : {
@@ -48515,13 +48891,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Wat is je leeftijd?"
+            "value" : "Hoe oud ben je?"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Quelle est ta tranche d’âge ?"
+            "value" : "Quelle est ta tranche d’âge ?"
           }
         },
         "de" : {
@@ -48662,7 +49038,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Comment as-tu entendu parler de nous ?"
+            "value" : "Comment as-tu entendu parler de nous ?"
           }
         },
         "de" : {
@@ -48692,7 +49068,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Onde você ouviu falar dnós?"
+            "value" : "Onde ouviu falar de nós?"
           }
         }
       }
@@ -48942,7 +49318,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sporten voor mijn dag begint"
+            "value" : "Sporten voordat mijn dag begint"
           }
         },
         "fr" : {
@@ -48954,7 +49330,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sport vor meinem Tag"
+            "value" : "Vor dem Tag Sport machen"
           }
         },
         "es" : {
@@ -48972,13 +49348,13 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Malhar antes do meu dia"
+            "value" : "Malhar antes de começar o dia"
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Malhar antes do meu dia"
+            "value" : "Treinar antes de o dia começar"
           }
         }
       }
@@ -48995,7 +49371,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "XP par matin : %lld pour la mission, +%lld à la première sonnerie, −%lld par nouvelle sonnerie, +%lld par jour de série (jusqu’à %lld)."
+            "value" : "XP par matin : %lld pour la mission, +%lld à la première sonnerie, −%lld par nouvelle sonnerie, +%lld par jour de série (jusqu’à %lld)."
           }
         },
         "de" : {
@@ -49420,13 +49796,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Door mij slaap je niet heen. Ik blijf terugkomen."
+            "value" : "Mij verslaap je niet. Ik blijf terugkomen."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Tu ne dormiras pas malgré moi. Je reviens toujours."
+            "value" : "Avec moi, impossible de continuer à dormir. Je reviens toujours."
           }
         },
         "de" : {
@@ -49438,25 +49814,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "No vas a dormir a pesar de mí. Siempre vuelvo."
+            "value" : "Conmigo no te vas a quedar dormido. Siempre vuelvo."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Con me non dormi oltre. Torno sempre."
+            "value" : "Con me non riuscirai a riaddormentarti. Torno sempre."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Você não vai dormir apesar de mim. Eu sempre volto."
+            "value" : "Comigo não tem como continuar dormindo. Eu sempre volto."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Você não vai dormir apesar de mim. Eu sempre volto."
+            "value" : "Comigo não há como continuar a dormir. Volto sempre."
           }
         }
       }
@@ -49597,7 +49973,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Você é Pro"
+            "value" : "Já é Pro"
           }
         }
       }
@@ -49649,49 +50025,49 @@
         }
       }
     },
-    "You're up, and ahead." : {
+    "You're up and ahead of the day." : {
       "extractionState" : "manual",
       "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Je bent op, en voor."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Tu es debout, et en avance."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Du bist wach, und vorne."
+            "value" : "Du bist wach und dem Tag einen Schritt voraus."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Estás en pie, y con ventaja."
+            "value" : "Ya estás en pie y con ventaja sobre el día."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tu es debout, avec une longueur d’avance sur la journée."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Sei in piedi, e in vantaggio."
+            "value" : "Sei in piedi e un passo avanti alla giornata."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Je bent op, en de dag een stap voor."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Você está de pé, e na frente."
+            "value" : "Você está de pé e na frente do dia."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Está a pé, e na frente."
+            "value" : "Já está a pé e um passo à frente do dia."
           }
         }
       }
@@ -49702,7 +50078,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Je bent op. De koffie is voor jou."
+            "value" : "Je bent op. Tijd voor koffie."
           }
         },
         "fr" : {
@@ -49714,7 +50090,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Du bist wach. Der Kaffee gehört dir."
+            "value" : "Du bist wach. Der Kaffee wartet."
           }
         },
         "es" : {
@@ -49738,54 +50114,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Está a pé. O café é o seu."
-          }
-        }
-      }
-    },
-    "You're up. Glad you set it." : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Je bent op. Goed dat je hem hebt gezet."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Tu es debout. Bien joué de l’avoir réglé."
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Du bist wach. Gut, dass du ihn gestellt hast."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Estás en pie. Menos mal que la pusiste."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Sei in piedi. Meno male che l’hai impostata."
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Você está de pé. Ainda bem que colocou."
-          }
-        },
-        "pt-PT" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Está a pé. Ainda bem que colocou."
+            "value" : "Já está a pé. O café é seu."
           }
         }
       }
@@ -49796,7 +50125,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Je bent op. Ga trainen."
+            "value" : "Je bent op. Tijd om te trainen."
           }
         },
         "fr" : {
@@ -49832,7 +50161,54 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Está a pé. Vamos treinar."
+            "value" : "Já está a pé. Vá treinar."
+          }
+        }
+      }
+    },
+    "You're up. The day is yours." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Du bist wach. Der Tag gehört dir."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ya estás en pie. El día es tuyo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Tu es debout. La journée est à toi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sei in piedi. La giornata è tua."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Je bent op. De dag is van jou."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Você está de pé. O dia é seu."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Já está a pé. O dia é seu."
           }
         }
       }
@@ -50133,7 +50509,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Je wekker gaat af door de stille modus en Focus heen, ook als de app gesloten is."
+            "value" : "Je wekker gaat ook af in de stille modus en met Focus, zelfs als de app dicht is."
           }
         },
         "fr" : {
@@ -50169,7 +50545,7 @@
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "O seu alarme toca mesmo no modo silencioso e em Foco, até com a app fechado."
+            "value" : "O seu alarme toca mesmo no modo silencioso e em Foco, até com a app fechada."
           }
         }
       }
@@ -50456,49 +50832,49 @@
         }
       }
     },
-    "Your first name or a nickname. Used in your coach's lines and your profile." : {
+    "Your first name or a nickname. Gloop uses it to talk to you and on your profile." : {
       "extractionState" : "manual",
       "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Je voornaam of een bijnaam. Gebruikt in de zinnen van je coach en in je profiel."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "Ton prénom ou un surnom. Utilisé dans les phrases de ton coach et dans ton profil."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Dein Vorname oder ein Spitzname. Wird in den Sätzen deines Coaches und in deinem Profil verwendet."
+            "value" : "Dein Vorname oder ein Spitzname. Gloop spricht dich damit an und zeigt ihn in deinem Profil."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Tu nombre o un apodo. Se usa en las frases de tu coach y en tu perfil."
+            "value" : "Tu nombre o un apodo. Gloop lo usa para hablarte y en tu perfil."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ton prénom ou un surnom. Gloop l’utilise pour te parler et sur ton profil."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Il tuo nome o un soprannome. Usato nelle frasi del coach e nel tuo profilo."
+            "value" : "Il tuo nome o un soprannome. Gloop lo usa per parlarti e sul tuo profilo."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Je voornaam of een bijnaam. Gloop spreekt je ermee aan en zet hem op je profiel."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Seu primeiro nome ou um apelido. Usado nas frases do seu coach e no seu perfil."
+            "value" : "Seu primeiro nome ou um apelido. O Gloop usa para falar com você e no seu perfil."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "O seu primeiro nome ou um apelido. Usado nas frases do seu coach e no seu perfil."
+            "value" : "O seu primeiro nome ou uma alcunha. O Gloop usa-o para falar consigo e no seu perfil."
           }
         }
       }
@@ -51408,7 +51784,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "p. ex. « Debout là-dedans ! C’est l’heure de la mission ! » 30 secondes max."
+            "value" : "p. ex. « Debout là-dedans ! C’est l’heure de la mission ! » 30 secondes max."
           }
         },
         "de" : {
@@ -52239,7 +52615,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Langue de l’iPhone : %@"
+            "value" : "Langue de l’iPhone : %@"
           }
         },
         "de" : {
