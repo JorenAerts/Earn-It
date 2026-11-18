@@ -139,7 +139,7 @@ struct MissionSetupStep: View {
 
     private func title(_ kind: MissionKind) -> String {
         switch kind {
-        case .math: L10n.tr("Set up your math")
+        case .math: L10n.tr("Set up your math problems")
         case .shake: L10n.tr("How hard should you shake?")
         case .qr: L10n.tr("Register your code")
         case .object: L10n.tr("Scan your item")
@@ -154,7 +154,7 @@ struct MissionSetupStep: View {
         switch kind {
         case .math: L10n.tr("Pick how hard the problems are, and how many you'll solve.")
         case .shake: L10n.tr("More shakes, more awake.")
-        case .qr: L10n.tr("Print or pick any code and stick it somewhere out of bed, like the bathroom.")
+        case .qr: L10n.tr("Print a code or use one you already have, and stick it far from your bed, like in the bathroom.")
         case .object: L10n.tr("Something that's not in your bedroom: your toothbrush, coffee mug or shoes.")
         case .quiz: L10n.tr("Pick a topic and how many right answers it takes.")
         case .memory: L10n.tr("More pairs, more brain power.")

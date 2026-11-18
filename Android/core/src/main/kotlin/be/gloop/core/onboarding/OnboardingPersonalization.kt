@@ -36,7 +36,10 @@ object OnboardingPersonalization {
         return number to (hours > 1)
     }
 
-    /** Coach / summary lines (ids). Arguments: name or "friend", time text. */
+    /** Name argument when the user gave none; the app shows its translation (iOS `L10n.tr("friend")`). */
+    const val FALLBACK_NAME = "friend"
+
+    /** Coach / summary lines (ids). Arguments: name or [FALLBACK_NAME], time text. */
     enum class Line {
         WELCOME, NAME_ASK, NAME_LOVE, AGE, HEARD,
         REACTION_UP, REACTION_FIVE, REACTION_BACKUP, REACTION_EARLY, REACTION_NONE,
@@ -68,7 +71,7 @@ object OnboardingPersonalization {
     /** Gloop reacting to an answer (speech bubble). null = stay quiet. */
     fun coachReaction(step: OnboardingStep, answers: OnboardingAnswers): CoachLine? {
         val name = answers.name.trim()
-        val who = name.ifEmpty { "friend" }
+        val who = name.ifEmpty { FALLBACK_NAME }
         return when (step) {
             OnboardingStep.WELCOME -> CoachLine(Line.WELCOME)
             OnboardingStep.NAME -> if (name.isEmpty()) CoachLine(Line.NAME_ASK) else CoachLine(Line.NAME_LOVE, listOf(name))

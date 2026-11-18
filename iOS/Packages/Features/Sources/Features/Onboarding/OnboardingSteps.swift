@@ -18,7 +18,7 @@ struct WelcomeStep: View {
     private let points: [(String, String)] = [
         ("alarm.fill", L10n.tr("An alarm that keeps ringing until you're up")),
         ("brain.head.profile", L10n.tr("A quick mission proves you're awake")),
-        ("flame.fill", L10n.tr("Streaks, evolutions and buddies keep you going")),
+        ("flame.fill", L10n.tr("Streaks, evolutions and buddies keep you motivated")),
     ]
 
     var body: some View {
@@ -69,7 +69,7 @@ struct NameStep: View {
 
     var body: some View {
         OnboardingPage(title: L10n.tr("What should \(CoachIdentity.name) call you?"),
-                       subtitle: L10n.tr("Your first name or a nickname. Used in your coach's lines and your profile.")) {
+                       subtitle: L10n.tr("Your first name or a nickname. Gloop uses it to talk to you and on your profile.")) {
             TextField("Your name", text: $answers.name)
                 .font(.title2.weight(.semibold))
                 .textContentType(.givenName)
@@ -128,7 +128,7 @@ struct WhyItWorksStep: View {
     var body: some View {
         OnboardingPage(title: L10n.tr("Gloop gets you out of bed and wide awake")) {
             EnergyChart()
-            Text("Snoozing drops you back into sleep you can't finish, so every extra ring tends to leave you groggier. One alarm and a short mission gets your brain and body going at once.")
+            Text("Snoozing drops you back into sleep you can't finish, so every extra ring tends to leave you groggier. One alarm and a short mission get your brain and body going at once.")
                 .font(.subheadline).foregroundStyle(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
         } footer: {

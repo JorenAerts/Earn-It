@@ -10,13 +10,8 @@
   "channel_alarms_description": "L’alarme qui sonne et ta mission.",
   "mission_done": "Mission accomplie",
   "heard_play": "Google Play",
-  "ob_perm_body": "Gloop en a besoin pour que ton alarme sonne à l’heure et affiche ta mission sur l’écran de verrouillage.",
-  "ob_perm_mock_title": "Autoriser Gloop à t’envoyer des notifications ?",
+  "ob_perm_body": "Gloop en a besoin pour que ton réveil sonne à l’heure et que ta mission s’affiche sur l’écran de verrouillage.",
+  "ob_perm_mock_title": "Autoriser Gloop à t’envoyer des notifications ?",
   "ob_perm_dont_allow": "Ne pas autoriser",
-  "quote_1": "\"Chaque snooze me rend un peu plus mou. Je dis ça, je dis rien.\"",
-  "quote_2": "\"Les pieds par terre d’abord. On réfléchit après.\"",
-  "quote_3": "\"Personne n’a jamais regretté de se lever à l’heure. Surtout pas moi.\"",
-  "quote_4": "\"Une mission, et la matinée est à toi. Et moi, je rebondis.\"",
-  "coach_name_love": "%1$s ! J’adore. On va faire une super équipe.",
   "replay_onboarding": "Refaire l’accueil"
 }

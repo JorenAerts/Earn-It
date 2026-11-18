@@ -10,13 +10,8 @@
   "channel_alarms_description": "Der klingelnde Alarm und deine Mission.",
   "mission_done": "Mission erfüllt",
   "heard_play": "Google Play",
-  "ob_perm_body": "Gloop braucht das, damit dein Alarm pünktlich klingelt und deine Mission auf dem Sperrbildschirm zeigt.",
+  "ob_perm_body": "Gloop braucht das, damit dein Wecker pünktlich klingelt und deine Mission auf dem Sperrbildschirm erscheint.",
   "ob_perm_mock_title": "Gloop erlauben, dir Benachrichtigungen zu senden?",
   "ob_perm_dont_allow": "Nicht erlauben",
-  "quote_1": "\"Jedes Snoozen macht mich ein bisschen schlaffer. Nur so gesagt.\"",
-  "quote_2": "\"Erst die Füße auf den Boden. Denken kommt später.\"",
-  "quote_3": "\"Niemand hat je bereut, pünktlich aufzustehen. Ich schon gar nicht.\"",
-  "quote_4": "\"Eine Mission, dann gehört der Morgen dir. Und ich darf hüpfen.\"",
-  "coach_name_love": "%1$s! Super. Wir werden ein tolles Team.",
   "replay_onboarding": "Einführung wiederholen"
 }

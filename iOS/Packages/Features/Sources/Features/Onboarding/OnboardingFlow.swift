@@ -118,8 +118,8 @@ public enum GetUpTime: String, Codable, CaseIterable, Sendable, Identifiable {
     public var title: String {
         switch self {
         case .under10: L10n.tr("Under 10 minutes")
-        case .tenTo30: "10–30 minutes"
-        case .thirtyTo60: "30–60 minutes"
+        case .tenTo30: L10n.tr("10–30 minutes")
+        case .thirtyTo60: L10n.tr("30–60 minutes")
         case .overHour: L10n.tr("Over an hour")
         }
     }
