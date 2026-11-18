@@ -5,7 +5,7 @@ import Foundation
 import Telemetry
 import Testing
 
-@Suite @MainActor struct TelemetryTests {
+@MainActor struct TelemetryTests {
     final class Clock: @unchecked Sendable { var now = Date(timeIntervalSince1970: 1_800_000_000) }
 
     private func make(enabled: Bool? = nil, appID: String? = "APP-ID") -> (Telemetry, RecordingSink, UserDefaults, Clock) {
@@ -29,7 +29,9 @@ import Testing
     @Test func noAppIDMeansNothingIsSent() {
         let (t, sink, _, _) = make(appID: "  ")
         t.send(.alarmRang)
-        #expect(!t.isConfigured && sink.signals.isEmpty && !sink.started)
+        #expect(t.isConfigured == false)
+        #expect(sink.signals.isEmpty)
+        #expect(sink.started == false)
     }
 
     @Test func optOutStopsAndForgetsTheID() {
@@ -37,7 +39,8 @@ import Testing
         let id = t.installationID
         t.setEnabled(false)
         t.send(.alarmRang)
-        #expect(sink.signals.isEmpty && !sink.started)
+        #expect(sink.signals.isEmpty)
+        #expect(sink.started == false)
         #expect(defaults.string(forKey: "gloop.telemetry.id") == nil)
         t.setEnabled(true)
         #expect(t.installationID != id, "a new random ID: old and new data can't be linked")
@@ -46,18 +49,19 @@ import Testing
 
     @Test func optOutIsRemembered() {
         let (t, sink, _, _) = make(enabled: false)
-        #expect(!t.isEnabled && !sink.started)
+        #expect(t.isEnabled == false)
+        #expect(sink.started == false)
         t.send(.alarmRang)
         #expect(sink.signals.isEmpty)
     }
 
-    @Test func backgroundReportsTheLastScreen() {
+    @Test func backgroundReportsTheLastScreen() throws {
         let (t, sink, _, clock) = make()
         t.sessionStarted(source: .cold)
         t.screen("Onboarding.goal")
         clock.now += 42
         t.sessionEnded()
-        let last = sink.signals.last!
+        let last = try #require(sink.signals.last)
         #expect(last.name == "App.backgrounded")
         #expect(last.parameters["screen"] == "Onboarding.goal")
         #expect(last.parameters["secondsOnScreen"] == "42")
@@ -120,13 +124,13 @@ import Testing
         let plan = AlarmPlan(label: "Joren's secret gym", sound: .builtIn(.reveille), hour: 6, weekdays: [2, 4],
                              missions: [MissionConfig(kind: .math), MissionConfig(kind: .shake)])
         let parameters = TelemetryEvent.alarmCreated(plan.telemetrySummary(alarmCount: 2)).parameters
-        #expect(!parameters.values.contains { $0.contains("Joren") || $0.contains("gym") })
+        #expect(parameters.values.contains { $0.contains("Joren") || $0.contains("gym") } == false)
         #expect(parameters["missions"] == "math+shake" && parameters["soundKind"] == "builtIn.reveille")
         #expect(parameters["wakeHour"] == "6-7" && parameters["weekdaysCount"] == "2")
     }
 }
 
-@Suite @MainActor struct AlarmLoopEventTests {
+@MainActor struct AlarmLoopEventTests {
     @Test func coordinatorReportsStopAndFailSafe() async {
         let store = KeyValueStore(defaults: UserDefaults(suiteName: "test-\(UUID().uuidString)")!)
         store.savePlans([AlarmPlan(reArmMinutes: 2, maxReArms: 1, isEnabled: true)])

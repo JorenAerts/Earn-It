@@ -5,7 +5,7 @@ import Permissions
 import Testing
 import UserNotifications
 
-@Suite struct PermissionMappingTests {
+struct PermissionMappingTests {
     @Test func systemStatusesMap() {
         #expect(PermissionMapping.alarms(.authorized) == .granted)
         #expect(PermissionMapping.alarms(.denied) == .denied)
@@ -31,16 +31,22 @@ import UserNotifications
     }
 
     @Test func onboardingNeedsAlarmsOrExplicitSkip() {
-        #expect(!PermissionRules.canFinishOnboarding([.alarms: .denied, .notifications: .granted], skipped: false))
+        #expect(PermissionRules.canFinishOnboarding([.alarms: .denied, .notifications: .granted], skipped: false) == false)
         #expect(PermissionRules.canFinishOnboarding([.alarms: .granted], skipped: false))
         #expect(PermissionRules.canFinishOnboarding([.alarms: .denied], skipped: true))
     }
 
-    @Test func everyKindIsDescribed() {
-        for kind in PermissionKind.allCases {
-            #expect(!kind.title.isEmpty && !kind.reason.isEmpty && !kind.blockedMessage.isEmpty && !kind.symbol.isEmpty)
-        }
+    @Test(arguments: PermissionKind.allCases)
+    func everyKindIsDescribed(kind: PermissionKind) {
+        #expect(kind.title.isEmpty == false)
+        #expect(kind.reason.isEmpty == false)
+        #expect(kind.blockedMessage.isEmpty == false)
+        #expect(kind.symbol.isEmpty == false)
+    }
+
+    @Test func onlyAlarmsAreRequiredAndNotificationsOpenTheirOwnSettings() {
         #expect(PermissionKind.allCases.filter { $0.importance == .required } == [.alarms])
-        #expect(PermissionKind.notifications.opensNotificationSettings && !PermissionKind.camera.opensNotificationSettings)
+        #expect(PermissionKind.notifications.opensNotificationSettings)
+        #expect(PermissionKind.camera.opensNotificationSettings == false)
     }
 }

@@ -3,7 +3,7 @@ import Foundation
 import Missions
 import Testing
 
-@Suite struct ObjectMatchPolicyTests {
+struct ObjectMatchPolicyTests {
     @Test func thresholdFollowsTheItemsOwnSpreadWithinBounds() {
         #expect(ObjectMatchPolicy.threshold(pairwiseDistances: []) == ObjectMatchPolicy.minimumThreshold)
         #expect(ObjectMatchPolicy.threshold(pairwiseDistances: [0.1, 0.2]) == ObjectMatchPolicy.minimumThreshold)
@@ -22,7 +22,7 @@ import Testing
     @Test func needsConsecutiveMatches() {
         var tracker = ObjectMatchTracker()
         for _ in 0..<(ObjectMatchPolicy.requiredConsecutive - 1) { tracker.record(distance: 0.2, threshold: 0.5) }
-        #expect(!tracker.isComplete)
+        #expect(tracker.isComplete == false)
         tracker.record(distance: 0.9, threshold: 0.5)   // a different object breaks the streak
         #expect(tracker.streak == 0)
         tracker.record(distance: nil, threshold: 0.5)   // nothing in view
@@ -32,12 +32,12 @@ import Testing
     }
 
     @Test func setupShotsMustChangeAngle() {
-        #expect(!ObjectMatchPolicy.isDistinctAngle(distanceToPrevious: 0.01))
+        #expect(ObjectMatchPolicy.isDistinctAngle(distanceToPrevious: 0.01) == false)
         #expect(ObjectMatchPolicy.isDistinctAngle(distanceToPrevious: 0.2))
     }
 }
 
-@Suite struct MissionRunTests {
+struct MissionRunTests {
     private let item = MissionConfig(kind: .object, payload: "ref", label: "Toothbrush")
 
     @Test func successAdvancesAndFinishes() {
@@ -49,7 +49,7 @@ import Testing
     @Test func needsBackupNeverCountsAsSuccess() {
         var run = MissionRun(steps: [item])
         #expect(run.apply(.needsBackup) == .backupStarted)
-        #expect(!run.isFinished)
+        #expect(run.isFinished == false)
         #expect(run.current?.kind == .math && run.current?.difficulty == .hard && run.current?.target == 5)
         #expect(run.backupDelay == nil, "no second backup for the same step")
         #expect(run.apply(.success) == .finished)
@@ -61,17 +61,20 @@ import Testing
     }
 }
 
-@Suite struct MissionMetadataTests {
-    @Test func everyKindHasPickerInfo() {
-        for kind in MissionKind.allCases {
-            #expect(!kind.symbol.isEmpty && !kind.tagline.isEmpty && !kind.estimatedDuration.isEmpty, "\(kind)")
-            #expect(!MissionConfig(kind: kind).instruction.isEmpty)
-        }
+struct MissionMetadataTests {
+    @Test(arguments: MissionKind.allCases)
+    func everyKindHasPickerInfo(kind: MissionKind) {
+        #expect(kind.symbol.isEmpty == false)
+        #expect(kind.tagline.isEmpty == false)
+        #expect(kind.estimatedDuration.isEmpty == false)
+        #expect(MissionConfig(kind: kind).instruction.isEmpty == false)
     }
 
     @Test func objectMissionNeedsAScanAndUsesItsName() {
         var config = MissionConfig(kind: .object)
-        #expect(!config.isReady && config.kind.needsCamera && config.kind.needsSetup)
+        #expect(config.isReady == false)
+        #expect(config.kind.needsCamera)
+        #expect(config.kind.needsSetup)
         config.payload = "ref"
         config.label = "Toothbrush"
         #expect(config.isReady)

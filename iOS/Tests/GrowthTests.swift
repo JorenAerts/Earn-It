@@ -9,7 +9,7 @@ private let cal: Calendar = {
 }()
 private func day(_ d: Int) -> Date { cal.date(from: DateComponents(year: 2026, month: 11, day: d, hour: 8))! }
 
-@Suite struct RatingPolicyTests {
+struct RatingPolicyTests {
     let installed = RatingPolicy.State(installDate: day(1))
 
     @Test func asksAtHappyMoments() {
@@ -37,7 +37,7 @@ private func day(_ d: Int) -> Date { cal.date(from: DateComponents(year: 2026, m
     }
 }
 
-@Suite struct WhatsNewPolicyTests {
+struct WhatsNewPolicyTests {
     @Test func onlyAfterAnUpdateWithNotes() {
         #expect(WhatsNewPolicy.versionToShow(current: "1.1", lastSeenVersion: nil, availableVersions: ["1.1"]) == nil, "fresh install")
         #expect(WhatsNewPolicy.versionToShow(current: "1.1", lastSeenVersion: "1.0", availableVersions: ["1.1", "1.0"]) == "1.1")
@@ -55,7 +55,7 @@ private func day(_ d: Int) -> Date { cal.date(from: DateComponents(year: 2026, m
     }
 }
 
-@Suite struct AppStoreMetadataTests {
+struct AppStoreMetadataTests {
     static let root = TestPaths.ios
 
     private func text(_ locale: String, _ file: String) throws -> String {
@@ -71,7 +71,8 @@ private func day(_ d: Int) -> Date { cal.date(from: DateComponents(year: 2026, m
         #expect(try text(locale, "release_notes").count <= 4000)
         let keywords = try text(locale, "keywords")
         #expect(keywords.utf8.count <= 100)
-        #expect(!keywords.contains(" ") && !keywords.contains(",,"))
+        #expect(keywords.contains(" ") == false)
+        #expect(keywords.contains(",,") == false)
     }
 
     @Test func keywordsDontRepeatNameOrSubtitle() throws {
@@ -79,7 +80,7 @@ private func day(_ d: Int) -> Date { cal.date(from: DateComponents(year: 2026, m
             .lowercased().components(separatedBy: CharacterSet.letters.inverted).filter { !$0.isEmpty })
         let us = try text("en-US", "keywords").split(separator: ",").map(String.init)
         let uk = try text("en-GB", "keywords").split(separator: ",").map(String.init)
-        for word in us + uk { #expect(!titleWords.contains(word), "\(word) is already in the name/subtitle") }
+        for word in us + uk { #expect(titleWords.contains(word) == false, "\(word) is already in the name/subtitle") }
         #expect(Set(us).isDisjoint(with: Set(uk)), "US and UK fields should cover different words")
         #expect(Set(us).count == us.count && Set(uk).count == uk.count)
     }
@@ -100,7 +101,7 @@ private func day(_ d: Int) -> Date { cal.date(from: DateComponents(year: 2026, m
     }
 }
 
-@Suite @MainActor struct StreakCardTests {
+@MainActor struct StreakCardTests {
     @Test func cardContent() {
         let content = StreakCardContent(streak: 12, rank: .bouncer, stickers: 4, vitality: 0.9)
         #expect(content.rank.accessory == .cap)

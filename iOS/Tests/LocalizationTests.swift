@@ -5,7 +5,7 @@ import Foundation
 import Localization
 import Testing
 
-@Suite(.serialized) struct L10nTests {
+struct L10nTests {
     @Test func resolvesTheChosenLanguageNotTheIPhones() {
         L10n.$override.withValue("nl") {
             #expect(L10n.tr("Math problems") == "Rekensommen")
@@ -31,7 +31,7 @@ import Testing
     }
 }
 
-@Suite struct AppLanguageTests {
+struct AppLanguageTests {
     @Test func bestMatch() {
         #expect(AppLanguage.bestMatch(for: ["nl-BE"]).code == "nl")
         #expect(AppLanguage.bestMatch(for: ["pt-BR"]).code == "pt-BR")
@@ -56,7 +56,7 @@ import Testing
     }
 }
 
-@MainActor @Suite(.serialized) struct LanguageSettingsTests {
+@MainActor struct LanguageSettingsTests {
     private func make(stored: String? = nil, preferred: [String] = ["de-DE"]) -> (LanguageSettings, UserDefaults, UserDefaults) {
         let d = UserDefaults(suiteName: "l10n-\(UUID())")!, g = UserDefaults(suiteName: "l10n-g-\(UUID())")!
         if let stored { d.set(stored, forKey: LanguageSettings.key) }
@@ -75,7 +75,7 @@ import Testing
         #expect(s.select("nl"))
         #expect(s.current.code == "nl")
         #expect(d.string(forKey: LanguageSettings.key) == "nl" && g.string(forKey: LanguageSettings.key) == "nl")
-        #expect(!s.select("nl"))
+        #expect(s.select("nl") == false)
         s.select(nil)
         #expect(s.isAutomatic && s.current.code == "de" && d.string(forKey: LanguageSettings.key) == nil)
     }
@@ -94,10 +94,10 @@ private let shared = TestPaths.shared
 fileprivate struct Catalog {
     let strings: [String: [String: Any]]
 
-    static func load(_ name: String = "Localizable") -> Catalog {
-        let data = try! Data(contentsOf: front.appending(path: "App/\(name).xcstrings"))
-        let json = try! JSONSerialization.jsonObject(with: data) as! [String: Any]
-        return Catalog(strings: json["strings"] as! [String: [String: Any]])
+    static func load(_ name: String = "Localizable") throws -> Catalog {
+        let data = try Data(contentsOf: front.appending(path: "App/\(name).xcstrings"))
+        let json = try #require(try JSONSerialization.jsonObject(with: data) as? [String: Any], "\(name).xcstrings is not a JSON object")
+        return Catalog(strings: try #require(json["strings"] as? [String: [String: Any]], "\(name).xcstrings has no strings"))
     }
 
     var languages: Set<String> {
@@ -123,8 +123,13 @@ private func placeholders(_ s: String) -> [String] {
 /// Languages that ship a translation (English is the source).
 private let shipped = (Bundle.main.object(forInfoDictionaryKey: "CFBundleLocalizations") as? [String] ?? []).filter { $0 != "en" }
 
-@Suite struct CatalogTests {
-    fileprivate let catalog = Catalog.load()
+struct CatalogTests {
+    fileprivate let catalog: Catalog
+
+    init() throws {
+        try #require(shipped.isEmpty == false, "CFBundleLocalizations missing from the test host")
+        catalog = try Catalog.load()
+    }
 
     @Test func infoPlistLanguagesMatchTheCatalog() {
         #expect(Set(shipped) == catalog.languages.subtracting(["en"]),
@@ -154,15 +159,19 @@ private let shipped = (Bundle.main.object(forInfoDictionaryKey: "CFBundleLocaliz
         }
     }
 
-    @Test func infoPlistStringsAreTranslated() {
-        let info = Catalog.load("InfoPlist")
+    @Test func infoPlistStringsAreTranslated() throws {
+        let info = try Catalog.load("InfoPlist")
         for code in shipped {
-            for key in info.strings.keys where info.translatable(key) { #expect(!info.values(key, code).isEmpty, "InfoPlist \(key) missing in \(code)") }
+            for key in info.strings.keys where info.translatable(key) { #expect(info.values(key, code).isEmpty == false, "InfoPlist \(key) missing in \(code)") }
         }
     }
 }
 
-@Suite struct TranslatedContentTests {
+struct TranslatedContentTests {
+    init() throws {
+        try #require(shipped.isEmpty == false, "CFBundleLocalizations missing from the test host")
+    }
+
     private func json(_ path: String) -> Any? {
         (try? Data(contentsOf: shared.appending(path: path))).flatMap { try? JSONSerialization.jsonObject(with: $0) }
     }
@@ -215,7 +224,7 @@ private let shipped = (Bundle.main.object(forInfoDictionaryKey: "CFBundleLocaliz
     }
 }
 
-@Suite(.serialized) struct LocalizedRuntimeTests {
+struct LocalizedRuntimeTests {
     @Test func dutchEndToEnd() {
         L10n.$override.withValue("nl") { dutch() }
     }
@@ -232,7 +241,7 @@ private let shipped = (Bundle.main.object(forInfoDictionaryKey: "CFBundleLocaliz
         #expect(help.faq.first?.question == "Waarom blijft de wekker afgaan?")
         let privacy = LegalDocument.load(.privacy, language: "nl")
         #expect(privacy.isTranslation && privacy.title == "Privacybeleid")
-        #expect(!LegalDocument.load(.privacy, english: true, language: "nl").isTranslation)
+        #expect(LegalDocument.load(.privacy, english: true, language: "nl").isTranslation == false)
     }
 
     @Test func englishIsTheDefaultAndPluralised() {
@@ -243,7 +252,7 @@ private let shipped = (Bundle.main.object(forInfoDictionaryKey: "CFBundleLocaliz
         #expect(MissionConfig(kind: .math, target: 1).instruction == "Solve 1 problem.")
         #expect(MissionConfig(kind: .math, target: 3).instruction == "Solve 3 problems in a row.")
         #expect(MissionKind.math.targetText(1) == "1 problem")
-        #expect(!LegalDocument.load(.privacy, language: "en").isTranslation)
+        #expect(LegalDocument.load(.privacy, language: "en").isTranslation == false)
     }
 
     @Test func legalValuesPerLanguage() {

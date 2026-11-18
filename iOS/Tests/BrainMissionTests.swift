@@ -15,7 +15,7 @@ private struct SeededRNG: RandomNumberGenerator, Sendable {
 private let shared = TestPaths.shared
 private let shipped = (Bundle.main.object(forInfoDictionaryKey: "CFBundleLocalizations") as? [String] ?? []).filter { $0 != "en" }
 
-@Suite struct MissionCategoryTests {
+struct MissionCategoryTests {
     @Test func everyMissionHasAFolderAndOnboardingKindsExist() {
         let inFolders = MissionCategory.allCases.flatMap(\.kinds)
         #expect(Set(inFolders) == Set(MissionKind.allCases) && inFolders.count == MissionKind.allCases.count)
@@ -33,21 +33,23 @@ private let shipped = (Bundle.main.object(forInfoDictionaryKey: "CFBundleLocaliz
     }
 }
 
-@Suite struct QuizSessionTests {
+struct QuizSessionTests {
     private let questions = (1...5).map { QuizQuestion(question: "Q\($0)", answer: "A\($0)", wrong: ["x", "y", "z"]) }
 
-    @Test func completesAfterTargetCorrectAnswersAndWrongOnesMoveOn() {
+    @Test func completesAfterTargetCorrectAnswersAndWrongOnesMoveOn() throws {
         var session = QuizSession(questions: questions, target: 2, rng: SeededRNG(state: 1))
         var seen = Set<String>()
-        let first = session.round!
+        let first = try #require(session.round)
         seen.insert(first.question.question)
         #expect(first.options.count == 4 && first.options.contains(first.question.answer))
         let wrong = session.answer((first.correctIndex + 1) % 4)
-        #expect(!wrong)
-        #expect(session.correct == 0 && !session.isComplete)
-        #expect(session.round!.question != first.question)
-        let right1 = session.answer(session.round!.correctIndex)
-        let right2 = session.answer(session.round!.correctIndex)
+        #expect(wrong == false)
+        #expect(session.correct == 0)
+        #expect(session.isComplete == false)
+        let second = try #require(session.round)
+        #expect(second.question != first.question)
+        let right1 = session.answer(second.correctIndex)
+        let right2 = session.answer(try #require(session.round).correctIndex)
         #expect(right1 && right2 && session.isComplete)
     }
 
@@ -57,7 +59,7 @@ private let shipped = (Bundle.main.object(forInfoDictionaryKey: "CFBundleLocaliz
     }
 }
 
-@Suite struct MemoryGameTests {
+struct MemoryGameTests {
     @Test func pairsMatchAndMismatchesClose() {
         var rng = SeededRNG(state: 7)
         var game = MemoryGame(pairs: 3, rng: &rng)
@@ -71,7 +73,7 @@ private let shipped = (Bundle.main.object(forInfoDictionaryKey: "CFBundleLocaliz
         let blocked = game.flip(partner)
         #expect(blocked == .ignored)
         game.closeMismatch()
-        #expect(!game.cards[a].isUp)
+        #expect(game.cards[a].isUp == false)
         let r3 = game.flip(a), r4 = game.flip(partner)
         #expect(r3 == .first && r4 == .match)
         let again = game.flip(a)
@@ -92,18 +94,22 @@ private let shipped = (Bundle.main.object(forInfoDictionaryKey: "CFBundleLocaliz
     }
 }
 
-@Suite struct TypingCheckTests {
+struct TypingCheckTests {
     @Test func forgivesCasePunctuationAndSpaces() {
         #expect(TypingCheck.matches("she SELLS  seashells, by the seashore!", "She sells seashells by the seashore"))
         #expect(TypingCheck.matches("Betty Botter's butter", "Betty Botter’s butter"))
-        #expect(!TypingCheck.matches("she sells sea shells", "She sells seashells"))
+        #expect(TypingCheck.matches("she sells sea shells", "She sells seashells") == false)
         #expect(TypingCheck.matches("Fischers Fritz fischt", "Fischers Fritz fischt"))
-        #expect(!TypingCheck.matches("cafe", "café"))  // letters, accents included, must match
+        #expect(TypingCheck.matches("cafe", "café") == false)  // letters, accents included, must match
         #expect(TypingCheck.correctPrefix("she sel", "She sells") == 7)
     }
 }
 
-@Suite struct BrainContentTests {
+struct BrainContentTests {
+    init() throws {
+        try #require(shipped.isEmpty == false, "CFBundleLocalizations missing from the test host")
+    }
+
     private func json(_ path: String) -> Any? {
         (try? Data(contentsOf: shared.appending(path: path))).flatMap { try? JSONSerialization.jsonObject(with: $0) }
     }
@@ -114,8 +120,11 @@ private let shipped = (Bundle.main.object(forInfoDictionaryKey: "CFBundleLocaliz
             #expect(list.count == 20, "\(name) \(topic): \(list.count) questions")
             for q in list {
                 let answer = q["answer"] as? String ?? "", wrong = q["wrong"] as? [String] ?? []
-                #expect(!(q["question"] as? String ?? "").isEmpty && !answer.isEmpty, "\(name) \(topic): empty")
-                #expect(wrong.count == 3 && !wrong.contains(answer) && Set(wrong).count == 3, "\(name) \(topic): \(q["question"] ?? "")")
+                #expect((q["question"] as? String ?? "").isEmpty == false, "\(name) \(topic): empty")
+                #expect(answer.isEmpty == false, "\(name) \(topic): empty")
+                #expect(wrong.count == 3, "\(name) \(topic): \(q["question"] ?? "")")
+                #expect(wrong.contains(answer) == false, "\(name) \(topic): \(q["question"] ?? "")")
+                #expect(Set(wrong).count == 3, "\(name) \(topic): \(q["question"] ?? "")")
             }
         }
     }

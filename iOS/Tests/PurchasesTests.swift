@@ -5,7 +5,7 @@ import StoreKit
 import StoreKitTest
 import Testing
 
-@Suite struct PricingCatalogTests {
+struct PricingCatalogTests {
     @Test func bundledPricingLoadsAllFivePlansInOrder() throws {
         let catalog = try PricingCatalog.load()
         #expect(catalog.plans.map(\.key) == ["weekly", "monthly", "quarterly", "yearly", "lifetime"])
@@ -37,7 +37,7 @@ import Testing
 
 private final class BundleToken {}
 
-@Suite struct EntitlementTests {
+struct EntitlementTests {
     let now = Date(timeIntervalSince1970: 1_800_000_000)
 
     @Test func resolvesTiers() {
@@ -67,14 +67,17 @@ private final class BundleToken {}
     }
 }
 
-@Suite struct FeatureGateTests {
+struct FeatureGateTests {
     @Test func freeTierLimits() {
         let gate = FeatureGate(isPro: false)
         #expect(gate.canAddAlarm(currentCount: 0))
-        #expect(!gate.canAddAlarm(currentCount: 1))
-        #expect(!gate.isLocked(MissionKind.math) && gate.isLocked(MissionKind.qr) && gate.isLocked(MissionKind.shake))
-        #expect(!gate.isLocked(AlarmSound.classic) && gate.isLocked(AlarmSound.siren))
-        #expect(!gate.isAllowed(AlarmPlan(sound: .chime)))
+        #expect(gate.canAddAlarm(currentCount: 1) == false)
+        #expect(gate.isLocked(MissionKind.math) == false)
+        #expect(gate.isLocked(MissionKind.qr))
+        #expect(gate.isLocked(MissionKind.shake))
+        #expect(gate.isLocked(AlarmSound.classic) == false)
+        #expect(gate.isLocked(AlarmSound.siren))
+        #expect(gate.isAllowed(AlarmPlan(sound: .chime)) == false)
     }
 
     @Test func proUnlocksEverything() {
@@ -93,7 +96,7 @@ private final class BundleToken {}
         let (plans, changes) = DowngradePolicy.apply(to: [off, keeper, extra], gate: FeatureGate(isPro: false))
         #expect(plans.count == 3, "nothing is deleted")
         #expect(plans[1].isEnabled && plans[1].missions.map(\.kind) == [.math] && plans[1].sound == .classic)
-        #expect(!plans[2].isEnabled)
+        #expect(plans[2].isEnabled == false)
         #expect(changes.count == 3)
         #expect(DowngradePolicy.apply(to: plans, gate: FeatureGate(isPro: false)).changes.isEmpty, "idempotent")
     }
@@ -163,7 +166,7 @@ private final class BundleToken {}
     }
 }
 
-@Suite struct PlanPeriodTests {
+struct PlanPeriodTests {
     @Test func parsesISOPeriods() {
         #expect(PlanPeriod(iso: "P1W") == PlanPeriod(value: 1, unit: .week))
         #expect(PlanPeriod(iso: "P3M") == PlanPeriod(value: 3, unit: .month))

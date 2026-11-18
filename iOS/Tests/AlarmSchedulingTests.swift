@@ -6,7 +6,7 @@ import Testing
 /// Keeping AlarmKit in step with the alarm list. Regression for the device bug of 17 Nov 2026:
 /// two passes on app open (launch refresh + foreground restore) both re-added the same alarm id,
 /// AlarmKit refused the second ("duplicate ID") and Home showed "Could not schedule alarm".
-@Suite @MainActor struct AlarmSchedulingTests {
+@MainActor struct AlarmSchedulingTests {
     private let sound = FakeAlarmSound()
 
     private func make(_ plans: [AlarmPlan] = [AlarmPlan(isEnabled: true)], version: String = "1.0.0 (1)",
@@ -96,8 +96,8 @@ import Testing
         scheduler.alerting = [ringing]
         await c.refreshAlarms()
         #expect(scheduler.cancelled.contains(stale))
-        #expect(!scheduler.cancelled.contains(ringing))
-        #expect(!scheduler.cancelled.contains(plan.id))
+        #expect(scheduler.cancelled.contains(ringing) == false)
+        #expect(scheduler.cancelled.contains(plan.id) == false)
     }
 
     @Test func policyDecisions() {

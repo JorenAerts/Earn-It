@@ -6,10 +6,10 @@ import Purchases
 import Foundation
 import Testing
 
-@Suite struct OnboardingFlowTests {
+struct OnboardingFlowTests {
     let full = OnboardingContext(accountsAvailable: true, isSignedIn: false, isPro: false)
 
-    @Test func walksAllStepsInOrder() {
+    @Test func walksAllStepsInOrder() throws {
         var step: OnboardingStep? = .welcome
         var seen: [OnboardingStep] = []
         while let current = step {
@@ -17,7 +17,9 @@ import Testing
             step = OnboardingFlow.next(after: current, full)
         }
         #expect(seen == OnboardingStep.allCases)
-        #expect(seen.firstIndex(of: .building)! > seen.firstIndex(of: .sound)!, "alarm is built after it's configured")
+        let building = try #require(seen.firstIndex(of: .building))
+        let sound = try #require(seen.firstIndex(of: .sound))
+        #expect(building > sound, "alarm is built after it's configured")
     }
 
     @Test func accountSkippedWhenUnavailableOrSignedIn() {
@@ -30,7 +32,7 @@ import Testing
     @Test func paywallSkippedForPro() {
         let pro = OnboardingContext(accountsAvailable: true, isSignedIn: false, isPro: true)
         #expect(OnboardingFlow.next(after: .summary, pro) == nil, "onboarding ends")
-        #expect(!OnboardingFlow.visibleSteps(pro).contains(.paywall))
+        #expect(OnboardingFlow.visibleSteps(pro).contains(.paywall) == false)
     }
 
     @Test func inviteSkippedOnceUnlocked() {
@@ -68,7 +70,7 @@ import Testing
     }
 }
 
-@Suite struct OnboardingAnswersTests {
+struct OnboardingAnswersTests {
     @Test func firstAlarmUsesAnswers() {
         var answers = OnboardingAnswers()
         answers.hour = 6
@@ -110,12 +112,12 @@ import Testing
         let free = FeatureGate(isPro: false), pro = FeatureGate(isPro: true)
         var answers = OnboardingAnswers()
         answers.sound = .classic
-        #expect(!answers.soundNeedsPaywall(gate: free))
+        #expect(answers.soundNeedsPaywall(gate: free) == false)
         answers.sound = .builtIn(.chime)
         #expect(answers.soundNeedsPaywall(gate: free))
-        #expect(!answers.soundNeedsPaywall(gate: pro))
+        #expect(answers.soundNeedsPaywall(gate: pro) == false)
         answers.sound = .builtIn(BonusUnlocks.inviteSound)
-        #expect(!answers.soundNeedsPaywall(gate: free), "the invite step unlocks it for free")
+        #expect(answers.soundNeedsPaywall(gate: free) == false, "the invite step unlocks it for free")
     }
 
     @Test func suggestionWhenNothingChosen() {
@@ -152,7 +154,7 @@ import Testing
     }
 }
 
-@Suite struct OnboardingPersonalizationTests {
+struct OnboardingPersonalizationTests {
     @Test func toneFromReaction() {
         #expect(OnboardingPersonalization.suggestedTone(.imUp) == .gentle)
         #expect(OnboardingPersonalization.suggestedTone(.fiveMore) == .toughLove)
@@ -196,7 +198,7 @@ import Testing
     }
 }
 
-@Suite struct CoachNamePlaceholderTests {
+struct CoachNamePlaceholderTests {
     @Test func nameFallsBackToFriend() {
         let lines = CoachLines(table: ["idle": ["toughLove": ["Lights out, {name}."]]])
         #expect(lines.line(for: .idle, intensity: .toughLove, day: .now) == "Lights out, friend.")
@@ -205,16 +207,16 @@ import Testing
     }
 }
 
-@Suite struct BonusSoundTests {
+struct BonusSoundTests {
     @Test func inviteSoundUnlocksForFree() {
         let free = FeatureGate(isPro: false)
         #expect(free.isLocked(BonusUnlocks.inviteSound))
         let bonus = FeatureGate(isPro: false, bonusSounds: [BonusUnlocks.inviteSound])
-        #expect(!bonus.isLocked(BonusUnlocks.inviteSound))
+        #expect(bonus.isLocked(BonusUnlocks.inviteSound) == false)
         #expect(bonus.isLocked(AlarmSound.siren), "only the bonus sound")
         let plan = AlarmPlan(sound: .builtIn(BonusUnlocks.inviteSound), isEnabled: true)
         #expect(DowngradePolicy.apply(to: [plan], gate: bonus).changes.isEmpty, "kept after Pro ends")
-        #expect(!DowngradePolicy.apply(to: [plan], gate: free).changes.isEmpty)
+        #expect(DowngradePolicy.apply(to: [plan], gate: free).changes.isEmpty == false)
     }
 
     @Test func unlockPersists() {
@@ -225,14 +227,15 @@ import Testing
     }
 }
 
-@Suite struct OnboardingStoreTests {
+struct OnboardingStoreTests {
     private func defaults() -> UserDefaults { UserDefaults(suiteName: "test-\(UUID().uuidString)")! }
 
     @Test func progressResumes() {
         let d = defaults()
         let store = OnboardingStore(defaults: d)
         var progress = store.load()
-        #expect(progress.step == .welcome && !progress.completed)
+        #expect(progress.step == .welcome)
+        #expect(progress.completed == false)
         progress.step = .permissions
         progress.answers.hour = 5
         progress.answers.name = "Sam"
@@ -258,11 +261,13 @@ import Testing
         store.save(progress)
         store.reset()
         let again = store.load()
-        #expect(!again.completed && again.step == .welcome && again.answers.hour == 9)
+        #expect(again.completed == false)
+        #expect(again.step == .welcome)
+        #expect(again.answers.hour == 9)
     }
 }
 
-@Suite @MainActor struct TierEnforcementTests {
+@MainActor struct TierEnforcementTests {
     private func coordinator(with plans: [AlarmPlan]) async -> (AlarmCoordinator, FakeScheduler) {
         let store = KeyValueStore(defaults: UserDefaults(suiteName: "test-\(UUID().uuidString)")!)
         let scheduler = FakeScheduler()
@@ -278,7 +283,7 @@ import Testing
         let changes = await TierEnforcement.enforce(on: c, gate: FeatureGate(isPro: false))
         #expect(changes.count == 3)
         #expect(c.plans[0].sound == .classic && c.plans[0].missions.map(\.kind) == [.math])
-        #expect(!c.plans[1].isEnabled)
+        #expect(c.plans[1].isEnabled == false)
         #expect(scheduler.mainPlans[second.id] == nil, "switched-off alarm is unscheduled")
         #expect(scheduler.mainPlans[first.id]?.sound == .classic, "kept alarm rescheduled with new sound")
         let again = await TierEnforcement.enforce(on: c, gate: FeatureGate(isPro: false))
@@ -311,7 +316,8 @@ import Testing
 
     @Test func enableGate() {
         let free = FeatureGate(isPro: false)
-        #expect(free.canEnableAlarm(enabledCount: 0) && !free.canEnableAlarm(enabledCount: 1))
+        #expect(free.canEnableAlarm(enabledCount: 0))
+        #expect(free.canEnableAlarm(enabledCount: 1) == false)
         #expect(FeatureGate(isPro: true).canEnableAlarm(enabledCount: 9))
     }
 }

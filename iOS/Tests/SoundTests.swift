@@ -5,7 +5,7 @@ import Purchases
 import Testing
 @testable import Features
 
-@Suite struct SoundChoiceTests {
+struct SoundChoiceTests {
     @Test func legacyStringDecodesAsBuiltIn() throws {
         let json = #"{"id":"FED23467-0B83-4401-8A74-82EB06908396","hour":7,"minute":0,"weekdays":[],"missions":[],"reArmMinutes":2,"maxReArms":15,"isEnabled":true,"sound":"chime"}"#
         let plan = try JSONDecoder().decode(AlarmPlan.self, from: Data(json.utf8))
@@ -32,10 +32,10 @@ import Testing
 
     @Test func onlyClassicIsFree() {
         let free = FeatureGate(isPro: false)
-        #expect(!free.isLocked(SoundChoice.classic))
+        #expect(free.isLocked(SoundChoice.classic) == false)
         #expect(free.isLocked(SoundChoice.builtIn(.morningMood)))
         #expect(free.isLocked(SoundChoice.custom(id: UUID(), name: "x")))
-        #expect(!FeatureGate(isPro: true).isLocked(SoundChoice.custom(id: UUID(), name: "x")))
+        #expect(FeatureGate(isPro: true).isLocked(SoundChoice.custom(id: UUID(), name: "x")) == false)
         let plan = AlarmPlan(sound: .custom(id: UUID(), name: "x"), isEnabled: true)
         let (plans, changes) = DowngradePolicy.apply(to: [plan], gate: free)
         #expect(plans[0].sound == .classic && changes.count == 1)
@@ -49,7 +49,7 @@ import Testing
     }
 }
 
-@Suite struct ClipProcessingTests {
+struct ClipProcessingTests {
     @Test func fadesAndNormalises() {
         let samples = [Float](repeating: 0.25, count: 22_050 * 2)
         let out = ClipProcessing.finish(samples, sampleRate: 22_050)
@@ -92,7 +92,7 @@ import Testing
     }
 }
 
-@Suite @MainActor struct MySoundsTests {
+@MainActor struct MySoundsTests {
     @Test func addRenameDelete() throws {
         let dir = FileManager.default.temporaryDirectory.appending(path: UUID().uuidString)
         let library = MySounds(directory: dir)
@@ -104,6 +104,7 @@ import Testing
         library.rename(sound.id, to: "Mom")
         #expect(library.sounds.first?.name == "Mom")
         library.delete(sound.id)
-        #expect(library.sounds.isEmpty && !FileManager.default.fileExists(atPath: library.url(for: sound.id).path()))
+        #expect(library.sounds.isEmpty)
+        #expect(FileManager.default.fileExists(atPath: library.url(for: sound.id).path()) == false)
     }
 }

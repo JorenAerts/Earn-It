@@ -19,7 +19,7 @@ private func done(_ d: Int, reArms: Int = 0) -> DaySummary {
     DaySummary(day: day(d), completed: true, reArms: reArms, failSafe: false)
 }
 
-@Suite struct SlimeVitalityTests {
+struct SlimeVitalityTests {
     let now = day(15, 12)
 
     @Test func newUserStartsHealthy() {
@@ -70,7 +70,7 @@ private func done(_ d: Int, reArms: Int = 0) -> DaySummary {
     }
 }
 
-@Suite struct SlimeLookTests {
+struct SlimeLookTests {
     @Test func droopFollowsVitality() {
         let calm = CoachState(mood: .calm, context: .idle)
         let happy = SlimeLook.make(vitality: 1, state: calm)
@@ -85,7 +85,8 @@ private func done(_ d: Int, reArms: Int = 0) -> DaySummary {
         let furious = SlimeLook.make(vitality: 0.8, state: CoachState(mood: .angry, context: .reRing, anger: 1))
         #expect(furious.pose.droop > mild.pose.droop)
         #expect(furious.pose.redness > mild.pose.redness)
-        #expect(furious.pose.steam && !mild.pose.steam)
+        #expect(furious.pose.steam)
+        #expect(mild.pose.steam == false)
         #expect(furious.tremble == 1)
     }
 
@@ -97,7 +98,7 @@ private func done(_ d: Int, reArms: Int = 0) -> DaySummary {
     }
 }
 
-@Suite @MainActor struct AppearanceTests {
+@MainActor struct AppearanceTests {
     @Test func lightByDefaultAndRemembered() {
         let d = UserDefaults(suiteName: "test-\(UUID().uuidString)")!
         let settings = AppearanceSettings(defaults: d)
@@ -132,12 +133,12 @@ private func done(_ d: Int, reArms: Int = 0) -> DaySummary {
     }
 }
 
-@Suite struct GloopVoiceTests {
+struct GloopVoiceTests {
     @Test func noSergeantLeft() throws {
         let url = TestPaths.shared.appending(path: "CoachLines.json")
         let text = try String(contentsOf: url, encoding: .utf8)
         for word in ["Sergeant", "soldier", "private,", "megaphone", "direct order"] {
-            #expect(!text.contains(word), "\(word)")
+            #expect(text.contains(word) == false, "\(word)")
         }
         let table = try JSONDecoder().decode([String: [String: [String]]].self, from: Data(text.utf8))
         let missing = CoachContext.allCases.flatMap { context in
@@ -158,7 +159,7 @@ private func done(_ d: Int, reArms: Int = 0) -> DaySummary {
     }
 }
 
-@Suite struct EvolutionTests {
+struct EvolutionTests {
     @Test func stagesKeepTheirThresholds() {
         #expect(Rank.allCases.map(\.threshold) == [0, 100, 300, 600, 1_000, 1_600, 2_500, 3_600, 5_000, 7_000, 10_000])
         #expect(Rank.forXP(0) == .droplet && Rank.forXP(10_000) == .kingGloop)
@@ -178,7 +179,8 @@ private func done(_ d: Int, reArms: Int = 0) -> DaySummary {
     @Test func everyStageHasItsOwnAccessory() {
         #expect(Rank.droplet.accessory == .none)
         let accessories = Rank.allCases.dropFirst().map(\.accessory)
-        #expect(Set(accessories).count == accessories.count && !accessories.contains(.none))
+        #expect(Set(accessories).count == accessories.count)
+        #expect(accessories.contains(.none) == false)
         #expect(Rank.kingGloop.accessory == .crown)
         let look = SlimeLook.make(vitality: 0.9, state: CoachState(mood: .calm, context: .idle), accessory: .cap)
         #expect(look.pose.accessory == .cap)
@@ -187,7 +189,7 @@ private func done(_ d: Int, reArms: Int = 0) -> DaySummary {
     @Test func stickersHaveNoArmyWords() {
         let army = ["duty", "centurion", "iron", "soldier", "rank", "medal"]
         for medal in Medal.allCases {
-            #expect(!army.contains { medal.title.lowercased().contains($0) }, "\(medal.title)")
+            #expect(army.contains { medal.title.lowercased().contains($0) } == false, "\(medal.title)")
         }
         #expect(Medal(rawValue: "firstMission") == .firstMission, "raw values unchanged (widget snapshots)")
     }
@@ -197,7 +199,7 @@ private func done(_ d: Int, reArms: Int = 0) -> DaySummary {
         let army = ["Sergeant", "soldier", "Recruit", "General", "promotion", "Promoted", "Service Record", "medal"]
         for file in ["CoachLines.json", "Help.json", "WhatsNew.json"] {
             let text = try String(contentsOf: config.appending(path: file), encoding: .utf8)
-            for word in army { #expect(!text.contains(word), "\(file): \(word)") }
+            for word in army { #expect(text.contains(word) == false, "\(file): \(word)") }
         }
     }
 }

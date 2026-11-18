@@ -13,3 +13,6 @@ iOS/Config/Local.xcconfig
 iOS/Config/Supabase.xcconfig
 # SwiftPM lock files inside local packages (generated)
 iOS/Packages/*/Package.resolved
+
+# workflow-audit plugin output
+.workflow-audit/

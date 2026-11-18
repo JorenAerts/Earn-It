@@ -19,7 +19,7 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
 
 // MARK: - Developer access
 
-@Suite struct DeveloperAccessTests {
+struct DeveloperAccessTests {
     let me = UUID()
 
     @Test func debugBuildsAlwaysUnlock() {
@@ -27,8 +27,8 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
     }
 
     @Test func releaseBuildsOnlyForAllowlistedAccounts() {
-        #expect(!DeveloperAccess.canUnlock(isDebugBuild: false, userID: nil, allowlist: [me]))
-        #expect(!DeveloperAccess.canUnlock(isDebugBuild: false, userID: UUID(), allowlist: [me]))
+        #expect(DeveloperAccess.canUnlock(isDebugBuild: false, userID: nil, allowlist: [me]) == false)
+        #expect(DeveloperAccess.canUnlock(isDebugBuild: false, userID: UUID(), allowlist: [me]) == false)
         #expect(DeveloperAccess.canUnlock(isDebugBuild: false, userID: me, allowlist: [me]))
     }
 
@@ -64,7 +64,7 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
         mode.validate(userID: me, isDebugBuild: false, allowlist: [me])
         #expect(mode.isOn)
         mode.validate(userID: UUID(), isDebugBuild: false, allowlist: [me])
-        #expect(!mode.isOn, "someone else signed in")
+        #expect(mode.isOn == false, "someone else signed in")
         mode.unlock(userID: nil)
         mode.validate(userID: nil, isDebugBuild: true, allowlist: [])
         #expect(mode.isOn, "Xcode builds never lock by themselves")
@@ -74,7 +74,7 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
 
 // MARK: - Pause policy
 
-@Suite struct PausePolicyTests {
+struct PausePolicyTests {
     // 2026-11-13 is a Friday.
     let now = day(13, 12)
 
@@ -92,12 +92,12 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
     @Test func pausedAndExpired() {
         let pause = AlarmPause(until: day(15))
         #expect(PausePolicy.isPaused(pause, at: now))
-        #expect(!PausePolicy.isExpired(pause, at: now))
-        #expect(!PausePolicy.isPaused(pause, at: day(15, 0, 1)))
+        #expect(PausePolicy.isExpired(pause, at: now) == false)
+        #expect(PausePolicy.isPaused(pause, at: day(15, 0, 1)) == false)
         #expect(PausePolicy.isExpired(pause, at: day(15)))
         #expect(PausePolicy.isPaused(AlarmPause(until: nil), at: now))
-        #expect(!PausePolicy.isExpired(AlarmPause(until: nil), at: day(30)))
-        #expect(!PausePolicy.isPaused(nil, at: now))
+        #expect(PausePolicy.isExpired(AlarmPause(until: nil), at: day(30)) == false)
+        #expect(PausePolicy.isPaused(nil, at: now) == false)
     }
 
     @Test func firstRingAfterPauseRespectsWeekdays() {
@@ -127,7 +127,7 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
 
 // MARK: - Coordinator pause / resume
 
-@Suite @MainActor struct AlarmPauseCoordinatorTests {
+@MainActor struct AlarmPauseCoordinatorTests {
     final class Clock: @unchecked Sendable { var now: Date = .now }
 
     private func make(_ plans: [AlarmPlan], clock: Clock) -> (AlarmCoordinator, FakeScheduler, KeyValueStore) {
@@ -213,7 +213,7 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
 
 // MARK: - Coach reminders while paused
 
-@Suite struct PausedNotificationTests {
+struct PausedNotificationTests {
     let lines = CoachLines(table: ["night": ["toughLove": ["Lights out. {time} sharp."]]])
 
     @Test func noRemindersOnPausedDaysAndWelcomeBack() {
@@ -224,13 +224,13 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
             pause: AlarmPause(until: day(15)), calendar: brussels)
         #expect(result.map(\.date) == [day(14, 22), day(15, 22)])
         #expect(result[0].body.hasPrefix("Break's over"))
-        #expect(!result[1].body.hasPrefix("Break's over"))
+        #expect(result[1].body.hasPrefix("Break's over") == false)
     }
 }
 
 // MARK: - Settings bits
 
-@Suite struct SettingsContentTests {
+struct SettingsContentTests {
     @Test func permissionSummary() {
         #expect(PermissionSummary.make { _ in .granted } == .allSet)
         #expect(PermissionSummary.make { $0 == .camera ? .denied : .granted } == .allSet, "optional ones don't count")
@@ -253,7 +253,7 @@ private func day(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11, calendar
         let news = try Data(contentsOf: root.appending(path: "WhatsNew.json"))
         let content = HelpContent.decode(help: help, whatsNew: news)
         #expect(content.faq.count >= 5)
-        #expect(!content.releases.isEmpty)
+        #expect(content.releases.isEmpty == false)
         let dev = try Data(contentsOf: root.appending(path: "Developer.json"))
         #expect(DeveloperAccess.allowlist(from: dev).allSatisfy { _ in true }, "valid JSON")
     }

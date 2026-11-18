@@ -5,7 +5,7 @@ import Testing
 import WidgetShared
 import UIKit
 
-@Suite struct MoodEngineTests {
+struct MoodEngineTests {
     let cal: Calendar = {
         var c = Calendar(identifier: .gregorian)
         c.timeZone = TimeZone(identifier: "Europe/Brussels")!
@@ -66,7 +66,7 @@ import UIKit
     }
 }
 
-@Suite struct CoachLinesTests {
+struct CoachLinesTests {
     @Test func everyContextAndToneHasLines() {
         let lines = CoachLines.load()
         for context in CoachContext.allCases {
@@ -81,7 +81,9 @@ import UIKit
         let day = Date(timeIntervalSince1970: 1_800_000_000)
         let a = lines.line(for: .reRing, intensity: .savage, day: day, values: ["rings": "4"])
         let b = lines.line(for: .reRing, intensity: .savage, day: day, values: ["rings": "4"])
-        #expect(a == b && a.contains("4") && !a.contains("{"))
+        #expect(a == b)
+        #expect(a.contains("4"))
+        #expect(a.contains("{") == false)
         #expect(lines.line(for: .idle, intensity: .gentle, day: day).isEmpty, "missing context is safe")
     }
 
@@ -102,7 +104,7 @@ import UIKit
     }
 }
 
-@Suite struct ProgressionTests {
+struct ProgressionTests {
     let cal: Calendar = {
         var c = Calendar(identifier: .gregorian)
         c.timeZone = TimeZone(identifier: "Europe/Brussels")!
@@ -142,7 +144,8 @@ import UIKit
         let week = (1...7).map { day($0) }
         let earned = MedalRules.earned(week, calendar: cal)
         #expect(earned.isSuperset(of: [.firstMission, .firstTry, .streak3, .streak7, .hatTrick, .perfectWeek]))
-        #expect(!earned.contains(.streak30) && !earned.contains(.comeback))
+        #expect(earned.contains(.streak30) == false)
+        #expect(earned.contains(.comeback) == false)
         #expect(MedalRules.earned([day(1), day(5)], calendar: cal).contains(.comeback))
         #expect(MedalRules.earned([day(1, reArms: 6)], calendar: cal).contains(.ironWill))
         #expect(MedalRules.earned([day(1, hour: 5)], calendar: cal).contains(.earlyBird))
@@ -159,7 +162,7 @@ import UIKit
     }
 }
 
-@Suite struct NotificationPlannerTests {
+struct NotificationPlannerTests {
     let cal: Calendar = {
         var c = Calendar(identifier: .gregorian)
         c.timeZone = TimeZone(identifier: "Europe/Brussels")!

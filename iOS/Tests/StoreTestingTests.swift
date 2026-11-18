@@ -5,8 +5,12 @@ import Purchases
 import Testing
 
 /// TestFlight testing help: free-plan switch, restore message, store diagnostics.
-@Suite struct StoreTestingTests {
-    private let catalog = try! PricingCatalog.load()
+struct StoreTestingTests {
+    private let catalog: PricingCatalog
+
+    init() throws {
+        catalog = try PricingCatalog.load()
+    }
 
     @Test func forceFreeOverridesOnlyWhenOn() {
         let pro = EntitlementState.pro(expiresAt: nil)
