@@ -26,6 +26,64 @@ public final class DayLog {
     }
 }
 
+extension DayLog {
+    public var values: DayLogRule.Values {
+        DayLogRule.Values(day: day, firstEndedAt: firstEndedAt, missionCompletedAt: missionCompletedAt,
+                          reArmCount: reArmCount, failSafeTriggered: failSafeTriggered)
+    }
+
+    public convenience init(_ values: DayLogRule.Values) {
+        self.init(day: values.day, firstEndedAt: values.firstEndedAt, missionCompletedAt: values.missionCompletedAt,
+                  reArmCount: values.reArmCount, failSafeTriggered: values.failSafeTriggered)
+    }
+
+    public func apply(_ values: DayLogRule.Values) {
+        firstEndedAt = values.firstEndedAt
+        missionCompletedAt = values.missionCompletedAt
+        reArmCount = values.reArmCount
+        failSafeTriggered = values.failSafeTriggered
+    }
+}
+
+/// What a finished ring cycle means for its day's log. One row per day, but a day can have
+/// several cycles (a nap alarm after the morning): the first completed cycle is the day's record;
+/// a fail-safe is logged too, and a later success the same day replaces it.
+public enum DayLogRule {
+    public struct Values: Equatable, Sendable {
+        public var day: Date
+        public var firstEndedAt: Date?
+        public var missionCompletedAt: Date?
+        public var reArmCount: Int
+        public var failSafeTriggered: Bool
+
+        public init(day: Date, firstEndedAt: Date? = nil, missionCompletedAt: Date? = nil,
+                    reArmCount: Int = 0, failSafeTriggered: Bool = false) {
+            self.day = day
+            self.firstEndedAt = firstEndedAt
+            self.missionCompletedAt = missionCompletedAt
+            self.reArmCount = reArmCount
+            self.failSafeTriggered = failSafeTriggered
+        }
+
+        public init(session: SessionState) {
+            self.init(day: session.day, firstEndedAt: session.firstEndedAt, missionCompletedAt: session.missionCompletedAt,
+                      reArmCount: session.reArmCount, failSafeTriggered: session.failSafeTriggered && !session.missionDone)
+        }
+
+        public var completed: Bool { missionCompletedAt != nil }
+    }
+
+    /// The row to store for `cycle`'s day, or nil to leave `existing` as it is.
+    public static func merge(existing: Values?, cycle: SessionState) -> Values? {
+        guard cycle.isFinished else { return nil }
+        let new = Values(session: cycle)
+        guard let existing else { return new }
+        if existing.completed { return nil }          // the first completed cycle stays the day's record
+        if new.completed { return new }               // success after an earlier fail-safe
+        return nil                                     // fail-safe again: nothing new
+    }
+}
+
 public enum StreakCalculator {
     /// Longest run of consecutive completed days ever.
     public static func bestStreak(completedDays: [Date], calendar: Calendar = .current) -> Int {

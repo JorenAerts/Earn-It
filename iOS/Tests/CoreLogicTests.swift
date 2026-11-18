@@ -14,7 +14,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     calendar.date(from: DateComponents(year: y, month: m, day: d, hour: h, minute: min))!
 }
 
-@Suite struct AlarmPlanTests {
+struct AlarmPlanTests {
     @Test func nextFireLaterToday() {
         let plan = AlarmPlan(hour: 7, minute: 30)
         #expect(plan.nextFireDate(after: date(2026, 11, 13, 6, 0), calendar: calendar) == date(2026, 11, 13, 7, 30))
@@ -32,7 +32,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     }
 }
 
-@Suite struct AlarmTitleTests {
+struct AlarmTitleTests {
     @Test func singleMission() {
         #expect(AlarmPlan(missions: [MissionConfig(kind: .math)]).alarmTitle == "Gloop - Math Problem")
     }
@@ -43,7 +43,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     }
 }
 
-@Suite struct ReArmPolicyTests {
+struct ReArmPolicyTests {
     let plan = AlarmPlan(reArmMinutes: 2, maxReArms: 3)
     let now = date(2026, 11, 13, 7, 0)
 
@@ -78,11 +78,12 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     @Test func newDayStartsFreshSession() {
         let old = SessionState(day: date(2026, 11, 12), missionCompletedAt: date(2026, 11, 12, 7, 5), reArmCount: 2)
         let s = ReArmPolicy.currentSession(old, now: now, calendar: calendar)
-        #expect(s.reArmCount == 0 && !s.missionDone)
+        #expect(s.reArmCount == 0)
+        #expect(s.missionDone == false)
     }
 }
 
-@Suite @MainActor struct AlarmCoordinatorTests {
+@MainActor struct AlarmCoordinatorTests {
     private let sound = FakeAlarmSound()
 
     private func makeCoordinator(plan: AlarmPlan = AlarmPlan(reArmMinutes: 2, maxReArms: 2)) -> (AlarmCoordinator, FakeScheduler) {
@@ -95,20 +96,20 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
 
     @Test func soundPlaysFromXUntilMissionDone() async {
         let (c, _) = makeCoordinator()
-        #expect(!sound.isPlaying)
+        #expect(sound.isPlaying == false)
         await c.alarmEnded(id: UUID())         // X pressed
         #expect(sound.isPlaying, "alarm continues in-app immediately")
         c.reload()                              // app foregrounded / relaunched
         #expect(sound.isPlaying)
         c.missionSucceeded()
-        #expect(!sound.isPlaying)
+        #expect(sound.isPlaying == false)
     }
 
     @Test func soundStopsAtFailSafe() async {
         let (c, _) = makeCoordinator()
         for _ in 0..<3 { await c.alarmEnded(id: nil) }
         #expect(c.session?.failSafeTriggered == true)
-        #expect(!sound.isPlaying)
+        #expect(sound.isPlaying == false)
     }
 
     @Test func stopWithoutMissionSchedulesFollowUp() async {
@@ -120,14 +121,14 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         #expect(c.needsMission)
     }
 
-    @Test func missionSuccessCancelsFollowUps() async {
+    @Test func missionSuccessCancelsFollowUps() async throws {
         let (c, fake) = makeCoordinator()
         await c.alarmEnded(id: nil)
-        let followUp = c.session!.followUpIDs[0]
+        let followUp = try #require(c.session?.followUpIDs.first)
         c.missionSucceeded()
         #expect(fake.cancelled.contains(followUp))
         #expect(fake.oneOffs.isEmpty)
-        #expect(!c.needsMission)
+        #expect(c.needsMission == false)
         #expect(c.session?.missionDone == true)
     }
 
@@ -136,7 +137,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         for _ in 0..<3 { await c.alarmEnded(id: nil) }
         #expect(c.session?.reArmCount == 2)
         #expect(c.session?.failSafeTriggered == true)
-        #expect(!c.needsMission)
+        #expect(c.needsMission == false)
     }
 
     @Test func endingAlarmSilencesIt() async {
@@ -181,13 +182,23 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         #expect(fake.cancelled.contains(orphan))
     }
 
+    @Test func failSafeEventFiresAfterSessionIsSaved() async {
+        let (c, _) = makeCoordinator()
+        var seen: SessionState?
+        c.onEvent = { event in
+            if case .failSafe = event { seen = c.session }
+        }
+        for _ in 0..<3 { await c.alarmEnded(id: nil) }
+        #expect(seen?.failSafeTriggered == true, "the day log reads the finished session from the event")
+    }
+
     @Test func startMissionKeepsAlarmRinging() async throws {
         let (c, fake) = makeCoordinator()
         let ringing = UUID()
         try await fake.scheduleOneOff(id: ringing, at: .now, title: "t", sound: .classic)
         fake.alerting.insert(ringing)
         c.missionStarted(id: ringing)
-        #expect(!fake.stopped.contains(ringing), "alarm must keep ringing during the mission")
+        #expect(fake.stopped.contains(ringing) == false, "alarm must keep ringing during the mission")
         #expect(fake.oneOffs.count == 1, "no extra follow-up while still ringing")
         #expect(c.needsMission)
         c.missionSucceeded()
@@ -200,7 +211,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         let ringing = UUID()
         try await fake.scheduleOneOff(id: ringing, at: .now, title: "t", sound: .classic)
         fake.alerting.insert(ringing)
-        #expect(!c.needsMission)
+        #expect(c.needsMission == false)
         c.reload()
         #expect(c.needsMission)
     }
@@ -217,7 +228,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         let (c, fake) = makeCoordinator()
         await c.alarmEnded(id: UUID())
         c.missionSucceeded()
-        #expect(!c.needsMission)
+        #expect(c.needsMission == false)
         await c.alarmEnded(id: UUID())          // e.g. debug alarm or 2nd alarm later today
         #expect(c.needsMission)
         #expect(c.session?.reArmCount == 1)
@@ -235,7 +246,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         #expect(c.needsMission)
     }
 
-    @Test func ringCycleUsesTheRingingAlarmsSettings() async {
+    @Test func ringCycleUsesTheRingingAlarmsSettings() async throws {
         let (c, fake) = makeCoordinator()
         let gym = AlarmPlan(label: "Gym", sound: .siren, hour: 6, missions: [MissionConfig(kind: .qr, payload: "gym")],
                             reArmMinutes: 5, isEnabled: true)
@@ -244,16 +255,17 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         #expect(c.session?.planID == gym.id)
         #expect(c.activePlan?.missions.first?.kind == .qr)
         #expect(Array(fake.followUpDurations.values) == [300], "gym alarm re-rings after its own 5 min")
-        #expect(fake.sounds[c.session!.followUpIDs[0]] == .siren)
+        let followUp = try #require(c.session?.followUpIDs.first)
+        #expect(fake.sounds[followUp] == .siren)
         #expect(sound.lastSound == .siren, "in-app sound matches the ringing alarm")
     }
 
-    @Test func followUpRingKeepsOwnerAfterSessionLoss() async {
+    @Test func followUpRingKeepsOwnerAfterSessionLoss() async throws {
         let (c, _) = makeCoordinator()
         let second = AlarmPlan(label: "Second", sound: .chime, isEnabled: true)
         await c.save(second)
         await c.debugRing(inSeconds: 10, planID: second.id)
-        let testRing = c.debugScheduledAlarms().map(\.id).first { c.plan(id: $0) == nil }!
+        let testRing = try #require(c.debugScheduledAlarms().map(\.id).first { c.plan(id: $0) == nil })
         await c.alarmEnded(id: testRing)
         #expect(c.session?.planID == second.id)
     }
@@ -267,13 +279,13 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         #expect(c.plans.count == 1 && fake.mainPlans[extra.id] == nil)
     }
 
-    @Test func nextAlarmIsSoonestEnabled() async {
+    @Test func nextAlarmIsSoonestEnabled() async throws {
         let (c, _) = makeCoordinator()
         await c.save(AlarmPlan(hour: 23, minute: 59, isEnabled: true))
         let early = AlarmPlan(hour: 0, minute: 1, isEnabled: true)
         await c.save(early)
         await c.save(AlarmPlan(hour: 0, minute: 0, isEnabled: false))
-        let next = c.nextAlarm!
+        let next = try #require(c.nextAlarm)
         let laterCandidates = c.plans.filter(\.isEnabled).compactMap { c.nextFireDate(for: $0) }
         #expect(next.date == laterCandidates.min())
     }
@@ -290,7 +302,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     }
 }
 
-@Suite struct StreakTests {
+struct StreakTests {
     @Test func countsConsecutiveDays() {
         let days = [date(2026, 11, 11, 7), date(2026, 11, 12, 7), date(2026, 11, 13, 7)]
         #expect(StreakCalculator.currentStreak(completedDays: days, today: date(2026, 11, 13, 9), calendar: calendar) == 3)
@@ -314,7 +326,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     }
 }
 
-@Suite struct MissionLogicTests {
+struct MissionLogicTests {
     @Test func mathNeedsCorrectInARow() {
         var s = MathSession(target: 2, difficulty: .medium, rng: SplitMix64(seed: 42))
         s.submit(s.problem.answer)
@@ -336,12 +348,12 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     }
 }
 
-@Suite struct NewMissionTests {
+struct NewMissionTests {
     @Test func qrMatchesTrimmedExactPayload() {
         #expect(CodeMatcher.matches(scanned: "gloop:ABC\n", expected: "gloop:ABC"))
-        #expect(!CodeMatcher.matches(scanned: "gloop:ABD", expected: "gloop:ABC"))
-        #expect(!CodeMatcher.matches(scanned: "", expected: ""))
-        #expect(!CodeMatcher.matches(scanned: "x", expected: nil))
+        #expect(CodeMatcher.matches(scanned: "gloop:ABD", expected: "gloop:ABC") == false)
+        #expect(CodeMatcher.matches(scanned: "", expected: "") == false)
+        #expect(CodeMatcher.matches(scanned: "x", expected: nil) == false)
     }
 
     @Test func generatedPayloadsAreUnique() {
@@ -351,8 +363,8 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
 
     @Test func qrMissionNeedsRegisteredCode() {
         var qr = MissionConfig(kind: .qr)
-        #expect(!qr.isReady)
-        #expect(!AlarmPlan(missions: [qr]).isReady)
+        #expect(qr.isReady == false)
+        #expect(AlarmPlan(missions: [qr]).isReady == false)
         qr.payload = "gloop:X"
         #expect(qr.isReady)
         #expect(AlarmPlan(missions: [MissionConfig(kind: .math), qr]).isReady)
@@ -370,7 +382,7 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
     }
 }
 
-@Suite struct MultiAlarmStorageTests {
+struct MultiAlarmStorageTests {
     @Test func legacySinglePlanMigratesToList() {
         let store = KeyValueStore(defaults: UserDefaults(suiteName: "test-\(UUID().uuidString)")!)
         let legacy = AlarmPlan(hour: 6, minute: 30, isEnabled: true)
@@ -409,5 +421,46 @@ private func date(_ y: Int, _ m: Int, _ d: Int, _ h: Int = 0, _ min: Int = 0) ->
         for sound in AlarmSound.allCases {
             #expect(Bundle.main.url(forResource: sound.resourceName, withExtension: "caf") != nil, "\(sound)")
         }
+    }
+}
+
+struct DayLogRuleTests {
+    private let day = date(2026, 11, 18)
+
+    private func cycle(done: Bool, failSafe: Bool = false, reArms: Int = 0, endedHour: Int = 7) -> SessionState {
+        var s = SessionState(day: day)
+        s.firstEndedAt = date(2026, 11, 18, endedHour)
+        s.reArmCount = reArms
+        if done { s.missionCompletedAt = date(2026, 11, 18, endedHour, 5) }
+        s.failSafeTriggered = failSafe
+        return s
+    }
+
+    @Test func unfinishedCycleIsNotLogged() {
+        #expect(DayLogRule.merge(existing: nil, cycle: cycle(done: false)) == nil)
+    }
+
+    @Test func firstCycleOfTheDayIsLogged() {
+        let done = DayLogRule.merge(existing: nil, cycle: cycle(done: true, reArms: 2))
+        #expect(done?.completed == true)
+        #expect(done?.reArmCount == 2)
+        let failed = DayLogRule.merge(existing: nil, cycle: cycle(done: false, failSafe: true, reArms: 5))
+        #expect(failed?.failSafeTriggered == true)
+        #expect(failed?.completed == false)
+    }
+
+    @Test func firstCompletedCycleStaysTheDaysRecord() {
+        let morning = DayLogRule.Values(session: cycle(done: true, reArms: 0))
+        #expect(DayLogRule.merge(existing: morning, cycle: cycle(done: true, reArms: 4, endedHour: 14)) == nil)
+        #expect(DayLogRule.merge(existing: morning, cycle: cycle(done: false, failSafe: true, endedHour: 14)) == nil)
+    }
+
+    @Test func successAfterFailSafeReplacesIt() {
+        let failed = DayLogRule.Values(session: cycle(done: false, failSafe: true, reArms: 5))
+        let later = DayLogRule.merge(existing: failed, cycle: cycle(done: true, reArms: 1, endedHour: 9))
+        #expect(later?.completed == true)
+        #expect(later?.failSafeTriggered == false)
+        #expect(later?.reArmCount == 1)
+        #expect(DayLogRule.merge(existing: failed, cycle: cycle(done: false, failSafe: true, endedHour: 9)) == nil)
     }
 }

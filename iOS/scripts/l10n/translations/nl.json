@@ -1153,5 +1153,14 @@
   "Loading…": "Laden…",
   "This is a TestFlight test purchase. To try the free plan, turn on “Test as Free plan” above.": "Dit is een TestFlight-testaankoop. Wil je het gratis plan proberen, zet dan “Test als gratis plan” hierboven aan.",
   "Test as Free plan": "Test als gratis plan",
-  "TestFlight only. Your test purchase stays; Gloop acts like the free plan until you turn this off.": "Alleen in TestFlight. Je testaankoop blijft; Gloop doet alsof je het gratis plan hebt tot je dit uitzet."
+  "TestFlight only. Your test purchase stays; Gloop acts like the free plan until you turn this off.": "Alleen in TestFlight. Je testaankoop blijft; Gloop doet alsof je het gratis plan hebt tot je dit uitzet.",
+  "Alarms that use this sound switch to Classic Beep.": "Wekkers met dit geluid schakelen over op Klassieke piep.",
+  "Block %@?": "%@ blokkeren?",
+  "Delete \"%@\"?": "\"%@\" verwijderen?",
+  "Discard changes": "Wijzigingen weggooien",
+  "Discard changes?": "Wijzigingen weggooien?",
+  "Keep editing": "Verder bewerken",
+  "Report or block": "Melden of blokkeren",
+  "Report or block %@": "%@ melden of blokkeren",
+  "You can unblock them in Settings › Buddies.": "Je kunt de blokkering opheffen in Instellingen › Buddies."
 }

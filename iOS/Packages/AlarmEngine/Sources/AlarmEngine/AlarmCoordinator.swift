@@ -361,12 +361,13 @@ public final class AlarmCoordinator {
             persist(s)
             return
         }
+        var failSafeRings: Int?
         switch ReArmPolicy.decide(session: s, plan: plan, now: current) {
         case .done:
             break
         case .failSafe:
             s.failSafeTriggered = true
-            onEvent?(.failSafe(rings: s.reArmCount + 1))
+            failSafeRings = s.reArmCount + 1
             silenceAll()
             s.followUpIDs = []
             log.notice("fail-safe triggered")
@@ -384,6 +385,8 @@ public final class AlarmCoordinator {
             }
         }
         persist(s)
+        // After persisting, so listeners (the day log) read the finished session.
+        if let failSafeRings { onEvent?(.failSafe(rings: failSafeRings)) }
     }
 
     /// Mission verified. Returns the finished session so the caller can log it.

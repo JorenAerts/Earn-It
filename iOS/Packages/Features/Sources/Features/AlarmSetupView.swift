@@ -12,8 +12,21 @@ struct AlarmSetupView: View {
     let isNew: Bool
     let onSave: (AlarmPlan) -> Void
     let onDelete: () -> Void
+    /// The alarm as it was when the editor opened: unsaved edits are never dropped silently.
+    private let original: AlarmPlan
     @Environment(\.dismiss) private var dismiss
     @State private var confirmDelete = false
+    @State private var confirmDiscard = false
+
+    init(plan: AlarmPlan, isNew: Bool, onSave: @escaping (AlarmPlan) -> Void, onDelete: @escaping () -> Void) {
+        _plan = State(initialValue: plan)
+        original = plan
+        self.isNew = isNew
+        self.onSave = onSave
+        self.onDelete = onDelete
+    }
+
+    private var hasChanges: Bool { plan != original }
     @State private var showPaywall = false
     @State private var showMissionPicker = false
     @State private var editingMission: EditingMission?
@@ -129,8 +142,15 @@ struct AlarmSetupView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .interactiveDismissDisabled(hasChanges)
+            .confirmationDialog("Discard changes?", isPresented: $confirmDiscard, titleVisibility: .visible) {
+                Button("Discard changes", role: .destructive) { dismiss() }
+                Button("Keep editing", role: .cancel) {}
+            }
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { if hasChanges { confirmDiscard = true } else { dismiss() } }
+                }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         plan.isEnabled = true

@@ -1153,5 +1153,14 @@
   "Loading…": "Caricamento…",
   "This is a TestFlight test purchase. To try the free plan, turn on “Test as Free plan” above.": "È un acquisto di prova TestFlight. Per provare il piano gratuito, attiva «Prova come piano gratuito» qui sopra.",
   "Test as Free plan": "Prova come piano gratuito",
-  "TestFlight only. Your test purchase stays; Gloop acts like the free plan until you turn this off.": "Solo in TestFlight. Il tuo acquisto di prova resta; Gloop si comporta come il piano gratuito finché non lo disattivi."
+  "TestFlight only. Your test purchase stays; Gloop acts like the free plan until you turn this off.": "Solo in TestFlight. Il tuo acquisto di prova resta; Gloop si comporta come il piano gratuito finché non lo disattivi.",
+  "Alarms that use this sound switch to Classic Beep.": "Le sveglie che usano questo suono passano a Bip classico.",
+  "Block %@?": "Bloccare %@?",
+  "Delete \"%@\"?": "Eliminare «%@»?",
+  "Discard changes": "Scarta modifiche",
+  "Discard changes?": "Scartare le modifiche?",
+  "Keep editing": "Continua a modificare",
+  "Report or block": "Segnala o blocca",
+  "Report or block %@": "Segnala o blocca %@",
+  "You can unblock them in Settings › Buddies.": "Puoi sbloccarli in Impostazioni › Buddies."
 }

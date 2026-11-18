@@ -2,7 +2,7 @@ import Account
 import Foundation
 import Testing
 
-@Suite struct AuthConfigTests {
+struct AuthConfigTests {
     @Test func bundledConfigLoads() {
         let config = AuthConfig.load()
         #expect(config.emailPassword)
@@ -23,12 +23,12 @@ import Testing
 
     @Test func secretKeysAreNeverAccepted() {
         #expect(AuthServiceFactory.isUsableClientKey("sb_publishable_abc"))
-        #expect(!AuthServiceFactory.isUsableClientKey("sb_secret_abc"))
-        #expect(!AuthServiceFactory.isUsableClientKey(""))
+        #expect(AuthServiceFactory.isUsableClientKey("sb_secret_abc") == false)
+        #expect(AuthServiceFactory.isUsableClientKey("") == false)
     }
 }
 
-@Suite @MainActor struct FakeAuthTests {
+@MainActor struct FakeAuthTests {
     @Test func signInOutAndDelete() async throws {
         let auth = FakeAuthService()
         try await auth.signIn(email: "a@b.c", password: "pw")

@@ -14,7 +14,7 @@ private func at(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11) -> Date {
     brussels.date(from: DateComponents(year: 2026, month: month, day: d, hour: h, minute: m))!
 }
 
-@Suite struct WeekWindowTests {
+struct WeekWindowTests {
     // 2026-11-16 is a Monday.
     @Test func mondayStartsTheWeek() {
         #expect(WeekWindow.start(of: at(18, 9), calendar: brussels) == at(16))
@@ -37,7 +37,7 @@ private func at(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11) -> Date {
     }
 }
 
-@Suite struct LeaderboardRankingTests {
+struct LeaderboardRankingTests {
     let a = LeaderboardRow(displayName: "Anna", weekXP: 200, totalXP: 900, streak: 3)
     let b = LeaderboardRow(displayName: "Bram", weekXP: 200, totalXP: 400, streak: 3)
     let c = LeaderboardRow(displayName: "Cas", weekXP: 150, totalXP: 1200, streak: 9)
@@ -65,12 +65,15 @@ private func at(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11) -> Date {
     }
 }
 
-@Suite struct InviteCodeTests {
+struct InviteCodeTests {
     @Test func generatedCodesAreValid() {
         for _ in 0..<50 {
             let code = InviteCode.generate()
             #expect(InviteCode.normalize(code) == code)
-            #expect(!code.contains("O") && !code.contains("0") && !code.contains("I") && !code.contains("1"))
+            #expect(code.contains("O") == false)
+            #expect(code.contains("0") == false)
+            #expect(code.contains("I") == false)
+            #expect(code.contains("1") == false)
         }
     }
 
@@ -95,7 +98,7 @@ private func at(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11) -> Date {
     }
 }
 
-@Suite struct ClubRulesTests {
+struct ClubRulesTests {
     @Test func nameLength() {
         #expect(ClubRules.validate(ClubDraft(name: "A")) == .nameLength)
         #expect(ClubRules.validate(ClubDraft(name: "  Gym  ")) == nil)
@@ -114,28 +117,28 @@ private func at(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11) -> Date {
 
     @Test func createLimits() {
         #expect(ClubRules.canCreate(ownedCount: 0, isPro: false))
-        #expect(!ClubRules.canCreate(ownedCount: 1, isPro: false))
+        #expect(ClubRules.canCreate(ownedCount: 1, isPro: false) == false)
         #expect(ClubRules.canCreate(ownedCount: 9, isPro: true))
-        #expect(!ClubRules.canCreate(ownedCount: 10, isPro: true))
+        #expect(ClubRules.canCreate(ownedCount: 10, isPro: true) == false)
     }
 }
 
-@Suite struct FeedGateTests {
+struct FeedGateTests {
     @Test func unlockRule() {
-        #expect(!FeedGate.isUnlocked(myPhotoState: .none))
+        #expect(FeedGate.isUnlocked(myPhotoState: .none) == false)
         #expect(FeedGate.isUnlocked(myPhotoState: .posted))
         #expect(FeedGate.isUnlocked(myPhotoState: .skipped))
     }
 
     @Test func promptOnlyWhenItMatters() {
         #expect(FeedGate.shouldPrompt(missionDoneToday: true, clubCount: 1, myPhotoState: .none))
-        #expect(!FeedGate.shouldPrompt(missionDoneToday: false, clubCount: 1, myPhotoState: .none))
-        #expect(!FeedGate.shouldPrompt(missionDoneToday: true, clubCount: 0, myPhotoState: .none))
-        #expect(!FeedGate.shouldPrompt(missionDoneToday: true, clubCount: 2, myPhotoState: .skipped))
+        #expect(FeedGate.shouldPrompt(missionDoneToday: false, clubCount: 1, myPhotoState: .none) == false)
+        #expect(FeedGate.shouldPrompt(missionDoneToday: true, clubCount: 0, myPhotoState: .none) == false)
+        #expect(FeedGate.shouldPrompt(missionDoneToday: true, clubCount: 2, myPhotoState: .skipped) == false)
     }
 }
 
-@Suite struct WakeReportTests {
+struct WakeReportTests {
     @Test func xpMatchesXPRules() {
         let history = [
             DaySummary(day: at(13), completed: true, reArms: 0, failSafe: false),
@@ -161,7 +164,7 @@ private func at(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11) -> Date {
     }
 }
 
-@Suite @MainActor struct WakeReportQueueTests {
+@MainActor struct WakeReportQueueTests {
     private func report(_ day: String, xp: Int = 50) -> WakeReport {
         WakeReport(day: day, completedAt: .now, alarmTime: nil, rings: 1, xp: xp, streak: 1, rank: "Recruit")
     }
@@ -191,7 +194,7 @@ private func at(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11) -> Date {
     }
 }
 
-@Suite @MainActor struct FakeBuddiesServiceTests {
+@MainActor struct FakeBuddiesServiceTests {
     let day = "2026-11-15"
 
     @Test func createJoinAndLeave() async throws {
@@ -240,7 +243,8 @@ private func at(_ d: Int, _ h: Int = 0, _ m: Int = 0, month: Int = 11) -> Date {
 
         try await service.skipMorning(day: day)
         let open = try await service.feed(club: club, day: day)
-        #expect(!open[0].locked && open[0].imagePath != nil)
+        #expect(open[0].locked == false)
+        #expect(open[0].imagePath != nil)
 
         try await service.react(to: open[0].id, emoji: "🔥")
         #expect(try await service.feed(club: club, day: day)[0].reactions == ["🔥": 1])

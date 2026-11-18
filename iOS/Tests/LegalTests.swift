@@ -2,7 +2,7 @@ import Features
 import Foundation
 import Testing
 
-@Suite struct LegalTests {
+struct LegalTests {
     static let config = TestPaths.shared
 
     private func raw(_ kind: LegalDocumentKind) throws -> String {
@@ -28,7 +28,7 @@ import Testing
             let text = try raw(kind)
             let used = text.matches(of: #/\{\{\s*([a-zA-Z]+)\s*\}\}/#).map { String($0.output.1) }
             for key in used { #expect(keys.contains(key), "\(kind) uses {{\(key)}} which isn't in Legal.json") }
-            #expect(!LegalDocument.fill(text, values: values).contains("{{"))
+            #expect(LegalDocument.fill(text, values: values).contains("{{") == false)
         }
     }
 

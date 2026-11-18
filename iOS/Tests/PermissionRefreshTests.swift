@@ -1,7 +1,7 @@
 import Permissions
 import Testing
 
-@Suite @MainActor struct PermissionRefreshTests {
+@MainActor struct PermissionRefreshTests {
     @Test(.timeLimit(.minutes(1))) func refreshFillsStatuses() async {
         let center = PermissionCenter()
         await center.refresh()

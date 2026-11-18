@@ -3,7 +3,7 @@ import Foundation
 import Testing
 import WidgetShared
 
-@Suite struct WidgetSnapshotTests {
+struct WidgetSnapshotTests {
     let cal: Calendar = {
         var c = Calendar(identifier: .gregorian)
         c.timeZone = TimeZone(identifier: "Europe/Brussels")!
@@ -36,7 +36,7 @@ import WidgetShared
         let s = snapshot(history([12, 13]), now: at(13))
         #expect(s.completedToday(at: at(13), calendar: cal))
         #expect(s.streak(at: at(14, 23), calendar: cal) == 2, "still alive tomorrow, today pending")
-        #expect(!s.completedToday(at: at(14), calendar: cal))
+        #expect(s.completedToday(at: at(14), calendar: cal) == false)
         #expect(s.streak(at: at(15, 0), calendar: cal) == 0, "missed the 14th: gone at midnight")
     }
 
@@ -60,6 +60,6 @@ import WidgetShared
         let s = snapshot(history([12, 13]), now: at(13))
         #expect(store.save(s))
         #expect(store.load() == s)
-        #expect(!SnapshotStore(directory: nil).save(s), "no App Group: nothing written")
+        #expect(SnapshotStore(directory: nil).save(s) == false, "no App Group: nothing written")
     }
 }

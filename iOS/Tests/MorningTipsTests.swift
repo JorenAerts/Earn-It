@@ -7,6 +7,10 @@ private let shippedLanguages = (Bundle.main.object(forInfoDictionaryKey: "CFBund
 
 @Suite("Morning tips")
 struct MorningTipsTests {
+    init() throws {
+        try #require(shippedLanguages.isEmpty == false, "CFBundleLocalizations missing from the test host")
+    }
+
     @Test func everyLanguageHasTheFullTranslatedList() throws {
         let english = MorningTips.load(from: .main, language: "en")
         #expect(english.count >= 40)
@@ -15,8 +19,8 @@ struct MorningTipsTests {
             let tips = MorningTips.load(from: .main, language: code)
             #expect(tips.map(\.id) == english.map(\.id), "\(code)")
             for tip in tips {
-                #expect(!tip.text.trimmingCharacters(in: .whitespaces).isEmpty, "\(code) \(tip.id)")
-                if tip.kind == .quote { #expect(!(tip.author ?? "").isEmpty, "\(code) \(tip.id) needs an author") }
+                #expect(tip.text.trimmingCharacters(in: .whitespaces).isEmpty == false, "\(code) \(tip.id)")
+                if tip.kind == .quote { #expect((tip.author ?? "").isEmpty == false, "\(code) \(tip.id) needs an author") }
             }
             if code != "en" {
                 // A translation file exists for this language (not silently English).
