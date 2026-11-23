@@ -14,6 +14,11 @@
     "toughLove": ["Kein Wecker? Wer weckt dich dann? Ich anscheinend nicht.", "Ein Schleim ohne Job. Stell einen Wecker, {name}.", "Ohne Wecker kann ich dir nicht helfen."],
     "savage": ["Kein Wecker gestellt. Mutige Strategie.", "Ein Schleim ohne Wecker ist nur eine Pfütze mit Augen.", "Stell einen Wecker, oder ich schmelze vor Langeweile."]
   },
+  "setAlarm": {
+    "gentle": ["Für morgen ist noch kein Wecker gestellt, {name}. Stell einen und wir starten zusammen in den Tag.", "Morgen ist noch offen. Such dir eine Weckzeit aus und ich bin da.", "Bevor du schläfst: Für morgen gibt es noch keinen Wecker. Willst du einen stellen?"],
+    "toughLove": ["Morgen hat keinen Wecker, {name}. Willst du aufstehen oder nicht?", "Kein Wecker für morgen. Zwei Tipps jetzt retten deinen Morgen.", "Ohne Wecker kann ich dich nicht wecken. Stell einen, {name}."],
+    "savage": ["Kein Wecker morgen? Mutig. Lieber nicht.", "Morgen: kein Wecker, kein Plan, keine Chance. Kümmer dich drum, {name}.", "Willst du morgen früh echt improvisieren? Stell einen Wecker."]
+  },
   "ringing": {
     "gentle": ["Guten Morgen! Lass uns zusammen aufstehen.", "Aufstehen, {name}! Eine Mission und du bist fertig.", "Morgen! Ich hüpfe schon. Du bist dran."],
     "toughLove": ["AUF! Der Tag fängt nicht von selbst an.", "Füße auf den Boden, {name}. Jetzt.", "Ring ring! Das ist dein Zeichen."],

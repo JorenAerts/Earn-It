@@ -19,6 +19,7 @@ struct HomeView: View {
     @State private var showPaywall = false
     @State private var developer = DeveloperMode.shared
     @State private var paywallSource: PaywallSource = .homeBanner
+    @State private var reminders = ReminderRouter.shared
 
     private func openPaywall(_ source: PaywallSource) {
         paywallSource = source
@@ -173,6 +174,12 @@ struct HomeView: View {
                 }
             }
             .paywallSheet(isPresented: $showPaywall, source: paywallSource)
+            // Tapped "set your alarm": no alarms at all → new-alarm editor; otherwise the list is enough.
+            .onChange(of: reminders.pendingSetAlarm, initial: true) { _, pending in
+                guard pending else { return }
+                reminders.pendingSetAlarm = false
+                if SetAlarmTap.destination(plans: coordinator.plans) == .newAlarm { addAlarm() }
+            }
             .sheet(item: $editing) { target in
                 AlarmSetupView(plan: target.plan, isNew: target.isNew,
                                onSave: { plan in

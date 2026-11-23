@@ -169,18 +169,27 @@ struct NotificationPlannerTests {
         return c
     }()
     let lines = CoachLines(table: ["night": ["toughLove": ["Lights out. {time} sharp."]],
-                                   "failSafe": ["toughLove": ["Unacceptable."]]])
+                                   "failSafe": ["toughLove": ["Unacceptable."]],
+                                   "setAlarm": ["toughLove": ["No alarm tomorrow, {name}."]]])
 
     private func at(_ d: Int, _ h: Int, _ m: Int = 0) -> Date {
         cal.date(from: DateComponents(year: 2026, month: 11, day: d, hour: h, minute: m))!
     }
 
-    private func plan(now: Date, alarms: [Date], enabled: Bool = true, evening: Int = 22, streak: Int = 0,
-                      session: SessionState? = nil, roasted: Bool = false) -> [CoachNotification] {
+    private func plan(now: Date, alarms: [Date], enabled: Bool = true, noAlarm: Bool = false,
+                      evening: Int = 22, eveningMinute: Int = 0, streak: Int = 0,
+                      session: SessionState? = nil, roasted: Bool = false, pause: AlarmPause? = nil,
+                      onboarded: Bool = true, name: String = "Sam") -> [CoachNotification] {
         NotificationPlanner.plan(now: now, upcomingAlarms: alarms,
-                                 settings: CoachNotificationSettings(enabled: enabled, eveningHour: evening),
+                                 settings: CoachNotificationSettings(enabled: enabled, remindNoAlarm: noAlarm,
+                                                                     eveningHour: evening, eveningMinute: eveningMinute),
                                  streak: streak, session: session, alreadyRoastedToday: roasted,
-                                 intensity: .toughLove, lines: lines, calendar: cal)
+                                 intensity: .toughLove, lines: lines, pause: pause, onboarded: onboarded,
+                                 name: name, calendar: cal)
+    }
+
+    private func setAlarmDays(_ result: [CoachNotification]) -> [String] {
+        result.filter { $0.id.hasPrefix("coach.setAlarm.") }.map { String($0.id.dropFirst("coach.setAlarm.".count)) }
     }
 
     @Test func eveningBeforeEachAlarmDay() {
@@ -209,5 +218,120 @@ struct NotificationPlannerTests {
 
     @Test func disabledMeansNothing() {
         #expect(plan(now: at(13, 12), alarms: [at(14, 7)], enabled: false).isEmpty)
+        #expect(plan(now: at(13, 12), alarms: [], enabled: false, noAlarm: false).isEmpty, "both reminders off")
+    }
+
+    // MARK: "Set your alarm" (13 Nov 2026 is a Friday)
+
+    @Test func remindsWhenTomorrowHasNoAlarm() throws {
+        let result = plan(now: at(13, 12), alarms: [at(15, 7)], enabled: false, noAlarm: true)
+        // Horizon = 20 Nov 12:00, so the last full target day is the 19th.
+        #expect(setAlarmDays(result) == ["2026-11-14", "2026-11-16", "2026-11-17", "2026-11-18", "2026-11-19"])
+        let first = try #require(result.first)
+        #expect(first.date == at(13, 22) && first.route == .setAlarm)
+        #expect(first.body == "No alarm tomorrow, Sam.")
+        #expect(!result.contains { $0.id.hasPrefix("coach.evening.") }, "Coach reminders are off")
+    }
+
+    @Test func alarmTomorrowGetsTheNormalEveningReminderInstead() {
+        let ids = plan(now: at(13, 12), alarms: [at(14, 7)], noAlarm: true).map(\.id)
+        #expect(ids.contains("coach.evening.2026-11-14"))
+        #expect(!ids.contains("coach.setAlarm.2026-11-14"))
+        #expect(ids.contains("coach.setAlarm.2026-11-15"))
+    }
+
+    @Test func weekdaySchedulePromptsBeforeTheWeekend() {
+        let weekdays = [17, 18, 19, 20, 23].map { at($0, 7) }  // Tue–Fri + next Monday
+        let result = plan(now: at(16, 12), alarms: weekdays, enabled: false, noAlarm: true)
+        #expect(setAlarmDays(result) == ["2026-11-21", "2026-11-22"])
+        #expect(result.map(\.date) == [at(20, 22), at(21, 22)], "Friday and Saturday evening")
+    }
+
+    @Test func nothingWhilePaused() {
+        let dated = AlarmPause(until: at(16, 0))
+        let rings = [16, 17, 18, 19].map { at($0, 7) }
+        #expect(setAlarmDays(plan(now: at(13, 12), alarms: rings, enabled: false, noAlarm: true, pause: dated)).isEmpty)
+        let forever = AlarmPause(until: nil)
+        #expect(plan(now: at(13, 12), alarms: rings, enabled: false, noAlarm: true, pause: forever).isEmpty)
+    }
+
+    @Test func afterMidnightTimeRemindsAboutThatDay() {
+        let result = plan(now: at(13, 12), alarms: [], enabled: false, noAlarm: true, evening: 0, eveningMinute: 30)
+        #expect(result.first?.date == at(14, 0, 30))
+        #expect(setAlarmDays(result).first == "2026-11-14")
+    }
+
+    @Test func pastEveningAndBeforeOnboardingAreSkipped() {
+        #expect(setAlarmDays(plan(now: at(13, 23), alarms: [], enabled: false, noAlarm: true)).first == "2026-11-15")
+        #expect(plan(now: at(13, 12), alarms: [], enabled: false, noAlarm: true, onboarded: false).isEmpty)
+    }
+
+    @Test func missingNameFallsBackToFriend() {
+        let body = plan(now: at(13, 12), alarms: [], enabled: false, noAlarm: true, name: " ").first?.body
+        #expect(body == "No alarm tomorrow, friend.")
+    }
+
+    // MARK: Reminder time vs. target day (device bug: a 10:35 test reminder looked at today)
+
+    @Test func daytimeReminderTimeLooksAtTomorrow() {
+        let withAlarm = plan(now: at(13, 10, 30), alarms: [at(14, 7)], noAlarm: true, evening: 10, eveningMinute: 35)
+        #expect(!setAlarmDays(withAlarm).contains("2026-11-14"), "tomorrow has an alarm")
+        #expect(withAlarm.first { $0.id == "coach.evening.2026-11-14" }?.date == at(13, 10, 35))
+        let without = plan(now: at(13, 10, 30), alarms: [], enabled: false, noAlarm: true, evening: 10, eveningMinute: 35)
+        #expect(without.first?.id == "coach.setAlarm.2026-11-14" && without.first?.date == at(13, 10, 35))
+    }
+
+    @Test func onlyTimesBeforeSixAreAboutTheSameMorning() {
+        let early = plan(now: at(13, 12), alarms: [], enabled: false, noAlarm: true, evening: 5, eveningMinute: 30)
+        #expect(early.first?.date == at(14, 5, 30) && setAlarmDays(early).first == "2026-11-14")
+        let six = plan(now: at(13, 12), alarms: [], enabled: false, noAlarm: true, evening: 6)
+        #expect(six.first?.date == at(14, 6) && setAlarmDays(six).first == "2026-11-15")
+        #expect(NotificationPlanner.targetDay(forReminderAt: at(13, 23, 59), calendar: cal) == at(14, 0))
+        #expect(NotificationPlanner.targetDay(forReminderAt: at(14, 0, 30), calendar: cal) == at(14, 0))
+    }
+
+    @Test func eveningReminderUsesTheSameCutoff() {
+        // 05:30 reminder for a 07:00 alarm the same morning; a 10:35 one goes the day before.
+        #expect(plan(now: at(13, 12), alarms: [at(14, 7)], evening: 5, eveningMinute: 30).map(\.date) == [at(14, 5, 30)])
+        #expect(plan(now: at(13, 9), alarms: [at(14, 7)], evening: 10, eveningMinute: 35).map(\.date) == [at(13, 10, 35)])
+    }
+
+    // MARK: End to end with real alarms (upcomingRings → plan). 13 Nov 2026 = Friday; weekday 1 = Sunday.
+
+    private func setAlarmDays(now: Date? = nil, plans: [AlarmPlan], evening: Int = 22, minute: Int = 0) -> [String] {
+        let now = now ?? at(13, 12)
+        let rings = NotificationPlanner.upcomingRings(plans: plans, from: now, calendar: cal)
+        return setAlarmDays(plan(now: now, alarms: rings, enabled: false, noAlarm: true, evening: evening, eveningMinute: minute))
+    }
+
+    @Test func realPlans() {
+        let all = ["2026-11-14", "2026-11-15", "2026-11-16", "2026-11-17", "2026-11-18", "2026-11-19"]
+        let daily = AlarmPlan(hour: 7, isEnabled: true)
+        #expect(setAlarmDays(plans: [daily]).isEmpty, "today's 07:00 has passed, tomorrow rings")
+        #expect(setAlarmDays(plans: [AlarmPlan(hour: 7, weekdays: Set(2...6), isEnabled: true)]) == ["2026-11-14", "2026-11-15"],
+                "Mon–Fri: weekend evenings remind")
+        #expect(setAlarmDays(plans: [AlarmPlan(hour: 7, isEnabled: false)]) == all, "disabled alarms don't count")
+        #expect(setAlarmDays(plans: [AlarmPlan(hour: 9, weekdays: [7], isEnabled: true), AlarmPlan(hour: 7, isEnabled: false)])
+                == Array(all.dropFirst()), "only the enabled Saturday alarm counts")
+        #expect(setAlarmDays(plans: []) == all)
+    }
+
+    @Test func oneOffAlarmCountsOnlyForItsOwnDay() {
+        let once = AlarmPlan(hour: 7, weekdays: [], isEnabled: true)
+        #expect(NotificationPlanner.upcomingRings(plans: [once], from: at(13, 12), calendar: cal) == [at(14, 7)])
+        #expect(setAlarmDays(plans: [once]) == ["2026-11-15", "2026-11-16", "2026-11-17", "2026-11-18", "2026-11-19"])
+    }
+
+    @Test func deviceReproWithRealPlan() {
+        // 10:30, reminder at 10:35, daily 07:00 alarm → tomorrow is covered: no "set your alarm".
+        #expect(setAlarmDays(now: at(13, 10, 30), plans: [AlarmPlan(hour: 7, isEnabled: true)], evening: 10, minute: 35).isEmpty)
+    }
+
+    @Test func noAlarmReminderIsOnByDefaultAndPersists() {
+        let prefs = CoachPreferences(defaults: UserDefaults(suiteName: "test-\(UUID().uuidString)")!)
+        #expect(prefs.notifications.remindNoAlarm)
+        #expect(!prefs.notifications.enabled)
+        prefs.notifications.remindNoAlarm = false
+        #expect(!prefs.notifications.remindNoAlarm)
     }
 }

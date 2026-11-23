@@ -26,6 +26,7 @@ together with their test cases.
 - **Battery optimisation** on Samsung/Xiaomi/OnePlus/… can kill alarms. Ask for the battery-optimisation exemption in onboarding (like the iOS permission steps) and test on at least one Samsung device.
 - **Exact-alarm permission:** use `USE_EXACT_ALARM`, which is granted automatically for alarm-clock apps but needs a Play Console declaration. `SCHEDULE_EXACT_ALARM` would ask the user.
 - **Notifications** (Android 13+) and **full-screen intent** (Android 14+) need runtime checks, like `PermissionCenter` on iOS.
+- **Coach reminders not ported yet**: `NotificationPlanner` (evening reminder, "set your alarm" when tomorrow has no alarm (on by default), fail-safe roast) + Settings toggles + tap routing. Port to `:core` with the iOS test cases, schedule with AlarmManager + a `coach` notification channel.
 - **Help/FAQ** (`Shared/Config/Help.json`) mentions iOS settings paths. Android needs its own answers; add platform-specific FAQ entries when porting Settings.
 - **Pro is per store** for now: buying on iPhone does not unlock Android. **Decided (17 Nov 2026): add account-linked Pro in phase 3 (Play Billing)**: a Supabase `entitlements` table keyed by user, an Edge Function for App Store Server Notifications v2 + Google Play RTDN, and both apps union store + account entitlements. iOS purchases already carry the Supabase user id as `appAccountToken`. Until then the Apple ID / Google account is the source of truth.
 

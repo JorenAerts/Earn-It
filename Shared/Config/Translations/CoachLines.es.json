@@ -14,6 +14,11 @@
     "toughLove": ["¿Sin alarma? ¿Y quién te despierta? Yo no, por lo visto.", "Un slime sin trabajo. Pon una alarma, {name}.", "No puedo ayudarte si no hay alarma."],
     "savage": ["Sin alarma. Estrategia atrevida.", "Un slime sin alarma es solo un charco con ojos.", "Pon una alarma o me derrito de aburrimiento."]
   },
+  "setAlarm": {
+    "gentle": ["Aún no hay alarma para mañana, {name}. Pon una y empezamos el día juntos.", "Mañana sigue libre. Elige una hora y ahí estaré.", "Antes de dormir: mañana aún no tiene alarma. ¿Pones una?"],
+    "toughLove": ["Mañana no hay alarma, {name}. ¿Piensas levantarte o no?", "Ninguna alarma para mañana. Dos toques ahora salvan tu mañana.", "No puedo despertarte sin alarma. Pon una, {name}."],
+    "savage": ["¿Sin alarma mañana? Atrevido. Mejor no.", "Mañana: sin alarma, sin plan, sin opciones. Arréglalo, {name}.", "¿De verdad vas a improvisar mañana por la mañana? Pon una alarma."]
+  },
   "ringing": {
     "gentle": ["¡Buenos días! Levantémonos juntos.", "¡Arriba, {name}! Una misión y listo.", "¡Buenos días! Yo ya estoy rebotando. Te toca."],
     "toughLove": ["¡ARRIBA! El día no va a empezar solo.", "Los pies en el suelo, {name}. Ya.", "¡Ring ring! Esa es tu señal."],

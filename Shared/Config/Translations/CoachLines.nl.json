@@ -53,6 +53,23 @@
       "Stel een wekker in of ik smelt van verveling."
     ]
   },
+  "setAlarm": {
+    "gentle": [
+      "Nog geen wekker voor morgen, {name}. Zet er een en we beginnen de dag samen.",
+      "Morgen ligt nog open. Kies een tijd en ik ben er.",
+      "Voor je gaat slapen: morgen heeft nog geen wekker. Zet je er een?"
+    ],
+    "toughLove": [
+      "Morgen heeft geen wekker, {name}. Ben je van plan op te staan, of niet?",
+      "Geen wekker voor morgen. Twee tikken nu redden je ochtend.",
+      "Ik kan je niet wekken zonder wekker. Zet er een, {name}."
+    ],
+    "savage": [
+      "Geen wekker morgen? Gedurfd. Liever niet.",
+      "Morgen: geen wekker, geen plan, geen kans. Regel het, {name}.",
+      "Ga je morgenochtend echt improviseren? Zet een wekker."
+    ]
+  },
   "ringing": {
     "gentle": [
       "Goedemorgen! Laten we samen opstaan.",

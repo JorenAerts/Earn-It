@@ -801,7 +801,7 @@
   "The camera couldn't start. Close other apps that use the camera and try again.": "L’appareil photo n’a pas pu démarrer. Ferme les autres apps qui l’utilisent et réessaie.",
   "The camera is off for Gloop. Turn it on to scan your item, or do the backup mission.": "L’appareil photo est désactivé pour Gloop. Active-le pour scanner ton objet, ou fais la mission de secours.",
   "The club, its ranking and photos are deleted for everyone.": "Le club, son classement et ses photos sont supprimés pour tout le monde.",
-  "The evening before each alarm, and a word from him after a missed morning. No reminders while alarms are paused.": "La veille de chaque réveil, et un petit mot de sa part après un matin raté. Pas de rappels quand les réveils sont en pause.",
+  "The evening before each alarm, a nudge when tomorrow has no alarm yet, and a word from him after a missed morning. No reminders while alarms are paused.": "La veille de chaque réveil, un petit coup de pouce quand demain n’a pas encore de réveil, et un petit mot de sa part après un matin raté. Pas de rappels quand les réveils sont en pause.",
   "The longest-standing member becomes the owner.": "Le membre le plus ancien devient propriétaire.",
   "The old code and link stop working.": "L’ancien code et l’ancien lien ne fonctionneront plus.",
   "The other side": "L’autre côté",
@@ -1175,5 +1175,6 @@
   "Sign in to share ideas": "Connecte-toi pour partager des idées",
   "Suggest features and vote for the ideas you want most. You need a Gloop account so every person gets one vote.": "Propose des fonctionnalités et vote pour les idées que tu veux le plus. Il te faut un compte Gloop, pour que chacun n’ait qu’une voix.",
   "Can't load the board": "Impossible de charger le tableau",
-  "Check your connection and try again.": "Vérifie ta connexion et réessaie."
+  "Check your connection and try again.": "Vérifie ta connexion et réessaie.",
+  "Remind me to set an alarm": "Me rappeler de régler un réveil"
 }

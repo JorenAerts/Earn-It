@@ -69,11 +69,13 @@ public final class CoachPreferences: @unchecked Sendable {
     public var notifications: CoachNotificationSettings {
         get {
             CoachNotificationSettings(enabled: defaults.bool(forKey: "gloop.coach.notify"),
+                                      remindNoAlarm: defaults.object(forKey: "gloop.coach.noAlarmReminder") as? Bool ?? true,
                                       eveningHour: defaults.object(forKey: "gloop.coach.eveningHour") as? Int ?? 22,
                                       eveningMinute: defaults.object(forKey: "gloop.coach.eveningMinute") as? Int ?? 0)
         }
         set {
             defaults.set(newValue.enabled, forKey: "gloop.coach.notify")
+            defaults.set(newValue.remindNoAlarm, forKey: "gloop.coach.noAlarmReminder")
             defaults.set(newValue.eveningHour, forKey: "gloop.coach.eveningHour")
             defaults.set(newValue.eveningMinute, forKey: "gloop.coach.eveningMinute")
         }

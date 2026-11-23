@@ -14,6 +14,11 @@
     "toughLove": ["Pas de réveil ? Alors qui te réveille ? Pas moi, apparemment.", "Un slime sans travail. Règle un réveil, {name}.", "Je ne peux pas t’aider sans réveil."],
     "savage": ["Aucun réveil. Stratégie audacieuse.", "Un slime sans réveil, c’est juste une flaque avec des yeux.", "Règle un réveil ou je fonds d’ennui."]
   },
+  "setAlarm": {
+    "gentle": ["Pas encore de réveil pour demain, {name}. Règles-en un et on commence la journée ensemble.", "Demain est encore libre. Choisis une heure et je serai là.", "Avant de dormir : demain n’a pas encore de réveil. Tu en règles un ?"],
+    "toughLove": ["Pas de réveil demain, {name}. Tu comptes te lever, oui ou non ?", "Aucun réveil pour demain. Deux touches maintenant sauvent ta matinée.", "Je ne peux pas te réveiller sans réveil. Règles-en un, {name}."],
+    "savage": ["Pas de réveil demain ? Audacieux. Mieux vaut pas.", "Demain : pas de réveil, pas de plan, aucune chance. Règle ça, {name}.", "Tu comptes vraiment improviser demain matin ? Règle un réveil."]
+  },
   "ringing": {
     "gentle": ["Bonjour ! On se lève ensemble.", "Debout, {name} ! Une mission et c’est fini.", "Bonjour ! Je rebondis déjà. À toi."],
     "toughLove": ["DEBOUT ! La journée ne va pas commencer toute seule.", "Les pieds par terre, {name}. Maintenant.", "Dring dring ! C’est ton signal."],

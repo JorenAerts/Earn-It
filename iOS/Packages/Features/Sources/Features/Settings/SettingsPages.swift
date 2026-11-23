@@ -127,16 +127,19 @@ struct CoachSettingsView: View {
                 Toggle("Coach reminders", isOn: Binding(
                     get: { coach.notifications.enabled },
                     set: { on in setReminders(on) }))
-                if coach.notifications.enabled {
+                Toggle("Remind me to set an alarm", isOn: Binding(
+                    get: { coach.notifications.remindNoAlarm },
+                    set: { on in setNoAlarmReminder(on) }))
+                if coach.notifications.anyEnabled {
                     DatePicker("Evening reminder", selection: eveningTime, displayedComponents: .hourAndMinute)
                 }
-                if remindersDenied || (coach.notifications.enabled && PermissionCenter.shared.status(.notifications) == .denied) {
+                if remindersDenied || (coach.notifications.anyEnabled && PermissionCenter.shared.status(.notifications) == .denied) {
                     PermissionBanner(kind: .notifications, message: L10n.tr("Notifications are off, so reminders can't arrive."))
                 }
             } header: {
                 Text("Reminders")
             } footer: {
-                Text("The evening before each alarm, and a word from him after a missed morning. No reminders while alarms are paused.")
+                Text("The evening before each alarm, a nudge when tomorrow has no alarm yet, and a word from him after a missed morning. No reminders while alarms are paused.")
             }
         }
         .navigationTitle(CoachIdentity.name)
@@ -167,6 +170,23 @@ struct CoachSettingsView: View {
             } else {
                 coach.notifications.enabled = false
                 remindersDenied = false
+            }
+            await CoachNotifier.shared.refresh(coordinator: coordinator)
+        }
+    }
+
+    /// "Remind me to set an alarm": on by default, works without Coach reminders.
+    private func setNoAlarmReminder(_ on: Bool) {
+        Task {
+            if on {
+                let allowed = await PermissionCenter.shared.ensure(.notifications)
+                remindersDenied = !allowed
+                coach.notifications.remindNoAlarm = allowed
+                Telemetry.shared.send(.action(.noAlarmReminderToggled(on: allowed)))
+            } else {
+                coach.notifications.remindNoAlarm = false
+                remindersDenied = false
+                Telemetry.shared.send(.action(.noAlarmReminderToggled(on: false)))
             }
             await CoachNotifier.shared.refresh(coordinator: coordinator)
         }

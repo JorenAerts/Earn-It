@@ -219,7 +219,7 @@ struct PausedNotificationTests {
     @Test func noRemindersOnPausedDaysAndWelcomeBack() {
         let result = NotificationPlanner.plan(
             now: day(13, 12), upcomingAlarms: [day(14, 7), day(15, 7), day(16, 7)],
-            settings: CoachNotificationSettings(enabled: true), streak: 0, session: nil,
+            settings: CoachNotificationSettings(enabled: true, remindNoAlarm: false), streak: 0, session: nil,
             alreadyRoastedToday: false, intensity: .toughLove, lines: lines,
             pause: AlarmPause(until: day(15)), calendar: brussels)
         #expect(result.map(\.date) == [day(14, 22), day(15, 22)])
@@ -271,5 +271,12 @@ struct SettingsContentTests {
         #expect(AccountUser(id: UUID(), email: nil, provider: "email").usesPassword)
         #expect(AccountUser(id: UUID(), email: nil, provider: "google").providerName == "Google")
         #expect(AccountUser(id: UUID(), email: nil).providerName == nil)
+    }
+}
+
+struct SetAlarmTapTests {
+    @Test func tapOpensTheEditorOnlyWithoutAlarms() {
+        #expect(SetAlarmTap.destination(plans: []) == .newAlarm)
+        #expect(SetAlarmTap.destination(plans: [AlarmPlan()]) == .alarmsList, "free plan: a 2nd alarm would hit the paywall")
     }
 }
