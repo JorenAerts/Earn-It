@@ -22,3 +22,8 @@ Web/config.js
 
 # Marketing screen recordings (iOS/scripts/marketing/record.sh), too big for git
 docs/marketing/videos/
+
+# App Store product page headers (PNG, ~130 MB): regenerate with SKIP_CAPTURE=1 iOS/scripts/screenshots/make.sh
+iOS/fastlane/header/
+# App Store screenshots (PNG, ~300 MB): regenerate with iOS/scripts/screenshots/make.sh (SKIP_CAPTURE=1 for re-compose only)
+iOS/fastlane/screenshots/

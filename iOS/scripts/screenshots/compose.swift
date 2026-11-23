@@ -288,12 +288,113 @@ struct Gloops: View {
     }
 }
 
+// MARK: - Product page header (App Store Connect › Header, landscape)
+
+struct HeaderSpec: Decodable {
+    let headline: String
+    let accent: String
+    /// 3 raw captures: left, centre, right phone.
+    let raws: [String]
+}
+
+/// One wide hero image: sky, headline, three fanned phones, sleepy Gloop left and proud Gloop right.
+/// Everything important sits within ±0.95 H of the centre, so Apple's crops keep it.
+struct HeaderBanner: View {
+    let headline: String
+    let accent: String
+    let phones: [NSImage]
+    let size: CGSize
+
+    var body: some View {
+        let w = size.width, h = size.height, cx = w / 2
+        let phoneH = h * 0.60
+        let side = min(h * 0.80, w / 2 - h * 0.19)  // Gloops stay fully inside narrower formats
+        ZStack(alignment: .topLeading) {
+            Sky(size: size)
+            // Headline.
+            title
+                .font(.system(size: h * 0.082, weight: .heavy, design: .rounded))
+                .multilineTextAlignment(.center)
+                .lineSpacing(-h * 0.01)
+                .shadow(color: .black.opacity(0.35), radius: h * 0.012)
+                .frame(width: h * 1.6)
+                .position(x: cx, y: h * 0.17)
+            // Phones: side ones first (behind), centre last.
+            ForEach([0, 2, 1], id: \.self) { index in
+                let offset: CGFloat = index == 1 ? 0 : (index == 0 ? -1 : 1)
+                phone(phones[index], height: index == 1 ? phoneH : phoneH * 0.9)
+                    .rotationEffect(.degrees(Double(offset) * 9))
+                    .position(x: cx + offset * h * 0.40, y: h * (index == 1 ? 0.66 : 0.70))
+            }
+            slime(SlimePose(droop: 0.75, eyes: .sleepy, mouth: .flat, drips: 1, saturation: 0.85), .orange,
+                  size: h * 0.30, at: CGPoint(x: cx - side, y: h * 0.97))
+            Text("z Z z").font(.system(size: h * 0.04, weight: .heavy, design: .rounded))
+                .foregroundStyle(.white.opacity(0.85)).rotationEffect(.degrees(-12))
+                .position(x: cx - side - h * 0.06, y: h * 0.80)
+            slime(SlimePose(droop: 0, eyes: .sparkly, mouth: .grin, blush: true, sparkle: true, accessory: .crown), .orange,
+                  size: h * 0.30, at: CGPoint(x: cx + side, y: h * 0.97))
+        }
+        .frame(width: w, height: h, alignment: .topLeading)
+        .clipped()
+    }
+
+    private func phone(_ raw: NSImage, height: CGFloat) -> some View {
+        let width = height * raw.size.width / raw.size.height
+        return Image(nsImage: raw)
+            .resizable()
+            .frame(width: width, height: height)
+            .clipShape(.rect(cornerRadius: width * 0.115, style: .continuous))
+            .padding(width * 0.026)
+            .background(Palette.bezel, in: .rect(cornerRadius: width * 0.14, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: width * 0.14, style: .continuous)
+                    .strokeBorder(.white.opacity(0.18), lineWidth: width * 0.004)
+            }
+            .shadow(color: .black.opacity(0.45), radius: width * 0.08, y: width * 0.05)
+    }
+
+    private func slime(_ pose: SlimePose, _ color: SlimeColor, size: CGFloat, at p: CGPoint) -> some View {
+        Canvas { ctx, s in SlimeRenderer.draw(ctx, size: s, pose: pose, color: color) }
+            .frame(width: size, height: size)
+            .position(x: p.x, y: p.y - size * 0.38)
+    }
+
+    private var title: Text {
+        guard !accent.isEmpty, let range = headline.range(of: accent) else { return Text(headline).foregroundColor(.white) }
+        return Text("\(Text(headline[..<range.lowerBound]).foregroundColor(.white))\(Text(headline[range]).foregroundColor(Palette.gold))\(Text(headline[range.upperBound...]).foregroundColor(.white))")
+    }
+}
+
+/// `compose header <spec.json> <out.png> <width> <height>`
+@MainActor func composeHeader(_ a: [String]) throws {
+    guard a.count == 6, let w = Double(a[4]), let h = Double(a[5]) else {
+        fatalError("usage: compose header <spec.json> <out.png> <width> <height>")
+    }
+    let spec = try JSONDecoder().decode(HeaderSpec.self, from: Data(contentsOf: URL(fileURLWithPath: a[2])))
+    let phones = spec.raws.map { path -> NSImage in
+        guard let image = NSImage(contentsOfFile: path) else { fatalError("missing \(path)") }
+        return image
+    }
+    let view = HeaderBanner(headline: spec.headline.replacingOccurrences(of: "\\n", with: "\n"), accent: spec.accent,
+                            phones: phones, size: CGSize(width: w, height: h))
+    let renderer = ImageRenderer(content: view)
+    renderer.scale = 1
+    guard let cg = renderer.cgImage else { fatalError("render failed") }
+    let ctx = CGContext(data: nil, width: Int(w), height: Int(h), bitsPerComponent: 8, bytesPerRow: 0,
+                        space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
+    ctx.draw(cg, in: CGRect(x: 0, y: 0, width: w, height: h))
+    // PNG: App Store Connect's header upload refuses .jpg ("invalid extension").
+    let png = NSBitmapImageRep(cgImage: ctx.makeImage()!).representation(using: .png, properties: [:])!
+    try png.write(to: URL(fileURLWithPath: a[3]))
+}
+
 // MARK: - CLI
 
 @main
 struct Compose {
     @MainActor static func main() throws {
         let a = CommandLine.arguments
+        if a.count > 1, a[1] == "header" { return try composeHeader(a) }
         guard a.count == 6, let spec = try? Data(contentsOf: URL(fileURLWithPath: a[1])),
               let w = Double(a[4]), let h = Double(a[5]) else {
             fatalError("usage: compose <spec.json> <out dir> <size name> <width> <height>")
@@ -312,10 +413,9 @@ struct Compose {
             let ctx = CGContext(data: nil, width: Int(w), height: Int(h), bitsPerComponent: 8, bytesPerRow: 0,
                                 space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
             ctx.draw(wide, in: CGRect(x: -w * Double(index), y: 0, width: Double(wide.width), height: Double(wide.height)))
-            // JPEG (App Store accepts it): ~0.5 MB instead of ~3 MB PNG per shot × 9 locales in git.
-            let jpeg = NSBitmapImageRep(cgImage: ctx.makeImage()!)
-                .representation(using: .jpeg, properties: [.compressionFactor: 0.9])!
-            try jpeg.write(to: URL(fileURLWithPath: a[2]).appending(path: "\(item.0.id)-\(a[3]).jpg"))
+            // PNG (lossless). Generated locally, not in git (fastlane/screenshots is ignored).
+            let png = NSBitmapImageRep(cgImage: ctx.makeImage()!).representation(using: .png, properties: [:])!
+            try png.write(to: URL(fileURLWithPath: a[2]).appending(path: "\(item.0.id)-\(a[3]).png"))
         }
     }
 }

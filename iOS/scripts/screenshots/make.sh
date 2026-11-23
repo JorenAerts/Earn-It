@@ -4,7 +4,7 @@
 #   cd iOS && scripts/screenshots/make.sh
 #   LANGS="en nl" scripts/screenshots/make.sh     # only these app languages
 #   SKIP_CAPTURE=1 scripts/screenshots/make.sh    # re-compose from the last captures (design tweaks)
-# Output: fastlane/screenshots/<locale>/<id>-6.9.jpg (1320×2868) and -6.5.jpg (1284×2778),
+# Output (PNG, git-ignored): fastlane/screenshots/<locale>/<id>-6.9.png (1320×2868), -6.5.png (1284×2778), -6.3.png (1206×2622),
 # plus ../docs/screenshots.html to review them.
 set -e
 cd "$(dirname "$0")/../.."
@@ -41,7 +41,7 @@ scenes, locales = config["scenes"], config["locales"]
 languages = sorted(set(locales.values()), key=list(locales.values()).index)
 if only:
     languages = [l for l in languages if l in only.split()]
-sizes = {"6.9": (1320, 2868), "6.5": (1284, 2778)}
+sizes = {"6.9": (1320, 2868), "6.5": (1284, 2778), "6.3": (1206, 2622)}  # 6.3 = App Store Connect "medium display"
 catalog = json.loads((root / "App/Localizable.xcstrings").read_text())["strings"]
 
 def tr(key, lang):
@@ -76,6 +76,21 @@ for lang in languages:
         for name, (w, h) in sizes.items():
             subprocess.run([compose, str(spec_file), str(out), name, str(w), str(h)], check=True)
         print("composed", locale)
+    # Product page header (App Store Connect › Header): fastlane/header/<locale>/header-<w>x<h>.png
+    hd = config.get("header")
+    if hd:
+        hspec = pathlib.Path(tempfile.mkstemp(suffix=".json")[1])
+        hspec.write_text(json.dumps({"headline": hd["headline"][lang], "accent": hd["accent"][lang],
+                                     "raws": [str(raw / f"{lang}-{i}.png") for i in hd["phones"]]}, ensure_ascii=False))
+        for locale, l in locales.items():
+            if l != lang:
+                continue
+            hout = root / "fastlane/header" / locale
+            shutil.rmtree(hout, ignore_errors=True)
+            hout.mkdir(parents=True)
+            # header-*: product page header; search-*: search results (3:2).
+            for (name, w, h) in [("header", 5244, 2950), ("header", 3840, 1646), ("search", 3840, 2560)]:
+                subprocess.run([compose, "header", str(hspec), str(hout / f"{name}-{w}x{h}.png"), str(w), str(h)], check=True)
 
 html = ['<!doctype html><meta charset="utf-8"><title>Gloop screenshots</title>',
         '<style>body{font-family:-apple-system;background:#222;color:#eee;margin:24px}'
@@ -86,7 +101,7 @@ for locale in locales:
         continue
     html.append(f"<h2>{locale}</h2><div class=row>")
     for s in scenes:
-        rel = (out / f"{s['id']}-6.9.jpg").relative_to(root.parent)
+        rel = (out / f"{s['id']}-6.9.png").relative_to(root.parent)
         html.append(f'<img src="../{rel}">')
     html.append("</div>")
 (root.parent / "docs/screenshots.html").write_text("\n".join(html))

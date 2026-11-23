@@ -137,5 +137,32 @@
         "pt-PT": "amigos"
       }
     }
-  ]
+  ],
+  "header": {
+    "phones": [
+      "01-stop-snoozing",
+      "02-only-a-mission",
+      "03-watch-gloop-grow"
+    ],
+    "headline": {
+      "en": "The alarm you\ncan't snooze.",
+      "nl": "De wekker die je\nniet kunt snoozen.",
+      "de": "Der Wecker ohne\nSchlummertaste.",
+      "fr": "Le réveil sans\nbouton Répéter.",
+      "es": "La alarma que no\npuedes posponer.",
+      "it": "La sveglia che non\npuoi rimandare.",
+      "pt-BR": "O alarme sem\nsoneca.",
+      "pt-PT": "O alarme sem\nsnooze."
+    },
+    "accent": {
+      "en": "snooze.",
+      "nl": "snoozen.",
+      "de": "Schlummertaste.",
+      "fr": "Répéter.",
+      "es": "posponer.",
+      "it": "rimandare.",
+      "pt-BR": "soneca.",
+      "pt-PT": "snooze."
+    }
+  }
 }

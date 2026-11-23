@@ -63,7 +63,7 @@ struct AppStoreMetadataTests {
         try String(contentsOf: Self.root.appending(path: "fastlane/metadata/\(locale)/\(file).txt"), encoding: .utf8)
     }
 
-    @Test(arguments: ["en-US", "en-GB", "nl-NL"])
+    @Test(arguments: ["en-US", "en-GB", "nl-NL", "fr-FR", "de-DE", "es-ES", "it", "pt-BR", "pt-PT"])
     func withinAppStoreLimits(locale: String) throws {
         #expect(try text(locale, "name").count <= 30)
         #expect(try text(locale, "subtitle").count <= 30)
@@ -103,16 +103,18 @@ struct AppStoreMetadataTests {
             }
         }
         for locale in config.locales.keys {
+            // Generated PNGs aren't in git: check them only when make.sh has run on this machine.
             let dir = Self.root.appending(path: "fastlane/screenshots/\(locale)")
-            let files = try FileManager.default.contentsOfDirectory(atPath: dir.path()).filter { $0.hasSuffix(".jpg") }
+            guard FileManager.default.fileExists(atPath: dir.path()) else { continue }
+            let files = try FileManager.default.contentsOfDirectory(atPath: dir.path()).filter { $0.hasSuffix(".png") }
             for scene in config.scenes {
-                #expect(files.contains("\(scene.id)-6.9.jpg") && files.contains("\(scene.id)-6.5.jpg"), "\(locale) \(scene.id)")
+                #expect(["6.9", "6.5", "6.3"].allSatisfy { files.contains("\(scene.id)-\($0).png") }, "\(locale) \(scene.id)")
             }
-            #expect(files.count == config.scenes.count * 2, "\(locale): \(files.count) files")
+            #expect(files.count == config.scenes.count * 3, "\(locale): \(files.count) files")
             for file in files {
                 let source = try #require(CGImageSourceCreateWithURL(dir.appending(path: file) as CFURL, nil))
                 let image = try #require(CGImageSourceCreateImageAtIndex(source, 0, nil))
-                let expected = file.hasSuffix("-6.9.jpg") ? (1320, 2868) : (1284, 2778)
+                let expected = file.hasSuffix("-6.9.png") ? (1320, 2868) : file.hasSuffix("-6.5.png") ? (1284, 2778) : (1206, 2622)
                 #expect(image.width == expected.0 && image.height == expected.1, "\(locale)/\(file) is \(image.width)×\(image.height)")
             }
         }

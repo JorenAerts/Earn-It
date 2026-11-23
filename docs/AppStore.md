@@ -49,7 +49,7 @@ Scan your item, Photo of the sky and Made-up bed popping out of the phone) · 3.
 (success screen: evolution, XP, sticker, streak) · 4. Show your friends you're awake (Buddies club)
 
 `iOS/scripts/screenshots/make.sh` captures the DEBUG demo scenes per app language (`-language`) and
-`compose.swift` draws the banner as JPEG in 6.9" (1320×2868) and 6.5" (1284×2778) for every App Store locale in
+`compose.swift` draws the banner as PNG (generated locally, not in git) in 6.9" (1320×2868), 6.5" (1284×2778) and 6.3" (1206×2622, App Store Connect's "medium display" slot) for every App Store locale in
 `scenes.json` (en-US, en-GB, nl-NL, fr-FR, de-DE, es-ES, it, pt-BR, pt-PT) → `iOS/fastlane/screenshots/`.
 Headlines + highlighted word per language live in `scenes.json`. Review in `docs/screenshots.html`.
 `LANGS="en nl"` limits the languages; `SKIP_CAPTURE=1` re-composes from the last captures (design tweaks).
