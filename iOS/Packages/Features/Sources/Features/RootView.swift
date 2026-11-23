@@ -33,6 +33,7 @@ public struct RootView: View {
     @State private var whatsNew: HelpContent.Release?
     @State private var buddies: BuddiesModel
     @State private var language = LanguageSettings.shared
+    @State private var reminders = ReminderRouter.shared
 
     public init(coordinator: AlarmCoordinator, auth: any AuthService, store: StoreService,
                 buddies: any BuddiesService = UnavailableBuddiesService(),
@@ -206,6 +207,10 @@ public struct RootView: View {
         }
         .onChange(of: coordinator.session) { refreshCoachNotifications() }
         .onChange(of: coordinator.pause) { refreshCoachNotifications() }
+        // "Set your alarm" reminder tapped: Alarms tab (HomeView opens the editor when there are no alarms).
+        .onChange(of: reminders.pendingSetAlarm, initial: true) { _, pending in
+            if pending { tab = .alarms }
+        }
         .onChange(of: PermissionCenter.shared.blocked) { _, kind in
             if let kind { Telemetry.shared.send(.action(.permissionDenied(kind: kind.rawValue))) }
         }
@@ -226,7 +231,7 @@ public struct RootView: View {
                 }
             }
             Telemetry.shared.sessionStarted(source: coordinator.needsMission ? .alarm : .cold)
-            UNUserNotificationCenter.current().delegate = CoachModel.shared.notificationDelegate
+            ReminderRouter.installNotificationDelegate()  // also in GloopApp.init (cold-launch taps)
             store.start()
             await PermissionCenter.shared.refresh()
             coordinator.reload()

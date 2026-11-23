@@ -36,6 +36,8 @@ public enum CoachIntensity: String, Codable, CaseIterable, Sendable, Identifiabl
 /// Why he's in his current mood — selects the line he says.
 public enum CoachContext: String, Codable, CaseIterable, Sendable {
     case idle, night, noAlarm
+    /// Evening notification: tomorrow has no alarm yet.
+    case setAlarm
     case ringing, reRing
     case missionSuccess, firstTry, streakMilestone
     case failSafe, streakBroken

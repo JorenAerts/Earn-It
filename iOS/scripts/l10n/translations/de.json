@@ -801,7 +801,7 @@
   "The camera couldn't start. Close other apps that use the camera and try again.": "Die Kamera konnte nicht starten. Schließe andere Apps, die die Kamera nutzen, und versuch es erneut.",
   "The camera is off for Gloop. Turn it on to scan your item, or do the backup mission.": "Die Kamera ist für Gloop aus. Aktiviere sie, um deinen Gegenstand zu scannen, oder mach die Ersatzmission.",
   "The club, its ranking and photos are deleted for everyone.": "Der Club, seine Rangliste und Fotos werden für alle gelöscht.",
-  "The evening before each alarm, and a word from him after a missed morning. No reminders while alarms are paused.": "Am Abend vor jedem Wecker und ein Wort von ihm nach einem verpassten Morgen. Keine Erinnerungen, solange Wecker pausiert sind.",
+  "The evening before each alarm, a nudge when tomorrow has no alarm yet, and a word from him after a missed morning. No reminders while alarms are paused.": "Am Abend vor jedem Wecker, ein Schubs, wenn für morgen noch kein Wecker gestellt ist, und ein Wort von ihm nach einem verpassten Morgen. Keine Erinnerungen, solange Wecker pausiert sind.",
   "The longest-standing member becomes the owner.": "Das Mitglied, das am längsten dabei ist, wird Besitzer.",
   "The old code and link stop working.": "Der alte Code und Link funktionieren nicht mehr.",
   "The other side": "Die andere Seite",
@@ -1175,5 +1175,6 @@
   "Sign in to share ideas": "Melde dich an, um Ideen zu teilen",
   "Suggest features and vote for the ideas you want most. You need a Gloop account so every person gets one vote.": "Schlag Funktionen vor und stimm für die Ideen, die du dir am meisten wünschst. Du brauchst ein Gloop-Konto, damit jeder nur eine Stimme hat.",
   "Can't load the board": "Board kann nicht geladen werden",
-  "Check your connection and try again.": "Prüf deine Verbindung und versuch es erneut."
+  "Check your connection and try again.": "Prüf deine Verbindung und versuch es erneut.",
+  "Remind me to set an alarm": "Erinnere mich, einen Wecker zu stellen"
 }

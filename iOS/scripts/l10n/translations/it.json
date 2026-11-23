@@ -801,7 +801,7 @@
   "The camera couldn't start. Close other apps that use the camera and try again.": "La fotocamera non si è avviata. Chiudi le altre app che la usano e riprova.",
   "The camera is off for Gloop. Turn it on to scan your item, or do the backup mission.": "La fotocamera è disattivata per Gloop. Attivala per scansionare il tuo oggetto, oppure fai la missione di riserva.",
   "The club, its ranking and photos are deleted for everyone.": "Il club, la sua classifica e le foto vengono eliminati per tutti.",
-  "The evening before each alarm, and a word from him after a missed morning. No reminders while alarms are paused.": "La sera prima di ogni sveglia, e una parola da lui dopo una mattina persa. Nessun promemoria mentre le sveglie sono in pausa.",
+  "The evening before each alarm, a nudge when tomorrow has no alarm yet, and a word from him after a missed morning. No reminders while alarms are paused.": "La sera prima di ogni sveglia, una spintarella quando domani non ha ancora una sveglia, e una parola da lui dopo una mattina persa. Nessun promemoria mentre le sveglie sono in pausa.",
   "The longest-standing member becomes the owner.": "Il membro più anziano diventa proprietario.",
   "The old code and link stop working.": "Il vecchio codice e il vecchio link non funzioneranno più.",
   "The other side": "L’altro lato",
@@ -1175,5 +1175,6 @@
   "Sign in to share ideas": "Accedi per condividere idee",
   "Suggest features and vote for the ideas you want most. You need a Gloop account so every person gets one vote.": "Proponi funzioni e vota le idee che vuoi di più. Ti serve un account Gloop, così ognuno ha un solo voto.",
   "Can't load the board": "Impossibile caricare la bacheca",
-  "Check your connection and try again.": "Controlla la connessione e riprova."
+  "Check your connection and try again.": "Controlla la connessione e riprova.",
+  "Remind me to set an alarm": "Ricordami di impostare una sveglia"
 }

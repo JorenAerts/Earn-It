@@ -14,6 +14,11 @@
     "toughLove": ["Sem alarme? Então quem acorda você? Eu é que não, pelo visto.", "Uma gosma sem emprego. Crie um alarme, {name}.", "Não consigo ajudar sem alarme."],
     "savage": ["Nenhum alarme. Estratégia ousada.", "Uma gosma sem alarme é só uma poça com olhos.", "Crie um alarme ou eu derreto de tédio."]
   },
+  "setAlarm": {
+    "gentle": ["Ainda não tem alarme para amanhã, {name}. Crie um e a gente começa o dia junto.", "Amanhã ainda está livre. Escolha um horário e eu estarei lá.", "Antes de dormir: amanhã ainda não tem alarme. Quer criar um?"],
+    "toughLove": ["Amanhã não tem alarme, {name}. Vai levantar ou não?", "Nenhum alarme para amanhã. Dois toques agora salvam sua manhã.", "Não consigo te acordar sem alarme. Crie um, {name}."],
+    "savage": ["Sem alarme amanhã? Ousado. Melhor não.", "Amanhã: sem alarme, sem plano, sem chance. Resolve isso, {name}.", "Vai mesmo improvisar amanhã de manhã? Crie um alarme."]
+  },
   "ringing": {
     "gentle": ["Bom dia! Vamos levantar juntos.", "Levanta, {name}! Uma missão e pronto.", "Bom dia! Já estou quicando. Sua vez."],
     "toughLove": ["DE PÉ! O dia não começa sozinho.", "Pés no chão, {name}. Agora.", "Trim trim! Esse é o seu sinal."],

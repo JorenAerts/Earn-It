@@ -801,7 +801,7 @@
   "The camera couldn't start. Close other apps that use the camera and try again.": "De camera kon niet starten. Sluit andere apps die de camera gebruiken en probeer het opnieuw.",
   "The camera is off for Gloop. Turn it on to scan your item, or do the backup mission.": "De camera staat uit voor Gloop. Zet hem aan om je voorwerp te scannen, of doe de reservemissie.",
   "The club, its ranking and photos are deleted for everyone.": "De club, de ranking en de foto's worden voor iedereen verwijderd.",
-  "The evening before each alarm, and a word from him after a missed morning. No reminders while alarms are paused.": "De avond voor elke wekker, en een woordje van hem na een gemiste ochtend. Geen herinneringen als de wekkers gepauzeerd zijn.",
+  "The evening before each alarm, a nudge when tomorrow has no alarm yet, and a word from him after a missed morning. No reminders while alarms are paused.": "De avond voor elke wekker, een duwtje als er morgen nog geen wekker staat, en een woordje van hem na een gemiste ochtend. Geen herinneringen als de wekkers gepauzeerd zijn.",
   "The longest-standing member becomes the owner.": "Het lid dat er het langst bij is, wordt eigenaar.",
   "The old code and link stop working.": "De oude code en link werken niet meer.",
   "The other side": "De andere kant",
@@ -1175,5 +1175,6 @@
   "Sign in to share ideas": "Log in om ideeën te delen",
   "Suggest features and vote for the ideas you want most. You need a Gloop account so every person gets one vote.": "Stel functies voor en stem op de ideeën die jij het liefst wilt. Je hebt een Gloop-account nodig, zodat iedereen één stem heeft.",
   "Can't load the board": "Kan het bord niet laden",
-  "Check your connection and try again.": "Controleer je verbinding en probeer opnieuw."
+  "Check your connection and try again.": "Controleer je verbinding en probeer opnieuw.",
+  "Remind me to set an alarm": "Herinner me om een wekker te zetten"
 }

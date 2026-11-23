@@ -58,6 +58,8 @@ whether they keep getting up with Gloop. Code: `iOS/Packages/Telemetry` (catalog
 | Appearance.changed / Icon.changed | mode / icon |
 | Camera.flashlight | mode (auto/on/off), auto (true = Auto switched it on in the dark), mission (qr, object, bed, colorHunt, objectSetup, bedSetup, qrSetup) |
 | Coach.toneChanged / Reminders.toggled | tone / on |
+| Reminders.noAlarmToggled | on ("Remind me to set an alarm") |
+| Reminder.opened | kind (setAlarm) |
 | Help.opened / faqOpened | question (index in Help.json) |
 | Feedback.boardOpened | signedIn (Help › Suggest a feature; votes and posts on the page aren't tracked) |
 | Rate.requested, Account.signedOut, Account.deleted, Permission.denied(kind), Telemetry.test | |

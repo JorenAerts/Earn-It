@@ -34353,6 +34353,53 @@
         }
       }
     },
+    "Remind me to set an alarm" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Erinnere mich, einen Wecker zu stellen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Recordarme poner una alarma"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Me rappeler de régler un réveil"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Ricordami di impostare una sveglia"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Herinner me om een wekker te zetten"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lembrar de criar um alarme"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Lembrar-me de criar um alarme"
+          }
+        }
+      }
+    },
     "Reminders" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -43614,49 +43661,49 @@
         }
       }
     },
-    "The evening before each alarm, and a word from him after a missed morning. No reminders while alarms are paused." : {
+    "The evening before each alarm, a nudge when tomorrow has no alarm yet, and a word from him after a missed morning. No reminders while alarms are paused." : {
       "extractionState" : "manual",
       "localizations" : {
-        "nl" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "De avond voor elke wekker, en een woordje van hem na een gemiste ochtend. Geen herinneringen als de wekkers gepauzeerd zijn."
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "La veille de chaque réveil, et un petit mot de sa part après un matin raté. Pas de rappels quand les réveils sont en pause."
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Am Abend vor jedem Wecker und ein Wort von ihm nach einem verpassten Morgen. Keine Erinnerungen, solange Wecker pausiert sind."
+            "value" : "Am Abend vor jedem Wecker, ein Schubs, wenn für morgen noch kein Wecker gestellt ist, und ein Wort von ihm nach einem verpassten Morgen. Keine Erinnerungen, solange Wecker pausiert sind."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "La noche antes de cada alarma, y unas palabras suyas tras una mañana perdida. Sin recordatorios mientras las alarmas están en pausa."
+            "value" : "La noche antes de cada alarma, un empujoncito cuando mañana aún no tiene alarma, y unas palabras suyas tras una mañana perdida. Sin recordatorios mientras las alarmas están en pausa."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "La veille de chaque réveil, un petit coup de pouce quand demain n’a pas encore de réveil, et un petit mot de sa part après un matin raté. Pas de rappels quand les réveils sont en pause."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "La sera prima di ogni sveglia, e una parola da lui dopo una mattina persa. Nessun promemoria mentre le sveglie sono in pausa."
+            "value" : "La sera prima di ogni sveglia, una spintarella quando domani non ha ancora una sveglia, e una parola da lui dopo una mattina persa. Nessun promemoria mentre le sveglie sono in pausa."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "De avond voor elke wekker, een duwtje als er morgen nog geen wekker staat, en een woordje van hem na een gemiste ochtend. Geen herinneringen als de wekkers gepauzeerd zijn."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Na noite antes de cada alarme e uma palavrinha dele depois de uma manhã perdida. Sem lembretes enquanto os alarmes estão pausados."
+            "value" : "Na noite antes de cada alarme, um empurrãozinho quando amanhã ainda não tem alarme e uma palavrinha dele depois de uma manhã perdida. Sem lembretes enquanto os alarmes estão pausados."
           }
         },
         "pt-PT" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Na noite antes de cada alarme e uma palavrinha dele depois de uma manhã perdida. Sem lembretes enquanto os alarmes estão pausados."
+            "value" : "Na noite antes de cada alarme, um empurrãozinho quando amanhã ainda não tem alarme e uma palavrinha dele depois de uma manhã perdida. Sem lembretes enquanto os alarmes estão pausados."
           }
         }
       }

@@ -53,6 +53,23 @@
       "Set an alarm or I'm melting out of boredom."
     ]
   },
+  "setAlarm": {
+    "gentle": [
+      "No alarm for tomorrow yet, {name}. Set one and we'll start the day together.",
+      "Tomorrow's still open. Pick a wake-up time and I'll be there.",
+      "Before you sleep: tomorrow has no alarm yet. Want to set one?"
+    ],
+    "toughLove": [
+      "Tomorrow has no alarm, {name}. Plans to wake up, or not?",
+      "No alarm set for tomorrow. Two taps now saves your morning.",
+      "I can't wake you if there's no alarm. Set one, {name}."
+    ],
+    "savage": [
+      "No alarm tomorrow? Bold. Let's not.",
+      "Tomorrow: no alarm, no plan, no chance. Fix it, {name}.",
+      "You're really going to wing tomorrow morning? Set an alarm."
+    ]
+  },
   "ringing": {
     "gentle": [
       "Good morning! Let's get up together.",

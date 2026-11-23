@@ -194,6 +194,10 @@ public enum TelemetryAction: Equatable, Sendable {
     case iconChanged(icon: String)
     case coachToneChanged(tone: String)
     case remindersToggled(on: Bool)
+    /// Settings › Gloop › "Remind me to set an alarm".
+    case noAlarmReminderToggled(on: Bool)
+    /// A coach notification was tapped (kind: setAlarm).
+    case reminderOpened(kind: String)
     case helpOpened
     case faqOpened(index: Int)
     case shareApp
@@ -228,6 +232,8 @@ public enum TelemetryAction: Equatable, Sendable {
         case .iconChanged: "Icon.changed"
         case .coachToneChanged: "Coach.toneChanged"
         case .remindersToggled: "Reminders.toggled"
+        case .noAlarmReminderToggled: "Reminders.noAlarmToggled"
+        case .reminderOpened: "Reminder.opened"
         case .helpOpened: "Help.opened"
         case .faqOpened: "Help.faqOpened"
         case .shareApp: "Share.app"
@@ -256,6 +262,8 @@ public enum TelemetryAction: Equatable, Sendable {
         case .iconChanged(let icon): ["icon": icon]
         case .coachToneChanged(let tone): ["tone": tone]
         case .remindersToggled(let on): ["on": "\(on)"]
+        case .noAlarmReminderToggled(let on): ["on": "\(on)"]
+        case .reminderOpened(let kind): ["kind": kind]
         case .faqOpened(let index): ["question": "\(index)"]
         case .feedbackBoardOpened(let signedIn): ["signedIn": "\(signedIn)"]
         case .signedIn(let method): ["method": method]

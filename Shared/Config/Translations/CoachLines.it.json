@@ -14,6 +14,11 @@
     "toughLove": ["Nessuna sveglia? Allora chi ti sveglia? Non io, a quanto pare.", "Una gelatina senza lavoro. Imposta una sveglia, {name}.", "Non posso aiutarti se non c’è una sveglia."],
     "savage": ["Nessuna sveglia impostata. Strategia audace.", "Una gelatina senza sveglia è solo una pozzanghera con gli occhi.", "Imposta una sveglia o mi sciolgo dalla noia."]
   },
+  "setAlarm": {
+    "gentle": ["Ancora nessuna sveglia per domani, {name}. Impostane una e iniziamo la giornata insieme.", "Domani è ancora libero. Scegli un orario e io ci sarò.", "Prima di dormire: domani non ha ancora una sveglia. Ne imposti una?"],
+    "toughLove": ["Domani niente sveglia, {name}. Hai intenzione di alzarti o no?", "Nessuna sveglia per domani. Due tocchi ora salvano la tua mattina.", "Non posso svegliarti senza sveglia. Impostane una, {name}."],
+    "savage": ["Niente sveglia domani? Coraggioso. Meglio di no.", "Domani: niente sveglia, niente piano, nessuna speranza. Sistemalo, {name}.", "Vuoi davvero improvvisare domattina? Imposta una sveglia."]
+  },
   "ringing": {
     "gentle": ["Buongiorno! Alziamoci insieme.", "Sveglia, {name}! Una missione e hai finito.", "Buongiorno! Io sto già rimbalzando. Tocca a te."],
     "toughLove": ["IN PIEDI! La giornata non inizia da sola.", "Piedi a terra, {name}. Ora.", "Driin driin! È il tuo segnale."],

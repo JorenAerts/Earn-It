@@ -34,14 +34,14 @@ final class CoachNotifier {
 
         let settings = preferences.notifications
         let status = await center.notificationSettings().authorizationStatus
-        guard settings.enabled, status == .authorized || status == .provisional else { return }
+        guard settings.anyEnabled, status == .authorized || status == .provisional else { return }
 
         let calendar = Calendar.current
         let streak = StreakCalculator.currentStreak(completedDays: completedDays, today: now)
         let todayKey = NotificationPlanner.dayKey(now, calendar)
         let planned = NotificationPlanner.plan(
             now: now,
-            upcomingAlarms: Self.upcomingAlarms(coordinator.plans, from: now, days: NotificationPlanner.horizonDays),
+            upcomingAlarms: NotificationPlanner.upcomingRings(plans: coordinator.plans, from: now, calendar: calendar),
             settings: settings,
             streak: streak,
             session: coordinator.session,
@@ -49,6 +49,8 @@ final class CoachNotifier {
             intensity: preferences.intensity,
             lines: CoachModel.shared.lines,
             pause: coordinator.activePause,
+            onboarded: OnboardingStore().load().completed,
+            name: ProfileName.shared.name,
             calendar: calendar)
 
         for item in planned {
@@ -56,6 +58,7 @@ final class CoachNotifier {
             content.title = item.title
             content.body = item.body
             content.sound = .default
+            if let route = item.route { content.userInfo = [CoachNotification.routeKey: route.rawValue] }
             let parts = calendar.dateComponents([.year, .month, .day, .hour, .minute, .second], from: item.date)
             let request = UNNotificationRequest(identifier: item.id, content: content,
                                                 trigger: UNCalendarNotificationTrigger(dateMatching: parts, repeats: false))
@@ -80,26 +83,27 @@ final class CoachNotifier {
                                             trigger: UNTimeIntervalNotificationTrigger(timeInterval: seconds, repeats: false))
         try? await center.add(request)
     }
-
-    /// All rings of enabled alarms within `days` days.
-    static func upcomingAlarms(_ plans: [AlarmPlan], from now: Date, days: Int) -> [Date] {
-        let horizon = now.addingTimeInterval(TimeInterval(days) * 86_400)
-        var dates: [Date] = []
-        for plan in plans where plan.isEnabled {
-            var cursor = now
-            while let next = plan.nextFireDate(after: cursor), next <= horizon {
-                dates.append(next)
-                cursor = next
-            }
-        }
-        return dates.sorted()
-    }
 }
 
-/// Shows coach notifications as banners even while the app is open.
+/// Shows coach notifications as banners even while the app is open, and routes taps
+/// ("set your alarm" → `ReminderRouter`).
+/// Completion-handler variants on purpose: the `async` ones run off the main thread and then call
+/// UIKit's completion handler there → "Call must be made on main thread" crash on tap (found on device).
 final class CoachNotificationDelegate: NSObject, UNUserNotificationCenterDelegate {
-    func userNotificationCenter(_ center: UNUserNotificationCenter,
-                                willPresent notification: UNNotification) async -> UNNotificationPresentationOptions {
-        [.banner, .sound, .list]
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification,
+                                withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        nonisolated(unsafe) let done = completionHandler
+        DispatchQueue.main.async { done([.banner, .sound, .list]) }
+    }
+
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse,
+                                withCompletionHandler completionHandler: @escaping () -> Void) {
+        let isTap = response.actionIdentifier == UNNotificationDefaultActionIdentifier
+        let route = response.notification.request.content.userInfo[CoachNotification.routeKey] as? String
+        nonisolated(unsafe) let done = completionHandler
+        DispatchQueue.main.async {
+            if isTap { MainActor.assumeIsolated { ReminderRouter.shared.open(route: route) } }
+            done()
+        }
     }
 }

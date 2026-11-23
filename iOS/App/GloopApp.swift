@@ -61,6 +61,7 @@ struct GloopApp: App {
         #endif
         let config = Telemetry.bundledConfig()
         Telemetry.shared.configure(appID: config.appID, namespace: config.namespace, testMode: testMode)
+        ReminderRouter.installNotificationDelegate()  // before launch ends, so a tap that opened the app arrives
     }
 
     var body: some Scene {
