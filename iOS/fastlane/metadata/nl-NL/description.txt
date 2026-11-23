@@ -42,4 +42,5 @@ De betaling wordt van je Apple ID afgeschreven wanneer je de aankoop bevestigt. 
 
 Gloop is geen medisch hulpmiddel. Gebruik voor belangrijke wekmomenten altijd ook een tweede wekker.
 
-Gebruiksvoorwaarden en privacybeleid: beschikbaar in de app (Instellingen › Over).
+Gebruiksvoorwaarden: https://jorenaerts.github.io/Earn-It/legal/?doc=terms&lang=nl
+Privacybeleid: https://jorenaerts.github.io/Earn-It/legal/?doc=privacy&lang=nl

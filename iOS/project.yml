@@ -101,7 +101,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: be.gloop.app
         PRODUCT_NAME: Gloop
         MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "4"
+        CURRENT_PROJECT_VERSION: "5"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_ALTERNATE_APPICON_NAMES: "AppIcon-Mint AppIcon-Grape AppIcon-Midnight AppIcon-Gold"
         ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS: YES
@@ -158,7 +158,7 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: be.gloop.app.AlarmLiveActivity
         PRODUCT_NAME: AlarmLiveActivity
         MARKETING_VERSION: "1.0.0"
-        CURRENT_PROJECT_VERSION: "4"
+        CURRENT_PROJECT_VERSION: "5"
         SKIP_INSTALL: YES
         "CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]": Extensions/AlarmLiveActivity/AlarmLiveActivity.entitlements
         "CODE_SIGN_ENTITLEMENTS[sdk=iphoneos*]": $(GLOOP_EXT_ENTITLEMENTS_$(GLOOP_DEVICE_APP_GROUPS))

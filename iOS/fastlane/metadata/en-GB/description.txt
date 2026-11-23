@@ -42,4 +42,5 @@ Payment is charged to your Apple ID when you confirm the purchase. Subscriptions
 
 Gloop is not a medical device. For important wake-ups, always use a second alarm too.
 
-Terms of Use and Privacy Policy: available in the app (Settings › About).
+Terms of Use: https://jorenaerts.github.io/Earn-It/legal/?doc=terms
+Privacy Policy: https://jorenaerts.github.io/Earn-It/legal/?doc=privacy
