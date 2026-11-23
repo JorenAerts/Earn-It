@@ -40,7 +40,7 @@ Buddies is about motivating each other to get up. These guidelines keep it frien
 
 ## Appeals
 
-If you think we got it wrong, email joren.a@hotmail.com and tell us what happened. We'll take another look.
+If you think we got it wrong, email wakesupporthelp@gmail.com and tell us what happened. We'll take another look.
 
 ## Need help?
 

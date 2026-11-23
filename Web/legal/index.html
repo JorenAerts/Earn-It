@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>Gloop – Legal</title>
+  <link rel="stylesheet" href="../feedback/styles.css">
+  <style>
+    .doc h2 { font-size: 1.6rem; margin: 8px 0 12px; }
+    .doc h3 { margin: 22px 0 6px; font-size: 1.1rem; }
+    .doc p, .doc li { color: var(--muted); }
+    .doc ul { padding-left: 20px; }
+    .langs { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0 16px; }
+    .langs a, .docs a { color: var(--accent); }
+    .docs { display: flex; gap: 14px; flex-wrap: wrap; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <nav class="docs">
+      <a href="?doc=privacy">Privacy Policy</a>
+      <a href="?doc=terms">Terms of Use</a>
+      <a href="?doc=community">Community Guidelines</a>
+      <a href="?doc=health-safety">Health &amp; Safety</a>
+      <a href="../support/">Support</a>
+    </nav>
+    <div class="langs" id="langs"></div>
+    <article class="card doc" id="doc"><p>Loading…</p></article>
+  </main>
+  <script type="module">
+    // Renders docs/legal/<doc>[.<lang>].md (copied next to this page by .github/workflows/pages.yml).
+    import { markdownToHTML, legalPath } from "../feedback/logic.js";
+    const params = new URLSearchParams(location.search);
+    const docs = ["privacy", "terms", "community", "health-safety"];
+    const doc = docs.includes(params.get("doc")) ? params.get("doc") : "privacy";
+    const langs = { en: "English", nl: "Nederlands", fr: "Français", de: "Deutsch", es: "Español", it: "Italiano", pt: "Português" };
+    const lang = Object.keys(langs).includes(params.get("lang")) ? params.get("lang") : "en";
+    document.getElementById("langs").innerHTML = Object.entries(langs)
+      .map(([code, name]) => `<a href="?doc=${doc}&lang=${code}">${name}</a>`).join(" · ");
+    document.documentElement.lang = lang;
+    const target = document.getElementById("doc");
+    for (const path of [legalPath(doc, lang), legalPath(doc, "en")]) {
+      try {
+        // legalPath points at ../legal/ (relative to /feedback/); this page lives in /legal/ itself.
+        const response = await fetch(path.replace("../legal/", "./"));
+        if (!response.ok) continue;
+        target.innerHTML = markdownToHTML(await response.text());
+        document.title = "Gloop – " + (target.querySelector("h2")?.textContent || "Legal");
+        break;
+      } catch { /* try English */ }
+    }
+  </script>
+</body>
+</html>

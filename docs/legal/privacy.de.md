@@ -6,9 +6,9 @@ Diese Erklärung beschreibt, welche Daten Gloop nutzt, warum, wohin sie gehen un
 
 ## Wer wir sind
 
-Gloop wird von JA-Solutions (Eenmanszaak, Unternehmensnummer 1029.912.049), Hoevestraat 17,3990 Peer, Belgien entwickelt. Wir sind der Verantwortliche für die hier beschriebenen personenbezogenen Daten.
+Gloop wird von JA-Solutions (Eenmanszaak, Unternehmensnummer 1029.912.049), Hoevestraat 17, 3990 Peer, Belgien entwickelt. Wir sind der Verantwortliche für die hier beschriebenen personenbezogenen Daten.
 
-Fragen oder Anliegen zu deinen Daten: joren.a@hotmail.com
+Fragen oder Anliegen zu deinen Daten: wakesupporthelp@gmail.com
 
 ## Daten, die auf deinem iPhone bleiben
 
@@ -100,7 +100,7 @@ Nach der DSGVO hast du das Recht auf Auskunft, Berichtigung, Löschung, Datenüb
 
 - **Lösche dein Konto** direkt in der App: Einstellungen › dein Profil › Konto löschen. Dadurch werden dein Konto, dein Profil, Clubs, die dir gehören (oder sie werden an ein anderes Mitglied übergeben), Mitgliedschaften, Morgenergebnisse, Reaktionen und Fotos gelöscht.
 - **Statistiken beenden** unter Einstellungen › Datenschutz.
-- Für alles andere schreib an joren.a@hotmail.com. Wir antworten innerhalb eines Monats.
+- Für alles andere schreib an wakesupporthelp@gmail.com. Wir antworten innerhalb eines Monats.
 
 Du kannst dich auch bei der belgischen Datenschutzbehörde (Gegevensbeschermingsautoriteit / Autorité de protection des données), www.dataprotectionauthority.be, oder bei der Behörde in deinem eigenen EU-Land beschweren.
 
@@ -118,6 +118,6 @@ Wir können diese Erklärung aktualisieren, wenn sich Gloop ändert. Das Datum o
 
 ## Kontakt
 
-JA-Solutions, Hoevestraat 17,3990 Peer, Belgien
-Datenschutz: joren.a@hotmail.com
-Support: joren.a@hotmail.com
+JA-Solutions, Hoevestraat 17, 3990 Peer, Belgien
+Datenschutz: wakesupporthelp@gmail.com
+Support: wakesupporthelp@gmail.com

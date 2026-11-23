@@ -45,4 +45,4 @@ Quando condividi una foto del mattino in Buddies, assicurati che ci sia solo tu 
 
 ## Domande
 
-joren.a@hotmail.com
+wakesupporthelp@gmail.com

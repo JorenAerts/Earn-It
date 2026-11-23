@@ -6,9 +6,9 @@ Questa informativa spiega quali dati usa Gloop, perché, dove vanno e quali sono
 
 ## Chi siamo
 
-Gloop è realizzata da JA-Solutions (Eenmanszaak, numero d’impresa 1029.912.049), Hoevestraat 17,3990 Peer, Belgio. Siamo il titolare del trattamento dei dati personali qui descritti.
+Gloop è realizzata da JA-Solutions (Eenmanszaak, numero d’impresa 1029.912.049), Hoevestraat 17, 3990 Peer, Belgio. Siamo il titolare del trattamento dei dati personali qui descritti.
 
-Domande o richieste sui tuoi dati: joren.a@hotmail.com
+Domande o richieste sui tuoi dati: wakesupporthelp@gmail.com
 
 ## Dati che restano sul tuo iPhone
 
@@ -56,7 +56,7 @@ Se usi Proponi una funzione (Impostazioni › Aiuto e feedback) o il sito della 
 
 Gli altri utenti che hanno effettuato l’accesso vedono le idee e il numero di voti, ma non chi ha pubblicato o votato. La bacheca è una pagina web ospitata su GitHub Pages (GitHub, USA). Quando si carica, GitHub riceve il tuo indirizzo IP e i dati del browser, come per qualsiasi sito. La pagina non usa cookie di tracciamento; su un computer l’accesso resta salvato nel browser.
 
-Base giuridica: il nostro legittimo interesse a migliorare Gloop (art. 6(1)(f)). Le segnalazioni sono trattate per mantenere sicura la bacheca (art. 6(1)(f)).
+Base giuridica: il nostro legittimo interesse a migliorare Gloop (art. 6, par. 1, lett. f). Le segnalazioni sono trattate per mantenere sicura la bacheca (art. 6, par. 1, lett. f).
 
 ## Acquisti
 
@@ -100,7 +100,7 @@ In base al GDPR hai il diritto di accedere ai tuoi dati, rettificarli, cancellar
 
 - **Elimina il tuo account** direttamente nell’app: Impostazioni › il tuo profilo › Elimina account. Così vengono eliminati account, profilo, club di cui sei proprietario (o vengono passati a un altro membro), iscrizioni, risultati del mattino, reazioni e foto.
 - **Interrompi le statistiche** in Impostazioni › Privacy.
-- Per tutto il resto scrivi a joren.a@hotmail.com. Rispondiamo entro un mese.
+- Per tutto il resto scrivi a wakesupporthelp@gmail.com. Rispondiamo entro un mese.
 
 Puoi anche presentare reclamo all’Autorità belga per la protezione dei dati (Gegevensbeschermingsautoriteit / Autorité de protection des données), www.dataprotectionauthority.be, oppure all’autorità del tuo Paese UE.
 
@@ -118,6 +118,6 @@ Possiamo aggiornare questa informativa quando Gloop cambia. La data in alto indi
 
 ## Contatti
 
-JA-Solutions, Hoevestraat 17,3990 Peer, Belgio
-Privacy: joren.a@hotmail.com
-Assistenza: joren.a@hotmail.com
+JA-Solutions, Hoevestraat 17, 3990 Peer, Belgio
+Privacy: wakesupporthelp@gmail.com
+Assistenza: wakesupporthelp@gmail.com

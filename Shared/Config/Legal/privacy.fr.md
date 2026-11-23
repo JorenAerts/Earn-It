@@ -56,7 +56,7 @@ Si tu utilises Proposer une fonctionnalité (Réglages › Aide et commentaires)
 
 Les autres utilisateurs connectés voient les idées et le nombre de votes, mais pas qui a publié ou voté. Le tableau est une page web hébergée sur GitHub Pages (GitHub, États-Unis). Au chargement, GitHub reçoit ton adresse IP et des informations sur ton navigateur, comme pour tout site web. La page n’utilise aucun cookie de suivi ; sur un ordinateur, ta connexion est gardée dans ton navigateur.
 
-Base légale : notre intérêt légitime à améliorer {{appName}} (art. 6(1)(f)). Les signalements sont traités pour garder le tableau sûr (art. 6(1)(f)).
+Base légale : notre intérêt légitime à améliorer {{appName}} (art. 6, par. 1, f). Les signalements sont traités pour garder le tableau sûr (art. 6, par. 1, f).
 
 ## Achats
 

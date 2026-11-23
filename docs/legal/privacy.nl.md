@@ -6,9 +6,9 @@ Dit beleid legt uit welke gegevens Gloop gebruikt, waarom, waar ze naartoe gaan 
 
 ## Wie we zijn
 
-Gloop wordt gemaakt door JA-Solutions (Eenmanszaak, ondernemingsnummer 1029.912.049), Hoevestraat 17,3990 Peer, België. Wij zijn de verwerkingsverantwoordelijke voor de persoonsgegevens die hier worden beschreven.
+Gloop wordt gemaakt door JA-Solutions (Eenmanszaak, ondernemingsnummer 1029.912.049), Hoevestraat 17, 3990 Peer, België. Wij zijn de verwerkingsverantwoordelijke voor de persoonsgegevens die hier worden beschreven.
 
-Vragen of verzoeken over je gegevens: joren.a@hotmail.com
+Vragen of verzoeken over je gegevens: wakesupporthelp@gmail.com
 
 ## Gegevens die op je iPhone blijven
 
@@ -56,7 +56,7 @@ Als je Stel een functie voor (Instellingen › Hulp en feedback) of de website v
 
 Andere ingelogde gebruikers zien de ideeën en het aantal stemmen, maar niet wie iets plaatste of stemde. Het bord is een webpagina op GitHub Pages (GitHub, VS). Bij het laden ontvangt GitHub je IP-adres en browsergegevens, zoals bij elke website. De pagina gebruikt geen trackingcookies; op een computer blijf je ingelogd via je browser.
 
-Rechtsgrond: ons gerechtvaardigd belang om Gloop te verbeteren (art. 6(1)(f)). Rapporten worden verwerkt om het bord veilig te houden (art. 6(1)(f)).
+Rechtsgrond: ons gerechtvaardigd belang om Gloop te verbeteren (art. 6, lid 1, f). Rapporten worden verwerkt om het bord veilig te houden (art. 6, lid 1, f).
 
 ## Aankopen
 
@@ -100,7 +100,7 @@ Volgens de AVG heb je het recht om je gegevens in te zien, te verbeteren, te lat
 
 - **Verwijder je account** rechtstreeks in de app: Instellingen › je profiel › Account verwijderen. Dit verwijdert je account, profiel, clubs waarvan je eigenaar bent (of draagt ze over aan een ander lid), lidmaatschappen, ochtendresultaten, reacties en foto's.
 - **Stop de statistieken** in Instellingen › Privacy.
-- Voor al het andere mail je naar joren.a@hotmail.com. We antwoorden binnen een maand.
+- Voor al het andere mail je naar wakesupporthelp@gmail.com. We antwoorden binnen een maand.
 
 Je kunt ook een klacht indienen bij de Belgische Gegevensbeschermingsautoriteit, www.gegevensbeschermingsautoriteit.be, of bij de toezichthouder in je eigen EU-land.
 
@@ -118,6 +118,6 @@ We kunnen dit beleid bijwerken als Gloop verandert. De datum bovenaan toont de n
 
 ## Contact
 
-JA-Solutions, Hoevestraat 17,3990 Peer, België
-Privacy: joren.a@hotmail.com
-Ondersteuning: joren.a@hotmail.com
+JA-Solutions, Hoevestraat 17, 3990 Peer, België
+Privacy: wakesupporthelp@gmail.com
+Ondersteuning: wakesupporthelp@gmail.com

@@ -56,7 +56,7 @@ Se usi Proponi una funzione (Impostazioni › Aiuto e feedback) o il sito della 
 
 Gli altri utenti che hanno effettuato l’accesso vedono le idee e il numero di voti, ma non chi ha pubblicato o votato. La bacheca è una pagina web ospitata su GitHub Pages (GitHub, USA). Quando si carica, GitHub riceve il tuo indirizzo IP e i dati del browser, come per qualsiasi sito. La pagina non usa cookie di tracciamento; su un computer l’accesso resta salvato nel browser.
 
-Base giuridica: il nostro legittimo interesse a migliorare {{appName}} (art. 6(1)(f)). Le segnalazioni sono trattate per mantenere sicura la bacheca (art. 6(1)(f)).
+Base giuridica: il nostro legittimo interesse a migliorare {{appName}} (art. 6, par. 1, lett. f). Le segnalazioni sono trattate per mantenere sicura la bacheca (art. 6, par. 1, lett. f).
 
 ## Acquisti
 

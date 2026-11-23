@@ -56,7 +56,7 @@ Si usas Proponer una función (Ajustes › Ayuda y comentarios) o la web del tab
 
 Los demás usuarios con sesión iniciada ven las ideas y el número de votos, pero no quién publicó o votó. El tablón es una página web alojada en GitHub Pages (GitHub, EE. UU.). Al cargarla, GitHub recibe tu dirección IP y datos del navegador, como en cualquier web. La página no usa cookies de seguimiento; en un ordenador, tu sesión se guarda en tu navegador.
 
-Base jurídica: nuestro interés legítimo en mejorar {{appName}} (art. 6(1)(f)). Las denuncias se tratan para mantener el tablón seguro (art. 6(1)(f)).
+Base jurídica: nuestro interés legítimo en mejorar {{appName}} (art. 6.1.f). Las denuncias se tratan para mantener el tablón seguro (art. 6.1.f).
 
 ## Compras
 

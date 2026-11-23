@@ -63,7 +63,7 @@ struct AppStoreMetadataTests {
         try String(contentsOf: Self.root.appending(path: "fastlane/metadata/\(locale)/\(file).txt"), encoding: .utf8)
     }
 
-    @Test(arguments: ["en-US", "en-GB"])
+    @Test(arguments: ["en-US", "en-GB", "nl-NL"])
     func withinAppStoreLimits(locale: String) throws {
         #expect(try text(locale, "name").count <= 30)
         #expect(try text(locale, "subtitle").count <= 30)

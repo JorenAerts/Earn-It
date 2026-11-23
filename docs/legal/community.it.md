@@ -40,7 +40,7 @@ Buddies serve a motivarsi a vicenda ad alzarsi. Queste linee guida lo mantengono
 
 ## Ricorsi
 
-Se pensi che abbiamo sbagliato, scrivi a joren.a@hotmail.com e raccontaci cosa è successo. Riesamineremo il caso.
+Se pensi che abbiamo sbagliato, scrivi a wakesupporthelp@gmail.com e raccontaci cosa è successo. Riesamineremo il caso.
 
 ## Hai bisogno di aiuto?
 

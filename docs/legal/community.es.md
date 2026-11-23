@@ -40,7 +40,7 @@ Buddies consiste en motivarse unos a otros para levantarse. Estas normas lo mant
 
 ## Recursos
 
-Si crees que nos hemos equivocado, escribe a joren.a@hotmail.com y cuéntanos qué pasó. Lo revisaremos de nuevo.
+Si crees que nos hemos equivocado, escribe a wakesupporthelp@gmail.com y cuéntanos qué pasó. Lo revisaremos de nuevo.
 
 ## ¿Necesitas ayuda?
 

@@ -40,7 +40,7 @@ Bij Buddies motiveer je elkaar om op te staan. Deze richtlijnen houden het vrien
 
 ## Bezwaar
 
-Denk je dat we een fout hebben gemaakt, mail dan naar joren.a@hotmail.com en vertel wat er gebeurd is. We bekijken het opnieuw.
+Denk je dat we een fout hebben gemaakt, mail dan naar wakesupporthelp@gmail.com en vertel wat er gebeurd is. We bekijken het opnieuw.
 
 ## Hulp nodig?
 
