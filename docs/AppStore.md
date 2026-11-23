@@ -81,3 +81,20 @@ buddy"), a 15–30 s app preview video.
 The app is translated (see `docs/Localization/README.md`). The store listing per language
 (`fastlane/metadata/<locale>/` with local keywords, and screenshots with `-language <code>` +
 `headline_<locale>` in scenes.json) is phase 5 of the language plan.
+
+## App Review notes (paste into App Store Connect › App Review Information › Notes)
+Gloop is an alarm clock. The alarm (AlarmKit) can only be stopped for good by completing a short mission.
+Pressing the system Stop button opens the app, where the alarm sound keeps playing (UIBackgroundModes: audio)
+until the mission is done; if the app is closed, a countdown alarm rings again after a few minutes. A
+fail-safe stops everything after the configured number of rings, so the user can never get stuck.
+
+To test quickly: Alarms › + › set an alarm 1–2 minutes ahead › Save. Lock the phone, wait for the alarm,
+press Stop, then solve the Math mission. Camera missions (scan an item / code, sky, bed, colour) offer a
+backup mission when the camera isn't available.
+
+Accounts are optional. Buddies (friend clubs) and the feedback board need an account: use the demo account
+above. User content (club names, 24-hour morning photos, feedback ideas) can be reported and users can be
+blocked everywhere; reports are reviewed within 24 hours (Community Guidelines in Settings › About).
+Subscriptions: 3-day free trial; Restore purchases in Settings › Gloop Pro.
+
+Support: wakesupporthelp@gmail.com · https://jorenaerts.github.io/Earn-It/support/

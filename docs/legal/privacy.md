@@ -6,9 +6,9 @@ This policy explains what data Gloop uses, why, where it goes and what your righ
 
 ## Who we are
 
-Gloop is made by JA-Solutions (Eenmanszaak, enterprise number 1029.912.049), Hoevestraat 17,3990 Peer, Belgium. We are the data controller for the personal data described here.
+Gloop is made by JA-Solutions (Eenmanszaak, enterprise number 1029.912.049), Hoevestraat 17, 3990 Peer, Belgium. We are the data controller for the personal data described here.
 
-Questions or requests about your data: joren.a@hotmail.com
+Questions or requests about your data: wakesupporthelp@gmail.com
 
 ## Data that stays on your iPhone
 
@@ -100,7 +100,7 @@ Under the GDPR you have the right to access your data, correct it, delete it, re
 
 - **Delete your account** directly in the app: Settings › your profile › Delete account. This deletes your account, profile, clubs you own (or hands them to another member), memberships, morning results, reactions and photos.
 - **Stop statistics** in Settings › Privacy.
-- For everything else, email joren.a@hotmail.com. We answer within one month.
+- For everything else, email wakesupporthelp@gmail.com. We answer within one month.
 
 You can also file a complaint with the Belgian Data Protection Authority (Gegevensbeschermingsautoriteit / Autorité de protection des données), www.dataprotectionauthority.be, or with the authority in your own EU country.
 
@@ -118,6 +118,6 @@ We may update this policy when Gloop changes. The effective date at the top show
 
 ## Contact
 
-JA-Solutions, Hoevestraat 17,3990 Peer, Belgium
-Privacy: joren.a@hotmail.com
-Support: joren.a@hotmail.com
+JA-Solutions, Hoevestraat 17, 3990 Peer, Belgium
+Privacy: wakesupporthelp@gmail.com
+Support: wakesupporthelp@gmail.com

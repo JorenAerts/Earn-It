@@ -92,5 +92,5 @@ Belgian law applies. As a consumer you also keep the protection of the mandatory
 
 ## 15. Contact
 
-JA-Solutions (Eenmanszaak, enterprise number 1029.912.049), Hoevestraat 17,3990 Peer, Belgium
-Support: joren.a@hotmail.com
+JA-Solutions (Eenmanszaak, enterprise number 1029.912.049), Hoevestraat 17, 3990 Peer, Belgium
+Support: wakesupporthelp@gmail.com

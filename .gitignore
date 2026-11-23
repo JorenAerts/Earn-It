@@ -19,3 +19,6 @@ iOS/Packages/*/Package.resolved
 
 # Web feedback board config (generated in CI from repo secrets)
 Web/config.js
+
+# Marketing screen recordings (iOS/scripts/marketing/record.sh), too big for git
+docs/marketing/videos/

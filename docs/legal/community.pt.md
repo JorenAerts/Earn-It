@@ -40,7 +40,7 @@ O Buddies serve para se motivarem uns aos outros a levantar. Estas diretrizes ma
 
 ## Recurso
 
-Se achar que errámos, escreva para joren.a@hotmail.com e conte-nos o que aconteceu. Voltaremos a analisar.
+Se achar que errámos, escreva para wakesupporthelp@gmail.com e conte-nos o que aconteceu. Voltaremos a analisar.
 
 ## Precisa de ajuda?
 

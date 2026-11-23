@@ -45,4 +45,4 @@ Cuando compartas una foto matutina en Buddies, asegúrate de que solo sales tú 
 
 ## Preguntas
 
-joren.a@hotmail.com
+wakesupporthelp@gmail.com

@@ -161,21 +161,43 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 
 Do these before submitting version 1.0.0 for App Store review.
 
-- [ ] **Change the contact email.** `joren.a@hotmail.com` is used as privacy + support email during TestFlight.
-      Before the App Store release, switch to a dedicated address (e.g. `support@<your-domain>`):
-  - [ ] `Shared/Config/Legal.json` → `privacyEmail`, `supportEmail`
-  - [ ] `Shared/Config/Auth.json` → `supportEmail` (Help › Contact support)
-  - [ ] Run `python3 iOS/scripts/export_legal.py` (updates `docs/legal/`)
-  - [ ] Update the Privacy Policy Gist (below) with the new `docs/legal/privacy.md`
-  - [ ] App Store Connect: App Review contact email, support URL / email, TestFlight feedback email
-- [ ] **Complete the legal details** in `Legal.json`: full address (street + number, postcode, Peer),
+- [x] **Contact email** is now `wakesupporthelp@gmail.com` (privacy + support) in `Legal.json` and `Auth.json`; legal docs re-exported.
+  - [ ] App Store Connect: App Review contact email, TestFlight feedback email.
+  - [ ] Update the Privacy Policy Gist with the new `docs/legal/privacy.md`, or stop using it (the GitHub Pages page below replaces it).
+- [x] **Complete the legal details** in `Legal.json`: full address (street + number, postcode, Peer),
       enterprise number as `1029.912.049`, legal form translated per language if wanted.
 - [ ] **Privacy Policy URL** (required field in App Store Connect › App Information):
   - [x] Public Gist created: https://gist.github.com/JorenAerts/3460dc0a39ace79cf4ab6e54f2b76a01
   - [ ] After the email/address change: Gist › Edit › paste the new `docs/legal/privacy.md` (the link stays the same).
-  - [ ] Paste the Gist URL in App Store Connect › App Information › Privacy Policy URL.
+  - [ ] **Use the GitHub Pages page instead:** https://jorenaerts.github.io/Earn-It/legal/?doc=privacy (Dutch: add `&lang=nl`) → App Store Connect › App Information › Privacy Policy URL. Same text as the app, updates itself when `docs/legal/` changes.
+  - [ ] Support URL: https://jorenaerts.github.io/Earn-It/support/ (`Web/support/`; also in `iOS/fastlane/metadata/*/support_url.txt`).
   - [ ] Terms: use Apple's standard EULA (no URL needed), or add a second Gist file with `docs/legal/terms.md`.
 
+
+## App Store launch (TestFlight → live)
+
+In this order. Marketing plan and post scripts: `docs/Marketing.md`.
+
+- [x] Merge `feature/alarm_not_set_notification` ("set your alarm" reminder) into main.
+- [ ] Support/privacy email instead of the personal one (`Legal.json`, `Auth.json`), then `python3 iOS/scripts/export_legal.py`.
+- [ ] Optional: your Supabase user ID in `Shared/Config/Developer.json` (developer tools in TestFlight/App Store builds).
+- [ ] Bump `CURRENT_PROJECT_VERSION` in `iOS/project.yml`; archive + upload; TestFlight smoke test (alarm + mission, purchase, restore, Buddies, reminders).
+- [ ] App Store Connect › 1.0.0:
+  - [ ] Banner screenshots per locale, in order 1-2-3-4 (`iOS/fastlane/screenshots/<locale>/`).
+  - [ ] Store text from `iOS/fastlane/metadata/` (en-US, en-GB, nl-NL ready; other languages later).
+  - [ ] Privacy Policy URL, App Privacy answers, age rating 12+ (UGC), categories Lifestyle + Productivity.
+  - [ ] Attach the in-app purchases; review notes (AlarmKit + background audio, demo steps).
+  - [ ] **Release: "Manually release this version"** (you pick launch day).
+  - [ ] Optional: pre-order (Pricing and Availability › Pre-Orders) for the teaser weeks.
+- [ ] After approval: App Store link → `Shared/Config/Auth.json` `shareURL` (share rows, invites, streak card link) + a new build.
+- [ ] Campaign links per channel (App Store Connect › Analytics › Campaigns), table in `docs/Marketing.md` §0.
+
+### Marketing setup (`docs/Marketing.md`)
+- [ ] Claim @gloopalarm on TikTok, Instagram, YouTube, Threads, X; bios + campaign links.
+- [ ] Content kit: `cd iOS && scripts/marketing/render_gloop.sh` (stickers) + `scripts/marketing/record.sh` (Simulator videos).
+- [ ] Batch the first 10 videos (scripts §9), BetaList + Product Hunt "coming soon", press kit zip.
+- [ ] Brief 15–30 friends/testers for launch day (download, rate, Buddies club, streak card on day 7).
+- [ ] Launch week plan (§7), #GloopChallenge (§8), Sunday metrics (§11).
 
 ## Google Play (Android)
 

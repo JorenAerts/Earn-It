@@ -92,5 +92,5 @@ Es gilt belgisches Recht. Als Verbraucher behältst du zusätzlich den Schutz de
 
 ## 15. Kontakt
 
-JA-Solutions (Eenmanszaak, Unternehmensnummer 1029.912.049), Hoevestraat 17,3990 Peer, Belgien
-Support: joren.a@hotmail.com
+JA-Solutions (Eenmanszaak, Unternehmensnummer 1029.912.049), Hoevestraat 17, 3990 Peer, Belgien
+Support: wakesupporthelp@gmail.com

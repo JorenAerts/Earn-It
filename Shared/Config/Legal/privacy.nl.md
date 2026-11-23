@@ -56,7 +56,7 @@ Als je Stel een functie voor (Instellingen › Hulp en feedback) of de website v
 
 Andere ingelogde gebruikers zien de ideeën en het aantal stemmen, maar niet wie iets plaatste of stemde. Het bord is een webpagina op GitHub Pages (GitHub, VS). Bij het laden ontvangt GitHub je IP-adres en browsergegevens, zoals bij elke website. De pagina gebruikt geen trackingcookies; op een computer blijf je ingelogd via je browser.
 
-Rechtsgrond: ons gerechtvaardigd belang om {{appName}} te verbeteren (art. 6(1)(f)). Rapporten worden verwerkt om het bord veilig te houden (art. 6(1)(f)).
+Rechtsgrond: ons gerechtvaardigd belang om {{appName}} te verbeteren (art. 6, lid 1, f). Rapporten worden verwerkt om het bord veilig te houden (art. 6, lid 1, f).
 
 ## Aankopen
 

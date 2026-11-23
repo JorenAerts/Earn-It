@@ -1,4 +1,4 @@
-# Feedback board (Web/feedback) + legal documents (docs/legal) on GitHub Pages.
+# Feedback board (Web/feedback), support page (Web/support) + legal documents (docs/legal, viewer Web/legal) on GitHub Pages.
 # Setup: Settings › Pages › Source = GitHub Actions; Settings › Secrets and variables › Actions:
 # SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY (publishable key only).
 name: Web (GitHub Pages)
@@ -56,9 +56,11 @@ jobs:
           cp -R Web/feedback _site/feedback
           rm -f _site/feedback/*.test.mjs
           cp docs/legal/*.md _site/legal/
+          cp Web/legal/index.html _site/legal/index.html
+          cp -R Web/support _site/support
           printf 'window.GLOOP_CONFIG = { supabaseUrl: %s, publishableKey: %s };\n' \
             "$(jq -Rn --arg v "$SUPABASE_URL" '$v')" "$(jq -Rn --arg v "$SUPABASE_PUBLISHABLE_KEY" '$v')" > _site/config.js
-          printf '<!doctype html><meta http-equiv="refresh" content="0; url=feedback/">\n' > _site/index.html
+          printf '<!doctype html><meta http-equiv="refresh" content="0; url=support/">\n' > _site/index.html
           touch _site/.nojekyll
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

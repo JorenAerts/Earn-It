@@ -8,11 +8,11 @@ With Gloop, your alarm doesn't just switch off. To stop it, you do one small thi
 • A live countdown on your Lock Screen shows when it comes back
 • A fail-safe stops it after a set number of rings, so you never get stuck
 
-🧩 MISSIONS THAT WAKE YOU UP
-• Maths: solve problems in a row (easy, medium or hard)
-• Shake: shake your phone until you're up
-• Scan a code: stick a code in another room and scan it to stop the alarm
-• Scan your item: teach Gloop your toothbrush, coffee mug or shoes, then find it in the morning
+🧩 10 MISSIONS THAT WAKE YOU UP
+• Brain: Maths problems in a row, a quiz on a topic you pick, memory match or a tongue twister
+• Body: shake your phone until you're up
+• Out of bed: scan a code you stuck in another room, scan your toothbrush or coffee mug, take a photo of the sky, show your made bed, or hunt for something in a random colour
+• Camera off or item lost? A harder backup mission takes over, so there's always a way out
 
 🟠 GLOOP KEEPS YOU HONEST
 • Gloop bounces when you get up on the first ring

@@ -40,7 +40,7 @@ Bei Buddies motiviert ihr euch gegenseitig zum Aufstehen. Diese Richtlinien halt
 
 ## Einspruch
 
-Wenn du glaubst, dass wir falsch entschieden haben, schreib an joren.a@hotmail.com und erzähl uns, was passiert ist. Wir schauen es uns noch einmal an.
+Wenn du glaubst, dass wir falsch entschieden haben, schreib an wakesupporthelp@gmail.com und erzähl uns, was passiert ist. Wir schauen es uns noch einmal an.
 
 ## Brauchst du Hilfe?
 
