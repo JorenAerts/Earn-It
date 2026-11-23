@@ -1,0 +1,68 @@
+# Feedback board (Web/feedback) + legal documents (docs/legal) on GitHub Pages.
+# Setup: Settings › Pages › Source = GitHub Actions; Settings › Secrets and variables › Actions:
+# SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY (publishable key only).
+name: Web (GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+    paths: ["Web/**", "docs/legal/**", ".github/workflows/pages.yml"]
+  pull_request:
+    paths: ["Web/**", "docs/legal/**", ".github/workflows/pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test Web/feedback/logic.test.mjs
+
+  deploy:
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}feedback/
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build site
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "::error::Set the SUPABASE_URL and SUPABASE_PUBLISHABLE_KEY repo secrets"; exit 1
+          fi
+          case "$SUPABASE_PUBLISHABLE_KEY" in sb_secret_*)
+            echo "::error::SUPABASE_PUBLISHABLE_KEY is a secret key — use the publishable one"; exit 1;;
+          esac
+          mkdir -p _site/legal
+          cp -R Web/feedback _site/feedback
+          rm -f _site/feedback/*.test.mjs
+          cp docs/legal/*.md _site/legal/
+          printf 'window.GLOOP_CONFIG = { supabaseUrl: %s, publishableKey: %s };\n' \
+            "$(jq -Rn --arg v "$SUPABASE_URL" '$v')" "$(jq -Rn --arg v "$SUPABASE_PUBLISHABLE_KEY" '$v')" > _site/config.js
+          printf '<!doctype html><meta http-equiv="refresh" content="0; url=feedback/">\n' > _site/index.html
+          touch _site/.nojekyll
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

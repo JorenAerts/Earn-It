@@ -2,7 +2,7 @@
 
 Em vigor desde 15 de novembro de 2026
 
-O Buddies serve para se motivarem uns aos outros a levantar. Estas diretrizes mantêm tudo simpático e seguro. Aplicam-se a clubes, nomes e descrições de clubes, fotos da manhã e reações. Violá-las pode levar à remoção do seu conteúdo e ao bloqueio da sua conta.
+O Buddies serve para se motivarem uns aos outros a levantar. Estas diretrizes mantêm tudo simpático e seguro. Aplicam-se a clubes, nomes e descrições de clubes, fotos da manhã e reações. Violá-las pode levar à remoção do seu conteúdo e ao bloqueio da sua conta. Aplicam-se também às ideias do quadro de ideias.
 
 ## Seja simpático
 
@@ -30,6 +30,7 @@ O Buddies serve para se motivarem uns aos outros a levantar. Estas diretrizes ma
 
 - **Denunciar:** mantenha premida uma foto ou pessoa e escolha Denunciar, ou denuncie um clube a partir da página Membros. Diga-nos brevemente o que se passa.
 - **Bloquear:** mantenha premida uma pessoa e escolha Bloquear. Deixam de ver as fotos, horas e classificações um do outro. Gira as pessoas bloqueadas em Definições › Buddies.
+- **Quadro de ideias:** toque em ⋯ numa ideia e escolha Denunciar. As ideias denunciadas por várias pessoas ficam ocultas até as verificarmos.
 
 ## O que fazemos
 

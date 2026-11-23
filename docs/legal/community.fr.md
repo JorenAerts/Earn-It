@@ -2,7 +2,7 @@
 
 En vigueur depuis le 15 novembre 2026
 
-Buddies, c’est se motiver les uns les autres à se lever. Ces règles le gardent sympa et sûr. Elles s’appliquent aux clubs, aux noms et descriptions de clubs, aux photos du matin et aux réactions. Les enfreindre peut entraîner la suppression de ton contenu et le blocage de ton compte.
+Buddies, c’est se motiver les uns les autres à se lever. Ces règles le gardent sympa et sûr. Elles s’appliquent aux clubs, aux noms et descriptions de clubs, aux photos du matin et aux réactions. Les enfreindre peut entraîner la suppression de ton contenu et le blocage de ton compte. Elles s’appliquent aussi aux idées du tableau des idées.
 
 ## Sois sympa
 
@@ -30,6 +30,7 @@ Buddies, c’est se motiver les uns les autres à se lever. Ces règles le garde
 
 - **Signaler :** appuie longuement sur une photo ou une personne et choisis Signaler, ou signale un club depuis sa page Membres. Dis-nous brièvement ce qui ne va pas.
 - **Bloquer :** appuie longuement sur une personne et choisis Bloquer. Vous ne verrez plus vos photos, heures ni classements respectifs. Gère les personnes bloquées dans Réglages › Buddies.
+- **Tableau des idées :** touche ⋯ sur une idée et choisis Signaler. Les idées signalées par plusieurs personnes sont masquées jusqu’à ce que nous les ayons vérifiées.
 
 ## Ce que nous faisons
 

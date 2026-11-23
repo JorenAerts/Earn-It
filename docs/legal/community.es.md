@@ -2,7 +2,7 @@
 
 Vigente desde el 15 de noviembre de 2026
 
-Buddies consiste en motivarse unos a otros para levantarse. Estas normas lo mantienen amable y seguro. Se aplican a los clubs, a sus nombres y descripciones, a las fotos matutinas y a las reacciones. Incumplirlas puede hacer que se elimine tu contenido y se bloquee tu cuenta.
+Buddies consiste en motivarse unos a otros para levantarse. Estas normas lo mantienen amable y seguro. Se aplican a los clubs, a sus nombres y descripciones, a las fotos matutinas y a las reacciones. Incumplirlas puede hacer que se elimine tu contenido y se bloquee tu cuenta. También se aplican a las ideas del tablón de ideas.
 
 ## Sé amable
 
@@ -30,6 +30,7 @@ Buddies consiste en motivarse unos a otros para levantarse. Estas normas lo mant
 
 - **Denunciar:** mantén pulsada una foto o persona y elige Denunciar, o denuncia un club desde su página de Miembros. Cuéntanos brevemente qué ocurre.
 - **Bloquear:** mantén pulsada una persona y elige Bloquear. Ya no veréis vuestras fotos, horas ni clasificaciones. Gestiona las personas bloqueadas en Ajustes › Buddies.
+- **Tablón de ideas:** toca ⋯ en una idea y elige Denunciar. Las ideas denunciadas por varias personas se ocultan hasta que las revisemos.
 
 ## Qué hacemos
 

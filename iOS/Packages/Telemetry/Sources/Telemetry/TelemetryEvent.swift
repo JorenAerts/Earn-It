@@ -198,6 +198,8 @@ public enum TelemetryAction: Equatable, Sendable {
     case faqOpened(index: Int)
     case shareApp
     case rateRequested
+    /// Help › Suggest a feature (the web feedback board). What happens on the page isn't tracked.
+    case feedbackBoardOpened(signedIn: Bool)
     case signedIn(method: String)
     case signedOut
     case accountDeleted
@@ -230,6 +232,7 @@ public enum TelemetryAction: Equatable, Sendable {
         case .faqOpened: "Help.faqOpened"
         case .shareApp: "Share.app"
         case .rateRequested: "Rate.requested"
+        case .feedbackBoardOpened: "Feedback.boardOpened"
         case .signedIn: "Account.signedIn"
         case .signedOut: "Account.signedOut"
         case .accountDeleted: "Account.deleted"
@@ -254,6 +257,7 @@ public enum TelemetryAction: Equatable, Sendable {
         case .coachToneChanged(let tone): ["tone": tone]
         case .remindersToggled(let on): ["on": "\(on)"]
         case .faqOpened(let index): ["question": "\(index)"]
+        case .feedbackBoardOpened(let signedIn): ["signedIn": "\(signedIn)"]
         case .signedIn(let method): ["method": method]
         case .permissionDenied(let kind): ["kind": kind]
         case .ratingPrompted(let reason): ["reason": reason]

@@ -47,6 +47,17 @@ Andere Mitglieder deiner Clubs sehen deinen Anzeigenamen, deine Morgenergebnisse
 
 Rechtsgrundlage: Erfüllung unseres Vertrags mit dir (Art. 6 Abs. 1 lit. b). Meldungen und Blockierungen werden außerdem verarbeitet, um Buddies sicher zu halten (berechtigtes Interesse, Art. 6 Abs. 1 lit. f).
 
+## Feedback-Board (optional)
+
+Wenn du „Funktion vorschlagen“ (Einstellungen › Hilfe & Feedback) oder die Website des Feedback-Boards nutzt, verarbeiten wir:
+
+- Die Ideen, die du postest (Titel, Details und Kategorie), und deine Stimmen, verknüpft mit deinem Konto.
+- Meldungen, die du zu Ideen sendest.
+
+Andere angemeldete Nutzer sehen die Ideen und die Anzahl der Stimmen, aber nicht, wer gepostet oder abgestimmt hat. Das Board ist eine Webseite auf GitHub Pages (GitHub, USA). Beim Laden erhält GitHub deine IP-Adresse und Browserdaten, wie bei jeder Website. Die Seite nutzt keine Tracking-Cookies; am Computer bleibt deine Anmeldung in deinem Browser gespeichert.
+
+Rechtsgrundlage: unser berechtigtes Interesse, {{appName}} zu verbessern (Art. 6 Abs. 1 lit. f). Meldungen werden verarbeitet, um das Board sicher zu halten (Art. 6 Abs. 1 lit. f).
+
 ## Käufe
 
 Abos und der lebenslange Kauf werden von Apple abgewickelt. Wir erhalten nie deine Zahlungsdaten. Apple teilt der App mit, welches Angebot du hast. Wenn du angemeldet bist, kann der Kauf deine Konto-ID enthalten, damit dein Pro-Zugang mit deinem Konto verknüpft ist. Für Zahlungen gilt die Datenschutzerklärung von Apple.
@@ -64,6 +75,7 @@ Rechtsgrundlage: unser berechtigtes Interesse, {{appName}} zu verbessern (Art. 6
 ## Wer Daten für uns verarbeitet
 
 - **Supabase** (Hosting von Konten, Buddies und Fotos; Server in der EU).
+- **GitHub** (Hosting der Webseite des Feedback-Boards; USA).
 - **TelemetryDeck** (anonyme Nutzungsstatistiken; Deutschland).
 - **Apple** (App Store, Zahlungen, Mit Apple anmelden, Apple Music).
 - **Google, Facebook, Microsoft** (nur wenn du dich darüber anmeldest).
@@ -76,6 +88,7 @@ Wir verkaufen deine Daten nicht und nutzen sie nicht für Werbung. Es gibt kein 
 
 - Konto- und Profildaten: bis du dein Konto löschst.
 - Morgenergebnisse in Buddies: bis du dein Konto löschst oder alle Clubs verlässt und uns um Löschung bittest.
+- Ideen und Stimmen auf dem Feedback-Board: bis du die Idee oder dein Konto löschst.
 - Morgenfotos: 24 Stunden, dann automatisch gelöscht.
 - Meldungen zu Inhalten oder Nutzern: bis zu 12 Monate, um wiederholten Missbrauch zu behandeln.
 - Anonyme Statistiken: von TelemetryDeck in aggregierter Form gespeichert.

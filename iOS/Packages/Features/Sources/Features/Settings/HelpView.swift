@@ -33,6 +33,11 @@ struct HelpView: View {
             }
 
             Section {
+                if let board = auth.config.feedbackURL, auth.isAvailable {
+                    NavigationLink { FeedbackBoardView(auth: auth, base: board) } label: {
+                        Label("Suggest a feature", systemImage: "lightbulb.fill")
+                    }
+                }
                 if let mail = supportMail {
                     Button { openURL(mail) } label: {
                         Label("Contact support", systemImage: "envelope.fill")

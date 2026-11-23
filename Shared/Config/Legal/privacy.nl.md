@@ -47,6 +47,17 @@ Andere leden van je clubs zien je weergavenaam, je ochtendresultaten en de foto'
 
 Rechtsgrond: uitvoering van onze overeenkomst met jou (art. 6, lid 1, b). Meldingen en blokkeringen worden ook verwerkt om Buddies veilig te houden (gerechtvaardigd belang, art. 6, lid 1, f).
 
+## Feedbackbord (optioneel)
+
+Als je Stel een functie voor (Instellingen › Hulp en feedback) of de website van het feedbackbord gebruikt, verwerken we:
+
+- De ideeën die je plaatst (titel, details en categorie) en de stemmen die je geeft, gekoppeld aan je account.
+- Rapporten die je over ideeën stuurt.
+
+Andere ingelogde gebruikers zien de ideeën en het aantal stemmen, maar niet wie iets plaatste of stemde. Het bord is een webpagina op GitHub Pages (GitHub, VS). Bij het laden ontvangt GitHub je IP-adres en browsergegevens, zoals bij elke website. De pagina gebruikt geen trackingcookies; op een computer blijf je ingelogd via je browser.
+
+Rechtsgrond: ons gerechtvaardigd belang om {{appName}} te verbeteren (art. 6(1)(f)). Rapporten worden verwerkt om het bord veilig te houden (art. 6(1)(f)).
+
 ## Aankopen
 
 Abonnementen en de levenslange aankoop worden door Apple afgehandeld. We ontvangen nooit je betaalgegevens. Apple laat de app weten welk abonnement je hebt. Als je bent ingelogd, kan de aankoop je account-ID bevatten, zodat je Pro-toegang aan je account gekoppeld is. Op betalingen is het privacybeleid van Apple van toepassing.
@@ -64,6 +75,7 @@ Rechtsgrond: ons gerechtvaardigd belang om {{appName}} te verbeteren (art. 6, li
 ## Wie gegevens voor ons verwerkt
 
 - **Supabase** (hosting van accounts, Buddies en foto's; servers in de EU).
+- **GitHub** (hosting van de webpagina van het feedbackbord; VS).
 - **TelemetryDeck** (anonieme gebruiksstatistieken; Duitsland).
 - **Apple** (App Store, betalingen, Inloggen met Apple, Apple Music).
 - **Google, Facebook, Microsoft** (alleen als je ervoor kiest om met hen in te loggen).
@@ -76,6 +88,7 @@ We verkopen je gegevens niet en gebruiken ze niet voor reclame. Er is geen track
 
 - Account- en profielgegevens: tot je je account verwijdert.
 - Ochtendresultaten in Buddies: tot je je account verwijdert of alle clubs verlaat en ons vraagt ze te verwijderen.
+- Ideeën en stemmen op het feedbackbord: tot je het idee of je account verwijdert.
 - Ochtendfoto's: 24 uur, daarna automatisch verwijderd.
 - Meldingen over content of gebruikers: tot 12 maanden, om herhaald misbruik aan te pakken.
 - Anonieme statistieken: door TelemetryDeck bewaard in samengevoegde vorm.

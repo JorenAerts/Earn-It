@@ -2,7 +2,7 @@
 
 Geldig vanaf 15 november 2026
 
-Bij Buddies motiveer je elkaar om op te staan. Deze richtlijnen houden het vriendelijk en veilig. Ze gelden voor clubs, clubnamen en -beschrijvingen, ochtendfoto's en reacties. Wie ze breekt, kan content verwijderd zien worden en zijn account geblokkeerd.
+Bij Buddies motiveer je elkaar om op te staan. Deze richtlijnen houden het vriendelijk en veilig. Ze gelden voor clubs, clubnamen en -beschrijvingen, ochtendfoto's en reacties. Wie ze breekt, kan content verwijderd zien worden en zijn account geblokkeerd. Ze gelden ook voor ideeën op het feedbackbord.
 
 ## Wees aardig
 
@@ -30,6 +30,7 @@ Bij Buddies motiveer je elkaar om op te staan. Deze richtlijnen houden het vrien
 
 - **Melden:** houd een foto of persoon ingedrukt en kies Meld, of meld een club via de pagina Leden. Vertel ons kort wat er mis is.
 - **Blokkeren:** houd een persoon ingedrukt en kies Blokkeer. Jullie zien elkaars foto's, tijden en ranking niet meer. Beheer geblokkeerde mensen in Instellingen › Buddies.
+- **Feedbackbord:** tik op ⋯ bij een idee en kies Rapporteer. Ideeën die door meerdere mensen gerapporteerd zijn, worden verborgen tot we ze bekeken hebben.
 
 ## Wat wij doen
 

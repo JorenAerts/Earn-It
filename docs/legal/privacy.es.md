@@ -47,6 +47,17 @@ Los demás miembros de tus clubs ven tu nombre visible, tus resultados matutinos
 
 Base jurídica: ejecución de nuestro contrato contigo (art. 6.1.b). Las denuncias y bloqueos también se tratan para mantener Buddies seguro (interés legítimo, art. 6.1.f).
 
+## Tablón de ideas (opcional)
+
+Si usas Proponer una función (Ajustes › Ayuda y comentarios) o la web del tablón de ideas, tratamos:
+
+- Las ideas que publicas (título, detalles y categoría) y los votos que das, vinculados a tu cuenta.
+- Las denuncias que envías sobre ideas.
+
+Los demás usuarios con sesión iniciada ven las ideas y el número de votos, pero no quién publicó o votó. El tablón es una página web alojada en GitHub Pages (GitHub, EE. UU.). Al cargarla, GitHub recibe tu dirección IP y datos del navegador, como en cualquier web. La página no usa cookies de seguimiento; en un ordenador, tu sesión se guarda en tu navegador.
+
+Base jurídica: nuestro interés legítimo en mejorar Gloop (art. 6(1)(f)). Las denuncias se tratan para mantener el tablón seguro (art. 6(1)(f)).
+
 ## Compras
 
 Las suscripciones y la compra de por vida las gestiona Apple. Nunca recibimos tus datos de pago. Apple indica a la app qué plan tienes. Si has iniciado sesión, la compra puede incluir el ID de tu cuenta para que tu acceso Pro quede vinculado a ella. A los pagos se aplica la política de privacidad de Apple.
@@ -64,6 +75,7 @@ Base jurídica: nuestro interés legítimo en mejorar Gloop (art. 6.1.f). Puedes
 ## Quién trata datos por nosotros
 
 - **Supabase** (alojamiento de cuentas, Buddies y fotos; servidores en la UE).
+- **GitHub** (alojamiento de la página web del tablón de ideas; EE. UU.).
 - **TelemetryDeck** (estadísticas de uso anónimas; Alemania).
 - **Apple** (App Store, pagos, Iniciar sesión con Apple, Apple Music).
 - **Google, Facebook, Microsoft** (solo si decides iniciar sesión con ellos).
@@ -76,6 +88,7 @@ No vendemos tus datos ni los usamos para publicidad. No hay rastreo a través de
 
 - Datos de cuenta y perfil: hasta que eliminas tu cuenta.
 - Resultados matutinos en Buddies: hasta que eliminas tu cuenta o sales de todos los clubs y nos pides borrarlos.
+- Ideas y votos en el tablón de ideas: hasta que elimines la idea o tu cuenta.
 - Fotos matutinas: 24 horas; después se eliminan automáticamente.
 - Denuncias sobre contenido o usuarios: hasta 12 meses, para gestionar abusos repetidos.
 - Estadísticas anónimas: TelemetryDeck las conserva de forma agregada.

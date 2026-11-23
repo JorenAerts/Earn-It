@@ -41,7 +41,8 @@ struct LegalTests {
     @Test func privacyPolicyMatchesWhatTheAppDoes() throws {
         let text = try raw(.privacy)
         for fact in ["Supabase", "TelemetryDeck", "Apple", "24 hours", "Delete account", "Settings › Privacy",
-                     "Data Protection Authority", "{{minimumAge}}", "Standard Contractual Clauses"] {
+                     "Data Protection Authority", "{{minimumAge}}", "Standard Contractual Clauses",
+                     "Feedback board", "GitHub Pages"] {
             #expect(text.contains(fact), "privacy policy should mention \(fact)")
         }
     }

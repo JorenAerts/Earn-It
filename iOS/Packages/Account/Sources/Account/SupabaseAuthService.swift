@@ -35,6 +35,12 @@ public final class SupabaseAuthService: AuthService {
         }
     }
 
+    /// `client.auth.session` refreshes an expired session before returning it.
+    public func currentAccessToken() async -> String? {
+        guard user != nil else { return nil }
+        return try? await client.auth.session.accessToken
+    }
+
     /// GET /auth/v1/settings → which OAuth providers are switched on in the dashboard.
     private func loadEnabledProviders(url: URL, key: String) async {
         struct Settings: Decodable { let external: [String: Bool] }

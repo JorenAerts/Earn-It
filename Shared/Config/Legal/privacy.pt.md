@@ -47,6 +47,17 @@ Os outros membros dos seus clubes veem o seu nome de apresentação, os seus res
 
 Fundamento jurídico: execução do nosso contrato consigo (art. 6.º, n.º 1, al. b). As denúncias e os bloqueios também são tratados para manter o Buddies seguro (interesse legítimo, art. 6.º, n.º 1, al. f).
 
+## Quadro de ideias (opcional)
+
+Se usar Sugerir uma funcionalidade (Definições › Ajuda e feedback) ou o site do quadro de ideias, tratamos:
+
+- As ideias que publica (título, detalhes e categoria) e os votos que dá, associados à sua conta.
+- As denúncias que envia sobre ideias.
+
+Os outros utilizadores com sessão iniciada veem as ideias e o número de votos, mas não quem publicou ou votou. O quadro é uma página web alojada no GitHub Pages (GitHub, EUA). Ao carregar, o GitHub recebe o seu endereço IP e dados do navegador, como em qualquer site. A página não usa cookies de rastreamento; num computador, a sessão fica guardada no navegador.
+
+Fundamento jurídico: o nosso interesse legítimo em melhorar o {{appName}} (art. 6.º, n.º 1, al. f)). As denúncias são tratadas para manter o quadro seguro (art. 6.º, n.º 1, al. f)).
+
 ## Compras
 
 As subscrições e a compra vitalícia são geridas pela Apple. Nunca recebemos os seus dados de pagamento. A Apple indica à app qual o plano que tem. Se tiver sessão iniciada, a compra pode incluir o ID da sua conta, para que o acesso Pro fique associado à sua conta. Aos pagamentos aplica-se a política de privacidade da Apple.
@@ -64,6 +75,7 @@ Fundamento jurídico: o nosso interesse legítimo em melhorar a {{appName}} (art
 ## Quem trata dados por nós
 
 - **Supabase** (alojamento de contas, Buddies e fotos; servidores na UE).
+- **GitHub** (alojamento da página web do quadro de ideias; EUA).
 - **TelemetryDeck** (estatísticas de utilização anónimas; Alemanha).
 - **Apple** (App Store, pagamentos, Iniciar sessão com a Apple, Apple Music).
 - **Google, Facebook, Microsoft** (apenas se optar por iniciar sessão com eles).
@@ -76,6 +88,7 @@ Não vendemos os seus dados nem os usamos para publicidade. Não há rastreio at
 
 - Dados de conta e perfil: até apagar a sua conta.
 - Resultados da manhã no Buddies: até apagar a conta ou sair de todos os clubes e nos pedir que os removamos.
+- Ideias e votos no quadro de ideias: até apagar a ideia ou a sua conta.
 - Fotos da manhã: 24 horas, depois apagadas automaticamente.
 - Denúncias sobre conteúdos ou utilizadores: até 12 meses, para lidar com abusos repetidos.
 - Estatísticas anónimas: guardadas pela TelemetryDeck de forma agregada.

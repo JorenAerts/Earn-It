@@ -2,7 +2,7 @@
 
 Effective {{effectiveDate}}
 
-Buddies is about motivating each other to get up. These guidelines keep it friendly and safe. They apply to clubs, club names and descriptions, morning photos and reactions. Breaking them can get your content removed and your account blocked.
+Buddies is about motivating each other to get up. These guidelines keep it friendly and safe. They apply to clubs, club names and descriptions, morning photos and reactions. Breaking them can get your content removed and your account blocked. They also apply to ideas on the feedback board.
 
 ## Be kind
 
@@ -30,6 +30,7 @@ Buddies is about motivating each other to get up. These guidelines keep it frien
 
 - **Report:** long-press a photo or a person and choose Report, or report a club from its Members page. Tell us briefly what's wrong.
 - **Block:** long-press a person and choose Block. You won't see each other's photos, times or ranking anymore. Manage blocked people in Settings › Buddies.
+- **Feedback board:** tap ⋯ on an idea and choose Report. Ideas reported by several people are hidden until we've checked them.
 
 ## What we do
 
