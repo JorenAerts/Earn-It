@@ -1,5 +1,16 @@
 {
-  "_help": "App Store screenshots, in order. args = app launch arguments (DEBUG scenes). headline: \\n = line break; accent = part drawn in orange. headline_en_GB overrides for the UK listing.",
+  "_help": "App Store screenshots = one panoramic banner of 4 shots (compose.swift). args = app launch arguments (DEBUG scenes); -language <code> is added per language. headline/accent per app language (\\n = line break; accent = highlighted part, must occur in the headline). locales: App Store locale folder → app language. cards (optional): pop-out mission cards drawn next to the phone; key = English string in App/Localizable.xcstrings (translated per language).",
+  "locales": {
+    "en-US": "en",
+    "en-GB": "en",
+    "nl-NL": "nl",
+    "fr-FR": "fr",
+    "de-DE": "de",
+    "es-ES": "es",
+    "it": "it",
+    "pt-BR": "pt-BR",
+    "pt-PT": "pt-PT"
+  },
   "scenes": [
     {
       "id": "01-stop-snoozing",
@@ -7,89 +18,124 @@
         "-storeShot",
         "lockscreen"
       ],
-      "headline": "Stop snoozing.",
-      "accent": "snoozing."
+      "headline": {
+        "en": "Stop snoozing.",
+        "nl": "Stop met snoozen.",
+        "de": "Schluss mit\nSchlummern.",
+        "fr": "Fini les\nrépétitions.",
+        "es": "Deja de\nposponer.",
+        "it": "Basta\nrimandare.",
+        "pt-BR": "Chega de\nsoneca.",
+        "pt-PT": "Chega de\nsnooze."
+      },
+      "accent": {
+        "en": "snoozing.",
+        "nl": "snoozen.",
+        "de": "Schlummern.",
+        "fr": "répétitions.",
+        "es": "posponer.",
+        "it": "rimandare.",
+        "pt-BR": "soneca.",
+        "pt-PT": "snooze."
+      }
     },
     {
-      "id": "02-do-a-mission",
+      "id": "02-only-a-mission",
       "args": [
         "-storeShot",
-        "math"
+        "missionGrid"
       ],
-      "headline": "Do a mission\nto stop it",
-      "accent": "mission"
+      "headline": {
+        "en": "Only a mission\nstops it",
+        "nl": "Alleen een missie\nzet hem uit",
+        "de": "Nur eine Mission\nstoppt ihn",
+        "fr": "Seule une mission\nl’arrête",
+        "es": "Solo una misión\nla apaga",
+        "it": "Solo una missione\nla ferma",
+        "pt-BR": "Só uma missão\no desliga",
+        "pt-PT": "Só uma missão\no desliga"
+      },
+      "accent": {
+        "en": "mission",
+        "nl": "missie",
+        "de": "Mission",
+        "fr": "mission",
+        "es": "misión",
+        "it": "missione",
+        "pt-BR": "missão",
+        "pt-PT": "missão"
+      },
+      "cards": [
+        {
+          "symbol": "camera.viewfinder",
+          "key": "Scan your item",
+          "tint": "orange"
+        },
+        {
+          "symbol": "cloud.sun.fill",
+          "key": "Photo of the sky",
+          "tint": "orange"
+        },
+        {
+          "symbol": "bed.double.fill",
+          "key": "Made-up bed",
+          "tint": "orange"
+        }
+      ]
     },
     {
-      "id": "03-math-shake-scan",
+      "id": "03-watch-gloop-grow",
       "args": [
         "-storeShot",
-        "missions"
+        "success"
       ],
-      "headline": "Math, shake\nor scan",
-      "headline_en_GB": "Maths, shake\nor scan",
-      "accent": "scan"
+      "headline": {
+        "en": "Get up.\nWatch Gloop grow.",
+        "nl": "Sta op.\nZie Gloop groeien.",
+        "de": "Steh auf.\nSieh Gloop wachsen.",
+        "fr": "Lève-toi.\nRegarde Gloop grandir.",
+        "es": "Levántate.\nMira crecer a Gloop.",
+        "it": "Alzati.\nGuarda Gloop crescere.",
+        "pt-BR": "Levante.\nVeja o Gloop crescer.",
+        "pt-PT": "Levante-se.\nVeja o Gloop crescer."
+      },
+      "accent": {
+        "en": "grow.",
+        "nl": "groeien.",
+        "de": "wachsen.",
+        "fr": "grandir.",
+        "es": "crecer",
+        "it": "crescere.",
+        "pt-BR": "crescer.",
+        "pt-PT": "crescer."
+      }
     },
     {
-      "id": "04-gloop-droops",
-      "args": [
-        "-storeShot",
-        "health"
-      ],
-      "headline": "Snooze, and\nGloop droops",
-      "accent": "droops"
-    },
-    {
-      "id": "05-wake-up-with-friends",
+      "id": "04-show-your-friends",
       "args": [
         "-buddiesSample",
         "-buddiesClub"
       ],
-      "headline": "Wake up\nwith friends",
-      "accent": "friends"
-    },
-    {
-      "id": "06-scan-your-mug",
-      "args": [
-        "-storeShot",
-        "itemScan"
-      ],
-      "headline": "Scan your mug\nto stop it",
-      "accent": "mug"
-    },
-    {
-      "id": "07-evolve-gloop",
-      "args": [
-        "-storeShot",
-        "evolution"
-      ],
-      "headline": "Evolve Gloop\nto King",
-      "accent": "King"
-    },
-    {
-      "id": "08-widgets",
-      "args": [
-        "-storeShot",
-        "widgets"
-      ],
-      "headline": "Your streak on\nyour Home Screen",
-      "accent": "Home Screen"
-    },
-    {
-      "id": "09-own-sounds",
-      "args": [
-        "-soundPicker"
-      ],
-      "headline": "Wake up to\nyour own sound",
-      "accent": "own sound"
-    },
-    {
-      "id": "10-make-it-yours",
-      "args": [
-        "-storeShot",
-        "appearance"
-      ],
-      "headline": "Make Gloop\nyours",
-      "accent": "yours"
+      "headline": {
+        "en": "Show your friends\nyou’re awake",
+        "nl": "Laat je vrienden zien\ndat je wakker bent",
+        "de": "Zeig deinen Freunden,\ndass du wach bist",
+        "fr": "Montre à tes amis\nque tu es réveillé",
+        "es": "Demuestra a tus amigos\nque estás despierto",
+        "it": "Mostra ai tuoi amici\nche sei sveglio",
+        "pt-BR": "Mostre aos amigos\nque você acordou",
+        "pt-PT": "Mostre aos amigos\nque já acordou"
+      },
+      "accent": {
+        "en": "friends",
+        "nl": "vrienden",
+        "de": "Freunden",
+        "fr": "amis",
+        "es": "amigos",
+        "it": "amici",
+        "pt-BR": "amigos",
+        "pt-PT": "amigos"
+      }
     }
   ]
 }

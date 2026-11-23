@@ -17,8 +17,9 @@ enum BuddiesSamples {
                        rings: rings, xp: xp, streak: streak, rank: rank)
         }
 
-        let crew = service.addClubSync(ClubDraft(name: "Early birds", description: "Up before 7, every weekday.", emoji: "🐦"))
-        let gym = service.addClubSync(ClubDraft(name: "Gym rats", emoji: "🏋️"))
+        let crew = service.addClubSync(ClubDraft(name: StoreShotText.t("Early birds"),
+                                                          description: StoreShotText.t("Up before 7, every weekday."), emoji: "🐦"))
+        let gym = service.addClubSync(ClubDraft(name: StoreShotText.t("Gym rats"), emoji: "🏋️"))
         let anna = service.addMember("Anna", to: crew)
         let bram = service.addMember("Bram", to: crew)
         let cas = service.addMember("Cas", to: crew)
