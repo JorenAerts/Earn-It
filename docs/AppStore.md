@@ -40,17 +40,23 @@ Revisit keywords every 4–6 weeks using App Store Connect › App Analytics ›
   "Gloop Pro – Yearly" etc.; 3-day free trial as introductory offer on each subscription.
 
 ## Screenshots
-`iOS/scripts/screenshots/make.sh` generates all 10 shots from the real app (DEBUG demo scenes)
-in 6.9" (1320×2868) and 6.5" (1284×2778) for en-US and en-GB → `iOS/fastlane/screenshots/`.
-Review them in `docs/screenshots.html`. Headlines, order and scenes: `scripts/screenshots/scenes.json`.
-Re-run after any UI change.
+The screenshots are **one panoramic banner of 4 shots**: the sky runs from night (1) through dawn (2)
+to morning (3–4), each shot has a tilted phone with the real app, and Gloop (drawn by the app's own
+`SlimeRenderer`) jumps across the seams: asleep → rushing → proud → with his friends.
 
-1. Stop snoozing. · 2. Do a mission to stop it · 3. Math, shake or scan · 4. Snooze, and Gloop droops ·
-5. Wake up with friends · 6. Scan your mug to stop it · 7. Evolve Gloop to King · 8. Your streak on
-your Home Screen · 9. Wake up to your own sound · 10. Make Gloop yours
+1. Stop snoozing. (lock screen) · 2. Only a mission stops it (the 9 premium missions as a grid, with
+Scan your item, Photo of the sky and Made-up bed popping out of the phone) · 3. Get up. Watch Gloop grow.
+(success screen: evolution, XP, sticker, streak) · 4. Show your friends you're awake (Buddies club)
 
-Ideas to A/B test later (Product Page Optimization in App Store Connect): Gloop-first first shot
-("Meet your wake-up buddy"), a night→morning colour story, a 15–30 s app preview video.
+`iOS/scripts/screenshots/make.sh` captures the DEBUG demo scenes per app language (`-language`) and
+`compose.swift` draws the banner as JPEG in 6.9" (1320×2868) and 6.5" (1284×2778) for every App Store locale in
+`scenes.json` (en-US, en-GB, nl-NL, fr-FR, de-DE, es-ES, it, pt-BR, pt-PT) → `iOS/fastlane/screenshots/`.
+Headlines + highlighted word per language live in `scenes.json`. Review in `docs/screenshots.html`.
+`LANGS="en nl"` limits the languages; `SKIP_CAPTURE=1` re-composes from the last captures (design tweaks).
+Re-run after any UI change. Upload them in this order: the strip only works as 1-2-3-4.
+
+Ideas to A/B test later (Product Page Optimization): a Gloop-only first shot ("Meet your wake-up
+buddy"), a 15–30 s app preview video.
 
 ## Promotional text calendar
 | When | Text idea |

@@ -1,5 +1,6 @@
 #if DEBUG
 import Coach
+import Localization
 import Core
 import Missions
 import Purchases
@@ -9,7 +10,7 @@ import WidgetShared
 /// App Store screenshot scenes with fixed demo data. Launch with `-storeShot <scene>`
 /// (driven by scripts/screenshots/make.sh). DEBUG only.
 enum StoreShotScene: String, CaseIterable {
-    case lockscreen, math, missions, health, itemScan, evolution, widgets, appearance
+    case lockscreen, math, missions, health, itemScan, evolution, widgets, appearance, success, missionGrid
     /// Previews of the growth features (not App Store shots).
     case streakCard, whatsNew
 }
@@ -25,11 +26,14 @@ struct StoreShotView: View {
             MissionRunnerView(missions: [MissionConfig(kind: .math, difficulty: .medium, target: 3)],
                               reArmCount: 1, reArmMinutes: 2,
                               coachState: CoachState(mood: .suspicious, context: .reRing),
-                              coachLine: "Ring 2. One more snooze and I'm melting.") {}
+                              coachLine: CoachModel.shared.lines.line(for: .reRing, intensity: .toughLove, day: .now,
+                                                                    values: ["rings": "2"])) {}
         case .missions: MissionPickerView(gate: FeatureGate(isPro: true)) { _ in }
         case .health: HealthShot()
         case .itemScan: ItemScanMock()
         case .evolution: EvolutionShot()
+        case .success: SuccessShot()
+        case .missionGrid: MissionGridShot()
         case .widgets: WidgetsShot()
         case .appearance: NavigationStack { AppearanceView() }
         case .streakCard:
@@ -52,15 +56,15 @@ private struct LockScreenMock: View {
                            startPoint: .top, endPoint: .bottom).ignoresSafeArea()
             VStack(spacing: 10) {
                 Spacer().frame(height: 40)
-                Text("Friday 15 November").font(.title3.weight(.semibold)).foregroundStyle(.white.opacity(0.85))
+                Text(StoreShotText.lockScreenDate).font(.title3.weight(.semibold)).foregroundStyle(.white.opacity(0.85))
                 Text("7:00").font(.system(size: 104, weight: .bold, design: .rounded)).foregroundStyle(.white)
                 Spacer()
                 VStack(spacing: 16) {
                     HStack(spacing: 10) {
                         Image(systemName: "alarm.fill").foregroundStyle(.orange)
-                        Text("Gloop - Math Problem").font(.headline)
+                        Text("Gloop - " + L10n.tr("Math Problem")).font(.headline)
                         Spacer()
-                        Text("now").font(.caption).foregroundStyle(.secondary)
+                        Text(StoreShotText.t("now")).font(.caption).foregroundStyle(.secondary)
                     }
                     HStack {
                         Capsule().fill(.white.opacity(0.25)).frame(height: 64)
@@ -68,7 +72,7 @@ private struct LockScreenMock: View {
                                 Circle().fill(.white).frame(width: 56, height: 56).padding(4)
                                     .overlay(Image(systemName: "xmark").font(.title3.bold()).foregroundStyle(.black))
                             }
-                            .overlay(Text("slide to stop").foregroundStyle(.white.opacity(0.8)))
+                            .overlay(Text(StoreShotText.t("slide to stop")).foregroundStyle(.white.opacity(0.8)))
                     }
                 }
                 .padding(18)
@@ -78,7 +82,7 @@ private struct LockScreenMock: View {
                 HStack(spacing: 10) {
                     CoachAvatarView(state: CoachState(mood: .suspicious, context: .ringing), size: 64, vitality: 0.75,
                                     accessory: .cap)
-                    Text("Stop me with a mission, not a swipe.")
+                    Text(StoreShotText.t("Stop me with a mission, not a swipe."))
                         .font(.subheadline.weight(.semibold)).foregroundStyle(.white)
                 }
                 .padding(.vertical, 22)
@@ -207,6 +211,98 @@ private struct WidgetsShot: View {
 }
 
 /// Stage ladder with accessories + stickers.
+/// The success screen after a first-ring morning: Gloop evolves, XP, a new sticker, a 7-day streak.
+/// Same texts as `SuccessView` (so translations apply), fixed demo numbers.
+private struct SuccessShot: View {
+    private let state = CoachState(mood: .proud, context: .firstTry)
+    private let streak = 7
+
+    var body: some View {
+        VStack(spacing: 20) {
+            CoachAvatarView(state: state, size: 170, vitality: 1, accessory: Rank.jelly.accessory)
+                .padding(.top, 56)
+            // A first-try line without {name} (no demo name on a store screenshot).
+            Text(CoachModel.shared.lines.lines(for: .firstTry, intensity: .toughLove)
+                    .first { !$0.contains("{name}") } ?? "")
+                .font(.title3.weight(.semibold))
+                .multilineTextAlignment(.center)
+            VStack(spacing: 6) {
+                RankInsignia(rank: .jelly, size: 64)
+                Text("\(CoachIdentity.name) evolved into \(Rank.jelly.title)!").font(.title2.bold()).multilineTextAlignment(.center)
+            }
+            VStack(spacing: 6) {
+                Text("+\(95) XP").font(.headline).foregroundStyle(.orange).monospacedDigit()
+                ProgressView(value: 0.35).tint(.orange).frame(maxWidth: 240)
+                Text("\(160) XP to \(Rank.gloopling.title)").font(.caption).foregroundStyle(.secondary)
+            }
+            VStack(spacing: 8) {
+                Text(L10n.tr("New sticker!"))
+                    .font(.caption.weight(.heavy)).textCase(.uppercase).foregroundStyle(.secondary)
+                MedalTile(medal: .streak7, earned: true).frame(width: 110)
+            }
+            Text("Streak: \(streak) days").font(.title2.weight(.semibold))
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+        .padding(24)
+        .overlay { ConfettiBurst().ignoresSafeArea() }
+    }
+}
+
+/// The premium missions as a colourful 3×3 grid (banner shot 2; Math, the free one, isn't shown).
+private struct MissionGridShot: View {
+    private let kinds: [MissionKind] = [.object, .sky, .bed, .colorHunt, .qr, .shake, .quiz, .memory, .typing]
+
+    private func tint(_ category: MissionCategory) -> [Color] {
+        switch category {
+        case .outOfBed: [Color(red: 1, green: 0.62, blue: 0.25), Color(red: 0.95, green: 0.33, blue: 0.16)]
+        case .brain: [Color(red: 0.70, green: 0.50, blue: 1), Color(red: 0.45, green: 0.25, blue: 0.85)]
+        case .body: [Color(red: 0.30, green: 0.85, blue: 0.75), Color(red: 0.08, green: 0.60, blue: 0.55)]
+        case .mindset: [Color(red: 0.45, green: 0.65, blue: 1), Color(red: 0.20, green: 0.35, blue: 0.85)]
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            Text(StoreShotText.t("Pick your mission")).font(.largeTitle.bold())
+                .padding(.top, 70)
+            LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 3), spacing: 12) {
+                ForEach(kinds, id: \.self) { kind in
+                    VStack(spacing: 10) {
+                        Image(systemName: kind.symbol)
+                            .font(.system(size: 30, weight: .semibold))
+                            .foregroundStyle(.white)
+                            .frame(width: 64, height: 64)
+                            .background(LinearGradient(colors: tint(kind.category), startPoint: .top, endPoint: .bottom),
+                                        in: .rect(cornerRadius: 18, style: .continuous))
+                            .shadow(color: tint(kind.category)[1].opacity(0.35), radius: 6, y: 3)
+                        Text(kind.displayName).font(.footnote.weight(.semibold))
+                            .multilineTextAlignment(.center).lineLimit(2).minimumScaleFactor(0.6)
+                            .padding(.horizontal, 4)
+                            .frame(height: 40, alignment: .top)
+                        Text(kind.estimatedDuration).font(.caption2.weight(.medium)).foregroundStyle(.secondary)
+                    }
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 14)
+                    .background(.background, in: .rect(cornerRadius: 22, style: .continuous))
+                }
+            }
+            HStack(spacing: 14) {
+                ForEach([MissionCategory.outOfBed, .brain, .body], id: \.self) { category in
+                    Label(category.title, systemImage: category.symbol)
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(tint(category)[1])
+                }
+            }
+            .frame(maxWidth: .infinity)
+            Spacer()
+        }
+        .padding(.horizontal, 18)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(Color(.systemGroupedBackground))
+    }
+}
+
 private struct EvolutionShot: View {
     private let stages: [Rank] = [.droplet, .blob, .jelly, .bouncer, .wobbler, .superGloop, .royalGloop, .kingGloop, .squisher]
     private let earned: Set<Medal> = [.firstMission, .firstTry, .streak3, .streak7, .earlyBird, .hatTrick]

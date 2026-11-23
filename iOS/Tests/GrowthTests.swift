@@ -1,5 +1,6 @@
 import Features
 import Foundation
+import ImageIO
 import Testing
 
 private let cal: Calendar = {
@@ -85,18 +86,35 @@ struct AppStoreMetadataTests {
         #expect(Set(us).count == us.count && Set(uk).count == uk.count)
     }
 
+    /// The banner (scripts/screenshots/make.sh): 4 shots × 2 sizes for every App Store locale in scenes.json.
     @Test func screenshotsHaveTheRequiredSizes() throws {
-        let dir = Self.root.appending(path: "fastlane/screenshots/en-US")
-        let files = try FileManager.default.contentsOfDirectory(atPath: dir.path()).filter { $0.hasSuffix(".png") }
-        #expect(files.filter { $0.hasSuffix("-6.9.png") }.count == 10)
-        #expect(files.filter { $0.hasSuffix("-6.5.png") }.count == 10)
-        for file in files {
-            let data = try Data(contentsOf: dir.appending(path: file))
-            // PNG IHDR: width at byte 16, height at byte 20 (big-endian).
-            let w = data[16..<20].reduce(0) { $0 << 8 | Int($1) }
-            let h = data[20..<24].reduce(0) { $0 << 8 | Int($1) }
-            let expected = file.hasSuffix("-6.9.png") ? (1320, 2868) : (1284, 2778)
-            #expect(w == expected.0 && h == expected.1, "\(file) is \(w)×\(h)")
+        struct Config: Decodable {
+            struct Scene: Decodable { let id: String; let headline: [String: String]; let accent: [String: String] }
+            let locales: [String: String]
+            let scenes: [Scene]
+        }
+        let config = try JSONDecoder().decode(Config.self, from: Data(contentsOf: Self.root.appending(path: "scripts/screenshots/scenes.json")))
+        #expect(config.scenes.count == 4)
+        for scene in config.scenes {
+            for language in Set(config.locales.values) {
+                let headline = try #require(scene.headline[language], "\(scene.id) has no \(language) headline")
+                let accent = try #require(scene.accent[language], "\(scene.id) has no \(language) accent")
+                #expect(headline.contains(accent), "\(scene.id) \(language): accent not in headline")
+            }
+        }
+        for locale in config.locales.keys {
+            let dir = Self.root.appending(path: "fastlane/screenshots/\(locale)")
+            let files = try FileManager.default.contentsOfDirectory(atPath: dir.path()).filter { $0.hasSuffix(".jpg") }
+            for scene in config.scenes {
+                #expect(files.contains("\(scene.id)-6.9.jpg") && files.contains("\(scene.id)-6.5.jpg"), "\(locale) \(scene.id)")
+            }
+            #expect(files.count == config.scenes.count * 2, "\(locale): \(files.count) files")
+            for file in files {
+                let source = try #require(CGImageSourceCreateWithURL(dir.appending(path: file) as CFURL, nil))
+                let image = try #require(CGImageSourceCreateImageAtIndex(source, 0, nil))
+                let expected = file.hasSuffix("-6.9.jpg") ? (1320, 2868) : (1284, 2778)
+                #expect(image.width == expected.0 && image.height == expected.1, "\(locale)/\(file) is \(image.width)×\(image.height)")
+            }
         }
     }
 }

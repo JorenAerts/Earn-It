@@ -41,6 +41,10 @@ public struct RootView: View {
         self.auth = auth
         self.store = store
         self.onboardingStore = onboardingStore
+        // Screenshot helper: -language <code> (e.g. nl) picks the app language for this run (first: sample data is localized too).
+        if let i = CommandLine.arguments.firstIndex(of: "-language"), i + 1 < CommandLine.arguments.count {
+            LanguageSettings.shared.select(CommandLine.arguments[i + 1], persist: false)
+        }
         #if DEBUG
         // Screenshot helper: -buddiesSample (fake clubs, members and photos; opens the Buddies tab).
         let sample = CommandLine.arguments.contains("-buddiesSample")
@@ -54,10 +58,6 @@ public struct RootView: View {
         _onboarded = State(initialValue: (onboardingStore.load().completed
                                           || CommandLine.arguments.contains("-buddiesSample"))  // screenshots on a fresh simulator
                            && !CommandLine.arguments.contains("-onboardingStep"))  // screenshot helper
-        // Screenshot helper: -language <code> (e.g. nl) picks the app language for this run.
-        if let i = CommandLine.arguments.firstIndex(of: "-language"), i + 1 < CommandLine.arguments.count {
-            LanguageSettings.shared.select(CommandLine.arguments[i + 1], persist: false)
-        }
         // Screenshot helper: -settings opens on the Settings tab.
         if CommandLine.arguments.contains("-settings") { _tab = State(initialValue: .settings) }
         #if DEBUG
@@ -278,9 +278,15 @@ public struct RootView: View {
         WidgetPublisher.shared.publish(coordinator: coordinator, logs: logs, isPro: store.entitlement.isPro)
     }
 
+    /// Launched by scripts/screenshots/make.sh (demo scenes): no What's New sheet over them.
+    static var isScreenshotRun: Bool {
+        let args = CommandLine.arguments
+        return ["-buddiesSample", "-storeShot", "-successScreen", "-widgetPreviews"].contains(where: args.contains)
+    }
+
     /// What's New after an update: once per version, never on a fresh install or during a mission.
     private func checkWhatsNew() {
-        guard onboarded, !coordinator.needsMission else { return }
+        guard onboarded, !coordinator.needsMission, !Self.isScreenshotRun else { return }
         let store = GrowthStore.shared
         let current = GrowthStore.appVersion
         guard let seen = store.whatsNewSeenVersion else {
