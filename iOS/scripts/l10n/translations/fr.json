@@ -1170,5 +1170,10 @@
   "Set up your math problems": "Configure tes calculs",
   "Print a code or use one you already have, and stick it far from your bed, like in the bathroom.": "Imprime un code ou utilise-en un que tu as déjà, et colle-le loin de ton lit, par exemple dans la salle de bain.",
   "10–30 minutes": "10 à 30 minutes",
-  "30–60 minutes": "30 à 60 minutes"
+  "30–60 minutes": "30 à 60 minutes",
+  "Suggest a feature": "Proposer une fonctionnalité",
+  "Sign in to share ideas": "Connecte-toi pour partager des idées",
+  "Suggest features and vote for the ideas you want most. You need a Gloop account so every person gets one vote.": "Propose des fonctionnalités et vote pour les idées que tu veux le plus. Il te faut un compte Gloop, pour que chacun n’ait qu’une voix.",
+  "Can't load the board": "Impossible de charger le tableau",
+  "Check your connection and try again.": "Vérifie ta connexion et réessaie."
 }

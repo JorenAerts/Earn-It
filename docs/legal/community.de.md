@@ -2,7 +2,7 @@
 
 Gültig ab 15. November 2026
 
-Bei Buddies motiviert ihr euch gegenseitig zum Aufstehen. Diese Richtlinien halten es freundlich und sicher. Sie gelten für Clubs, Clubnamen und -beschreibungen, Morgenfotos und Reaktionen. Wer gegen sie verstößt, riskiert, dass Inhalte entfernt und das Konto gesperrt werden.
+Bei Buddies motiviert ihr euch gegenseitig zum Aufstehen. Diese Richtlinien halten es freundlich und sicher. Sie gelten für Clubs, Clubnamen und -beschreibungen, Morgenfotos und Reaktionen. Wer gegen sie verstößt, riskiert, dass Inhalte entfernt und das Konto gesperrt werden. Sie gelten auch für Ideen auf dem Feedback-Board.
 
 ## Sei freundlich
 
@@ -30,6 +30,7 @@ Bei Buddies motiviert ihr euch gegenseitig zum Aufstehen. Diese Richtlinien halt
 
 - **Melden:** Drücke lange auf ein Foto oder eine Person und wähle Melden, oder melde einen Club über seine Mitglieder-Seite. Sag uns kurz, was nicht stimmt.
 - **Blockieren:** Drücke lange auf eine Person und wähle Blockieren. Ihr seht eure Fotos, Zeiten und Platzierungen nicht mehr. Verwalte blockierte Personen unter Einstellungen › Buddies.
+- **Feedback-Board:** Tippe bei einer Idee auf ⋯ und wähle Melden. Ideen, die mehrere Personen melden, werden ausgeblendet, bis wir sie geprüft haben.
 
 ## Was wir tun
 

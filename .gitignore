@@ -16,3 +16,6 @@ iOS/Packages/*/Package.resolved
 
 # workflow-audit plugin output
 .workflow-audit/
+
+# Web feedback board config (generated in CI from repo secrets)
+Web/config.js

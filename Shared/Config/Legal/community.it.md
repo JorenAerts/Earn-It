@@ -2,7 +2,7 @@
 
 In vigore dal {{effectiveDate}}
 
-Buddies serve a motivarsi a vicenda ad alzarsi. Queste linee guida lo mantengono amichevole e sicuro. Valgono per club, nomi e descrizioni dei club, foto del mattino e reazioni. Violarle può comportare la rimozione dei tuoi contenuti e il blocco del tuo account.
+Buddies serve a motivarsi a vicenda ad alzarsi. Queste linee guida lo mantengono amichevole e sicuro. Valgono per club, nomi e descrizioni dei club, foto del mattino e reazioni. Violarle può comportare la rimozione dei tuoi contenuti e il blocco del tuo account. Valgono anche per le idee sulla bacheca idee.
 
 ## Sii gentile
 
@@ -30,6 +30,7 @@ Buddies serve a motivarsi a vicenda ad alzarsi. Queste linee guida lo mantengono
 
 - **Segnala:** tieni premuta una foto o una persona e scegli Segnala, oppure segnala un club dalla sua pagina Membri. Spiegaci brevemente cosa non va.
 - **Blocca:** tieni premuta una persona e scegli Blocca. Non vedrete più le foto, gli orari o le classifiche l’uno dell’altro. Gestisci le persone bloccate in Impostazioni › Buddies.
+- **Bacheca idee:** tocca ⋯ su un’idea e scegli Segnala. Le idee segnalate da più persone vengono nascoste finché non le abbiamo controllate.
 
 ## Cosa facciamo
 

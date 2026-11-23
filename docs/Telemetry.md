@@ -59,6 +59,7 @@ whether they keep getting up with Gloop. Code: `iOS/Packages/Telemetry` (catalog
 | Camera.flashlight | mode (auto/on/off), auto (true = Auto switched it on in the dark), mission (qr, object, bed, colorHunt, objectSetup, bedSetup, qrSetup) |
 | Coach.toneChanged / Reminders.toggled | tone / on |
 | Help.opened / faqOpened | question (index in Help.json) |
+| Feedback.boardOpened | signedIn (Help › Suggest a feature; votes and posts on the page aren't tracked) |
 | Rate.requested, Account.signedOut, Account.deleted, Permission.denied(kind), Telemetry.test | |
 | Error.shown | area, code |
 

@@ -125,6 +125,24 @@ Needed for TestFlight, real purchases, "Manage subscription" and native Sign in 
 - [ ] Replace the placeholder URLs in `privacy_url.txt` / `support_url.txt` / `marketing_url.txt`.
 - [ ] Add a `Shared/Config/WhatsNew.json` entry for every release (What's New sheet).
 
+### Trial-ending reminder
+- [ ] Notify users **1 day before their free trial ends** (in-app notice / push) that it turns into a paid plan.
+  - [ ] Trial end dates in the database: App Store Server Notifications (iOS) / Play RTDN (Android) →
+        Supabase function → `subscriptions` table (see "Later" below).
+  - [ ] Daily Supabase cron + Edge Function: find trials ending in ~24 h → send the notice (push needs APNs / paid program).
+  - [ ] Privacy policy + App Privacy labels if new data is stored (trial/subscription dates per user).
+
+### Feedback board (Web/feedback + Help › Suggest a feature)
+- [ ] Supabase › SQL Editor: apply `Backend/supabase/migrations/20261123000000_feedback.sql` (after the Buddies one).
+- [ ] Supabase › Authentication › URL Configuration › Redirect URLs: add `https://jorenaerts.github.io/Earn-It/feedback/**`.
+- [ ] GitHub › Settings › Pages › Source = **GitHub Actions** (a private repo needs GitHub Pro for Pages, or make the repo public).
+- [ ] GitHub › Settings › Secrets and variables › Actions: add `SUPABASE_URL` + `SUPABASE_PUBLISHABLE_KEY` (same as `iOS/Config/Supabase.xcconfig`).
+- [ ] Run the "Web (GitHub Pages)" workflow, open the URL, sign in, post + vote once.
+- [ ] Set `feedbackURL` in `Shared/Config/Auth.json` to that URL (the Help row stays hidden until then).
+- [ ] Check feedback reports with the Buddies ones (Table Editor › `reports`, kind `feedback`).
+- [ ] App Privacy labels: Other User Content (feedback ideas) linked to the account, App Functionality.
+- [ ] Later: Android entry once accounts are ported (phase 4); status labels (Planned / Done) if wanted.
+
 ### Submission
 - [ ] App privacy labels (email, user ID, purchases; no tracking).
 - [ ] Review notes: explain AlarmKit alarm + background audio (keeps the alarm sounding until the

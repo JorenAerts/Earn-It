@@ -11945,6 +11945,53 @@
         }
       }
     },
+    "Can't load the board" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Board kann nicht geladen werden"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "No se puede cargar el tablón"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossible de charger le tableau"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Impossibile caricare la bacheca"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Kan het bord niet laden"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Não foi possível carregar o mural"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Não foi possível carregar o quadro"
+          }
+        }
+      }
+    },
     "Can't see the sky? Do another mission" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -12223,6 +12270,53 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Gráfico: com o snooze, a sua energia fica numa zona de moleza; levantar-se ao primeiro alarme fá-la subir de forma constante."
+          }
+        }
+      }
+    },
+    "Check your connection and try again." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Prüf deine Verbindung und versuch es erneut."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Comprueba tu conexión y vuelve a intentarlo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Vérifie ta connexion et réessaie."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Controlla la connessione e riprova."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Controleer je verbinding en probeer opnieuw."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Verifique sua conexão e tente de novo."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Verifique a ligação e tente de novo."
           }
         }
       }
@@ -38674,6 +38768,53 @@
         }
       }
     },
+    "Sign in to share ideas" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Melde dich an, um Ideen zu teilen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Inicia sesión para compartir ideas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Connecte-toi pour partager des idées"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Accedi per condividere idee"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Log in om ideeën te delen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Entre para compartilhar ideias"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Inicie sessão para partilhar ideias"
+          }
+        }
+      }
+    },
     "Sign in to use Buddies." : {
       "extractionState" : "manual",
       "localizations" : {
@@ -41761,6 +41902,100 @@
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Subscrever — %@%@"
+          }
+        }
+      }
+    },
+    "Suggest a feature" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Funktion vorschlagen"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Proponer una función"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Proposer une fonctionnalité"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Proponi una funzione"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stel een functie voor"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sugerir um recurso"
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sugerir uma funcionalidade"
+          }
+        }
+      }
+    },
+    "Suggest features and vote for the ideas you want most. You need a Gloop account so every person gets one vote." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Schlag Funktionen vor und stimm für die Ideen, die du dir am meisten wünschst. Du brauchst ein Gloop-Konto, damit jeder nur eine Stimme hat."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Propón funciones y vota las ideas que más quieres. Necesitas una cuenta de Gloop para que cada persona tenga un solo voto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Propose des fonctionnalités et vote pour les idées que tu veux le plus. Il te faut un compte Gloop, pour que chacun n’ait qu’une voix."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Proponi funzioni e vota le idee che vuoi di più. Ti serve un account Gloop, così ognuno ha un solo voto."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Stel functies voor en stem op de ideeën die jij het liefst wilt. Je hebt een Gloop-account nodig, zodat iedereen één stem heeft."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sugira recursos e vote nas ideias que você mais quer. Você precisa de uma conta Gloop para que cada pessoa tenha um voto só."
+          }
+        },
+        "pt-PT" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Sugira funcionalidades e vote nas ideias que mais quer. Precisa de uma conta Gloop, para que cada pessoa tenha apenas um voto."
           }
         }
       }

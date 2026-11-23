@@ -47,6 +47,17 @@ Les autres membres de tes clubs voient ton nom affiché, tes résultats du matin
 
 Base légale : exécution de notre contrat avec toi (art. 6, par. 1, b). Les signalements et blocages sont aussi traités pour assurer la sécurité de Buddies (intérêt légitime, art. 6, par. 1, f).
 
+## Tableau des idées (facultatif)
+
+Si tu utilises Proposer une fonctionnalité (Réglages › Aide et commentaires) ou le site du tableau des idées, nous traitons :
+
+- Les idées que tu publies (titre, détails et catégorie) et les votes que tu donnes, liés à ton compte.
+- Les signalements que tu envoies sur des idées.
+
+Les autres utilisateurs connectés voient les idées et le nombre de votes, mais pas qui a publié ou voté. Le tableau est une page web hébergée sur GitHub Pages (GitHub, États-Unis). Au chargement, GitHub reçoit ton adresse IP et des informations sur ton navigateur, comme pour tout site web. La page n’utilise aucun cookie de suivi ; sur un ordinateur, ta connexion est gardée dans ton navigateur.
+
+Base légale : notre intérêt légitime à améliorer {{appName}} (art. 6(1)(f)). Les signalements sont traités pour garder le tableau sûr (art. 6(1)(f)).
+
 ## Achats
 
 Les abonnements et l’achat à vie sont gérés par Apple. Nous ne recevons jamais tes informations de paiement. Apple indique à l’app quelle offre tu as. Si tu es connecté, l’achat peut contenir l’identifiant de ton compte afin que ton accès Pro soit lié à ton compte. La politique de confidentialité d’Apple s’applique aux paiements.
@@ -64,6 +75,7 @@ Base légale : notre intérêt légitime à améliorer {{appName}} (art. 6, par.
 ## Qui traite des données pour nous
 
 - **Supabase** (hébergement des comptes, de Buddies et des photos ; serveurs dans l’UE).
+- **GitHub** (hébergement de la page web du tableau des idées ; États-Unis).
 - **TelemetryDeck** (statistiques d’utilisation anonymes ; Allemagne).
 - **Apple** (App Store, paiements, Se connecter avec Apple, Apple Music).
 - **Google, Facebook, Microsoft** (uniquement si tu choisis de te connecter avec eux).
@@ -76,6 +88,7 @@ Nous ne vendons pas tes données et ne les utilisons pas pour de la publicité. 
 
 - Données de compte et de profil : jusqu’à la suppression de ton compte.
 - Résultats du matin dans Buddies : jusqu’à la suppression de ton compte, ou jusqu’à ce que tu quittes tous les clubs et nous demandes de les supprimer.
+- Idées et votes sur le tableau des idées : jusqu’à ce que tu supprimes l’idée ou ton compte.
 - Photos du matin : 24 heures, puis supprimées automatiquement.
 - Signalements de contenus ou d’utilisateurs : jusqu’à 12 mois, pour traiter les abus répétés.
 - Statistiques anonymes : conservées par TelemetryDeck sous forme agrégée.

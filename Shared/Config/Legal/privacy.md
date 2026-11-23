@@ -47,6 +47,17 @@ Other members of your clubs see your display name, your morning results and the 
 
 Legal basis: performance of our agreement with you (Art. 6(1)(b)). Reports and blocks are also processed to keep Buddies safe (legitimate interest, Art. 6(1)(f)).
 
+## Feedback board (optional)
+
+If you use Suggest a feature (Settings › Help & feedback) or the feedback board website, we process:
+
+- The ideas you post (title, details and category) and the votes you give, linked to your account.
+- Reports you send about ideas.
+
+Other signed-in users see the ideas and their vote counts, but not who posted or voted. The board is a web page hosted on GitHub Pages (GitHub, USA). When it loads, GitHub receives your IP address and browser details, as with any website. The page uses no tracking cookies; on a computer, your sign-in is kept in your browser.
+
+Legal basis: our legitimate interest in improving {{appName}} (Art. 6(1)(f)). Reports are processed to keep the board safe (Art. 6(1)(f)).
+
 ## Purchases
 
 Subscriptions and the lifetime purchase are handled by Apple. We never receive your payment details. Apple tells the app which plan you have. If you are signed in, the purchase can carry your account ID so your Pro access is linked to your account. Apple's privacy policy applies to payments.
@@ -64,6 +75,7 @@ Legal basis: our legitimate interest in improving {{appName}} (Art. 6(1)(f)). Yo
 ## Who processes data for us
 
 - **Supabase** (hosting of accounts, Buddies and photos; servers in the EU).
+- **GitHub** (hosting of the feedback board web page; USA).
 - **TelemetryDeck** (anonymous usage statistics; Germany).
 - **Apple** (App Store, payments, Sign in with Apple, Apple Music).
 - **Google, Facebook, Microsoft** (only if you choose to sign in with them).
@@ -76,6 +88,7 @@ We do not sell your data and do not use it for advertising. There is no tracking
 
 - Account and profile data: until you delete your account.
 - Morning results in Buddies: until you delete your account or leave all clubs and ask us to remove them.
+- Ideas and votes on the feedback board: until you delete the idea or your account.
 - Morning photos: 24 hours, then deleted automatically.
 - Reports about content or users: up to 12 months, to handle repeat abuse.
 - Anonymous statistics: kept by TelemetryDeck in aggregated form.

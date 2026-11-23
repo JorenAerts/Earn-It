@@ -18,6 +18,8 @@ supabase/
                                       reactions, blocks, reports + RPCs; delete_own_account hands clubs over
   migrations/*_profile_onboarding.sql profiles.onboarding jsonb (age range, where they heard of us, …)
   migrations/*_morning_photo_access.sql buddies can open each other's morning photos (storage read check via security-definer can_see_image)
+  migrations/*_feedback.sql           feedback board: feedback_posts, feedback_votes + RPCs feedback_list/submit/vote/
+                                      delete_own/report (anonymous authors, 5 posts/day, auto-hide after 3 reports)
   functions/cleanup-morning-posts     hourly: deletes photos older than 24 h + files of deleted users
 ```
 
@@ -29,6 +31,19 @@ supabase/
    schedule `0 * * * *` (every hour).
 4. Moderation: Table Editor › `reports` (newest first). To remove a photo: delete its `morning_posts` row
    (+ file in Storage › morning). To ban someone: Authentication › Users › delete user.
+
+## Feedback board setup
+The board is the web page `Web/feedback/` on GitHub Pages (`.github/workflows/pages.yml`), opened in the app
+from Settings › Help & feedback › Suggest a feature.
+1. SQL Editor › paste `migrations/20261123000000_feedback.sql` › Run (needs the Buddies migration first: it
+   reuses `reports`, `is_blocked` and `require_user`).
+2. Authentication › URL Configuration › Redirect URLs › add `https://jorenaerts.github.io/Earn-It/feedback/**`
+   (desktop sign-in with Apple/Google on the page returns there).
+3. Moderation: Table Editor › `reports`, kind `feedback` (target_id = `feedback_posts.id`). Ideas reported by
+   3 people get `hidden = true` automatically; set it back to `false` to restore, or delete the row. Merge
+   duplicates by hand: delete the copy (its votes go with it).
+4. Most wanted: SQL Editor ›
+   `select p.title, p.category, sum(v.value) score, count(v.*) votes from feedback_posts p left join feedback_votes v on v.post_id = p.id where not p.hidden group by p.id order by score desc;`
 
 ## One-time setup (hosted project)
 1. **Database** — apply the migration, either:

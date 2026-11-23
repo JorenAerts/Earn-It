@@ -37,6 +37,8 @@ public struct AuthConfig: Codable, Sendable, Equatable {
     public let supportEmail: String?
     /// Help & feedback › Share Gloop (website / App Store page).
     public let shareURL: URL?
+    /// Help & feedback › Suggest a feature: the web feedback board (`Web/feedback`). Hidden when missing.
+    public let feedbackURL: URL?
 
     public static func load(from bundle: Bundle = .main) -> AuthConfig {
         guard let url = bundle.url(forResource: "Auth", withExtension: "json"),
@@ -52,16 +54,17 @@ public struct AuthConfig: Codable, Sendable, Equatable {
     )
 
     public init(emailPassword: Bool, providers: [AuthProvider], redirectURL: URL,
-                supportEmail: String? = nil, shareURL: URL? = nil) {
+                supportEmail: String? = nil, shareURL: URL? = nil, feedbackURL: URL? = nil) {
         self.emailPassword = emailPassword
         self.providers = providers
         self.redirectURL = redirectURL
         self.supportEmail = supportEmail
         self.shareURL = shareURL
+        self.feedbackURL = feedbackURL
     }
 
     private enum CodingKeys: String, CodingKey {
-        case emailPassword, providers, redirectURL, supportEmail, shareURL
+        case emailPassword, providers, redirectURL, supportEmail, shareURL, feedbackURL
     }
 
     /// Unknown provider names in the JSON are ignored instead of breaking login.
@@ -74,6 +77,9 @@ public struct AuthConfig: Codable, Sendable, Equatable {
         let email = try c.decodeIfPresent(String.self, forKey: .supportEmail)?.trimmingCharacters(in: .whitespaces)
         supportEmail = (email?.isEmpty ?? true) ? nil : email
         shareURL = try c.decodeIfPresent(URL.self, forKey: .shareURL)
+        // Empty string = not set up yet (row hidden); only https pages.
+        let feedback = try c.decodeIfPresent(String.self, forKey: .feedbackURL)?.trimmingCharacters(in: .whitespaces)
+        feedbackURL = feedback.flatMap(URL.init(string:)).flatMap { $0.scheme == "https" && $0.host() != nil ? $0 : nil }
     }
 }
 
@@ -164,4 +170,11 @@ public protocol AuthService: AnyObject {
     func loadProfile() async -> ProfileUpdate?
     /// Email confirmation / OAuth callback deep links (`gloop://auth-callback…`).
     func handle(url: URL) async
+    /// A valid access token for the signed-in user (refreshed when needed), handed to the
+    /// feedback board web page. The refresh token never leaves the app. Nil when signed out.
+    func currentAccessToken() async -> String?
+}
+
+public extension AuthService {
+    func currentAccessToken() async -> String? { nil }
 }

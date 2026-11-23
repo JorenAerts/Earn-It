@@ -86,6 +86,8 @@ public struct RootView: View {
             } else if let i = CommandLine.arguments.firstIndex(of: "-legal"), i + 1 < CommandLine.arguments.count,
                       let kind = LegalDocumentKind(rawValue: CommandLine.arguments[i + 1]) {
                 NavigationStack { LegalDocumentView(kind: kind) }  // Screenshot helper: -legal privacy|terms|health-safety|community
+            } else if CommandLine.arguments.contains("-feedbackBoard"), let board = auth.config.feedbackURL {
+                NavigationStack { FeedbackBoardView(auth: auth, base: board) }  // Debug helper: -feedbackBoard
             } else if CommandLine.arguments.contains("-slimeGallery") {
                 NavigationStack { SlimeGallery() }  // Screenshot helper: -slimeGallery
             } else if CommandLine.arguments.contains("-permissionsPreview") {

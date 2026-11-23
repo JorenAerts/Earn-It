@@ -47,6 +47,17 @@ Gli altri membri dei tuoi club vedono il tuo nome visualizzato, i risultati del 
 
 Base giuridica: esecuzione del nostro contratto con te (art. 6, par. 1, lett. b). Segnalazioni e blocchi sono trattati anche per mantenere Buddies sicuro (legittimo interesse, art. 6, par. 1, lett. f).
 
+## Bacheca idee (facoltativa)
+
+Se usi Proponi una funzione (Impostazioni › Aiuto e feedback) o il sito della bacheca idee, trattiamo:
+
+- Le idee che pubblichi (titolo, dettagli e categoria) e i voti che dai, collegati al tuo account.
+- Le segnalazioni che invii sulle idee.
+
+Gli altri utenti che hanno effettuato l’accesso vedono le idee e il numero di voti, ma non chi ha pubblicato o votato. La bacheca è una pagina web ospitata su GitHub Pages (GitHub, USA). Quando si carica, GitHub riceve il tuo indirizzo IP e i dati del browser, come per qualsiasi sito. La pagina non usa cookie di tracciamento; su un computer l’accesso resta salvato nel browser.
+
+Base giuridica: il nostro legittimo interesse a migliorare {{appName}} (art. 6(1)(f)). Le segnalazioni sono trattate per mantenere sicura la bacheca (art. 6(1)(f)).
+
 ## Acquisti
 
 Abbonamenti e acquisto a vita sono gestiti da Apple. Non riceviamo mai i tuoi dati di pagamento. Apple comunica all’app quale piano hai. Se hai effettuato l’accesso, l’acquisto può contenere l’ID del tuo account, così l’accesso Pro è collegato al tuo account. Ai pagamenti si applica l’informativa sulla privacy di Apple.
@@ -64,6 +75,7 @@ Base giuridica: il nostro legittimo interesse a migliorare {{appName}} (art. 6, 
 ## Chi tratta i dati per noi
 
 - **Supabase** (hosting di account, Buddies e foto; server nell’UE).
+- **GitHub** (hosting della pagina web della bacheca idee; USA).
 - **TelemetryDeck** (statistiche d’uso anonime; Germania).
 - **Apple** (App Store, pagamenti, Accedi con Apple, Apple Music).
 - **Google, Facebook, Microsoft** (solo se scegli di accedere con loro).
@@ -76,6 +88,7 @@ Non vendiamo i tuoi dati e non li usiamo per pubblicità. Non c’è alcun tracc
 
 - Dati di account e profilo: finché non elimini l’account.
 - Risultati del mattino in Buddies: finché non elimini l’account o lasci tutti i club e ci chiedi di rimuoverli.
+- Idee e voti sulla bacheca idee: finché non elimini l’idea o il tuo account.
 - Foto del mattino: 24 ore, poi eliminate automaticamente.
 - Segnalazioni su contenuti o utenti: fino a 12 mesi, per gestire abusi ripetuti.
 - Statistiche anonime: conservate da TelemetryDeck in forma aggregata.
